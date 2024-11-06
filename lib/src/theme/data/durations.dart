@@ -4,24 +4,24 @@ import 'package:equatable/equatable.dart';
 class AppDurationsData extends Equatable {
   const AppDurationsData({
     required this.areAnimationEnabled,
-    required this.regular,
-    required this.quick,
+    required this.normal,
+    required this.fast,
   });
 
-  factory AppDurationsData.regular() => const AppDurationsData(
+  factory AppDurationsData.normal() => const AppDurationsData(
         areAnimationEnabled: true,
-        regular: Duration(milliseconds: 250),
-        quick: Duration(milliseconds: 100),
+        normal: Duration(milliseconds: 250),
+        fast: Duration(milliseconds: 100),
       );
 
   final bool areAnimationEnabled;
-  final Duration regular;
-  final Duration quick;
+  final Duration normal;
+  final Duration fast;
 
   @override
   List<Object?> get props => [
         areAnimationEnabled,
-        regular.named('regular'),
-        quick.named('quick'),
+        normal.named('normal'),
+        fast.named('fast'),
       ];
 }

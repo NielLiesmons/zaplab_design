@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-/// This class associated a [name] to a given [value].
+/// This class associates a [name] to a given [value].
 class Named<T> extends Equatable {
   const Named(this.name, this.value);
 

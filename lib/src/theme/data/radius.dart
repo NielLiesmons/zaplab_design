@@ -12,7 +12,7 @@ class AppRadiusData extends Equatable {
     required this.rad40,
   });
 
-  const AppRadiusData.regular()
+  const AppRadiusData.normal()
       : rad8 = const Radius.circular(8),
         rad12 = const Radius.circular(12),
         rad16 = const Radius.circular(16),

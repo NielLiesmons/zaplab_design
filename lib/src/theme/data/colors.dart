@@ -4,88 +4,88 @@ import 'package:equatable/equatable.dart';
 
 class AppColorsData extends Equatable {
   // Colors
-  final Color White;
-  final Color White66;
-  final Color White33;
-  final Color White16;
-  final Color White8;
-  final Color Black;
-  final Color Black66;
-  final Color Black33;
-  final Color Black16;
-  final Color Black8;
-  final Color Grey;
-  final Color Grey66;
-  final Color Grey33;
+  final Color white;
+  final Color white66;
+  final Color white33;
+  final Color white16;
+  final Color white8;
+  final Color black;
+  final Color black66;
+  final Color black33;
+  final Color black16;
+  final Color black8;
+  final Color grey;
+  final Color grey66;
+  final Color grey33;
 
   // Radial Gradients
-  final Gradient Blurple;
-  final Gradient Blurple66;
-  final Gradient Blurple33;
-  final Gradient BlurpleLight;
-  final Gradient Rouge;
-  final Gradient Rouge66;
-  final Gradient Rouge33;
-  final Gradient Gold;
-  final Gradient Gold66;
-  final Gradient Gold33;
-  final Gradient Greydient;
-  final Gradient Greydient66;
-  final Gradient Greydient33;
+  final Gradient blurple;
+  final Gradient blurple66;
+  final Gradient blurple33;
+  final Gradient blurpleLight;
+  final Gradient rouge;
+  final Gradient rouge66;
+  final Gradient rouge33;
+  final Gradient gold;
+  final Gradient gold66;
+  final Gradient gold33;
+  final Gradient greydient;
+  final Gradient greydient66;
+  final Gradient greydient33;
 
   AppColorsData({
-    required this.White,
-    required this.White66,
-    required this.White33,
-    required this.White16,
-    required this.White8,
-    required this.Black,
-    required this.Black66,
-    required this.Black33,
-    required this.Black16,
-    required this.Black8,
-    required this.Grey,
-    required this.Grey66,
-    required this.Grey33,
-    required this.Blurple,
-    required this.Blurple66,
-    required this.Blurple33,
-    required this.BlurpleLight,
-    required this.Rouge,
-    required this.Rouge66,
-    required this.Rouge33,
-    required this.Gold,
-    required this.Gold66,
-    required this.Gold33,
-    required this.Greydient,
-    required this.Greydient66,
-    required this.Greydient33,
+    required this.white,
+    required this.white66,
+    required this.white33,
+    required this.white16,
+    required this.white8,
+    required this.black,
+    required this.black66,
+    required this.black33,
+    required this.black16,
+    required this.black8,
+    required this.grey,
+    required this.grey66,
+    required this.grey33,
+    required this.blurple,
+    required this.blurple66,
+    required this.blurple33,
+    required this.blurpleLight,
+    required this.rouge,
+    required this.rouge66,
+    required this.rouge33,
+    required this.gold,
+    required this.gold66,
+    required this.gold33,
+    required this.greydient,
+    required this.greydient66,
+    required this.greydient33,
   });
 
 // Dark mode
   factory AppColorsData.dark() => AppColorsData(
         // Colors (full or 66% / 33% transparent)
-        White: Color(0xFFFFFFFF),
-        White66: Color(0xFFFFFFFF).withOpacity(0.66),
-        White33: Color(0xFFFFFFFF).withOpacity(0.33),
-        White16: Color(0xFFFFFFFF).withOpacity(0.16),
-        White8: Color(0xFFFFFFFF).withOpacity(0.08),
-        Black: Color(0xFF000000),
-        Black66: Color(0xFF000000).withOpacity(0.66),
-        Black33: Color(0xFF000000).withOpacity(0.33),
-        Black16: Color(0xFF000000).withOpacity(0.16),
-        Black8: Color(0xFF000000).withOpacity(0.08),
-        Grey: Color(0xFF232323),
-        Grey66: Color(0xFF333333).withOpacity(0.66),
-        Grey33: Color(0xFF333333).withOpacity(0.33),
+        white: Color(0xFFFFFFFF),
+        white66: Color(0xFFFFFFFF).withOpacity(0.66),
+        white33: Color(0xFFFFFFFF).withOpacity(0.33),
+        white16: Color(0xFFFFFFFF).withOpacity(0.16),
+        white8: Color(0xFFFFFFFF).withOpacity(0.08),
+        black: Color(0xFF000000),
+        black66: Color(0xFF000000).withOpacity(0.66),
+        black33: Color(0xFF000000).withOpacity(0.33),
+        black16: Color(0xFF000000).withOpacity(0.16),
+        black8: Color(0xFF000000).withOpacity(0.08),
+        grey: Color(0xFF232323),
+        grey66: Color(0xFF333333).withOpacity(0.66),
+        grey33: Color(0xFF333333).withOpacity(0.33),
 
         // Radial Gradients (top-left to bottom-right alignment)
-        Blurple: RadialGradient(
+        blurple: RadialGradient(
           colors: [Color(0xFF636AFF), Color(0xFF5445FF)],
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Blurple66: RadialGradient(
+        blurple66: RadialGradient(
           colors: [
             Color(0xFF636AFF).withOpacity(0.66),
             Color(0xFF5445FF).withOpacity(0.66)
@@ -93,7 +93,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Blurple33: RadialGradient(
+        blurple33: RadialGradient(
           colors: [
             Color(0xFF636AFF).withOpacity(0.33),
             Color(0xFF5445FF).withOpacity(0.33)
@@ -101,7 +101,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        BlurpleLight: RadialGradient(
+        blurpleLight: RadialGradient(
           colors: [
             Color(0xFF888DFE).withOpacity(0.33),
             Color(0xFF7E73FF).withOpacity(0.33)
@@ -110,12 +110,12 @@ class AppColorsData extends Equatable {
           radius: 1.5,
         ),
 
-        Rouge: RadialGradient(
+        rouge: RadialGradient(
           colors: [Color(0xFFFF416E), Color(0xFFFF005C)],
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Rouge66: RadialGradient(
+        rouge66: RadialGradient(
           colors: [
             Color(0xFFFF416E).withOpacity(0.66),
             Color(0xFFFF005C).withOpacity(0.66)
@@ -123,7 +123,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Rouge33: RadialGradient(
+        rouge33: RadialGradient(
           colors: [
             Color(0xFFFF416E).withOpacity(0.33),
             Color(0xFFFF005C).withOpacity(0.33)
@@ -132,12 +132,12 @@ class AppColorsData extends Equatable {
           radius: 1.5,
         ),
 
-        Gold: RadialGradient(
+        gold: RadialGradient(
           colors: [Color(0xFFFFC736), Color(0xFFFFAD31)],
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Gold66: RadialGradient(
+        gold66: RadialGradient(
           colors: [
             Color(0xFFFFC736).withOpacity(0.66),
             Color(0xFFFFAD31).withOpacity(0.66)
@@ -145,7 +145,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Gold33: RadialGradient(
+        gold33: RadialGradient(
           colors: [
             Color(0xFFFFC736).withOpacity(0.33),
             Color(0xFFFFAD31).withOpacity(0.33)
@@ -154,12 +154,12 @@ class AppColorsData extends Equatable {
           radius: 1.5,
         ),
 
-        Greydient: RadialGradient(
+        greydient: RadialGradient(
           colors: [Color(0xFFFFFFFF), Color(0xFFDBDBFF)],
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Greydient66: RadialGradient(
+        greydient66: RadialGradient(
           colors: [
             Color(0xFFFFFFFF).withOpacity(0.66),
             Color(0xFFDBDBFF).withOpacity(0.66)
@@ -167,7 +167,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Greydient33: RadialGradient(
+        greydient33: RadialGradient(
           colors: [
             Color(0xFFFFFFFF).withOpacity(0.33),
             Color(0xFFDBDBFF).withOpacity(0.33)
@@ -180,27 +180,27 @@ class AppColorsData extends Equatable {
 // Light mode
   factory AppColorsData.light() => AppColorsData(
         // Colors (full or 66% / 33% transparent)
-        White: Color(0xFF000000),
-        White66: Color(0xFF000000).withOpacity(0.66),
-        White33: Color(0xFF000000).withOpacity(0.33),
-        White16: Color(0xFF000000).withOpacity(0.16),
-        White8: Color(0xFF000000).withOpacity(0.08),
-        Black: Color(0xFFFFFFFF),
-        Black66: Color(0xFFFFFFFF).withOpacity(0.66),
-        Black33: Color(0xFFFFFFFF).withOpacity(0.33),
-        Black16: Color(0xFFFFFFFF).withOpacity(0.16),
-        Black8: Color(0xFFFFFFFF).withOpacity(0.08),
-        Grey: Color(0xFFDCDCDC),
-        Grey66: Color(0xFFCCCCCC).withOpacity(0.66),
-        Grey33: Color(0xFFCCCCCC).withOpacity(0.33),
+        white: Color(0xFF000000),
+        white66: Color(0xFF000000).withOpacity(0.66),
+        white33: Color(0xFF000000).withOpacity(0.33),
+        white16: Color(0xFF000000).withOpacity(0.16),
+        white8: Color(0xFF000000).withOpacity(0.08),
+        black: Color(0xFFFFFFFF),
+        black66: Color(0xFFFFFFFF).withOpacity(0.66),
+        black33: Color(0xFFFFFFFF).withOpacity(0.33),
+        black16: Color(0xFFFFFFFF).withOpacity(0.16),
+        black8: Color(0xFFFFFFFF).withOpacity(0.08),
+        grey: Color(0xFFDCDCDC),
+        grey66: Color(0xFFCCCCCC).withOpacity(0.66),
+        grey33: Color(0xFFCCCCCC).withOpacity(0.33),
 
         // Radial Gradients (top-left to bottom-right alignment)
-        Blurple: RadialGradient(
+        blurple: RadialGradient(
           colors: [Color(0xFF636AFF), Color(0xFF5445FF)],
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Blurple66: RadialGradient(
+        blurple66: RadialGradient(
           colors: [
             Color(0xFF636AFF).withOpacity(0.66),
             Color(0xFF5445FF).withOpacity(0.66)
@@ -208,7 +208,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Blurple33: RadialGradient(
+        blurple33: RadialGradient(
           colors: [
             Color(0xFF636AFF).withOpacity(0.33),
             Color(0xFF5445FF).withOpacity(0.33)
@@ -216,18 +216,18 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        BlurpleLight: RadialGradient(
+        blurpleLight: RadialGradient(
           colors: [Color(0xFF636AFF), Color(0xFF5445FF)],
           center: Alignment.topLeft,
           radius: 1.5,
         ),
 
-        Rouge: RadialGradient(
+        rouge: RadialGradient(
           colors: [Color(0xFFFF416E), Color(0xFFFF005C)],
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Rouge66: RadialGradient(
+        rouge66: RadialGradient(
           colors: [
             Color(0xFFFF416E).withOpacity(0.66),
             Color(0xFFFF005C).withOpacity(0.66)
@@ -235,7 +235,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Rouge33: RadialGradient(
+        rouge33: RadialGradient(
           colors: [
             Color(0xFFFF416E).withOpacity(0.33),
             Color(0xFFFF005C).withOpacity(0.33)
@@ -244,12 +244,12 @@ class AppColorsData extends Equatable {
           radius: 1.5,
         ),
 
-        Gold: RadialGradient(
+        gold: RadialGradient(
           colors: [Color(0xFFFFC736), Color(0xFFFFAD31)],
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Gold66: RadialGradient(
+        gold66: RadialGradient(
           colors: [
             Color(0xFFFFC736).withOpacity(0.66),
             Color(0xFFFFAD31).withOpacity(0.66)
@@ -257,7 +257,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Gold33: RadialGradient(
+        gold33: RadialGradient(
           colors: [
             Color(0xFFFFC736).withOpacity(0.33),
             Color(0xFFFFAD31).withOpacity(0.33)
@@ -266,12 +266,12 @@ class AppColorsData extends Equatable {
           radius: 1.5,
         ),
 
-        Greydient: RadialGradient(
+        greydient: RadialGradient(
           colors: [Color(0xFFFFFFFF), Color(0xFFDBDBFF)],
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Greydient66: RadialGradient(
+        greydient66: RadialGradient(
           colors: [
             Color(0xFFFFFFFF).withOpacity(0.66),
             Color(0xFFDBDBFF).withOpacity(0.66)
@@ -279,7 +279,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Greydient33: RadialGradient(
+        greydient33: RadialGradient(
           colors: [
             Color(0xFFFFFFFF).withOpacity(0.33),
             Color(0xFFDBDBFF).withOpacity(0.33)
@@ -292,27 +292,27 @@ class AppColorsData extends Equatable {
 // Grey mode
   factory AppColorsData.grey() => AppColorsData(
         // Colors (full or 66% / 33% transparent)
-        White: Color(0xFFFFFFFF),
-        White66: Color(0xFFFFFFFF).withOpacity(0.66),
-        White33: Color(0xFFFFFFFF).withOpacity(0.33),
-        White16: Color(0xFFFFFFFF).withOpacity(0.16),
-        White8: Color(0xFFFFFFFF).withOpacity(0.08),
-        Black: Color(0xFF181818),
-        Black66: Color(0xFF181818).withOpacity(0.66),
-        Black33: Color(0xFF000000).withOpacity(0.33),
-        Black16: Color(0xFF000000).withOpacity(0.16),
-        Black8: Color(0xFF000000).withOpacity(0.08),
-        Grey: Color(0xFF232323),
-        Grey66: Color(0xFF333333).withOpacity(0.66),
-        Grey33: Color(0xFF333333).withOpacity(0.33),
+        white: Color(0xFFFFFFFF),
+        white66: Color(0xFFFFFFFF).withOpacity(0.66),
+        white33: Color(0xFFFFFFFF).withOpacity(0.33),
+        white16: Color(0xFFFFFFFF).withOpacity(0.16),
+        white8: Color(0xFFFFFFFF).withOpacity(0.08),
+        black: Color(0xFF181818),
+        black66: Color(0xFF181818).withOpacity(0.66),
+        black33: Color(0xFF000000).withOpacity(0.33),
+        black16: Color(0xFF000000).withOpacity(0.16),
+        black8: Color(0xFF000000).withOpacity(0.08),
+        grey: Color(0xFF232323),
+        grey66: Color(0xFF333333).withOpacity(0.66),
+        grey33: Color(0xFF333333).withOpacity(0.33),
 
         // Radial Gradients (top-left to bottom-right alignment)
-        Blurple: RadialGradient(
+        blurple: RadialGradient(
           colors: [Color(0xFF636AFF), Color(0xFF5445FF)],
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Blurple66: RadialGradient(
+        blurple66: RadialGradient(
           colors: [
             Color(0xFF636AFF).withOpacity(0.66),
             Color(0xFF5445FF).withOpacity(0.66)
@@ -320,7 +320,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Blurple33: RadialGradient(
+        blurple33: RadialGradient(
           colors: [
             Color(0xFF636AFF).withOpacity(0.33),
             Color(0xFF5445FF).withOpacity(0.33)
@@ -328,7 +328,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        BlurpleLight: RadialGradient(
+        blurpleLight: RadialGradient(
           colors: [
             Color(0xFF888DFE).withOpacity(0.33),
             Color(0xFF7E73FF).withOpacity(0.33)
@@ -337,12 +337,12 @@ class AppColorsData extends Equatable {
           radius: 1.5,
         ),
 
-        Rouge: RadialGradient(
+        rouge: RadialGradient(
           colors: [Color(0xFFFF416E), Color(0xFFFF005C)],
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Rouge66: RadialGradient(
+        rouge66: RadialGradient(
           colors: [
             Color(0xFFFF416E).withOpacity(0.66),
             Color(0xFFFF005C).withOpacity(0.66)
@@ -350,7 +350,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Rouge33: RadialGradient(
+        rouge33: RadialGradient(
           colors: [
             Color(0xFFFF416E).withOpacity(0.33),
             Color(0xFFFF005C).withOpacity(0.33)
@@ -359,12 +359,12 @@ class AppColorsData extends Equatable {
           radius: 1.5,
         ),
 
-        Gold: RadialGradient(
+        gold: RadialGradient(
           colors: [Color(0xFFFFC736), Color(0xFFFFAD31)],
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Gold66: RadialGradient(
+        gold66: RadialGradient(
           colors: [
             Color(0xFFFFC736).withOpacity(0.66),
             Color(0xFFFFAD31).withOpacity(0.66)
@@ -372,7 +372,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Gold33: RadialGradient(
+        gold33: RadialGradient(
           colors: [
             Color(0xFFFFC736).withOpacity(0.33),
             Color(0xFFFFAD31).withOpacity(0.33)
@@ -381,12 +381,12 @@ class AppColorsData extends Equatable {
           radius: 1.5,
         ),
 
-        Greydient: RadialGradient(
+        greydient: RadialGradient(
           colors: [Color(0xFFFFFFFF), Color(0xFFDBDBFF)],
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Greydient66: RadialGradient(
+        greydient66: RadialGradient(
           colors: [
             Color(0xFFFFFFFF).withOpacity(0.66),
             Color(0xFFDBDBFF).withOpacity(0.66)
@@ -394,7 +394,7 @@ class AppColorsData extends Equatable {
           center: Alignment.topLeft,
           radius: 1.5,
         ),
-        Greydient33: RadialGradient(
+        greydient33: RadialGradient(
           colors: [
             Color(0xFFFFFFFF).withOpacity(0.33),
             Color(0xFFDBDBFF).withOpacity(0.33)
@@ -406,30 +406,30 @@ class AppColorsData extends Equatable {
 
   @override
   List<Object?> get props => [
-        White.named('White'),
-        White66.named('White'),
-        White33.named('White'),
-        White16.named('White'),
-        White8.named('White'),
-        Black.named('White'),
-        Black66.named('White'),
-        Black33.named('White'),
-        Black16.named('White'),
-        Black8.named('White'),
-        Grey.named('White'),
-        Grey66.named('White'),
-        Grey33.named('White'),
-        Blurple.named('White'),
-        Blurple66.named('White'),
-        Blurple33.named('White'),
-        Rouge.named('White'),
-        Rouge66.named('White'),
-        Rouge33.named('White'),
-        Gold.named('White'),
-        Gold66.named('White'),
-        Gold33.named('White'),
-        Greydient.named('White'),
-        Greydient66.named('White'),
-        Greydient33.named('White'),
+        white.named('White'),
+        white66.named('White'),
+        white33.named('White'),
+        white16.named('White'),
+        white8.named('White'),
+        black.named('White'),
+        black66.named('White'),
+        black33.named('White'),
+        black16.named('White'),
+        black8.named('White'),
+        grey.named('White'),
+        grey66.named('White'),
+        grey33.named('White'),
+        blurple.named('White'),
+        blurple66.named('White'),
+        blurple33.named('White'),
+        rouge.named('White'),
+        rouge66.named('White'),
+        rouge33.named('White'),
+        gold.named('White'),
+        gold66.named('White'),
+        gold33.named('White'),
+        greydient.named('White'),
+        greydient66.named('White'),
+        greydient33.named('White'),
       ];
 }
