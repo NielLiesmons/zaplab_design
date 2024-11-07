@@ -7,7 +7,6 @@ export 'data/colors.dart';
 export 'data/icons.dart';
 export 'data/radius.dart';
 export 'data/spacing.dart';
-export 'data/shadows.dart';
 
 class AppTheme extends InheritedWidget {
   const AppTheme({

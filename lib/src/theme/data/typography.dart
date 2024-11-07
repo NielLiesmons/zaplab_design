@@ -1,4 +1,4 @@
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:zapchat_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
@@ -31,10 +31,11 @@ class AppTypographyData extends Equatable {
     required this.longformh5,
     required this.boldArticle,
     required this.regArticle,
+    required this.linkArticle,
     required this.boldWiki,
     required this.regWiki,
+    required this.linkWiki,
     required this.code,
-    required this.longformlink,
     required this.caption,
   });
 
@@ -43,198 +44,222 @@ class AppTypographyData extends Equatable {
         h1: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 24,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         h2: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 20,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         h3: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 12,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         bold16: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 16,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         med16: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w500, // medium
           fontSize: 16,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         reg16: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w400, // regular
           fontSize: 16,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         bold14: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 14,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         med14: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w500, // medium
           fontSize: 14,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         reg14: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w400, // regular
           fontSize: 14,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         bold12: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 12,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         med12: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w500, // medium
           fontSize: 12,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         reg12: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w400, // regular
           fontSize: 12,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         bold10: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 18,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         med10: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w500, // medium
           fontSize: 10,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         reg10: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w400, // regular
           fontSize: 10,
-          fontWeight: FontWeight.bold,
+          height: 1.5,
           decoration: TextDecoration.none,
         ),
         link: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w500, // medium
           fontSize: 14,
-          fontWeight: FontWeight.bold,
           decoration: TextDecoration.none,
         ),
         // Long Form Typography
         longformh1: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
-          fontWeight: FontWeight.bold,
           decoration: TextDecoration.none,
         ),
         longformh2: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
-          fontWeight: FontWeight.bold,
           decoration: TextDecoration.none,
         ),
         longformh3: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
-          fontWeight: FontWeight.bold,
           decoration: TextDecoration.none,
         ),
         longformh4: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
-          fontWeight: FontWeight.bold,
           decoration: TextDecoration.none,
         ),
         longformh5: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
-          fontWeight: FontWeight.bold,
           decoration: TextDecoration.none,
         ),
         boldArticle: TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: 'Lora',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
-          fontWeight: FontWeight.bold,
           decoration: TextDecoration.none,
         ),
         regArticle: TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: 'Lora',
           package: 'zapchat_design',
           fontSize: 15,
-          fontWeight: FontWeight.bold,
+          fontVariations: [
+            FontVariation('wght', 450), // Custom weight for great reading
+          ],
+          decoration: TextDecoration.none,
+        ),
+        linkArticle: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zapchat_design',
+          fontWeight: FontWeight.w500, // medium
+          fontSize: 15,
           decoration: TextDecoration.none,
         ),
         boldWiki: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
-          fontWeight: FontWeight.bold,
           decoration: TextDecoration.none,
         ),
         regWiki: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w400, // regular
           fontSize: 15,
-          fontWeight: FontWeight.bold,
+          decoration: TextDecoration.none,
+        ),
+        linkWiki: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zapchat_design',
+          fontWeight: FontWeight.w500, // medium
+          fontSize: 14,
           decoration: TextDecoration.none,
         ),
         code: TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: 'Courier-Prime',
           package: 'zapchat_design',
+          fontWeight: FontWeight.w400, // regular
           fontSize: 15,
-          fontWeight: FontWeight.bold,
-          decoration: TextDecoration.none,
-        ),
-        longformlink: TextStyle(
-          fontFamily: 'Inter',
-          package: 'zapchat_design',
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
           decoration: TextDecoration.none,
         ),
         caption: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w500, // medium
+          fontSize: 12,
           decoration: TextDecoration.none,
         ),
       );
@@ -264,10 +289,11 @@ class AppTypographyData extends Equatable {
   final TextStyle longformh5;
   final TextStyle boldArticle;
   final TextStyle regArticle;
+  final TextStyle linkArticle;
   final TextStyle boldWiki;
   final TextStyle regWiki;
+  final TextStyle linkWiki;
   final TextStyle code;
-  final TextStyle longformlink;
   final TextStyle caption;
 
   @override
