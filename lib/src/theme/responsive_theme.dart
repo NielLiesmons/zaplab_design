@@ -11,8 +11,8 @@ enum AppThemeColorMode {
   dark,
 }
 
-// Updates automatically the [AppTheme] regarding the current [MediaQuery],
-// unless the color mode is overridden or set explicitly through the app settings.
+/// Updates automatically the [AppTheme] regarding the current [MediaQuery],
+/// unless the color mode is overridden or set explicitly through the app settings.
 class AppResponsiveTheme extends StatelessWidget {
   const AppResponsiveTheme({
     Key? key,
@@ -38,18 +38,22 @@ class AppResponsiveTheme extends StatelessWidget {
   /// Determines the form factor based on the screen width.
   static AppFormFactor formFactorOf(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+
     if (mediaQuery.size.width < 400) {
       return AppFormFactor.small;
+    } else if (mediaQuery.size.width >= 400 && mediaQuery.size.width < 800) {
+      return AppFormFactor.medium;
+    } else {
+      return AppFormFactor.big;
     }
-    return AppFormFactor.medium;
   }
 
   @override
   Widget build(BuildContext context) {
-    // Start with a base theme
+    /// Start with a base theme
     var theme = AppThemeData.normal();
 
-    // Determines color mode based on app settings or device brightness
+    /// Determines color mode based on app settings or device brightness
     final colorMode = this.colorMode ?? colorModeOf(context);
     switch (colorMode) {
       case AppThemeColorMode.dark:

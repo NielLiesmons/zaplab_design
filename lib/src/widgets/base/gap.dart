@@ -12,7 +12,6 @@ enum AppGapSize {
   s16,
   s20,
   s24,
-  s28,
   s32,
   s38,
   s40,

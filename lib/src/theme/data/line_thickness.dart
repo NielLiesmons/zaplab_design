@@ -1,26 +1,24 @@
 import 'package:zapchat_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
-import 'line_thickness.dart';
 
-class AppBorderData extends Equatable {
+class LineThicknessData extends Equatable {
   final double thin16;
   final double thin33;
   final double medium;
   final double thick;
 
-  AppBorderData({
+  LineThicknessData({
     required this.thin16,
     required this.thin33,
     required this.medium,
     required this.thick,
   });
 
-  factory AppBorderData.fromThickness(LineThicknessData thicknessData) =>
-      AppBorderData(
-        thin16: thicknessData.thin16,
-        thin33: thicknessData.thin33,
-        medium: thicknessData.medium,
-        thick: thicknessData.thick,
+  factory LineThicknessData.defaults() => LineThicknessData(
+        thin16: 0.16,
+        thin33: 0.33,
+        medium: 1.4,
+        thick: 2.8,
       );
 
   @override

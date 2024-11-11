@@ -22,18 +22,16 @@ class AppThemeData extends Equatable {
     TargetPlatform? platform,
   }) : _platform = platform;
 
-  factory AppThemeData.normal({
-  }) =>
-      AppThemeData(
-        formFactor: AppFormFactor.medium,
+  factory AppThemeData.normal() => AppThemeData(
+        formFactor: AppFormFactor.small,
         typography: AppTypographyData.normal(),
-        colors: AppColorsData.dark(),
+        colors: AppColorsData.light(),
         radius: const AppRadiusData.normal(),
         spacing: AppSpacingData.normal(),
         durations: AppDurationsData.normal(),
       );
 
-//   final AppIconsData icons;
+  // final AppIconsData icons;
   final AppColorsData colors;
   final AppTypographyData typography;
   final AppRadiusData radius;

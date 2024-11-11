@@ -1,4 +1,4 @@
-// import 'dart:io';
+/// import 'dart:io';
 
 import 'package:zapchat_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
@@ -6,7 +6,7 @@ import 'package:flutter/rendering.dart';
 
 class AppTypographyData extends Equatable {
   const AppTypographyData({
-    // App Typography
+    /// App Typography
     required this.h1,
     required this.h2,
     required this.h3,
@@ -23,7 +23,8 @@ class AppTypographyData extends Equatable {
     required this.med10,
     required this.reg10,
     required this.link,
-    // Long Form Typography
+
+    /// Long Form Typography
     required this.longformh1,
     required this.longformh2,
     required this.longformh3,
@@ -40,7 +41,7 @@ class AppTypographyData extends Equatable {
   });
 
   factory AppTypographyData.normal() => const AppTypographyData(
-        // App Typography
+        /// App Typography
         h1: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
@@ -168,7 +169,8 @@ class AppTypographyData extends Equatable {
           fontSize: 14,
           decoration: TextDecoration.none,
         ),
-        // Long Form Typography
+
+        /// Long Form Typography
         longformh1: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
@@ -264,7 +266,7 @@ class AppTypographyData extends Equatable {
         ),
       );
 
-  // App Typography
+  /// App Typography
   final TextStyle h1;
   final TextStyle h2;
   final TextStyle h3;
@@ -281,7 +283,8 @@ class AppTypographyData extends Equatable {
   final TextStyle med10;
   final TextStyle reg10;
   final TextStyle link;
-  // Long Form Typography
+
+  /// Long Form Typography
   final TextStyle longformh1;
   final TextStyle longformh2;
   final TextStyle longformh3;
@@ -298,17 +301,35 @@ class AppTypographyData extends Equatable {
 
   @override
   List<Object?> get props => [
+        /// App Typography
         h1.named('h1'),
         h2.named('h2'),
         h3.named('h3'),
         bold16.named('bold16'),
         med16.named('med16'),
         reg16.named('reg16'),
-        bold16.named('bold16'),
-        med16.named('med16'),
-        reg16.named('reg16'),
-        bold16.named('bold16'),
-        med16.named('med16'),
-        reg16.named('reg16'),
+        bold14.named('bold14'),
+        med14.named('med14'),
+        reg14.named('reg14'),
+        bold12.named('bold12'),
+        med12.named('med12'),
+        reg12.named('reg26'),
+        bold10.named('bold10'),
+        med10.named('med10'),
+        reg10.named('reg10'),
+        link.named('link'),
+
+        /// Long Form Typography
+        longformh1.named('longformh1'),
+        longformh2.named('longformh2'),
+        longformh3.named('longformh3'),
+        longformh4.named('longformh4'),
+        longformh5.named('longformh5'),
+        boldArticle.named('boldArticle'),
+        regArticle.named('regArticle'),
+        linkArticle.named('linkArticle'),
+        boldWiki.named('boldArticle'),
+        regWiki.named('regWiki'),
+        linkWiki.named('linkWiki'),
       ];
 }
