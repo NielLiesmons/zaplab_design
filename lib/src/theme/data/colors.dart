@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:equatable/equatable.dart';
 
 class AppColorsData extends Equatable {
-  // Colors
+  /// Colors
   final Color white;
   final Color white66;
   final Color white33;
@@ -18,7 +18,7 @@ class AppColorsData extends Equatable {
   final Color grey66;
   final Color grey33;
 
-  // Radial Gradients
+  /// Radial Gradients
   final Gradient blurple;
   final Gradient blurple66;
   final Gradient blurple33;
@@ -62,9 +62,9 @@ class AppColorsData extends Equatable {
     required this.greydient33,
   });
 
-// Dark mode
+  /// Dark mode
   factory AppColorsData.dark() => AppColorsData(
-        // Colors (full or 66% / 33% transparent)
+        /// Colors (full or 66% / 33% transparent)
         white: Color(0xFFFFFFFF),
         white66: Color(0xFFFFFFFF).withOpacity(0.66),
         white33: Color(0xFFFFFFFF).withOpacity(0.33),
@@ -79,7 +79,7 @@ class AppColorsData extends Equatable {
         grey66: Color(0xFF333333).withOpacity(0.66),
         grey33: Color(0xFF333333).withOpacity(0.33),
 
-        // Radial Gradients (top-left to bottom-right alignment)
+        /// Radial Gradients (top-left to bottom-right alignment)
         blurple: RadialGradient(
           colors: [Color(0xFF636AFF), Color(0xFF5445FF)],
           center: Alignment.topLeft,
@@ -177,9 +177,9 @@ class AppColorsData extends Equatable {
         ),
       );
 
-// Light mode
+  /// Light mode
   factory AppColorsData.light() => AppColorsData(
-        // Colors (full or 66% / 33% transparent)
+        /// Colors (full or 66% / 33% transparent)
         white: Color(0xFF000000),
         white66: Color(0xFF000000).withOpacity(0.66),
         white33: Color(0xFF000000).withOpacity(0.33),
@@ -194,7 +194,7 @@ class AppColorsData extends Equatable {
         grey66: Color(0xFFCCCCCC).withOpacity(0.66),
         grey33: Color(0xFFCCCCCC).withOpacity(0.33),
 
-        // Radial Gradients (top-left to bottom-right alignment)
+        /// Radial Gradients (top-left to bottom-right alignment)
         blurple: RadialGradient(
           colors: [Color(0xFF636AFF), Color(0xFF5445FF)],
           center: Alignment.topLeft,
@@ -289,9 +289,9 @@ class AppColorsData extends Equatable {
         ),
       );
 
-// Grey mode
+  /// Grey mode
   factory AppColorsData.grey() => AppColorsData(
-        // Colors (full or 66% / 33% transparent)
+        /// Colors (full or 66% / 33% transparent)
         white: Color(0xFFFFFFFF),
         white66: Color(0xFFFFFFFF).withOpacity(0.66),
         white33: Color(0xFFFFFFFF).withOpacity(0.33),
@@ -306,7 +306,7 @@ class AppColorsData extends Equatable {
         grey66: Color(0xFF333333).withOpacity(0.66),
         grey33: Color(0xFF333333).withOpacity(0.33),
 
-        // Radial Gradients (top-left to bottom-right alignment)
+        /// Radial Gradients (top-left to bottom-right alignment)
         blurple: RadialGradient(
           colors: [Color(0xFF636AFF), Color(0xFF5445FF)],
           center: Alignment.topLeft,
