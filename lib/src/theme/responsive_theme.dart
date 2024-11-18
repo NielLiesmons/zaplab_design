@@ -1,7 +1,5 @@
 import 'dart:ui' as ui;
 
-import 'data/form_factor.dart';
-import 'data/typography.dart';
 import 'theme.dart';
 import 'package:flutter/widgets.dart';
 
@@ -39,9 +37,9 @@ class AppResponsiveTheme extends StatelessWidget {
   static AppFormFactor formFactorOf(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    if (mediaQuery.size.width < 400) {
+    if (mediaQuery.size.width < 440) {
       return AppFormFactor.small;
-    } else if (mediaQuery.size.width >= 400 && mediaQuery.size.width < 800) {
+    } else if (mediaQuery.size.width >= 440 && mediaQuery.size.width < 880) {
       return AppFormFactor.medium;
     } else {
       return AppFormFactor.big;
@@ -71,9 +69,6 @@ class AppResponsiveTheme extends StatelessWidget {
     // Set form factor based on device characteristics
     var formFactor = this.formFactor ?? formFactorOf(context);
     theme = theme.withFormFactor(formFactor);
-    if (formFactor == AppFormFactor.small) {
-      theme = theme.withTypography(AppTypographyData.normal());
-    }
 
     return AppTheme(
       data: theme,

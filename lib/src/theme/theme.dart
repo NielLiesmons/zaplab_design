@@ -3,10 +3,16 @@ import 'package:flutter/material.dart';
 import 'data/data.dart';
 
 export 'data/data.dart';
+
+export 'data/borders.dart';
 export 'data/colors.dart';
+export 'data/form_factor.dart';
 export 'data/icons.dart';
+export 'data/images.dart';
+export 'data/line_thickness.dart';
 export 'data/radius.dart';
 export 'data/spacing.dart';
+export 'data/typography.dart';
 
 class AppTheme extends InheritedWidget {
   const AppTheme({

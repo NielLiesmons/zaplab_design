@@ -1,5 +1,5 @@
 name: zapchat_design
-description: "A new Flutter package project."
+description: "UI Widget library for Zapchat"
 version: 0.0.1
 homepage: null
 
@@ -13,6 +13,7 @@ dependencies:
     sdk: flutter
   flutter_svg: ^2.0.14
   gap: ^3.0.1
+  tap_builder: ^0.5.0
 
 dev_dependencies:
   flutter_lints: ^4.0.0
@@ -24,6 +25,8 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 
 flutter:
+  assets:
+    - assets/icons/
   fonts:
     - family: Courier-Prime
       fonts:
@@ -34,6 +37,7 @@ flutter:
     - family: Lora
       fonts:
         - asset: fonts/Lora[wght].ttf
+  
    
           
        
