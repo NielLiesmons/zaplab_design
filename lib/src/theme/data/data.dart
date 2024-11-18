@@ -10,7 +10,7 @@ import 'icons.dart';
 import 'images.dart';
 import 'line_thickness.dart';
 import 'radius.dart';
-import 'spacing.dart';
+import 'sizes.dart';
 import 'typography.dart';
 
 class AppThemeData extends Equatable {
@@ -31,7 +31,7 @@ class AppThemeData extends Equatable {
         durations: AppDurationsData.normal(),
         formFactor: AppFormFactor.small,
         radius: const AppRadiusData.normal(),
-        spacing: AppSpacingData.normal(),
+        spacing: AppSizesData.normal(),
         typography: AppTypographyData.normal(),
       );
 
@@ -40,7 +40,7 @@ class AppThemeData extends Equatable {
   final AppDurationsData durations;
   final AppFormFactor formFactor;
   final AppRadiusData radius;
-  final AppSpacingData spacing;
+  final AppSizesData spacing;
   final AppTypographyData typography;
   final TargetPlatform? _platform;
   TargetPlatform get platform => defaultTargetPlatform;
