@@ -76,7 +76,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Inter',
           package: 'zapchat_design',
           fontVariations: [
-            FontVariation('wght', 500), // Custom weight for great reading
+            FontVariation('wght', 500),
           ], // medium
           fontSize: 16,
           height: 1.5,
@@ -101,7 +101,9 @@ class AppTypographyData extends Equatable {
         med14: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
-          fontWeight: FontWeight.w500, // medium
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
           fontSize: 14,
           height: 1.5,
           decoration: TextDecoration.none,
@@ -125,7 +127,9 @@ class AppTypographyData extends Equatable {
         med12: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
-          fontWeight: FontWeight.w500, // medium
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
           fontSize: 12,
           height: 1.5,
           decoration: TextDecoration.none,
@@ -149,7 +153,9 @@ class AppTypographyData extends Equatable {
         med10: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
-          fontWeight: FontWeight.w500, // medium
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
           fontSize: 10,
           height: 1.5,
           decoration: TextDecoration.none,
@@ -165,7 +171,9 @@ class AppTypographyData extends Equatable {
         link: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
-          fontWeight: FontWeight.w500, // medium
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
           fontSize: 14,
           decoration: TextDecoration.none,
         ),
@@ -225,7 +233,9 @@ class AppTypographyData extends Equatable {
         linkArticle: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
-          fontWeight: FontWeight.w500, // medium
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
           fontSize: 15,
           decoration: TextDecoration.none,
         ),
@@ -246,7 +256,9 @@ class AppTypographyData extends Equatable {
         linkWiki: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
-          fontWeight: FontWeight.w500, // medium
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
           fontSize: 14,
           decoration: TextDecoration.none,
         ),
@@ -260,7 +272,9 @@ class AppTypographyData extends Equatable {
         caption: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
-          fontWeight: FontWeight.w500, // medium
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
           fontSize: 12,
           decoration: TextDecoration.none,
         ),
