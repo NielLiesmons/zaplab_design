@@ -7,7 +7,7 @@ class AppBorderData extends Equatable {
   final double medium;
   final double thick;
 
-  AppBorderData({
+  const AppBorderData({
     required this.thin,
     required this.medium,
     required this.thick,

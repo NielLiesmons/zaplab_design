@@ -25,18 +25,19 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 
 flutter:
-  assets:
-    - assets/icons/
   fonts:
     - family: Courier-Prime
       fonts:
-        - asset: fonts/Courier-Prime.ttf
+        - asset: lib/fonts/Courier-Prime.ttf
+    - family: Icons
+      fonts:
+        - asset: lib/fonts/Zapchat-Icons.ttf
     - family: Inter
       fonts:
-        - asset: fonts/Inter.ttc
+        - asset: lib/fonts/InterVariable.ttf
     - family: Lora
       fonts:
-        - asset: fonts/Lora[wght].ttf
+        - asset: lib/fonts/Lora[wght].ttf
   
    
           

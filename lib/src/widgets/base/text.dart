@@ -39,275 +39,246 @@ enum AppTextLevel {
 class AppText extends StatelessWidget {
   const AppText(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
     this.level = AppTextLevel.med16,
-  }) : super(key: key);
+  });
 
   /// App Typography
   const AppText.h1(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.h1,
-        super(key: key);
+  }) : level = AppTextLevel.h1;
 
   const AppText.h2(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.h2,
-        super(key: key);
+  }) : level = AppTextLevel.h2;
 
   const AppText.h3(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.h3,
-        super(key: key);
+  }) : level = AppTextLevel.h3;
 
   const AppText.bold16(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.bold16,
-        super(key: key);
+  }) : level = AppTextLevel.bold16;
 
   const AppText.med16(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.med16,
-        super(key: key);
+  }) : level = AppTextLevel.med16;
 
   const AppText.reg16(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.reg16,
-        super(key: key);
+  }) : level = AppTextLevel.reg16;
 
   const AppText.bold14(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.bold14,
-        super(key: key);
+  }) : level = AppTextLevel.bold14;
 
   const AppText.med14(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.med14,
-        super(key: key);
+  }) : level = AppTextLevel.med14;
 
   const AppText.reg14(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.reg14,
-        super(key: key);
+  }) : level = AppTextLevel.reg14;
 
   const AppText.bold12(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.bold12,
-        super(key: key);
+  }) : level = AppTextLevel.bold12;
 
   const AppText.med12(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.med12,
-        super(key: key);
+  }) : level = AppTextLevel.med12;
 
   const AppText.reg12(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.reg12,
-        super(key: key);
+  }) : level = AppTextLevel.reg12;
 
   const AppText.bold10(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.bold10,
-        super(key: key);
+  }) : level = AppTextLevel.bold10;
 
   const AppText.med10(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.med10,
-        super(key: key);
+  }) : level = AppTextLevel.med10;
 
   const AppText.reg10(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.reg10,
-        super(key: key);
+  }) : level = AppTextLevel.reg10;
 
   const AppText.link(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.link,
-        super(key: key);
+  }) : level = AppTextLevel.link;
 
   /// Long Form Typography
   const AppText.longformh1(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.longformh1,
-        super(key: key);
+  }) : level = AppTextLevel.longformh1;
 
   const AppText.longformh2(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.longformh2,
-        super(key: key);
+  }) : level = AppTextLevel.longformh2;
 
   const AppText.longformh3(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.longformh3,
-        super(key: key);
+  }) : level = AppTextLevel.longformh3;
 
   const AppText.longformh4(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.longformh4,
-        super(key: key);
+  }) : level = AppTextLevel.longformh4;
 
   const AppText.longformh5(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.longformh5,
-        super(key: key);
+  }) : level = AppTextLevel.longformh5;
 
   const AppText.regArticle(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.regArticle,
-        super(key: key);
+  }) : level = AppTextLevel.regArticle;
 
   const AppText.boldArticle(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.boldArticle,
-        super(key: key);
+  }) : level = AppTextLevel.boldArticle;
 
   const AppText.linkArticle(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.linkArticle,
-        super(key: key);
+  }) : level = AppTextLevel.linkArticle;
 
   const AppText.regWiki(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.regWiki,
-        super(key: key);
+  }) : level = AppTextLevel.regWiki;
 
   const AppText.boldWiki(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.boldWiki,
-        super(key: key);
+  }) : level = AppTextLevel.boldWiki;
 
   const AppText.linkWiki(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.linkWiki,
-        super(key: key);
+  }) : level = AppTextLevel.linkWiki;
 
   const AppText.code(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.code,
-        super(key: key);
+  }) : level = AppTextLevel.code;
 
   const AppText.caption(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.fontSize,
     this.maxLines,
-  })  : level = AppTextLevel.caption,
-        super(key: key);
+  }) : level = AppTextLevel.caption;
 
   final String data;
   final AppTextLevel level;

@@ -6,13 +6,13 @@ class LineThicknessData extends Equatable {
   final double medium;
   final double thick;
 
-  LineThicknessData({
+  const LineThicknessData({
     required this.thin,
     required this.medium,
     required this.thick,
   });
 
-  factory LineThicknessData.normal() => LineThicknessData(
+  factory LineThicknessData.normal() => const LineThicknessData(
         thin: 0.33,
         medium: 1.4,
         thick: 2.8,

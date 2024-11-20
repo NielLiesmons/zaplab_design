@@ -75,7 +75,9 @@ class AppTypographyData extends Equatable {
         med16: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
-          fontWeight: FontWeight.w500, // medium
+          fontVariations: [
+            FontVariation('wght', 500), // Custom weight for great reading
+          ], // medium
           fontSize: 16,
           height: 1.5,
           decoration: TextDecoration.none,
@@ -214,10 +216,10 @@ class AppTypographyData extends Equatable {
         regArticle: TextStyle(
           fontFamily: 'Lora',
           package: 'zapchat_design',
-          fontSize: 15,
           fontVariations: [
             FontVariation('wght', 450), // Custom weight for great reading
           ],
+          fontSize: 15,
           decoration: TextDecoration.none,
         ),
         linkArticle: TextStyle(
