@@ -1,8 +1,8 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zapchat_design/zapchat_design.dart';
 
-class AppButton extends StatelessWidget {
-  const AppButton({
+class AppActionButton extends StatelessWidget {
+  const AppActionButton({
     Key? key,
     required this.content,
     this.onTap,
@@ -23,7 +23,7 @@ class AppButton extends StatelessWidget {
             return Semantics(
               enabled: true,
               selected: true,
-              child: AppButtonLayout.hovered(
+              child: AppActionButtonLayout.hovered(
                 content: content,
                 mainAxisSize: mainAxisSize,
               ),
@@ -32,7 +32,7 @@ class AppButton extends StatelessWidget {
             return Semantics(
               enabled: true,
               selected: true,
-              child: AppButtonLayout.pressed(
+              child: AppActionButtonLayout.pressed(
                 content: content,
                 mainAxisSize: mainAxisSize,
               ),
@@ -41,7 +41,7 @@ class AppButton extends StatelessWidget {
             return Semantics(
               enabled: true,
               selected: true,
-              child: AppButtonLayout.inactive(
+              child: AppActionButtonLayout.inactive(
                 content: content,
                 mainAxisSize: mainAxisSize,
               ),
@@ -52,14 +52,14 @@ class AppButton extends StatelessWidget {
   }
 }
 
-enum AppButtonState {
+enum AppActionButtonState {
   inactive,
   hovered,
   pressed,
 }
 
-class AppButtonLayout extends StatelessWidget {
-  const AppButtonLayout.inactive({
+class AppActionButtonLayout extends StatelessWidget {
+  const AppActionButtonLayout.inactive({
     Key? key,
     required this.content,
     this.mainAxisSize = MainAxisSize.min,
@@ -67,10 +67,10 @@ class AppButtonLayout extends StatelessWidget {
     this.hoveredBackgroundColor,
     this.pressedBackgroundColor,
     this.foregroundColor,
-  })  : _state = AppButtonState.inactive,
+  })  : _state = AppActionButtonState.inactive,
         super(key: key);
 
-  const AppButtonLayout.hovered({
+  const AppActionButtonLayout.hovered({
     Key? key,
     required this.content,
     this.mainAxisSize = MainAxisSize.min,
@@ -78,10 +78,10 @@ class AppButtonLayout extends StatelessWidget {
     this.hoveredBackgroundColor,
     this.pressedBackgroundColor,
     this.foregroundColor,
-  })  : _state = AppButtonState.hovered,
+  })  : _state = AppActionButtonState.hovered,
         super(key: key);
 
-  const AppButtonLayout.pressed({
+  const AppActionButtonLayout.pressed({
     Key? key,
     required this.content,
     this.mainAxisSize = MainAxisSize.min,
@@ -89,12 +89,12 @@ class AppButtonLayout extends StatelessWidget {
     this.hoveredBackgroundColor,
     this.pressedBackgroundColor,
     this.foregroundColor,
-  })  : _state = AppButtonState.pressed,
+  })  : _state = AppActionButtonState.pressed,
         super(key: key);
 
   final List<Widget> content;
   final MainAxisSize mainAxisSize;
-  final AppButtonState _state;
+  final AppActionButtonState _state;
   final Color? inactiveBackgroundColor;
   final Color? hoveredBackgroundColor;
   final Color? pressedBackgroundColor;
@@ -105,17 +105,17 @@ class AppButtonLayout extends StatelessWidget {
     final theme = AppTheme.of(context);
     final gradient = () {
       switch (_state) {
-        case AppButtonState.inactive:
+        case AppActionButtonState.inactive:
           return inactiveBackgroundColor != null
               ? LinearGradient(
                   colors: [inactiveBackgroundColor!, inactiveBackgroundColor!])
               : theme.colors.blurple;
-        case AppButtonState.hovered:
+        case AppActionButtonState.hovered:
           return hoveredBackgroundColor != null
               ? LinearGradient(
                   colors: [hoveredBackgroundColor!, hoveredBackgroundColor!])
               : theme.colors.blurple;
-        case AppButtonState.pressed:
+        case AppActionButtonState.pressed:
           return pressedBackgroundColor != null
               ? LinearGradient(
                   colors: [pressedBackgroundColor!, pressedBackgroundColor!])
