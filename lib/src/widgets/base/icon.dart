@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:zapchat_design/src/theme/theme.dart';
 import 'package:flutter/widgets.dart';
 
@@ -173,7 +172,7 @@ class AppIcon extends StatelessWidget {
                     Rect.fromLTWH(0, 0, resolvedSize, resolvedSize),
                   ))
                 : null,
-            color: gradient == null ? color ?? Colors.transparent : null,
+            color: gradient == null ? color ?? Color(0x00000000) : null,
           ),
         ),
       ],
@@ -224,7 +223,7 @@ class AppAnimatedIcon extends StatelessWidget {
         fontFamily: theme.icons.fontFamily,
         package: theme.icons.fontPackage,
         fontSize: resolvedSize,
-        color: Colors.transparent, // Color will be handled in the layers
+        color: Color(0x00000000), // Color will be handled in the layers
         decoration: TextDecoration.none,
       ),
       child: Stack(
@@ -254,7 +253,7 @@ class AppAnimatedIcon extends StatelessWidget {
               fontFamily: theme.icons.fontFamily,
               package: theme.icons.fontPackage,
               fontSize: resolvedSize,
-              color: color ?? Colors.transparent,
+              color: color ?? Color(0x00000000),
               decoration: TextDecoration.none,
             ),
             child: Text(data),

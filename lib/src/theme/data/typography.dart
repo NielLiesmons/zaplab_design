@@ -67,7 +67,9 @@ class AppTypographyData extends Equatable {
         bold16: TextStyle(
           fontFamily: 'Inter',
           package: 'zapchat_design',
-          fontWeight: FontWeight.w600, // technically semibold
+          fontVariations: [
+            FontVariation('wght', 600),
+          ], // technically semibold
           fontSize: 16,
           height: 1.5,
           decoration: TextDecoration.none,

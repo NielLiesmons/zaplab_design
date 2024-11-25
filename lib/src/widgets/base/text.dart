@@ -41,6 +41,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
     this.level = AppTextLevel.med16,
@@ -51,6 +52,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.h1;
@@ -59,6 +61,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.h2;
@@ -67,6 +70,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.h3;
@@ -75,6 +79,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.bold16;
@@ -83,6 +88,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.med16;
@@ -91,6 +97,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.reg16;
@@ -99,6 +106,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.bold14;
@@ -107,6 +115,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.med14;
@@ -115,6 +124,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.reg14;
@@ -123,6 +133,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.bold12;
@@ -131,6 +142,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.med12;
@@ -139,6 +151,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.reg12;
@@ -147,6 +160,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.bold10;
@@ -155,6 +169,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.med10;
@@ -163,6 +178,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.reg10;
@@ -171,6 +187,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.link;
@@ -180,6 +197,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.longformh1;
@@ -188,6 +206,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.longformh2;
@@ -196,6 +215,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.longformh3;
@@ -204,6 +224,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.longformh4;
@@ -212,6 +233,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.longformh5;
@@ -220,6 +242,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.regArticle;
@@ -228,6 +251,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.boldArticle;
@@ -236,6 +260,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.linkArticle;
@@ -244,6 +269,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.regWiki;
@@ -252,6 +278,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.boldWiki;
@@ -260,6 +287,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.linkWiki;
@@ -268,6 +296,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.code;
@@ -276,6 +305,7 @@ class AppText extends StatelessWidget {
     this.data, {
     super.key,
     this.color,
+    this.gradient,
     this.fontSize,
     this.maxLines,
   }) : level = AppTextLevel.caption;
@@ -283,82 +313,102 @@ class AppText extends StatelessWidget {
   final String data;
   final AppTextLevel level;
   final Color? color;
+  final Gradient? gradient;
   final double? fontSize;
   final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final color = this.color ?? theme.colors.white;
-    final style = () {
-      switch (level) {
-        case AppTextLevel.h1:
-          return theme.typography.h1;
-        case AppTextLevel.h2:
-          return theme.typography.h2;
-        case AppTextLevel.h3:
-          return theme.typography.h3;
-        case AppTextLevel.bold16:
-          return theme.typography.bold16;
-        case AppTextLevel.med16:
-          return theme.typography.med16;
-        case AppTextLevel.reg16:
-          return theme.typography.reg16;
-        case AppTextLevel.bold14:
-          return theme.typography.bold14;
-        case AppTextLevel.med14:
-          return theme.typography.med14;
-        case AppTextLevel.reg14:
-          return theme.typography.reg14;
-        case AppTextLevel.bold12:
-          return theme.typography.bold12;
-        case AppTextLevel.med12:
-          return theme.typography.med12;
-        case AppTextLevel.reg12:
-          return theme.typography.reg12;
-        case AppTextLevel.bold10:
-          return theme.typography.bold10;
-        case AppTextLevel.med10:
-          return theme.typography.med10;
-        case AppTextLevel.reg10:
-          return theme.typography.reg10;
-        case AppTextLevel.link:
-          return theme.typography.link;
-        case AppTextLevel.longformh1:
-          return theme.typography.longformh1;
-        case AppTextLevel.longformh2:
-          return theme.typography.longformh2;
-        case AppTextLevel.longformh3:
-          return theme.typography.longformh3;
-        case AppTextLevel.longformh4:
-          return theme.typography.longformh4;
-        case AppTextLevel.longformh5:
-          return theme.typography.longformh5;
-        case AppTextLevel.boldArticle:
-          return theme.typography.boldArticle;
-        case AppTextLevel.regArticle:
-          return theme.typography.regArticle;
-        case AppTextLevel.linkArticle:
-          return theme.typography.linkArticle;
-        case AppTextLevel.boldWiki:
-          return theme.typography.boldWiki;
-        case AppTextLevel.regWiki:
-          return theme.typography.regWiki;
-        case AppTextLevel.linkWiki:
-          return theme.typography.linkWiki;
-        case AppTextLevel.code:
-          return theme.typography.code;
-        case AppTextLevel.caption:
-          return theme.typography.caption;
-      }
-    }();
-    return Text(
+    final defaultColor = theme.colors.white;
+    final resolvedColor = gradient == null ? (color ?? defaultColor) : null;
+    final style = _getTextStyle(theme, level);
+
+    // Use ShaderMask for gradient text
+    final text = Text(
       data,
       style: style.copyWith(
-        color: color,
+        color: resolvedColor,
         fontSize: fontSize,
       ),
       maxLines: maxLines,
     );
+
+    if (gradient != null) {
+      return ShaderMask(
+        shaderCallback: (bounds) {
+          return gradient!.createShader(
+            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+          );
+        },
+        blendMode: BlendMode.srcIn,
+        child: text,
+      );
+    }
+
+    return text;
+  }
+
+  TextStyle _getTextStyle(AppThemeData theme, AppTextLevel level) {
+    switch (level) {
+      case AppTextLevel.h1:
+        return theme.typography.h1;
+      case AppTextLevel.h2:
+        return theme.typography.h2;
+      case AppTextLevel.h3:
+        return theme.typography.h3;
+      case AppTextLevel.bold16:
+        return theme.typography.bold16;
+      case AppTextLevel.med16:
+        return theme.typography.med16;
+      case AppTextLevel.reg16:
+        return theme.typography.reg16;
+      case AppTextLevel.bold14:
+        return theme.typography.bold14;
+      case AppTextLevel.med14:
+        return theme.typography.med14;
+      case AppTextLevel.reg14:
+        return theme.typography.reg14;
+      case AppTextLevel.bold12:
+        return theme.typography.bold12;
+      case AppTextLevel.med12:
+        return theme.typography.med12;
+      case AppTextLevel.reg12:
+        return theme.typography.reg12;
+      case AppTextLevel.bold10:
+        return theme.typography.bold10;
+      case AppTextLevel.med10:
+        return theme.typography.med10;
+      case AppTextLevel.reg10:
+        return theme.typography.reg10;
+      case AppTextLevel.link:
+        return theme.typography.link;
+      case AppTextLevel.longformh1:
+        return theme.typography.longformh1;
+      case AppTextLevel.longformh2:
+        return theme.typography.longformh2;
+      case AppTextLevel.longformh3:
+        return theme.typography.longformh3;
+      case AppTextLevel.longformh4:
+        return theme.typography.longformh4;
+      case AppTextLevel.longformh5:
+        return theme.typography.longformh5;
+      case AppTextLevel.boldArticle:
+        return theme.typography.boldArticle;
+      case AppTextLevel.regArticle:
+        return theme.typography.regArticle;
+      case AppTextLevel.linkArticle:
+        return theme.typography.linkArticle;
+      case AppTextLevel.boldWiki:
+        return theme.typography.boldWiki;
+      case AppTextLevel.regWiki:
+        return theme.typography.regWiki;
+      case AppTextLevel.linkWiki:
+        return theme.typography.linkWiki;
+      case AppTextLevel.code:
+        return theme.typography.code;
+      case AppTextLevel.caption:
+        return theme.typography.caption;
+    }
   }
 }

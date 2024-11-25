@@ -103,8 +103,8 @@ class AppColorsData extends Equatable {
         ),
         blurpleLight: RadialGradient(
           colors: [
-            const Color(0xFF888DFE).withOpacity(0.33),
-            const Color(0xFF7E73FF).withOpacity(0.33)
+            const Color(0xFF888DFE),
+            const Color(0xFF7E73FF),
           ],
           center: Alignment.topLeft,
           radius: 1.5,
