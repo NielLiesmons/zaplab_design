@@ -1,11 +1,19 @@
 import 'package:flutter/widgets.dart';
-import 'dart:math';
 
 class LoadingSmall extends StatefulWidget {
-  const LoadingSmall({Key? key, this.color = const Color(0xFFFFFFFF)})
-      : super(key: key);
+  const LoadingSmall({
+    Key? key,
+    this.color = const Color(0xFFFFFFFF),
+    this.startingDelays = const [
+      0.0,
+      0.2,
+      0.4
+    ], // Default delays for each rectangle
+  }) : super(key: key);
 
   final Color color;
+  final List<double>
+      startingDelays; // List of starting delays for each rectangle
 
   @override
   State<LoadingSmall> createState() => _LoadingSmallState();
@@ -23,27 +31,27 @@ class _LoadingSmallState extends State<LoadingSmall>
     // Initialize the animation controller
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000), // Total animation cycle
+      duration: const Duration(milliseconds: 1200), // Total animation cycle
     )..repeat(reverse: true); // Repeat indefinitely
 
-    // Set up staggered animations for each rectangle
-    _animations = List.generate(5, (index) {
-      final start = index * 0.1; // Staggered start times
-      final end = start + 0.6; // Each animation spans 80% of the cycle
+    // Create animations for each rectangle using the starting delays
+    _animations = List.generate(3, (index) {
+      double start = widget.startingDelays[index];
       return TweenSequence<double>([
         TweenSequenceItem(
-          tween: Tween(begin: 4.0, end: 16.0)
+          tween: Tween(begin: 7.0, end: 14.0)
               .chain(CurveTween(curve: Curves.easeInOut)),
           weight: 50, // Scale up
         ),
         TweenSequenceItem(
-          tween: Tween(begin: 16.0, end: 4.0)
+          tween: Tween(begin: 14.0, end: 7.0)
               .chain(CurveTween(curve: Curves.easeInOut)),
           weight: 50, // Scale down
         ),
       ]).animate(CurvedAnimation(
         parent: _controller,
-        curve: Interval(start, end.clamp(0.0, 1.0), curve: Curves.linear),
+        curve: Interval(start, (start + 0.6).clamp(0.0, 1.0),
+            curve: Curves.linear), // Delayed start
       ));
     });
   }
@@ -58,17 +66,17 @@ class _LoadingSmallState extends State<LoadingSmall>
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(5, (index) {
+      children: List.generate(3, (index) {
         return AnimatedBuilder(
           animation: _controller,
           builder: (context, child) {
             return Container(
-              width: 4,
+              width: 7.0,
               height: _animations[index].value,
               margin: const EdgeInsets.symmetric(horizontal: 2),
               decoration: BoxDecoration(
                 color: widget.color,
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(4),
               ),
             );
           },
