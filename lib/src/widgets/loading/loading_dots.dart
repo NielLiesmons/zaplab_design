@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-class LoadingSmall extends StatefulWidget {
-  const LoadingSmall({
+class AppLoadingDots extends StatefulWidget {
+  const AppLoadingDots({
     Key? key,
     this.color = const Color(0xFFFFFFFF),
     this.startingDelays = const [
@@ -16,10 +16,10 @@ class LoadingSmall extends StatefulWidget {
       startingDelays; // List of starting delays for each rectangle
 
   @override
-  State<LoadingSmall> createState() => _LoadingSmallState();
+  State<AppLoadingDots> createState() => _AppLoadingDotsState();
 }
 
-class _LoadingSmallState extends State<LoadingSmall>
+class _AppLoadingDotsState extends State<AppLoadingDots>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late List<Animation<double>> _animations;
