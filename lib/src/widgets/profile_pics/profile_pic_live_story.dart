@@ -1,5 +1,4 @@
-import 'package:flutter/widgets.dart';
-import 'package:zapchat_design/src/theme/theme.dart';
+import 'package:zapchat_design/zapchat_design.dart';
 
 enum AppProfilePicStorySize {
   s38,
@@ -81,9 +80,25 @@ class AppProfilePicStory extends StatelessWidget {
               color: theme.colors.white16, // Inner profile pic border color
               width: innerBorderThickness,
             ),
-            image: DecorationImage(
-              image: NetworkImage(imageUrl),
+          ),
+          child: ClipOval(
+            child: Image.network(
+              imageUrl,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                final fallbackIconSize = adjustedInnerSize * 0.6;
+                return Center(
+                  child: Text(
+                    theme.icons.characters.profile,
+                    style: TextStyle(
+                      fontFamily: theme.icons.fontFamily,
+                      package: theme.icons.fontPackage,
+                      fontSize: fallbackIconSize,
+                      color: theme.colors.white33,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ),
