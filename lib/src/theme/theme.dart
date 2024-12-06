@@ -12,6 +12,7 @@ export 'data/images.dart';
 export 'data/line_thickness.dart';
 export 'data/radius.dart';
 export 'data/sizes.dart';
+export 'data/system_ui_wrapper.dart';
 export 'data/typography.dart';
 
 class AppTheme extends InheritedWidget {

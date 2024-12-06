@@ -37,7 +37,8 @@ class AppLoadBar extends StatelessWidget {
 
         Text(
           '${(progress * 100).toInt()}%',
-          style: theme.typography.med16.copyWith(color: theme.colors.white),
+          style: theme.typography.med16
+              .copyWith(color: AppColorsData.dark().white),
         ),
       ],
     );

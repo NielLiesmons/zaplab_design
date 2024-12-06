@@ -18,7 +18,7 @@ class AppColorsData extends Equatable {
   final Color grey66;
   final Color grey33;
 
-  /// Radial Gradients
+  /// Linear Gradients
   final Gradient blurple;
   final Gradient blurple66;
   final Gradient blurple33;
@@ -79,101 +79,101 @@ class AppColorsData extends Equatable {
         grey66: const Color(0xFF333333).withOpacity(0.66),
         grey33: const Color(0xFF333333).withOpacity(0.33),
 
-        /// Radial Gradients (top-left to bottom-right alignment)
-        blurple: const RadialGradient(
+        /// Linear Gradients (top-left to bottom-right alignment)
+        blurple: const LinearGradient(
           colors: [Color(0xFF636AFF), Color(0xFF5445FF)],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        blurple66: RadialGradient(
+        blurple66: LinearGradient(
           colors: [
             const Color(0xFF636AFF).withOpacity(0.66),
             const Color(0xFF5445FF).withOpacity(0.66)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        blurple33: RadialGradient(
+        blurple33: LinearGradient(
           colors: [
             const Color(0xFF636AFF).withOpacity(0.33),
             const Color(0xFF5445FF).withOpacity(0.33)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        blurpleLight: RadialGradient(
+        blurpleLight: LinearGradient(
           colors: [
             const Color(0xFF888DFE),
             const Color(0xFF7E73FF),
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
 
-        rouge: const RadialGradient(
+        rouge: const LinearGradient(
           colors: [Color(0xFFFF416E), Color(0xFFFF005C)],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        rouge66: RadialGradient(
+        rouge66: LinearGradient(
           colors: [
             const Color(0xFFFF416E).withOpacity(0.66),
             const Color(0xFFFF005C).withOpacity(0.66)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        rouge33: RadialGradient(
+        rouge33: LinearGradient(
           colors: [
             const Color(0xFFFF416E).withOpacity(0.33),
             const Color(0xFFFF005C).withOpacity(0.33)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
 
-        gold: const RadialGradient(
+        gold: const LinearGradient(
           colors: [Color(0xFFFFC736), Color(0xFFFFAD31)],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        gold66: RadialGradient(
+        gold66: LinearGradient(
           colors: [
             const Color(0xFFFFC736).withOpacity(0.66),
             const Color(0xFFFFAD31).withOpacity(0.66)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        gold33: RadialGradient(
+        gold33: LinearGradient(
           colors: [
             const Color(0xFFFFC736).withOpacity(0.33),
             const Color(0xFFFFAD31).withOpacity(0.33)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
 
-        greydient: const RadialGradient(
+        greydient: const LinearGradient(
           colors: [Color(0xFFFFFFFF), Color(0xFFDBDBFF)],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        greydient66: RadialGradient(
+        greydient66: LinearGradient(
           colors: [
             const Color(0xFFFFFFFF).withOpacity(0.66),
             const Color(0xFFDBDBFF).withOpacity(0.66)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        greydient33: RadialGradient(
+        greydient33: LinearGradient(
           colors: [
             const Color(0xFFFFFFFF).withOpacity(0.33),
             const Color(0xFFDBDBFF).withOpacity(0.33)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
       );
 
@@ -194,98 +194,98 @@ class AppColorsData extends Equatable {
         grey66: const Color(0xFFCCCCCC).withOpacity(0.66),
         grey33: const Color(0xFFCCCCCC).withOpacity(0.33),
 
-        /// Radial Gradients (top-left to bottom-right alignment)
-        blurple: const RadialGradient(
+        /// Linear Gradients (top-left to bottom-right alignment)
+        blurple: const LinearGradient(
           colors: [Color(0xFF636AFF), Color(0xFF5445FF)],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        blurple66: RadialGradient(
+        blurple66: LinearGradient(
           colors: [
             const Color(0xFF636AFF).withOpacity(0.66),
             const Color(0xFF5445FF).withOpacity(0.66)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        blurple33: RadialGradient(
+        blurple33: LinearGradient(
           colors: [
             const Color(0xFF636AFF).withOpacity(0.33),
             const Color(0xFF5445FF).withOpacity(0.33)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        blurpleLight: const RadialGradient(
+        blurpleLight: const LinearGradient(
           colors: [Color(0xFF636AFF), Color(0xFF5445FF)],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
 
-        rouge: const RadialGradient(
+        rouge: const LinearGradient(
           colors: [Color(0xFFFF416E), Color(0xFFFF005C)],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        rouge66: RadialGradient(
+        rouge66: LinearGradient(
           colors: [
             const Color(0xFFFF416E).withOpacity(0.66),
             const Color(0xFFFF005C).withOpacity(0.66)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        rouge33: RadialGradient(
+        rouge33: LinearGradient(
           colors: [
             const Color(0xFFFF416E).withOpacity(0.33),
             const Color(0xFFFF005C).withOpacity(0.33)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
 
-        gold: const RadialGradient(
+        gold: const LinearGradient(
           colors: [Color(0xFFFFC736), Color(0xFFFFAD31)],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        gold66: RadialGradient(
+        gold66: LinearGradient(
           colors: [
             const Color(0xFFFFC736).withOpacity(0.66),
             const Color(0xFFFFAD31).withOpacity(0.66)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        gold33: RadialGradient(
+        gold33: LinearGradient(
           colors: [
             const Color(0xFFFFC736).withOpacity(0.33),
             const Color(0xFFFFAD31).withOpacity(0.33)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
 
-        greydient: const RadialGradient(
+        greydient: const LinearGradient(
           colors: [Color(0xFFFFFFFF), Color(0xFFDBDBFF)],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        greydient66: RadialGradient(
+        greydient66: LinearGradient(
           colors: [
             const Color(0xFFFFFFFF).withOpacity(0.66),
             const Color(0xFFDBDBFF).withOpacity(0.66)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        greydient33: RadialGradient(
+        greydient33: LinearGradient(
           colors: [
             const Color(0xFFFFFFFF).withOpacity(0.33),
             const Color(0xFFDBDBFF).withOpacity(0.33)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
       );
 
@@ -306,101 +306,101 @@ class AppColorsData extends Equatable {
         grey66: const Color(0xFF333333).withOpacity(0.66),
         grey33: const Color(0xFF333333).withOpacity(0.33),
 
-        /// Radial Gradients (top-left to bottom-right alignment)
-        blurple: const RadialGradient(
+        /// Linear Gradients (top-left to bottom-right alignment)
+        blurple: const LinearGradient(
           colors: [Color(0xFF636AFF), Color(0xFF5445FF)],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        blurple66: RadialGradient(
+        blurple66: LinearGradient(
           colors: [
             const Color(0xFF636AFF).withOpacity(0.66),
             const Color(0xFF5445FF).withOpacity(0.66)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        blurple33: RadialGradient(
+        blurple33: LinearGradient(
           colors: [
             const Color(0xFF636AFF).withOpacity(0.33),
             const Color(0xFF5445FF).withOpacity(0.33)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        blurpleLight: RadialGradient(
+        blurpleLight: LinearGradient(
           colors: [
             const Color(0xFF888DFE).withOpacity(0.33),
             const Color(0xFF7E73FF).withOpacity(0.33)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
 
-        rouge: const RadialGradient(
+        rouge: const LinearGradient(
           colors: [Color(0xFFFF416E), Color(0xFFFF005C)],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        rouge66: RadialGradient(
+        rouge66: LinearGradient(
           colors: [
             const Color(0xFFFF416E).withOpacity(0.66),
             const Color(0xFFFF005C).withOpacity(0.66)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        rouge33: RadialGradient(
+        rouge33: LinearGradient(
           colors: [
             const Color(0xFFFF416E).withOpacity(0.33),
             const Color(0xFFFF005C).withOpacity(0.33)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
 
-        gold: const RadialGradient(
+        gold: const LinearGradient(
           colors: [Color(0xFFFFC736), Color(0xFFFFAD31)],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        gold66: RadialGradient(
+        gold66: LinearGradient(
           colors: [
             const Color(0xFFFFC736).withOpacity(0.66),
             const Color(0xFFFFAD31).withOpacity(0.66)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        gold33: RadialGradient(
+        gold33: LinearGradient(
           colors: [
             const Color(0xFFFFC736).withOpacity(0.33),
             const Color(0xFFFFAD31).withOpacity(0.33)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
 
-        greydient: const RadialGradient(
+        greydient: const LinearGradient(
           colors: [Color(0xFFFFFFFF), Color(0xFFDBDBFF)],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        greydient66: RadialGradient(
+        greydient66: LinearGradient(
           colors: [
             const Color(0xFFFFFFFF).withOpacity(0.66),
             const Color(0xFFDBDBFF).withOpacity(0.66)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        greydient33: RadialGradient(
+        greydient33: LinearGradient(
           colors: [
             const Color(0xFFFFFFFF).withOpacity(0.33),
             const Color(0xFFDBDBFF).withOpacity(0.33)
           ],
-          center: Alignment.topLeft,
-          radius: 1.5,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
       );
 

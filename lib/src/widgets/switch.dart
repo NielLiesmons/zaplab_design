@@ -1,3 +1,4 @@
+import 'package:zapchat_design/src/theme/data/durations.dart';
 import 'package:zapchat_design/zapchat_design.dart';
 
 class AppSwitch extends StatefulWidget {
@@ -26,9 +27,10 @@ class _AppSwitchState extends State<AppSwitch>
     _isOn = widget.value;
 
     // Initialize the animation controller
+
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 280),
+      duration: AppDurationsData.normal().normal,
     );
 
     // Set up the Tween for the circle's movement, ensuring it starts from the correct position

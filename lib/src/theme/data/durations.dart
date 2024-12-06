@@ -10,8 +10,8 @@ class AppDurationsData extends Equatable {
 
   factory AppDurationsData.normal() => const AppDurationsData(
         areAnimationEnabled: true,
-        normal: Duration(milliseconds: 250),
-        fast: Duration(milliseconds: 100),
+        normal: Duration(milliseconds: 184),
+        fast: Duration(milliseconds: 128),
       );
 
   final bool areAnimationEnabled;

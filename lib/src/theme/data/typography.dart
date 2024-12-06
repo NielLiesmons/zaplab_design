@@ -46,6 +46,7 @@ class AppTypographyData extends Equatable {
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 24,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         h2: TextStyle(
@@ -54,6 +55,7 @@ class AppTypographyData extends Equatable {
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 20,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         h3: TextStyle(
@@ -62,6 +64,7 @@ class AppTypographyData extends Equatable {
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 12,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         bold16: TextStyle(
@@ -72,6 +75,7 @@ class AppTypographyData extends Equatable {
           ], // technically semibold
           fontSize: 16,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         med16: TextStyle(
@@ -82,6 +86,7 @@ class AppTypographyData extends Equatable {
           ], // medium
           fontSize: 16,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         reg16: TextStyle(
@@ -90,6 +95,7 @@ class AppTypographyData extends Equatable {
           fontWeight: FontWeight.w400, // regular
           fontSize: 16,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         bold14: TextStyle(
@@ -98,6 +104,7 @@ class AppTypographyData extends Equatable {
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 14,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         med14: TextStyle(
@@ -108,6 +115,7 @@ class AppTypographyData extends Equatable {
           ], // medium
           fontSize: 14,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         reg14: TextStyle(
@@ -116,6 +124,7 @@ class AppTypographyData extends Equatable {
           fontWeight: FontWeight.w400, // regular
           fontSize: 14,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         bold12: TextStyle(
@@ -124,6 +133,7 @@ class AppTypographyData extends Equatable {
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 12,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         med12: TextStyle(
@@ -134,6 +144,7 @@ class AppTypographyData extends Equatable {
           ], // medium
           fontSize: 12,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         reg12: TextStyle(
@@ -142,6 +153,7 @@ class AppTypographyData extends Equatable {
           fontWeight: FontWeight.w400, // regular
           fontSize: 12,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         bold10: TextStyle(
@@ -150,6 +162,7 @@ class AppTypographyData extends Equatable {
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 18,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         med10: TextStyle(
@@ -160,6 +173,7 @@ class AppTypographyData extends Equatable {
           ], // medium
           fontSize: 10,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         reg10: TextStyle(
@@ -168,6 +182,7 @@ class AppTypographyData extends Equatable {
           fontWeight: FontWeight.w400, // regular
           fontSize: 10,
           height: 1.5,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         link: TextStyle(
@@ -177,6 +192,7 @@ class AppTypographyData extends Equatable {
             FontVariation('wght', 500),
           ], // medium
           fontSize: 14,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
 
@@ -186,6 +202,7 @@ class AppTypographyData extends Equatable {
           package: 'zapchat_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         longformh2: TextStyle(
@@ -193,6 +210,7 @@ class AppTypographyData extends Equatable {
           package: 'zapchat_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         longformh3: TextStyle(
@@ -200,6 +218,7 @@ class AppTypographyData extends Equatable {
           package: 'zapchat_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         longformh4: TextStyle(
@@ -207,6 +226,7 @@ class AppTypographyData extends Equatable {
           package: 'zapchat_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         longformh5: TextStyle(
@@ -214,6 +234,7 @@ class AppTypographyData extends Equatable {
           package: 'zapchat_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         boldArticle: TextStyle(
@@ -221,6 +242,7 @@ class AppTypographyData extends Equatable {
           package: 'zapchat_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         regArticle: TextStyle(
@@ -230,6 +252,7 @@ class AppTypographyData extends Equatable {
             FontVariation('wght', 450), // Custom weight for great reading
           ],
           fontSize: 15,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         linkArticle: TextStyle(
@@ -239,6 +262,7 @@ class AppTypographyData extends Equatable {
             FontVariation('wght', 500),
           ], // medium
           fontSize: 15,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         boldWiki: TextStyle(
@@ -246,6 +270,7 @@ class AppTypographyData extends Equatable {
           package: 'zapchat_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         regWiki: TextStyle(
@@ -253,6 +278,7 @@ class AppTypographyData extends Equatable {
           package: 'zapchat_design',
           fontWeight: FontWeight.w400, // regular
           fontSize: 15,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         linkWiki: TextStyle(
@@ -262,6 +288,7 @@ class AppTypographyData extends Equatable {
             FontVariation('wght', 500),
           ], // medium
           fontSize: 14,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         code: TextStyle(
@@ -269,6 +296,7 @@ class AppTypographyData extends Equatable {
           package: 'zapchat_design',
           fontWeight: FontWeight.w400, // regular
           fontSize: 15,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
         caption: TextStyle(
@@ -278,6 +306,7 @@ class AppTypographyData extends Equatable {
             FontVariation('wght', 500),
           ], // medium
           fontSize: 12,
+          leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
       );
