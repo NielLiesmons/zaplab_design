@@ -1,17 +1,19 @@
 import 'dart:ui';
-import 'package:zapchat_design/src/theme/data/durations.dart';
-import 'package:zapchat_design/zapchat_design.dart';
+import 'package:zaplab_design/src/theme/data/durations.dart';
+import 'package:zaplab_design/zaplab_design.dart';
 
 class AppModal extends StatelessWidget {
   final List<Widget> children;
   final Widget? topBar;
   final Widget? bottomBar;
+  final bool includePadding;
 
   const AppModal({
     Key? key,
     required this.children,
     this.topBar,
     this.bottomBar,
+    this.includePadding = true,
   }) : super(key: key);
 
   static Future<void> show(
@@ -19,6 +21,7 @@ class AppModal extends StatelessWidget {
     required List<Widget> children,
     Widget? topBar,
     Widget? bottomBar,
+    bool includePadding = true,
   }) {
     final theme = AppTheme.of(context);
     return Navigator.of(context).push(
@@ -43,6 +46,7 @@ class AppModal extends StatelessWidget {
                 topBar: topBar,
                 bottomBar: bottomBar,
                 children: children,
+                includePadding: includePadding,
               ),
             ],
           );
@@ -136,11 +140,13 @@ class AppModal extends StatelessWidget {
                                 controller: scrollController,
                                 padding: EdgeInsets.zero,
                                 children: [
-                                  Center(
-                                    child: Column(
-                                      children: children,
-                                    ),
-                                  ),
+                                  if (includePadding)
+                                    AppContainer(
+                                      padding: const AppEdgeInsets.s16(),
+                                      child: Column(children: children),
+                                    )
+                                  else
+                                    ...children,
                                 ],
                               ),
                             ),
@@ -196,6 +202,8 @@ class AppModal extends StatelessWidget {
                   child: ValueListenableBuilder<bool>(
                     valueListenable: topBarVisible,
                     builder: (context, isVisible, child) {
+                      if (!isVisible) return const SizedBox.shrink();
+
                       return AnimatedOpacity(
                         opacity: isVisible ? 1.0 : 0.0,
                         duration: AppDurationsData.normal().normal,
@@ -203,7 +211,6 @@ class AppModal extends StatelessWidget {
                         child: GestureDetector(
                           onVerticalDragUpdate: (details) {
                             if (details.delta.dy > 0) {
-                              // Only allow downward drag
                               modalOffset.value += details.delta.dy;
                               if (modalOffset.value > 200) {
                                 Navigator.of(context).pop();

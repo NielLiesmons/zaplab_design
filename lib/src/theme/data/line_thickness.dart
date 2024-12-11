@@ -1,4 +1,4 @@
-import 'package:zapchat_design/src/utils/named.dart';
+import 'package:zaplab_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
 
 class LineThicknessData extends Equatable {

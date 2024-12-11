@@ -1,4 +1,4 @@
-import 'package:zapchat_design/zapchat_design.dart';
+import 'package:zaplab_design/zaplab_design.dart';
 
 class AppLoadBar extends StatelessWidget {
   const AppLoadBar({

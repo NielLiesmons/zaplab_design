@@ -1,4 +1,4 @@
-import 'package:zapchat_design/zapchat_design.dart';
+import 'package:zaplab_design/zaplab_design.dart';
 
 enum AppProfilePicSize {
   s2,
@@ -20,6 +20,7 @@ enum AppProfilePicSize {
   s72,
   s80,
   s96,
+  s104,
 }
 
 class AppProfilePic extends StatelessWidget {
@@ -85,6 +86,9 @@ class AppProfilePic extends StatelessWidget {
         super(key: key);
   const AppProfilePic.s96(this.imageUrl, {Key? key})
       : size = AppProfilePicSize.s96,
+        super(key: key);
+  const AppProfilePic.s104(this.imageUrl, {Key? key})
+      : size = AppProfilePicSize.s104,
         super(key: key);
 
   final String imageUrl;
@@ -172,6 +176,8 @@ class AppProfilePic extends StatelessWidget {
         return sizes.s80;
       case AppProfilePicSize.s96:
         return sizes.s96;
+      case AppProfilePicSize.s104:
+        return sizes.s104;
     }
   }
 }

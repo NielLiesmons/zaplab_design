@@ -1,5 +1,5 @@
-import 'package:zapchat_design/src/theme/data/durations.dart';
-import 'package:zapchat_design/zapchat_design.dart';
+import 'package:zaplab_design/src/theme/data/durations.dart';
+import 'package:zaplab_design/zaplab_design.dart';
 
 class AppSwitch extends StatefulWidget {
   const AppSwitch({

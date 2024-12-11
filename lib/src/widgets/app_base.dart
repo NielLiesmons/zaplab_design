@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:zapchat_design/zapchat_design.dart';
+import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:ui';
 
 class AppBase extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:tap_builder/tap_builder.dart';
-import 'package:zapchat_design/zapchat_design.dart';
+import 'package:zaplab_design/zaplab_design.dart';
 
 class AppButton extends StatelessWidget {
   const AppButton({

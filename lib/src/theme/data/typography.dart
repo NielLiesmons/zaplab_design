@@ -1,4 +1,4 @@
-import 'package:zapchat_design/src/utils/named.dart';
+import 'package:zaplab_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 
@@ -42,7 +42,7 @@ class AppTypographyData extends Equatable {
         /// App Typography
         h1: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 24,
           height: 1.5,
@@ -51,7 +51,7 @@ class AppTypographyData extends Equatable {
         ),
         h2: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 20,
           height: 1.5,
@@ -60,7 +60,7 @@ class AppTypographyData extends Equatable {
         ),
         h3: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 12,
           height: 1.5,
@@ -69,7 +69,7 @@ class AppTypographyData extends Equatable {
         ),
         bold16: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontVariations: [
             FontVariation('wght', 600),
           ], // technically semibold
@@ -80,7 +80,7 @@ class AppTypographyData extends Equatable {
         ),
         med16: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontVariations: [
             FontVariation('wght', 500),
           ], // medium
@@ -91,7 +91,7 @@ class AppTypographyData extends Equatable {
         ),
         reg16: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w400, // regular
           fontSize: 16,
           height: 1.5,
@@ -100,7 +100,7 @@ class AppTypographyData extends Equatable {
         ),
         bold14: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 14,
           height: 1.5,
@@ -109,7 +109,7 @@ class AppTypographyData extends Equatable {
         ),
         med14: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontVariations: [
             FontVariation('wght', 500),
           ], // medium
@@ -120,7 +120,7 @@ class AppTypographyData extends Equatable {
         ),
         reg14: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w400, // regular
           fontSize: 14,
           height: 1.5,
@@ -129,7 +129,7 @@ class AppTypographyData extends Equatable {
         ),
         bold12: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 12,
           height: 1.5,
@@ -138,7 +138,7 @@ class AppTypographyData extends Equatable {
         ),
         med12: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontVariations: [
             FontVariation('wght', 500),
           ], // medium
@@ -149,7 +149,7 @@ class AppTypographyData extends Equatable {
         ),
         reg12: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w400, // regular
           fontSize: 12,
           height: 1.5,
@@ -158,7 +158,7 @@ class AppTypographyData extends Equatable {
         ),
         bold10: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 18,
           height: 1.5,
@@ -167,7 +167,7 @@ class AppTypographyData extends Equatable {
         ),
         med10: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontVariations: [
             FontVariation('wght', 500),
           ], // medium
@@ -178,7 +178,7 @@ class AppTypographyData extends Equatable {
         ),
         reg10: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w400, // regular
           fontSize: 10,
           height: 1.5,
@@ -187,7 +187,7 @@ class AppTypographyData extends Equatable {
         ),
         link: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontVariations: [
             FontVariation('wght', 500),
           ], // medium
@@ -199,7 +199,7 @@ class AppTypographyData extends Equatable {
         /// Long Form Typography
         longformh1: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -207,7 +207,7 @@ class AppTypographyData extends Equatable {
         ),
         longformh2: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -215,7 +215,7 @@ class AppTypographyData extends Equatable {
         ),
         longformh3: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -223,7 +223,7 @@ class AppTypographyData extends Equatable {
         ),
         longformh4: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -231,7 +231,7 @@ class AppTypographyData extends Equatable {
         ),
         longformh5: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -239,7 +239,7 @@ class AppTypographyData extends Equatable {
         ),
         boldArticle: TextStyle(
           fontFamily: 'Lora',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -247,7 +247,7 @@ class AppTypographyData extends Equatable {
         ),
         regArticle: TextStyle(
           fontFamily: 'Lora',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontVariations: [
             FontVariation('wght', 450), // Custom weight for great reading
           ],
@@ -257,7 +257,7 @@ class AppTypographyData extends Equatable {
         ),
         linkArticle: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontVariations: [
             FontVariation('wght', 500),
           ], // medium
@@ -267,7 +267,7 @@ class AppTypographyData extends Equatable {
         ),
         boldWiki: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -275,7 +275,7 @@ class AppTypographyData extends Equatable {
         ),
         regWiki: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w400, // regular
           fontSize: 15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -283,7 +283,7 @@ class AppTypographyData extends Equatable {
         ),
         linkWiki: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontVariations: [
             FontVariation('wght', 500),
           ], // medium
@@ -293,7 +293,7 @@ class AppTypographyData extends Equatable {
         ),
         code: TextStyle(
           fontFamily: 'Courier-Prime',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontWeight: FontWeight.w400, // regular
           fontSize: 15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -301,7 +301,7 @@ class AppTypographyData extends Equatable {
         ),
         caption: TextStyle(
           fontFamily: 'Inter',
-          package: 'zapchat_design',
+          package: 'zaplab_design',
           fontVariations: [
             FontVariation('wght', 500),
           ], // medium

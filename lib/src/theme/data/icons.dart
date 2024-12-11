@@ -1,4 +1,4 @@
-import 'package:zapchat_design/src/utils/named.dart';
+import 'package:zaplab_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
 
 /// Main data class for icons.
@@ -13,7 +13,7 @@ class AppIconsData extends Equatable {
   /// Initialize icons with font family, package, and characters.
   factory AppIconsData.normal() => AppIconsData(
         fontFamily: 'Icons',
-        fontPackage: 'zapchat_design',
+        fontPackage: 'zaplab_design',
         characters: AppIconCharactersData.normal(),
         sizes: AppIconSizesData.normal(),
       );

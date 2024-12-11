@@ -1,4 +1,4 @@
-import 'package:zapchat_design/src/utils/named.dart';
+import 'package:zaplab_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
@@ -23,6 +23,7 @@ class AppSizesData extends Equatable {
     required this.s72,
     required this.s80,
     required this.s96,
+    required this.s104,
   });
 
   factory AppSizesData.normal() => const AppSizesData(
@@ -45,6 +46,7 @@ class AppSizesData extends Equatable {
         s72: 72,
         s80: 80,
         s96: 96,
+        s104: 104,
       );
 
   final double s2;
@@ -66,6 +68,7 @@ class AppSizesData extends Equatable {
   final double s72;
   final double s80;
   final double s96;
+  final double s104;
 
   AppEdgeInsetsSizesData asInsets() => AppEdgeInsetsSizesData(this);
 
@@ -90,6 +93,7 @@ class AppSizesData extends Equatable {
         s72.named('s72'),
         s80.named('s80'),
         s96.named('s96'),
+        s104.named('s104'),
       ];
 }
 
@@ -114,6 +118,7 @@ class AppEdgeInsetsSizesData extends Equatable {
   EdgeInsets get s72 => EdgeInsets.all(_sizes.s72);
   EdgeInsets get s80 => EdgeInsets.all(_sizes.s80);
   EdgeInsets get s96 => EdgeInsets.all(_sizes.s96);
+  EdgeInsets get s104 => EdgeInsets.all(_sizes.s104);
 
   final AppSizesData _sizes;
 

@@ -1,4 +1,4 @@
-import 'package:zapchat_design/src/theme/theme.dart';
+import 'package:zaplab_design/src/theme/theme.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 
