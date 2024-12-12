@@ -12,8 +12,6 @@ and the Flutter guide for
 -->
 
 
-## Zapchat Design
+## Zaplab Design
 
-![Zapchat Design Image](https://cdn.satellite.earth/2d2dda8e83f0f9797e197207429b867df2ef462a193d1348b3eb49228bda61e2.png)
-
-UI widget library  
+UI widget library for Nostr Apps
