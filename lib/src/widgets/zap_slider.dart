@@ -9,19 +9,24 @@ class AppZapSlider extends StatefulWidget {
     super.key,
     this.onValueChanged,
     this.initialValue = 100.0,
-  }) : super();
+  });
 
   @override
   State<AppZapSlider> createState() => _AppZapSliderState();
 }
 
 class _AppZapSliderState extends State<AppZapSlider> {
+  // Slider state and configuration
   double _value = 0.0;
-  final double _startAngle = math.pi * 3 / 4;
-  final double _totalAngle = 3 * math.pi / 2;
+  final double _startAngle = math.pi * 3 / 4; // Start at 315 degrees
+  final double _totalAngle = 3 * math.pi / 2; // Sweep 270 degrees (3/4 circle)
 
+  // Fixed range for logarithmic scale
   static const double _minValue = 0.0;
   static const double _maxValue = 1000001.0;
+
+  // Reference for precise touch positioning
+  final _customPaintKey = GlobalKey();
 
   @override
   void initState() {
@@ -35,13 +40,20 @@ class _AppZapSliderState extends State<AppZapSlider> {
 
     return Column(
       children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            GestureDetector(
-              onPanUpdate: (details) => _handleTouch(details.localPosition),
-              onTapDown: (details) => _handleTouch(details.localPosition),
-              child: CustomPaint(
+        // Gesture handler prevents modal scroll while allowing slider interaction
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onPanStart: (details) => _handleTouch(details.localPosition),
+          onPanUpdate: (details) => _handleTouch(details.localPosition),
+          onTapDown: (details) => _handleTouch(details.localPosition),
+          onVerticalDragStart: (details) => _handleTouch(details.localPosition),
+          onVerticalDragUpdate: (details) =>
+              _handleTouch(details.localPosition),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              CustomPaint(
+                key: _customPaintKey,
                 size: const Size(200, 200),
                 painter: AppZapSliderPainter(
                   value: _value,
@@ -53,9 +65,9 @@ class _AppZapSliderState extends State<AppZapSlider> {
                   totalAngle: _totalAngle,
                 ),
               ),
-            ),
-            const AppProfilePic.s104('no url yet'),
-          ],
+              const AppProfilePic.s104('no url yet'),
+            ],
+          ),
         ),
         const AppGap.s24(),
         AppContainer(
@@ -90,14 +102,17 @@ class _AppZapSliderState extends State<AppZapSlider> {
                   ],
                 ),
               ),
-              const AppDivider(),
-              Container(
-                padding: EdgeInsets.all(theme.sizes.s16),
+              const AppDivider.horizontal(),
+              AppContainer(
+                padding: const AppEdgeInsets.symmetric(
+                  horizontal: AppGapSize.s16,
+                  vertical: AppGapSize.s12,
+                ),
                 child: AppTextField(
                   placeholder: 'Your Message',
                   textStyle: TextStyle(
                     color: theme.colors.white,
-                    fontSize: 16,
+                    fontSize: theme.typography.reg16.fontSize,
                   ),
                   placeholderStyle: TextStyle(
                     color: theme.colors.white33,
@@ -115,23 +130,29 @@ class _AppZapSliderState extends State<AppZapSlider> {
     );
   }
 
+  // Converts touch position to slider value using logarithmic scale
   void _handleTouch(Offset position) {
-    final RenderBox box = context.findRenderObject() as RenderBox;
-    final center = Offset(box.size.width / 2, box.size.height / 2);
-    final angle = math.atan2(position.dy - center.dy, position.dx - center.dx);
+    final RenderBox? renderBox =
+        _customPaintKey.currentContext?.findRenderObject() as RenderBox?;
+    if (renderBox == null) return;
 
+    const center = Offset(100, 100);
+    final touchPoint = position;
+
+    final angle = math.atan2(
+      touchPoint.dy - center.dy,
+      touchPoint.dx - center.dx,
+    );
+
+    // Normalize angle to our 3/4 circle range
     var adjustedAngle = angle - _startAngle;
     if (adjustedAngle < 0) {
       adjustedAngle += 2 * math.pi;
     }
+    adjustedAngle = adjustedAngle.clamp(0.0, _totalAngle);
 
-    if (adjustedAngle > _totalAngle) {
-      adjustedAngle = _totalAngle;
-    }
-
+    // Convert angle to logarithmic value
     final percentage = adjustedAngle / _totalAngle;
-
-    // Convert percentage to logarithmic value
     final logValue = percentage * math.log(_maxValue + 1);
     final newValue = (math.exp(logValue) - 1).toDouble();
 
