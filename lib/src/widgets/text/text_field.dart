@@ -40,10 +40,13 @@ class _AppTextFieldState extends State<AppTextField> {
     _controller = widget.controller ?? TextEditingController();
     _focusNode = widget.focusNode ?? FocusNode();
     _controller.addListener(_handleTextChange);
+    _focusNode.addListener(_handleFocusChange);
   }
 
   @override
   void dispose() {
+    _controller.removeListener(_handleTextChange);
+    _focusNode.removeListener(_handleFocusChange);
     if (widget.controller == null) {
       _controller.dispose();
     }
@@ -54,9 +57,27 @@ class _AppTextFieldState extends State<AppTextField> {
   }
 
   void _handleTextChange() {
-    setState(() {
-      _hasText = _controller.text.isNotEmpty;
-    });
+    final hadText = _hasText;
+    final hasText = _controller.text.isNotEmpty;
+
+    if (hadText != hasText) {
+      setState(() {
+        _hasText = hasText;
+      });
+
+      // Maintain focus when text is cleared
+      if (!hasText && _focusNode.hasFocus) {
+        _focusNode.requestFocus();
+      }
+    }
+  }
+
+  void _handleFocusChange() {
+    if (_focusNode.hasFocus) {
+      setState(() {
+        // Force rebuild when focused to ensure proper cursor display
+      });
+    }
   }
 
   @override
@@ -68,12 +89,15 @@ class _AppTextFieldState extends State<AppTextField> {
     );
 
     return Stack(
+      fit: StackFit.passthrough,
       children: [
         if (!_hasText && widget.placeholder != null)
-          AppTextSelection(
-            text: widget.placeholder!,
-            style: widget.placeholderStyle ?? defaultPlaceholderStyle,
-            editable: false,
+          IgnorePointer(
+            child: AppTextSelection(
+              text: widget.placeholder!,
+              style: widget.placeholderStyle ?? defaultPlaceholderStyle,
+              editable: false,
+            ),
           ),
         AppTextSelection(
           text: _controller.text,
