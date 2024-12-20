@@ -54,7 +54,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
             children: [
               CustomPaint(
                 key: _customPaintKey,
-                size: const Size(200, 200),
+                size: const Size(256, 256),
                 painter: AppZapSliderPainter(
                   value: _value,
                   min: _minValue,
@@ -63,13 +63,22 @@ class _AppZapSliderState extends State<AppZapSlider> {
                   valueGradient: theme.colors.gold,
                   startAngle: _startAngle,
                   totalAngle: _totalAngle,
+                  backgroundThickness: theme.sizes.s48,
+                  valueThickness: theme.sizes.s32,
+                  handleSize: theme.sizes.s24,
+                  markerLength: theme.sizes.s8,
+                  markerThickness: LineThicknessData.normal().thin,
+                  markerColor: theme.colors.white33,
+                  labelStyle: theme.typography.med12,
+                  labelColor: theme.colors.white33,
+                  markerToLabelGap: theme.sizes.s8,
                 ),
               ),
               const AppProfilePic.s104('no url yet'),
             ],
           ),
         ),
-        const AppGap.s24(),
+        const AppGap.s8(),
         AppContainer(
           decoration: BoxDecoration(
             color: theme.colors.black33,
@@ -109,15 +118,12 @@ class _AppZapSliderState extends State<AppZapSlider> {
                   vertical: AppGapSize.s12,
                 ),
                 child: AppTextField(
-                  placeholder: 'Your Message',
-                  textStyle: TextStyle(
-                    color: theme.colors.white,
-                    fontSize: theme.typography.reg16.fontSize,
-                  ),
-                  placeholderStyle: TextStyle(
-                    color: theme.colors.white33,
-                    fontSize: 16,
-                  ),
+                  placeholder: [
+                    AppText.med16(
+                      'Your Message',
+                      color: theme.colors.white33,
+                    ),
+                  ],
                   onChanged: (value) {
                     // Handle message input
                   },
@@ -136,7 +142,8 @@ class _AppZapSliderState extends State<AppZapSlider> {
         _customPaintKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox == null) return;
 
-    const center = Offset(100, 100);
+    final size = renderBox.size;
+    final center = Offset(size.width / 2, size.height / 2);
     final touchPoint = position;
 
     final angle = math.atan2(
@@ -171,10 +178,17 @@ class AppZapSliderPainter extends CustomPainter {
   final Gradient valueGradient;
   final double startAngle;
   final double totalAngle;
+  final Color markerColor;
+  final TextStyle labelStyle;
+  final Color labelColor;
+  final double markerToLabelGap;
 
-  static const double backgroundThickness = 48.0;
-  static const double valueThickness = 32.0;
-  static const double handleSize = 24.0;
+  // Remove static modifiers and move to constructor
+  final double backgroundThickness;
+  final double valueThickness;
+  final double handleSize;
+  final double markerLength;
+  final double markerThickness;
   static const double _maxValue = 1000000.0;
 
   const AppZapSliderPainter({
@@ -185,7 +199,80 @@ class AppZapSliderPainter extends CustomPainter {
     required this.valueGradient,
     required this.startAngle,
     required this.totalAngle,
+    required this.markerColor,
+    required this.labelStyle,
+    required this.labelColor,
+    this.backgroundThickness =
+        48.0, // Default values for when theme isn't available
+    this.valueThickness = 32.0,
+    this.handleSize = 24.0,
+    this.markerLength = 12.0,
+    this.markerThickness = 1.0,
+    this.markerToLabelGap = 16.0,
   });
+
+  void _drawMarkerLine(Canvas canvas, Offset center, double value) {
+    // Convert value to angle using logarithmic scale
+    final percentage =
+        value <= 0 ? 0.0 : math.log(value + 1) / math.log(_maxValue + 1);
+    final angle = startAngle + (percentage * totalAngle);
+
+    final markerPaint = Paint()
+      ..color = markerColor
+      ..strokeWidth = markerThickness
+      ..strokeCap = StrokeCap.round;
+
+    // Calculate start point (inner edge of arc)
+    const radius = 100.0;
+    final innerRadius = radius - (backgroundThickness / 2);
+    final startPoint = Offset(
+      center.dx + innerRadius * math.cos(angle),
+      center.dy + innerRadius * math.sin(angle),
+    );
+
+    // Calculate end point (outer edge of arc + extra length)
+    final outerRadius = radius + (backgroundThickness / 2) + markerLength;
+    final endPoint = Offset(
+      center.dx + outerRadius * math.cos(angle),
+      center.dy + outerRadius * math.sin(angle),
+    );
+
+    canvas.drawLine(startPoint, endPoint, markerPaint);
+
+    // Draw the label
+    _drawMarkerLabel(canvas, center, value, angle, outerRadius + 8);
+  }
+
+  void _drawMarkerLabel(
+      Canvas canvas, Offset center, double value, double angle, double radius) {
+    final labelText = value >= 1000000
+        ? '${(value / 1000000).toInt()}M'
+        : value >= 1000
+            ? '${(value / 1000).toInt()}K'
+            : value.toInt().toString();
+
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: labelText,
+        style: labelStyle.copyWith(color: labelColor),
+      ),
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout();
+
+    // Calculate position for the text with increased gap
+    final labelPosition = Offset(
+      center.dx +
+          (radius + markerToLabelGap) * math.cos(angle) -
+          textPainter.width / 2,
+      center.dy +
+          (radius + markerToLabelGap) * math.sin(angle) -
+          textPainter.height / 2,
+    );
+
+    textPainter.paint(canvas, labelPosition);
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -193,6 +280,7 @@ class AppZapSliderPainter extends CustomPainter {
     const radius = 100.0;
     final rect = Rect.fromCircle(center: center, radius: radius);
 
+    // Draw background arc
     final backgroundPaint = Paint()
       ..color = backgroundColor
       ..style = PaintingStyle.stroke
@@ -206,6 +294,12 @@ class AppZapSliderPainter extends CustomPainter {
       false,
       backgroundPaint,
     );
+
+    // Draw markers at specific values
+    final markerValues = [0, 10, 100, 1000, 10000, 100000, 1000000];
+    for (final markerValue in markerValues) {
+      _drawMarkerLine(canvas, center, markerValue.toDouble());
+    }
 
     final valuePaint = Paint()
       ..shader = SweepGradient(

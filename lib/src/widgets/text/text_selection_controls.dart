@@ -11,49 +11,14 @@ class AppTextSelectionControls extends TextSelectionControls {
       [VoidCallback? onTap]) {
     final theme = AppTheme.of(context);
 
-    return Draggable(
-      feedback: AppContainer(
-        width: 16.0,
-        height: textLineHeight + 32,
-        child: Column(
-          children: [
-            AppContainer(
-              width: _handleSize,
-              height: _handleSize,
-              decoration: BoxDecoration(
-                gradient: type == TextSelectionHandleType.left
-                    ? theme.colors.blurpleLight
-                    : null,
-                shape: BoxShape.circle,
-              ),
-            ),
-            AppContainer(
-              width: _lineThickness,
-              height: textLineHeight,
-              decoration: BoxDecoration(
-                gradient: theme.colors.blurpleLight,
-                borderRadius: BorderRadius.circular(10000),
-              ),
-            ),
-            AppContainer(
-              width: _handleSize,
-              height: _handleSize,
-              decoration: BoxDecoration(
-                gradient: type == TextSelectionHandleType.right
-                    ? theme.colors.blurpleLight
-                    : null,
-                shape: BoxShape.circle,
-              ),
-            ),
-          ],
-        ),
-      ),
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.translucent,
       child: AppContainer(
         width: 16.0,
         height: textLineHeight + 32,
         child: Column(
           children: [
-            // Top circle - only visible for left handle
             AppContainer(
               width: _handleSize,
               height: _handleSize,
@@ -64,7 +29,6 @@ class AppTextSelectionControls extends TextSelectionControls {
                 shape: BoxShape.circle,
               ),
             ),
-            // Vertical line
             AppContainer(
               width: _lineThickness,
               height: textLineHeight,
@@ -73,7 +37,6 @@ class AppTextSelectionControls extends TextSelectionControls {
                 borderRadius: BorderRadius.circular(10000),
               ),
             ),
-            // Bottom circle - only visible for right handle
             AppContainer(
               width: _handleSize,
               height: _handleSize,
@@ -121,14 +84,28 @@ class AppTextSelectionControls extends TextSelectionControls {
     ValueListenable<ClipboardStatus>? clipboardStatus,
     Offset? lastSecondaryTapDownPosition,
   ) {
-    // Always show toolbar when text is selected
     final theme = AppTheme.of(context);
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final editableTextState = delegate as EditableTextState;
+
+    // Use the leftmost point (start of selection) for positioning
+    final startPoint = endpoints.first.point;
+
     return CompositedTransformFollower(
-      link: (delegate as EditableTextState).renderEditable.startHandleLayerLink,
-      offset: Offset(0, -textLineHeight - theme.sizes.s56),
+      link: editableTextState.renderEditable.startHandleLayerLink,
+      offset: Offset(
+          startPoint.dx <= 360 / 3
+              ? 0
+              : // Left third
+              startPoint.dx >= (360 * 2 / 3)
+                  ? -(2 * theme.sizes.s104)
+                  : // Right third
+                  -theme.sizes.s104, // Middle third
+          -textLineHeight - theme.sizes.s56),
+      showWhenUnlinked: false,
       child: AppTextSelectionMenu(
         position: selectionMidpoint,
-        editableTextState: delegate,
+        editableTextState: editableTextState,
       ),
     );
   }

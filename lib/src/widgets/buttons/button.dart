@@ -27,6 +27,24 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
+
+    // Determine the gradients/colors to use
+    final defaultGradient = theme.colors.blurple;
+
+    final effectiveInactiveGradient =
+        inactiveColor != null ? null : (inactiveGradient ?? defaultGradient);
+    final effectiveHoveredGradient = inactiveColor != null
+        ? null
+        : (hoveredGradient ?? effectiveInactiveGradient);
+    final effectivePressedGradient = inactiveColor != null
+        ? null
+        : (pressedGradient ?? effectiveInactiveGradient);
+
+    final effectiveInactiveColor = inactiveColor;
+    final effectiveHoveredColor = hoveredColor ?? effectiveInactiveColor;
+    final effectivePressedColor = pressedColor ?? effectiveInactiveColor;
+
     return TapBuilder(
       onTap: onTap,
       onLongPress: onLongPress,
@@ -46,15 +64,15 @@ class AppButton extends StatelessWidget {
             child: AppButtonLayout(
               content: content,
               gradient: state == TapState.hover
-                  ? hoveredGradient
+                  ? effectiveHoveredGradient
                   : state == TapState.pressed
-                      ? pressedGradient
-                      : inactiveGradient,
+                      ? effectivePressedGradient
+                      : effectiveInactiveGradient,
               backgroundColor: state == TapState.hover
-                  ? hoveredColor
+                  ? effectiveHoveredColor
                   : state == TapState.pressed
-                      ? pressedColor
-                      : inactiveColor,
+                      ? effectivePressedColor
+                      : effectiveInactiveColor,
             ),
           ),
         );
@@ -79,15 +97,15 @@ class AppButtonLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    return Container(
+    return AppContainer(
       decoration: BoxDecoration(
         borderRadius: theme.radius.asBorderRadius().rad16,
         gradient: gradient,
         color: gradient == null ? backgroundColor : null,
       ),
       height: theme.sizes.s38,
-      padding: EdgeInsets.symmetric(
-        horizontal: theme.sizes.s16,
+      padding: const AppEdgeInsets.symmetric(
+        horizontal: AppGapSize.s16,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -101,15 +101,12 @@ class TextSelectionGestureDetectorBuilder {
                 event.position,
                 SelectionChangedCause.drag,
               );
-              final selection = editableText.textEditingValue.selection;
-              if (!selection.isCollapsed) {
-                editableText.showToolbar();
-              }
             }
           },
           onPointerUp: (PointerUpEvent event) {
             _isDragging = false;
             _dragStartPosition = null;
+            // Show toolbar if text is selected
             final selection = editableText.textEditingValue.selection;
             if (!selection.isCollapsed) {
               editableText.showToolbar();
@@ -120,6 +117,7 @@ class TextSelectionGestureDetectorBuilder {
             behavior: behavior ?? HitTestBehavior.translucent,
             onDoubleTapDown: onDoubleTapDown,
             onSecondaryTapUp: (details) {
+              // Only show context menu if text is selected
               final selection = editableText.textEditingValue.selection;
               if (!selection.isCollapsed) {
                 editableText.showToolbar();
@@ -132,48 +130,32 @@ class TextSelectionGestureDetectorBuilder {
     }
 
     // Mobile behavior
-    return RawGestureDetector(
-      gestures: <Type, GestureRecognizerFactory>{
-        TapGestureRecognizer:
-            GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
-          () => TapGestureRecognizer(),
-          (TapGestureRecognizer instance) {
-            instance.onTapDown = (details) {
-              editableText.hideToolbar();
-              _handleMouseSelection(
-                  details.globalPosition, SelectionChangedCause.tap);
-            };
-          },
-        ),
-        DoubleTapGestureRecognizer:
-            GestureRecognizerFactoryWithHandlers<DoubleTapGestureRecognizer>(
-          () => DoubleTapGestureRecognizer(),
-          (DoubleTapGestureRecognizer instance) {
-            instance.onDoubleTapDown = onDoubleTapDown;
-          },
-        ),
-        LongPressGestureRecognizer:
-            GestureRecognizerFactoryWithHandlers<LongPressGestureRecognizer>(
-          () => LongPressGestureRecognizer(
-              duration: const Duration(milliseconds: 300)),
-          (LongPressGestureRecognizer instance) {
-            instance
-              ..onLongPressStart = (details) {
-                _handleMouseSelection(
-                    details.globalPosition, SelectionChangedCause.longPress);
-                editableText.showToolbar();
-              }
-              ..onLongPressMoveUpdate = (details) {
-                _handleMouseDragSelection(
-                  details.globalPosition - details.offsetFromOrigin,
-                  details.globalPosition,
-                  SelectionChangedCause.longPress,
-                );
-              };
-          },
-        ),
-      },
+    return GestureDetector(
+      key: key,
       behavior: behavior ?? HitTestBehavior.translucent,
+      onTapDown: (details) {
+        editableText.hideToolbar();
+        _handleMouseSelection(
+            details.globalPosition, SelectionChangedCause.tap);
+      },
+      onDoubleTapDown: (details) {
+        onDoubleTapDown(details);
+        // Show toolbar immediately after word selection
+        editableText.showToolbar();
+      },
+      onLongPressStart: (details) {
+        _handleMouseSelection(
+            details.globalPosition, SelectionChangedCause.longPress);
+        // Show toolbar immediately after long press
+        editableText.showToolbar();
+      },
+      onLongPressMoveUpdate: (details) {
+        _handleMouseDragSelection(
+          details.globalPosition - details.offsetFromOrigin,
+          details.globalPosition,
+          SelectionChangedCause.longPress,
+        );
+      },
       child: child,
     );
   }

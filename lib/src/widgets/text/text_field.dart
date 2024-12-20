@@ -3,13 +3,11 @@ import 'text_selection.dart';
 import 'text_selection_controls.dart';
 
 class AppTextField extends StatefulWidget {
-  final String? placeholder;
+  final List<Widget>? placeholder;
   final void Function(String)? onChanged;
   final TextEditingController? controller;
   final FocusNode? focusNode;
-  final TextStyle? textStyle;
-  final TextStyle? placeholderStyle;
-  final Color? placeholderColor;
+  final TextStyle? style;
   final List<AppTextSelectionMenuItem>? contextMenuItems;
 
   const AppTextField({
@@ -18,9 +16,7 @@ class AppTextField extends StatefulWidget {
     this.onChanged,
     this.controller,
     this.focusNode,
-    this.textStyle,
-    this.placeholderStyle,
-    this.placeholderColor,
+    this.style,
     this.contextMenuItems,
   });
 
@@ -83,25 +79,30 @@ class _AppTextFieldState extends State<AppTextField> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final defaultTextStyle = theme.typography.reg14;
-    final defaultPlaceholderStyle = theme.typography.med14.copyWith(
-      color: widget.placeholderColor ?? theme.colors.white33,
+
+    // Default text style with white color
+    final defaultTextStyle = theme.typography.reg16.copyWith(
+      color: theme.colors.white,
     );
+
+    // Merge provided style with default white color
+    final textStyle = widget.style?.copyWith(
+          color: theme.colors.white,
+        ) ??
+        defaultTextStyle;
 
     return Stack(
       fit: StackFit.passthrough,
       children: [
         if (!_hasText && widget.placeholder != null)
           IgnorePointer(
-            child: AppTextSelection(
-              text: widget.placeholder!,
-              style: widget.placeholderStyle ?? defaultPlaceholderStyle,
-              editable: false,
+            child: Row(
+              children: widget.placeholder!,
             ),
           ),
-        AppTextSelection(
+        AppSelectableText(
           text: _controller.text,
-          style: widget.textStyle ?? defaultTextStyle,
+          style: textStyle,
           editable: true,
           controller: _controller,
           focusNode: _focusNode,

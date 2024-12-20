@@ -2,21 +2,23 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'text_selection_controls.dart';
 import 'text_selection_gesture_detector_builder.dart' as custom;
 
-class AppTextSelection extends StatefulWidget {
+class AppSelectableText extends StatefulWidget {
   final String text;
   final TextStyle? style;
   final bool editable;
+  final bool showContextMenu;
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final void Function(String)? onChanged;
   final List<AppTextSelectionMenuItem>? contextMenuItems;
   final TextSelectionControls? selectionControls;
 
-  const AppTextSelection({
+  const AppSelectableText({
     super.key,
     required this.text,
     this.style,
     this.editable = false,
+    this.showContextMenu = true,
     this.controller,
     this.focusNode,
     this.onChanged,
@@ -25,10 +27,10 @@ class AppTextSelection extends StatefulWidget {
   });
 
   @override
-  State<AppTextSelection> createState() => _AppTextSelectionState();
+  State<AppSelectableText> createState() => _AppSelectableTextState();
 }
 
-class _AppTextSelectionState extends State<AppTextSelection>
+class _AppSelectableTextState extends State<AppSelectableText>
     implements custom.TextSelectionGestureDetectorBuilderDelegate {
   late TextEditingController _controller;
   late FocusNode _focusNode;
@@ -93,15 +95,16 @@ class _AppTextSelectionState extends State<AppTextSelection>
         selectionControls:
             widget.selectionControls ?? AppTextSelectionControls(),
         enableInteractiveSelection: true,
-        showSelectionHandles: true, // Changed to false initially
+        showSelectionHandles: true,
         showCursor: widget.editable,
         rendererIgnoresPointer: !widget.editable,
         enableSuggestions: widget.editable,
         readOnly: !widget.editable,
         selectionColor: const Color(0xFF5C58FF).withOpacity(0.33),
         onSelectionChanged: (selection, cause) {
-          // Only show handles for actual selection, not cursor movement
-          if (selection.isCollapsed) {
+          if (!selection.isCollapsed && widget.showContextMenu) {
+            editableTextKey.currentState?.showToolbar();
+          } else {
             editableTextKey.currentState?.hideToolbar();
           }
         },

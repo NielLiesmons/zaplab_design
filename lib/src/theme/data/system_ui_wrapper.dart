@@ -2,27 +2,24 @@ import 'package:flutter/widgets.dart';
 
 class AppResponsiveWrapper extends StatelessWidget {
   final Widget child;
-  final double baseWidth;
 
   const AppResponsiveWrapper({
     super.key,
     required this.child,
-    this.baseWidth = 360.0,
   });
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final screenWidth = constraints.maxWidth;
-        final scale = screenWidth / baseWidth;
+        const scale = 1.15;
 
         return Center(
           child: ClipRect(
             child: OverflowBox(
               alignment: Alignment.topCenter,
-              maxWidth: baseWidth,
-              minWidth: baseWidth,
+              maxWidth: constraints.maxWidth / scale,
+              minWidth: constraints.maxWidth / scale,
               maxHeight: constraints.maxHeight / scale,
               minHeight: constraints.maxHeight / scale,
               child: Transform.scale(
