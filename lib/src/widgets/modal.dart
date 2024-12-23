@@ -43,7 +43,7 @@ class AppModal extends StatelessWidget {
           // Create a hidden container to measure content
           final measuringWidget = Opacity(
             opacity: 0,
-            child: Container(
+            child: AppContainer(
               key: contentKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -157,13 +157,12 @@ class AppModal extends StatelessWidget {
     final bottomPadding =
         Platform.isIOS || Platform.isAndroid ? AppGapSize.s4 : AppGapSize.s16;
     final modalOffset = ValueNotifier<double>(0.0);
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return ValueListenableBuilder<double>(
       valueListenable: modalOffset,
       builder: (context, offset, child) {
         return Transform.translate(
-          offset: Offset(0, offset - keyboardHeight),
+          offset: Offset(0, offset),
           child: Align(
             alignment: Alignment.bottomCenter,
             child: GestureDetector(
@@ -212,7 +211,12 @@ class AppModal extends StatelessWidget {
                         children: [
                           if (includePadding)
                             AppContainer(
-                              padding: const AppEdgeInsets.s16(),
+                              padding: const AppEdgeInsets.only(
+                                left: AppGapSize.s16,
+                                right: AppGapSize.s16,
+                                top: AppGapSize.s16,
+                                bottom: AppGapSize.s12,
+                              ),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: children,
@@ -258,10 +262,8 @@ class AppModal extends StatelessWidget {
   ) {
     final bottomBarHeight = bottomBar != null ? theme.sizes.s64 : 0.0;
     final bottomSafeArea = MediaQuery.of(context).padding.bottom;
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-    final totalBottomPadding = bottomBar != null
-        ? bottomBarHeight + bottomSafeArea + keyboardHeight
-        : keyboardHeight;
+    final totalBottomPadding =
+        bottomBar != null ? bottomBarHeight + bottomSafeArea : 0.0;
 
     return Align(
       alignment: Alignment.bottomCenter,
@@ -330,7 +332,7 @@ class AppModal extends StatelessWidget {
                                 children: [
                                   if (includePadding)
                                     AppContainer(
-                                      padding: const AppEdgeInsets.s16(),
+                                      padding: AppEdgeInsets.s16(),
                                       child: Column(children: children),
                                     )
                                   else
@@ -361,6 +363,10 @@ class AppModal extends StatelessWidget {
                     valueListenable: topBarVisible,
                     builder: (context, isVisible, child) {
                       if (!isVisible) return const SizedBox.shrink();
+
+                      final dragHandleGap = Platform.isIOS || Platform.isAndroid
+                          ? AppGapSize.s4
+                          : AppGapSize.s16;
 
                       return AnimatedOpacity(
                         opacity: isVisible ? 1.0 : 0.0,
@@ -403,7 +409,7 @@ class AppModal extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     const AppTopSafeArea(),
-                                    const AppGap.s4(),
+                                    AppGap(dragHandleGap),
                                     const DragHandle(),
                                     if (topBar != null) topBar!,
                                   ],

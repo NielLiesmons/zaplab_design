@@ -71,7 +71,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
                   markerColor: theme.colors.white33,
                   labelStyle: theme.typography.med12,
                   labelColor: theme.colors.white33,
-                  markerToLabelGap: theme.sizes.s8,
+                  markerToLabelGap: theme.sizes.s6,
                 ),
               ),
               const AppProfilePic.s104('no url yet'),
