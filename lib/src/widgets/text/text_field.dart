@@ -81,7 +81,7 @@ class _AppTextFieldState extends State<AppTextField> {
     final theme = AppTheme.of(context);
 
     // Default text style with white color
-    final defaultTextStyle = theme.typography.reg16.copyWith(
+    final defaultTextStyle = theme.typography.reg14.copyWith(
       color: theme.colors.white,
     );
 

@@ -14,8 +14,8 @@ class AppScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    return Container(
-      color: backgroundColor ?? theme.colors.black,
+    return AppContainer(
+      decoration: BoxDecoration(color: backgroundColor ?? theme.colors.black),
       child: body,
     );
   }

@@ -1,22 +1,27 @@
 import 'dart:ui';
 import 'dart:io' show Platform;
-import 'package:zaplab_design/src/theme/data/durations.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 final _needsCompactMode = ValueNotifier<bool>(false);
 
 class AppModal extends StatelessWidget {
-  final List<Widget> children;
   final Widget? topBar;
   final Widget? bottomBar;
   final bool includePadding;
+  final String? profilePicUrl;
+  final String? title;
+  final String? description;
+  final List<Widget> children;
 
   const AppModal({
     Key? key,
-    required this.children,
     this.topBar,
     this.bottomBar,
     this.includePadding = true,
+    this.profilePicUrl,
+    this.title,
+    this.description,
+    required this.children,
   }) : super(key: key);
 
   static Future<void> show(
@@ -25,9 +30,63 @@ class AppModal extends StatelessWidget {
     Widget? topBar,
     Widget? bottomBar,
     bool includePadding = true,
+    String? profilePicUrl,
+    String? title,
+    String? description,
   }) {
     final theme = AppTheme.of(context);
     final screenHeight = MediaQuery.of(context).size.height;
+
+    // Create default topBar if title is provided
+    Widget? resolvedTopBar = topBar;
+    if (topBar == null && title != null) {
+      resolvedTopBar = AppContainer(
+        padding: const AppEdgeInsets.all(AppGapSize.s12),
+        alignment: Alignment.center,
+        child: AppText.med16(
+          title,
+          color: theme.colors.white,
+        ),
+      );
+    }
+
+    // Create header widgets if any header info is provided
+    List<Widget> headerWidgets = [];
+    if (profilePicUrl != null || title != null || description != null) {
+      if (profilePicUrl != null) {
+        headerWidgets.addAll([
+          const AppGap.s8(),
+          AppProfilePic.s80(profilePicUrl),
+        ]);
+      }
+
+      if (title != null) {
+        headerWidgets.addAll([
+          const AppGap.s8(),
+          AppText.h1(
+            title,
+            color: theme.colors.white,
+          ),
+        ]);
+      }
+
+      if (description != null) {
+        headerWidgets.addAll([
+          const AppGap.s4(),
+          AppText.med16(
+            description,
+            color: theme.colors.white66,
+          ),
+        ]);
+      }
+
+      if (headerWidgets.isNotEmpty) {
+        headerWidgets.add(const AppGap.s8());
+      }
+    }
+
+    // Combine header widgets with provided children
+    final List<Widget> allChildren = [...headerWidgets, ...children];
 
     // Create a GlobalKey to measure content height
     final contentKey = GlobalKey();
@@ -49,7 +108,7 @@ class AppModal extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (topBar != null) topBar,
-                  ...children,
+                  ...allChildren,
                   if (bottomBar != null) bottomBar,
                 ],
               ),
@@ -63,8 +122,8 @@ class AppModal extends StatelessWidget {
               // Backdrop
               BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                child: Container(
-                  color: theme.colors.black16,
+                child: AppContainer(
+                  decoration: BoxDecoration(color: theme.colors.black16),
                 ),
               ),
               // Actual modal
@@ -83,10 +142,13 @@ class AppModal extends StatelessWidget {
                   });
 
                   return AppModal(
-                    topBar: topBar,
+                    topBar: resolvedTopBar,
                     bottomBar: bottomBar,
                     includePadding: includePadding,
-                    children: children,
+                    profilePicUrl: profilePicUrl,
+                    title: title,
+                    description: description,
+                    children: allChildren,
                   );
                 },
               ),
@@ -127,9 +189,18 @@ class AppModal extends StatelessWidget {
             children: [
               // Background tap handler
               GestureDetector(
-                onTap: () => Navigator.of(context).pop(),
-                child: Container(
-                  color: const Color(0x00000000),
+                onTap: () {
+                  if (Navigator.of(context).canPop()) {
+                    Navigator.of(context).pop();
+                  }
+                },
+                onVerticalDragUpdate: (details) {
+                  if (details.delta.dy > 0 && Navigator.of(context).canPop()) {
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: const AppContainer(
+                  decoration: BoxDecoration(color: Color(0x00000000)),
                 ),
               ),
               // Main modal content
@@ -144,7 +215,8 @@ class AppModal extends StatelessWidget {
               else
                 _buildCompactModal(context, theme),
               // Bottom bar overlay (only in scrollable mode)
-              if (needsCompactMode && bottomBar != null)
+              if (needsCompactMode &&
+                  (bottomBar != null || (Platform.isIOS || Platform.isAndroid)))
                 _buildBottomBarOverlay(context, theme),
             ],
           ),
@@ -271,10 +343,20 @@ class AppModal extends StatelessWidget {
         children: [
           // Background tap handler
           GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: Container(
-              color: const Color(0x00000000),
-            ),
+            onTap: () {
+              if (Navigator.of(context).canPop()) {
+                Navigator.of(context).pop();
+              }
+            },
+            onVerticalDragUpdate: (details) {
+              if (details.delta.dy > 0 && Navigator.of(context).canPop()) {
+                Navigator.of(context).pop();
+              }
+            },
+            child: const AppContainer(
+                decoration: BoxDecoration(
+              color: Color(0x00000000),
+            )),
           ),
           // Main modal content
           ValueListenableBuilder<double>(
@@ -296,7 +378,7 @@ class AppModal extends StatelessWidget {
                     minChildSize: 0.6,
                     maxChildSize: 1.0,
                     builder: (context, scrollController) {
-                      return Container(
+                      return AppContainer(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.vertical(
                             top: const AppRadiusData.normal().rad32,
@@ -395,7 +477,7 @@ class AppModal extends StatelessWidget {
                             ),
                             child: BackdropFilter(
                               filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                              child: Container(
+                              child: AppContainer(
                                 decoration: BoxDecoration(
                                   color: theme.colors.grey66,
                                   border: Border(
@@ -431,8 +513,8 @@ class AppModal extends StatelessWidget {
   }
 
   Widget _buildBottomBarOverlay(BuildContext context, AppThemeData theme) {
-    final bottomPadding =
-        Platform.isIOS || Platform.isAndroid ? AppGapSize.s4 : AppGapSize.s16;
+    final isOnMobile = Platform.isIOS || Platform.isAndroid;
+    final bottomPadding = isOnMobile ? AppGapSize.s4 : AppGapSize.s16;
 
     return Positioned(
       bottom: 0,
@@ -442,12 +524,14 @@ class AppModal extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
           child: AppContainer(
-            padding: AppEdgeInsets.only(
-              left: AppGapSize.s16,
-              right: AppGapSize.s16,
-              top: AppGapSize.s16,
-              bottom: bottomPadding,
-            ),
+            padding: bottomBar != null
+                ? AppEdgeInsets.only(
+                    left: AppGapSize.s16,
+                    right: AppGapSize.s16,
+                    top: AppGapSize.s16,
+                    bottom: bottomPadding,
+                  )
+                : const AppEdgeInsets.all(AppGapSize.none),
             decoration: BoxDecoration(
               color: theme.colors.grey66,
               border: Border(
@@ -460,8 +544,8 @@ class AppModal extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                bottomBar!,
-                const AppBottomSafeArea(),
+                if (bottomBar != null) bottomBar!,
+                if (isOnMobile) const AppBottomSafeArea(),
               ],
             ),
           ),

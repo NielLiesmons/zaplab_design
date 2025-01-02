@@ -10,6 +10,7 @@ import 'line_thickness.dart';
 import 'radius.dart';
 import 'sizes.dart';
 import 'typography.dart';
+import 'system_data.dart';
 
 class AppThemeData extends Equatable {
   const AppThemeData({
@@ -21,6 +22,7 @@ class AppThemeData extends Equatable {
     required this.radius,
     required this.sizes,
     required this.typography,
+    required this.system,
     TargetPlatform? platform,
   }) : _platform = platform;
 
@@ -33,6 +35,7 @@ class AppThemeData extends Equatable {
         radius: const AppRadiusData.normal(),
         sizes: AppSizesData.normal(),
         typography: AppTypographyData.normal(),
+        system: AppSystemData.normal(),
       );
 
   final AppBorderData borders;
@@ -43,6 +46,7 @@ class AppThemeData extends Equatable {
   final AppRadiusData radius;
   final AppSizesData sizes;
   final AppTypographyData typography;
+  final AppSystemData system;
   final TargetPlatform? _platform;
   TargetPlatform get platform => defaultTargetPlatform;
 
@@ -69,6 +73,7 @@ class AppThemeData extends Equatable {
       radius: radius,
       sizes: sizes,
       typography: typography,
+      system: system,
       platform: platform,
     );
   }
@@ -83,6 +88,41 @@ class AppThemeData extends Equatable {
       radius: radius,
       sizes: sizes,
       typography: typography,
+      system: system,
+      platform: platform,
+    );
+  }
+
+  AppThemeData copyWith({
+    AppColorsData? colors,
+    AppTypographyData? typography,
+    AppFormFactor? formFactor,
+  }) {
+    return AppThemeData(
+      borders: borders,
+      colors: colors ?? this.colors,
+      durations: durations,
+      formFactor: formFactor ?? this.formFactor,
+      icons: icons,
+      radius: radius,
+      sizes: sizes,
+      typography: typography ?? this.typography,
+      system: system,
+      platform: platform,
+    );
+  }
+
+  AppThemeData withScale(double scale) {
+    return AppThemeData(
+      borders: borders,
+      colors: colors,
+      durations: durations,
+      formFactor: formFactor,
+      icons: icons,
+      radius: radius,
+      sizes: sizes,
+      typography: typography,
+      system: AppSystemData(scale: scale),
       platform: platform,
     );
   }

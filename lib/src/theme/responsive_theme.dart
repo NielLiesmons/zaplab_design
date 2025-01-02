@@ -46,10 +46,20 @@ class AppResponsiveTheme extends StatelessWidget {
     }
   }
 
+  static double scaleOf(BuildContext context) {
+    // This could potentially be dynamic based on device characteristics
+    // but for now we'll keep it constant
+    return 1.15;
+  }
+
   @override
   Widget build(BuildContext context) {
     /// Start with a base theme
     var theme = AppThemeData.normal();
+
+    /// Get scale factor
+    final scale = scaleOf(context);
+    theme = theme.withScale(scale);
 
     /// Determines color mode based on app settings or device brightness
     final colorMode = this.colorMode ?? colorModeOf(context);

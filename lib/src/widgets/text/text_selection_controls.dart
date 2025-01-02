@@ -85,7 +85,6 @@ class AppTextSelectionControls extends TextSelectionControls {
     Offset? lastSecondaryTapDownPosition,
   ) {
     final theme = AppTheme.of(context);
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
     final editableTextState = delegate as EditableTextState;
 
     // Use the leftmost point (start of selection) for positioning

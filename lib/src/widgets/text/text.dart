@@ -44,6 +44,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
     this.level = AppTextLevel.med16,
   });
 
@@ -55,6 +56,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.h1;
 
   const AppText.h2(
@@ -64,6 +66,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.h2;
 
   const AppText.h3(
@@ -73,6 +76,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.h3;
 
   const AppText.bold16(
@@ -82,6 +86,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.bold16;
 
   const AppText.med16(
@@ -91,6 +96,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.med16;
 
   const AppText.reg16(
@@ -100,6 +106,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.reg16;
 
   const AppText.bold14(
@@ -109,6 +116,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.bold14;
 
   const AppText.med14(
@@ -118,6 +126,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.med14;
 
   const AppText.reg14(
@@ -127,6 +136,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.reg14;
 
   const AppText.bold12(
@@ -136,6 +146,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.bold12;
 
   const AppText.med12(
@@ -145,6 +156,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.med12;
 
   const AppText.reg12(
@@ -154,6 +166,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.reg12;
 
   const AppText.bold10(
@@ -163,6 +176,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.bold10;
 
   const AppText.med10(
@@ -172,6 +186,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.med10;
 
   const AppText.reg10(
@@ -181,6 +196,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.reg10;
 
   const AppText.link(
@@ -190,6 +206,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.link;
 
   /// Long Form Typography
@@ -200,6 +217,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.longformh1;
 
   const AppText.longformh2(
@@ -209,6 +227,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.longformh2;
 
   const AppText.longformh3(
@@ -218,6 +237,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.longformh3;
 
   const AppText.longformh4(
@@ -227,6 +247,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.longformh4;
 
   const AppText.longformh5(
@@ -236,6 +257,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.longformh5;
 
   const AppText.regArticle(
@@ -245,6 +267,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.regArticle;
 
   const AppText.boldArticle(
@@ -254,6 +277,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.boldArticle;
 
   const AppText.linkArticle(
@@ -263,6 +287,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.linkArticle;
 
   const AppText.regWiki(
@@ -272,6 +297,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.regWiki;
 
   const AppText.boldWiki(
@@ -281,6 +307,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.boldWiki;
 
   const AppText.linkWiki(
@@ -290,6 +317,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.linkWiki;
 
   const AppText.code(
@@ -299,6 +327,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.code;
 
   const AppText.caption(
@@ -308,6 +337,7 @@ class AppText extends StatelessWidget {
     this.gradient,
     this.fontSize,
     this.maxLines,
+    this.textOverflow,
   }) : level = AppTextLevel.caption;
 
   final String data;
@@ -316,6 +346,7 @@ class AppText extends StatelessWidget {
   final Gradient? gradient;
   final double? fontSize;
   final int? maxLines;
+  final TextOverflow? textOverflow;
 
   @override
   Widget build(BuildContext context) {
@@ -332,6 +363,7 @@ class AppText extends StatelessWidget {
         fontSize: fontSize,
       ),
       maxLines: maxLines,
+      overflow: textOverflow,
     );
 
     if (gradient != null) {

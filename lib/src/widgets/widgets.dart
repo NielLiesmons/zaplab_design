@@ -16,6 +16,8 @@ export 'text/text_field.dart';
 export 'text/text_selection_menu.dart';
 
 export 'app_base.dart';
+export 'input_field.dart';
+export 'input_modal.dart';
 export 'modal.dart';
 export 'scaffold.dart';
 export 'switch.dart';
