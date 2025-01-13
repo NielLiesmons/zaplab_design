@@ -12,7 +12,7 @@ class AppIconsData extends Equatable {
 
   /// Initialize icons with font family, package, and characters.
   factory AppIconsData.normal() => AppIconsData(
-        fontFamily: 'Icons',
+        fontFamily: 'Zaplab-Icons',
         fontPackage: 'zaplab_design',
         characters: AppIconCharactersData.normal(),
         sizes: AppIconSizesData.normal(),
@@ -41,6 +41,7 @@ class AppIconCharactersData extends Equatable {
     required this.arrowUp,
     required this.at,
     required this.backup,
+    required this.backspace,
     required this.bell,
     required this.camera,
     required this.check,
@@ -98,7 +99,6 @@ class AppIconCharactersData extends Equatable {
     required this.star,
     required this.sticker,
     required this.text,
-    required this.topZap,
     required this.transfer,
     required this.video,
     required this.voice,
@@ -114,6 +114,7 @@ class AppIconCharactersData extends Equatable {
         at: String.fromCharCodes([60468]),
         backup: String.fromCharCodes([57344, 58676, 61323, 57407]),
         bell: String.fromCharCodes([58082, 58628]),
+        backspace: String.fromCharCodes([58635, 60645, 57472]),
         camera: String.fromCharCodes([57344, 58649, 58941, 57564]),
         check: String.fromCharCodes([58788, 61009, 57353]),
         chevronDown: String.fromCharCodes([57344, 59309, 61295, 57476]),
@@ -170,7 +171,6 @@ class AppIconCharactersData extends Equatable {
         star: String.fromCharCodes([58209, 58963]),
         sticker: String.fromCharCodes([57344, 59147, 60151, 57540]),
         text: String.fromCharCodes([58213, 58670]),
-        topZap: String.fromCharCodes([57344, 58172, 60768, 57453]),
         transfer: String.fromCharCodes([58566, 59576, 57580]),
         video: String.fromCharCodes([59057, 57672, 57356]),
         voice: String.fromCharCodes([59059, 60948, 57347]),
@@ -182,6 +182,7 @@ class AppIconCharactersData extends Equatable {
   final String arrowDown;
   final String arrowUp;
   final String at;
+  final String backspace;
   final String backup;
   final String bell;
   final String camera;
@@ -240,7 +241,6 @@ class AppIconCharactersData extends Equatable {
   final String star;
   final String sticker;
   final String text;
-  final String topZap;
   final String transfer;
   final String video;
   final String voice;
@@ -253,6 +253,7 @@ class AppIconCharactersData extends Equatable {
         arrowDown.named('arrowDown'),
         arrowUp.named('arrowUp'),
         at.named('at'),
+        backspace.named('backspace'),
         backup.named('backup'),
         bell.named('bell'),
         camera.named('camera'),
@@ -311,7 +312,6 @@ class AppIconCharactersData extends Equatable {
         star.named('star'),
         sticker.named('sticker'),
         text.named('text'),
-        topZap.named('topZap'),
         transfer.named('transfer'),
         video.named('video'),
         voice.named('voice'),
@@ -325,6 +325,7 @@ class AppIconSizesData extends Equatable {
     required this.s8,
     required this.s10,
     required this.s12,
+    required this.s14,
     required this.s16,
     required this.s20,
     required this.s24,
@@ -337,6 +338,7 @@ class AppIconSizesData extends Equatable {
         s8: 8.0,
         s10: 10.0,
         s12: 12.0,
+        s14: 14.0,
         s16: 16.0,
         s20: 20.0,
         s24: 24.0,
@@ -348,6 +350,7 @@ class AppIconSizesData extends Equatable {
   final double s8;
   final double s10;
   final double s12;
+  final double s14;
   final double s16;
   final double s20;
   final double s24;
@@ -360,6 +363,7 @@ class AppIconSizesData extends Equatable {
         s8.named('s8'),
         s10.named('s10'),
         s12.named('s12'),
+        s14.named('s14'),
         s16.named('s16'),
         s20.named('s20'),
         s24.named('s24'),

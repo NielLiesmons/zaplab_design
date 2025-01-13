@@ -5,6 +5,7 @@ enum AppIconSize {
   s4,
   s8,
   s12,
+  s14,
   s16,
   s20,
   s24,
@@ -21,6 +22,8 @@ extension AppIconSizeExtension on AppIconSizesData {
         return s8;
       case AppIconSize.s12:
         return s12;
+      case AppIconSize.s14:
+        return s14;
       case AppIconSize.s16:
         return s16;
       case AppIconSize.s20:
@@ -75,6 +78,16 @@ class AppIcon extends StatelessWidget {
     this.outlineColor,
     this.outlineThickness = 0.0,
   })  : size = AppIconSize.s12,
+        super(key: key);
+
+  const AppIcon.s14(
+    this.data, {
+    Key? key,
+    this.color,
+    this.gradient,
+    this.outlineColor,
+    this.outlineThickness = 0.0,
+  })  : size = AppIconSize.s14,
         super(key: key);
 
   const AppIcon.s16(
@@ -172,7 +185,7 @@ class AppIcon extends StatelessWidget {
                     Rect.fromLTWH(0, 0, resolvedSize, resolvedSize),
                   ))
                 : null,
-            color: gradient == null ? color ?? Color(0x00000000) : null,
+            color: gradient == null ? color ?? const Color(0x00000000) : null,
           ),
         ),
       ],
@@ -223,7 +236,7 @@ class AppAnimatedIcon extends StatelessWidget {
         fontFamily: theme.icons.fontFamily,
         package: theme.icons.fontPackage,
         fontSize: resolvedSize,
-        color: Color(0x00000000), // Color will be handled in the layers
+        color: const Color(0x00000000), // Color will be handled in the layers
         decoration: TextDecoration.none,
       ),
       child: Stack(
@@ -253,7 +266,7 @@ class AppAnimatedIcon extends StatelessWidget {
               fontFamily: theme.icons.fontFamily,
               package: theme.icons.fontPackage,
               fontSize: resolvedSize,
-              color: color ?? Color(0x00000000),
+              color: color ?? const Color(0x00000000),
               decoration: TextDecoration.none,
             ),
             child: Text(data),

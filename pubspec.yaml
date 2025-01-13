@@ -15,6 +15,7 @@ dependencies:
   go_router: ^14.6.2
   sliver_tools: ^0.2.5
   tap_builder: ^0.5.0
+  window_manager: ^0.4.3
 
 dev_dependencies:
   flutter_lints: ^4.0.0
@@ -29,9 +30,9 @@ flutter:
     - family: Courier-Prime
       fonts:
         - asset: lib/fonts/Courier-Prime.ttf
-    - family: Icons
+    - family: Zaplab-Icons
       fonts:
-        - asset: lib/fonts/Zapchat-Icons.ttf
+        - asset: lib/fonts/Zaplab-Icons.ttf
     - family: Inter
       fonts:
         - asset: lib/fonts/InterVariable.ttf
