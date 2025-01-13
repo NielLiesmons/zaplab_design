@@ -93,8 +93,7 @@ class _AppSwitchState extends State<AppSwitch>
           color: _isOn
               ? null // No solid color when "on"
               : theme.colors.white16, // Solid color for "off" state
-          borderRadius:
-              BorderRadius.circular(10), // Rounded corners for the outer switch
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Stack(
           children: [

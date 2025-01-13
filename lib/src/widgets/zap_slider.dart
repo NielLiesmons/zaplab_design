@@ -1,28 +1,23 @@
 import 'dart:math' as math;
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:tap_builder/tap_builder.dart';
 
-class ZapData {
-  final double amount;
-  final String profileImageUrl;
-
-  const ZapData({
-    required this.amount,
-    required this.profileImageUrl,
-  });
-}
+typedef ZapRecord = ({double amount, String profileImageUrl});
 
 class AppZapSlider extends StatefulWidget {
-  final void Function(double)? onValueChanged;
-  final double initialValue;
-  final List<ZapData> otherZaps;
   final String profileImageUrl;
+  final double initialValue;
+  final ValueChanged<double>? onValueChanged;
+  final List<double>? recentAmounts;
+  final List<({double amount, String profileImageUrl})> otherZaps;
 
   const AppZapSlider({
     super.key,
-    this.onValueChanged,
-    this.initialValue = 100.0,
-    this.otherZaps = const [],
     required this.profileImageUrl,
+    this.initialValue = 100,
+    this.onValueChanged,
+    this.recentAmounts,
+    this.otherZaps = const [],
   });
 
   @override
@@ -162,71 +157,77 @@ class _AppZapSliderState extends State<AppZapSlider> {
           ),
           child: Column(
             children: [
-              AppContainer(
-                padding: const AppEdgeInsets.symmetric(
-                  horizontal: AppGapSize.s16,
-                  vertical: AppGapSize.s12,
-                ),
-                child: Row(
-                  children: [
-                    AppIcon.s16(
-                      theme.icons.characters.zap,
-                      gradient: theme.colors.gold,
+              TapBuilder(
+                onTap: _handleAmountTap,
+                builder: (context, state, hasFocus) {
+                  return AppContainer(
+                    padding: const AppEdgeInsets.symmetric(
+                      horizontal: AppGapSize.s16,
+                      vertical: AppGapSize.s12,
                     ),
-                    AppGap.s12(),
-                    AppAmount(
-                      _value,
-                      level: AppTextLevel.h2,
-                      color: theme.colors.white,
-                    ),
-                    const AppGap.s12(),
-                    const Spacer(),
-                    if (widget.otherZaps.isNotEmpty &&
-                        _value >
-                            widget.otherZaps
-                                .map((z) => z.amount)
-                                .reduce(math.max))
-                      AppContainer(
-                        decoration: BoxDecoration(
-                          gradient: theme.colors.gold16,
-                          borderRadius: theme.radius.asBorderRadius().rad16,
-                        ),
-                        padding: const AppEdgeInsets.symmetric(
-                          horizontal: AppGapSize.s12,
-                          vertical: AppGapSize.s4,
-                        ),
-                        child: AppText.med12(
-                          'Top Zap',
+                    child: Row(
+                      children: [
+                        AppIcon.s16(
+                          theme.icons.characters.zap,
                           gradient: theme.colors.gold,
                         ),
-                      ),
-                  ],
-                ),
+                        const AppGap.s8(),
+                        AppAmount(
+                          _value,
+                          level: AppTextLevel.h2,
+                          color: theme.colors.white,
+                        ),
+                        const AppGap.s12(),
+                        const Spacer(),
+                        if (widget.otherZaps.isNotEmpty &&
+                            _value >
+                                widget.otherZaps
+                                    .map((z) => z.amount)
+                                    .reduce(math.max))
+                          AppContainer(
+                            decoration: BoxDecoration(
+                              gradient: theme.colors.gold16,
+                              borderRadius: theme.radius.asBorderRadius().rad16,
+                            ),
+                            padding: const AppEdgeInsets.symmetric(
+                              horizontal: AppGapSize.s12,
+                              vertical: AppGapSize.s4,
+                            ),
+                            child: AppText.med12(
+                              'Top Zap',
+                              gradient: theme.colors.gold,
+                            ),
+                          ),
+                      ],
+                    ),
+                  );
+                },
               ),
               const AppDivider.horizontal(),
-              GestureDetector(
+              TapBuilder(
                 onTap: _handleMessageTap,
-                behavior: HitTestBehavior.opaque,
-                child: AppContainer(
-                  padding: const AppEdgeInsets.symmetric(
-                    horizontal: AppGapSize.s16,
-                    vertical: AppGapSize.s16,
-                  ),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: _message.isEmpty
-                        ? AppText.med14(
-                            'Your Message',
-                            color: AppTheme.of(context).colors.white33,
-                          )
-                        : AppText.reg14(
-                            _message,
-                            color: AppTheme.of(context).colors.white,
-                            maxLines: 1,
-                            textOverflow: TextOverflow.ellipsis,
-                          ),
-                  ),
-                ),
+                builder: (context, state, hasFocus) {
+                  return AppContainer(
+                    padding: const AppEdgeInsets.symmetric(
+                      horizontal: AppGapSize.s16,
+                      vertical: AppGapSize.s16,
+                    ),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: _message.isEmpty
+                          ? AppText.med14(
+                              'Your Message',
+                              color: AppTheme.of(context).colors.white33,
+                            )
+                          : AppText.reg14(
+                              _message,
+                              color: AppTheme.of(context).colors.white,
+                              maxLines: 1,
+                              textOverflow: TextOverflow.ellipsis,
+                            ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -250,12 +251,18 @@ class _AppZapSliderState extends State<AppZapSlider> {
       touchPoint.dx - center.dx,
     );
 
-    // Normalize angle to our 3/4 circle range
+    // Normalize angle relative to start angle
     var adjustedAngle = angle - _startAngle;
-    if (adjustedAngle < 0) {
-      adjustedAngle += 2 * math.pi;
+    if (angle > math.pi / 2.75 && angle < math.pi * 3 / 4) {
+      // If we're in the forbidden zone, force to minimum value
+      adjustedAngle = 0;
+    } else {
+      // Normal angle handling for valid zones
+      if (adjustedAngle < 0) {
+        adjustedAngle += 2 * math.pi;
+      }
+      adjustedAngle = adjustedAngle.clamp(0.0, _totalAngle);
     }
-    adjustedAngle = adjustedAngle.clamp(0.0, _totalAngle);
 
     // Convert angle to logarithmic value
     final percentage = adjustedAngle / _totalAngle;
@@ -270,6 +277,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
 
   void _handleMessageTap() async {
     final controller = TextEditingController(text: _message);
+    final theme = AppTheme.of(context);
 
     await AppInputModal.show(
       context,
@@ -281,7 +289,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
             children: [
               AppText.med14(
                 'Your Message',
-                color: AppTheme.of(context).colors.white66,
+                color: theme.colors.white66,
               ),
               const AppGap.s8(),
             ],
@@ -298,10 +306,24 @@ class _AppZapSliderState extends State<AppZapSlider> {
         placeholder: [
           AppText.reg14(
             'Write a message to PROFILE NAME',
-            color: AppTheme.of(context).colors.white33,
+            color: theme.colors.white33,
           ),
         ],
       ),
+    );
+  }
+
+  void _handleAmountTap() async {
+    await AppAmountModal.show(
+      context,
+      initialAmount: _value,
+      recentAmounts: widget.recentAmounts ?? [],
+      onAmountChanged: (value) {
+        setState(() {
+          _value = value;
+          widget.onValueChanged?.call(value);
+        });
+      },
     );
   }
 }
@@ -318,7 +340,7 @@ class AppZapSliderPainter extends CustomPainter {
   final TextStyle labelStyle;
   final Color labelColor;
   final double markerToLabelGap;
-  final List<ZapData> otherZaps;
+  final List<({double amount, String profileImageUrl})> otherZaps;
 
   final double backgroundThickness;
   final double valueThickness;
@@ -347,7 +369,8 @@ class AppZapSliderPainter extends CustomPainter {
     this.markerToLabelGap = 16.0,
   });
 
-  void _drawZapMarker(Canvas canvas, Offset center, ZapData zapData) {
+  void _drawZapMarker(Canvas canvas, Offset center,
+      ({double amount, String profileImageUrl}) zapData) {
     final percentage = zapData.amount <= 0
         ? 0.0
         : math.log(zapData.amount + 1) / math.log(_maxValue + 1);

@@ -1,6 +1,16 @@
 import 'package:flutter/services.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'dart:io' show Platform;
 import 'dart:ui';
+import 'package:window_manager/window_manager.dart';
+
+// Define window size constraints
+const kMinWindowWidth = 400.0;
+const kMinWindowHeight = 640.0;
+const kMaxWindowWidth = 640.0;
+const kMaxWindowHeight = 1280.0;
+const kDefaultWindowWidth = 480.0;
+const kDefaultWindowHeight = 776.0;
 
 class AppBase extends StatelessWidget {
   final String title;
@@ -12,7 +22,7 @@ class AppBase extends StatelessWidget {
   final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
   final double? textScaleFactor;
 
-  const AppBase({
+  AppBase({
     super.key,
     required this.title,
     required this.routerConfig,
@@ -22,16 +32,28 @@ class AppBase extends StatelessWidget {
     this.supportedLocales = const <Locale>[Locale('en', 'US')],
     this.localizationsDelegates,
     this.textScaleFactor,
-  });
+  }) {
+    // Initialize window settings in constructor
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      windowManager.ensureInitialized();
+      windowManager
+          .setMinimumSize(const Size(kMinWindowWidth, kMinWindowHeight));
+      windowManager
+          .setMaximumSize(const Size(kMaxWindowWidth, kMaxWindowHeight));
+      windowManager
+          .setSize(const Size(kDefaultWindowWidth, kDefaultWindowHeight));
+      windowManager.center();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     // Set system UI overlay style
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-        statusBarColor: Color(0x00000000), // Fully transparent
-        systemNavigationBarColor: Color(0x00000000), // Fully transparent
-        systemNavigationBarDividerColor: Color(0x00000000), // Fully transparent
+        statusBarColor: Color(0x00000000),
+        systemNavigationBarColor: Color(0x00000000),
+        systemNavigationBarDividerColor: Color(0x00000000),
       ),
     );
 
@@ -41,14 +63,14 @@ class AppBase extends StatelessWidget {
       overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
     );
 
-    final brightness = MediaQuery.of(context).platformBrightness;
-    final colorMode = brightness == Brightness.dark
-        ? AppThemeColorMode.dark
-        : AppThemeColorMode.light;
+    // final brightness = MediaQuery.of(context).platformBrightness;
+    // final colorMode = brightness == Brightness.dark
+    //     ? AppThemeColorMode.dark
+    //     : AppThemeColorMode.light;
 
     return AppResponsiveWrapper(
       child: AppResponsiveTheme(
-        colorMode: colorMode,
+        // colorMode: colorMode,
         child: MediaQuery(
           data: MediaQuery.of(context).copyWith(
             textScaleFactor: textScaleFactor ?? 1.0,

@@ -15,24 +15,6 @@ class TextSelectionGestureDetectorBuilder {
   EditableTextState get editableText => delegate.editableTextKey.currentState!;
   RenderEditable get renderEditable => editableText.renderEditable;
 
-  TextSelection _getWordAtOffset(TextPosition position) {
-    final TextSpan span = renderEditable.text! as TextSpan;
-    final String text = span.toPlainText();
-
-    var start = position.offset;
-    var end = position.offset;
-
-    final RegExp wordBreak = RegExp(r'[\s\.,]');
-    while (start > 0 && !wordBreak.hasMatch(text[start - 1])) {
-      start--;
-    }
-    while (end < text.length && !wordBreak.hasMatch(text[end])) {
-      end++;
-    }
-
-    return TextSelection(baseOffset: start, extentOffset: end);
-  }
-
   TextPosition _getTextPositionForOffset(Offset globalPosition) {
     final RenderBox renderBox =
         editableText.context.findRenderObject()! as RenderBox;
@@ -62,18 +44,14 @@ class TextSelectionGestureDetectorBuilder {
     }
   }
 
-  void onDoubleTapDown(TapDownDetails details) {
+  void _handleDoubleClick(TapDownDetails details) {
     if (!delegate.selectionEnabled) {
       return;
     }
 
-    final TextPosition position =
-        _getTextPositionForOffset(details.globalPosition);
-    final TextSelection selection = _getWordAtOffset(position);
-    editableText.userUpdateTextEditingValue(
-      editableText.textEditingValue.copyWith(selection: selection),
-      SelectionChangedCause.tap,
-    );
+    renderEditable.handleTapDown(details);
+    renderEditable.selectWord(cause: SelectionChangedCause.tap);
+    editableText.showToolbar();
   }
 
   Widget buildGestureDetector({
@@ -85,39 +63,33 @@ class TextSelectionGestureDetectorBuilder {
     if (kIsWeb || !defaultTargetPlatform.isMobile) {
       return MouseRegion(
         cursor: SystemMouseCursors.text,
-        child: Listener(
-          onPointerDown: (PointerDownEvent event) {
-            editableText.hideToolbar();
-            _dragStartPosition = event.position;
-            _handleMouseSelection(event.position, SelectionChangedCause.tap);
-          },
-          onPointerMove: (PointerMoveEvent event) {
-            if (event.buttons == kPrimaryButton && _dragStartPosition != null) {
-              if (!_isDragging) {
-                _isDragging = true;
+        child: GestureDetector(
+          key: key,
+          behavior: behavior ?? HitTestBehavior.translucent,
+          onDoubleTapDown: _handleDoubleClick,
+          child: Listener(
+            onPointerDown: (PointerDownEvent event) {
+              editableText.hideToolbar();
+              _dragStartPosition = event.position;
+              _handleMouseSelection(event.position, SelectionChangedCause.tap);
+            },
+            onPointerMove: (PointerMoveEvent event) {
+              if (event.buttons == kPrimaryButton &&
+                  _dragStartPosition != null) {
+                if (!_isDragging) {
+                  _isDragging = true;
+                }
+                _handleMouseDragSelection(
+                  _dragStartPosition!,
+                  event.position,
+                  SelectionChangedCause.drag,
+                );
               }
-              _handleMouseDragSelection(
-                _dragStartPosition!,
-                event.position,
-                SelectionChangedCause.drag,
-              );
-            }
-          },
-          onPointerUp: (PointerUpEvent event) {
-            _isDragging = false;
-            _dragStartPosition = null;
-            // Show toolbar if text is selected
-            final selection = editableText.textEditingValue.selection;
-            if (!selection.isCollapsed) {
-              editableText.showToolbar();
-            }
-          },
-          child: GestureDetector(
-            key: key,
-            behavior: behavior ?? HitTestBehavior.translucent,
-            onDoubleTapDown: onDoubleTapDown,
-            onSecondaryTapUp: (details) {
-              // Only show context menu if text is selected
+            },
+            onPointerUp: (PointerUpEvent event) {
+              _isDragging = false;
+              _dragStartPosition = null;
+              // Show toolbar if text is selected
               final selection = editableText.textEditingValue.selection;
               if (!selection.isCollapsed) {
                 editableText.showToolbar();
@@ -138,15 +110,10 @@ class TextSelectionGestureDetectorBuilder {
         _handleMouseSelection(
             details.globalPosition, SelectionChangedCause.tap);
       },
-      onDoubleTapDown: (details) {
-        onDoubleTapDown(details);
-        // Show toolbar immediately after word selection
-        editableText.showToolbar();
-      },
+      onDoubleTapDown: _handleDoubleClick,
       onLongPressStart: (details) {
         _handleMouseSelection(
             details.globalPosition, SelectionChangedCause.longPress);
-        // Show toolbar immediately after long press
         editableText.showToolbar();
       },
       onLongPressMoveUpdate: (details) {

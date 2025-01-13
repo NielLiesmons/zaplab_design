@@ -3,18 +3,18 @@ import 'dart:io' show Platform;
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppInputModal extends StatelessWidget {
-  final Widget header;
+  final Widget? header;
   final Widget inputField;
 
   const AppInputModal({
     super.key,
-    required this.header,
+    this.header,
     required this.inputField,
   });
 
   static Future<void> show(
     BuildContext context, {
-    required Widget header,
+    Widget? header,
     required Widget inputField,
   }) {
     final theme = AppTheme.of(context);
@@ -159,7 +159,7 @@ class AppInputModal extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              header,
+                              if (header != null) header!,
                               inputField,
                             ],
                           ),

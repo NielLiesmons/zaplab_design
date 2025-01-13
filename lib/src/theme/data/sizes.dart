@@ -9,6 +9,7 @@ class AppSizesData extends Equatable {
     required this.s6,
     required this.s8,
     required this.s12,
+    required this.s14,
     required this.s16,
     required this.s18,
     required this.s20,
@@ -32,6 +33,7 @@ class AppSizesData extends Equatable {
         s6: 6,
         s8: 8,
         s12: 12,
+        s14: 14,
         s16: 16,
         s18: 18,
         s20: 20,
@@ -54,6 +56,7 @@ class AppSizesData extends Equatable {
   final double s6;
   final double s8;
   final double s12;
+  final double s14;
   final double s16;
   final double s18;
   final double s20;
@@ -79,6 +82,7 @@ class AppSizesData extends Equatable {
         s6.named('s6'),
         s8.named('s8'),
         s12.named('s12'),
+        s14.named('s14'),
         s16.named('s16'),
         s18.named('s18'),
         s20.named('s20'),
@@ -105,6 +109,7 @@ class AppEdgeInsetsSizesData extends Equatable {
   EdgeInsets get s6 => EdgeInsets.all(_sizes.s6);
   EdgeInsets get s8 => EdgeInsets.all(_sizes.s8);
   EdgeInsets get s12 => EdgeInsets.all(_sizes.s12);
+  EdgeInsets get s14 => EdgeInsets.all(_sizes.s14);
   EdgeInsets get s16 => EdgeInsets.all(_sizes.s16);
   EdgeInsets get s18 => EdgeInsets.all(_sizes.s18);
   EdgeInsets get s20 => EdgeInsets.all(_sizes.s20);

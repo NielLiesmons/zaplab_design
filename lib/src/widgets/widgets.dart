@@ -1,6 +1,9 @@
 export 'base/base.dart';
 
 export 'buttons/button.dart';
+export 'buttons/cross_button.dart';
+export 'buttons/small_button.dart';
+export 'buttons/tab_button.dart';
 
 export 'loading/loading_dots.dart';
 export 'loading/loading_bar.dart';
@@ -15,10 +18,14 @@ export 'text/text.dart';
 export 'text/text_field.dart';
 export 'text/text_selection_menu.dart';
 
+export 'amount_modal.dart';
 export 'app_base.dart';
 export 'input_field.dart';
 export 'input_modal.dart';
 export 'modal.dart';
 export 'scaffold.dart';
 export 'switch.dart';
+export 'tab_bar.dart';
+export 'tab_view.dart';
+export 'zap_modal.dart';
 export 'zap_slider.dart';

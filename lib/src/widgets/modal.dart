@@ -24,7 +24,7 @@ class AppModal extends StatelessWidget {
     required this.children,
   }) : super(key: key);
 
-  static Future<void> show(
+  static Future<T?> show<T>(
     BuildContext context, {
     required List<Widget> children,
     Widget? topBar,
@@ -35,8 +35,6 @@ class AppModal extends StatelessWidget {
     String? description,
   }) {
     final theme = AppTheme.of(context);
-    final screenHeight = MediaQuery.of(context).size.height;
-
     // Create default topBar if title is provided
     Widget? resolvedTopBar = topBar;
     if (topBar == null && title != null) {
@@ -135,7 +133,8 @@ class AppModal extends StatelessWidget {
                         ?.findRenderObject() as RenderBox?;
                     if (box != null) {
                       final contentHeight = box.size.height;
-                      final maxAllowedHeight = screenHeight - 160;
+                      final screenHeight = MediaQuery.of(context).size.height;
+                      final maxAllowedHeight = screenHeight * 0.8;
                       _needsCompactMode.value =
                           contentHeight > maxAllowedHeight;
                     }
@@ -173,6 +172,95 @@ class AppModal extends StatelessWidget {
     );
   }
 
+  static Future<T?> showInOtherModal<T>(
+    BuildContext context, {
+    required List<Widget> children,
+    Widget? bottomBar,
+    String? profilePicUrl,
+    String? title,
+    String? description,
+    double initialChildSize = 0.64,
+  }) {
+    final theme = AppTheme.of(context);
+    final topBarVisible = ValueNotifier<bool>(false);
+    final modalOffset = ValueNotifier<double>(0.0);
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    // Create header widgets if any header info is provided
+    List<Widget> headerWidgets = [];
+    if (profilePicUrl != null || title != null || description != null) {
+      if (profilePicUrl != null) {
+        headerWidgets.addAll([
+          const AppGap.s8(),
+          AppProfilePic.s80(profilePicUrl),
+        ]);
+      }
+
+      if (title != null) {
+        headerWidgets.addAll([
+          const AppGap.s8(),
+          AppText.h1(
+            title,
+            color: theme.colors.white,
+          ),
+        ]);
+      }
+
+      if (description != null) {
+        headerWidgets.addAll([
+          const AppGap.s4(),
+          AppText.med16(
+            description,
+            color: theme.colors.white66,
+          ),
+        ]);
+      }
+
+      if (headerWidgets.isNotEmpty) {
+        headerWidgets.add(const AppGap.s8());
+      }
+    }
+
+    // Combine header widgets with provided children
+    final List<Widget> allChildren = [...headerWidgets, ...children];
+
+    return Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        barrierDismissible: true,
+        barrierColor: const Color(0x00000000),
+        transitionDuration: theme.durations.normal,
+        reverseTransitionDuration: theme.durations.normal,
+        pageBuilder: (_, __, ___) => Stack(
+          children: [
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+              child: AppContainer(
+                decoration: BoxDecoration(color: theme.colors.black16),
+              ),
+            ),
+            AppModal(
+              bottomBar: bottomBar,
+              children: allChildren,
+            )._buildScrollableModal(
+              context,
+              theme,
+              screenHeight,
+              topBarVisible,
+              modalOffset,
+              initialChildSize: initialChildSize,
+            ),
+            if (bottomBar != null)
+              AppModal(
+                bottomBar: bottomBar,
+                children: const [],
+              )._buildBottomBarOverlay(context, theme),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
@@ -190,8 +278,9 @@ class AppModal extends StatelessWidget {
               // Background tap handler
               GestureDetector(
                 onTap: () {
-                  if (Navigator.of(context).canPop()) {
-                    Navigator.of(context).pop();
+                  final navigator = Navigator.of(context);
+                  if (navigator.canPop()) {
+                    navigator.pop();
                   }
                 },
                 onVerticalDragUpdate: (details) {
@@ -291,11 +380,17 @@ class AppModal extends StatelessWidget {
                               ),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
-                                children: children,
+                                children: [
+                                  ...children,
+                                  if (bottomBar == null)
+                                    const AppBottomSafeArea(),
+                                ],
                               ),
                             )
-                          else
+                          else ...[
                             ...children,
+                            if (bottomBar == null) const AppBottomSafeArea(),
+                          ],
                           if (bottomBar != null)
                             AppContainer(
                               padding: AppEdgeInsets.only(
@@ -330,8 +425,9 @@ class AppModal extends StatelessWidget {
     AppThemeData theme,
     double screenHeight,
     ValueNotifier<bool> topBarVisible,
-    ValueNotifier<double> modalOffset,
-  ) {
+    ValueNotifier<double> modalOffset, {
+    double initialChildSize = 0.80,
+  }) {
     final bottomBarHeight = bottomBar != null ? theme.sizes.s64 : 0.0;
     final bottomSafeArea = MediaQuery.of(context).padding.bottom;
     final totalBottomPadding =
@@ -344,8 +440,9 @@ class AppModal extends StatelessWidget {
           // Background tap handler
           GestureDetector(
             onTap: () {
-              if (Navigator.of(context).canPop()) {
-                Navigator.of(context).pop();
+              final navigator = Navigator.of(context);
+              if (navigator.canPop()) {
+                navigator.pop();
               }
             },
             onVerticalDragUpdate: (details) {
@@ -374,7 +471,7 @@ class AppModal extends StatelessWidget {
                     return true;
                   },
                   child: DraggableScrollableSheet(
-                    initialChildSize: (screenHeight - 160) / screenHeight,
+                    initialChildSize: initialChildSize,
                     minChildSize: 0.6,
                     maxChildSize: 1.0,
                     builder: (context, scrollController) {
@@ -403,23 +500,33 @@ class AppModal extends StatelessWidget {
                           ),
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                            child: AppContainer(
-                              decoration: BoxDecoration(
-                                color: theme.colors.grey66,
-                              ),
-                              child: ListView(
-                                controller: scrollController,
-                                padding:
-                                    EdgeInsets.only(bottom: totalBottomPadding),
-                                children: [
-                                  if (includePadding)
-                                    AppContainer(
-                                      padding: AppEdgeInsets.s16(),
-                                      child: Column(children: children),
-                                    )
-                                  else
-                                    ...children,
-                                ],
+                            child: ModalScope(
+                              isInsideModal: true,
+                              child: AppContainer(
+                                decoration: BoxDecoration(
+                                  color: theme.colors.grey66,
+                                ),
+                                child: ListView(
+                                  controller: scrollController,
+                                  padding: EdgeInsets.only(
+                                      bottom: totalBottomPadding),
+                                  children: [
+                                    if (includePadding)
+                                      AppContainer(
+                                        padding: AppEdgeInsets.s16(),
+                                        child: Column(
+                                          children: [
+                                            ...children,
+                                            // const AppBottomSafeArea(),
+                                          ],
+                                        ),
+                                      )
+                                    else ...[
+                                      ...children,
+                                      // const AppBottomSafeArea(),
+                                    ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -552,5 +659,24 @@ class AppModal extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class ModalScope extends InheritedWidget {
+  const ModalScope({
+    required super.child,
+    required this.isInsideModal,
+  });
+
+  final bool isInsideModal;
+
+  static bool of(BuildContext context) {
+    final scope = context.dependOnInheritedWidgetOfExactType<ModalScope>();
+    return scope?.isInsideModal ?? false;
+  }
+
+  @override
+  bool updateShouldNotify(ModalScope oldWidget) {
+    return oldWidget.isInsideModal != isInsideModal;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:zaplab_design/src/widgets/text/text_selection.dart';
 import 'package:zaplab_design/src/widgets/text/text_selection_controls.dart';
@@ -52,6 +53,7 @@ class _AppInputFieldState extends State<AppInputField> {
   late final FocusNode _focusNode;
   final _selectionControls = AppTextSelectionControls();
   bool _hasText = false;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -72,6 +74,7 @@ class _AppInputFieldState extends State<AppInputField> {
     if (widget.focusNode == null) {
       _focusNode.dispose();
     }
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -89,6 +92,26 @@ class _AppInputFieldState extends State<AppInputField> {
   void _handleFocusChange() {
     if (_focusNode.hasFocus) {
       setState(() {});
+    }
+  }
+
+  void _scrollUp() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.offset - 50,
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
+  void _scrollDown() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.offset + 50,
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.easeOut,
+      );
     }
   }
 
@@ -120,37 +143,125 @@ class _AppInputFieldState extends State<AppInputField> {
           width: LineThicknessData.normal().thin,
         ),
       ),
-      constraints: BoxConstraints(
-        maxHeight: 2 * theme.sizes.s104,
-      ),
-      child: SingleChildScrollView(
-        physics: isMobile
-            ? const ClampingScrollPhysics()
-            : const AlwaysScrollableScrollPhysics(),
-        child: Stack(
-          fit: StackFit.passthrough,
-          children: [
-            if (!_hasText && widget.placeholder != null)
-              IgnorePointer(
-                child: Row(
-                  children: widget.placeholder!,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: theme.sizes.s38,
+              maxHeight: 2 * theme.sizes.s104,
+            ),
+            child: Listener(
+              onPointerSignal: (event) {
+                if (event is PointerScrollEvent) {
+                  if (event.scrollDelta.dy > 0) {
+                    _scrollDown();
+                  } else if (event.scrollDelta.dy < 0) {
+                    _scrollUp();
+                  }
+                }
+              },
+              child: SingleChildScrollView(
+                physics: isMobile
+                    ? const ClampingScrollPhysics()
+                    : const AlwaysScrollableScrollPhysics(),
+                controller: _scrollController,
+                child: Stack(
+                  fit: StackFit.passthrough,
+                  children: [
+                    if (!_hasText && widget.placeholder != null)
+                      IgnorePointer(
+                        child: Row(
+                          children: widget.placeholder!,
+                        ),
+                      ),
+                    AppSelectableText(
+                      text: _controller.text,
+                      style: textStyle,
+                      editable: true,
+                      controller: _controller,
+                      focusNode: _focusNode,
+                      onChanged: widget.onChanged,
+                      contextMenuItems: widget.contextMenuItems,
+                      selectionControls: _selectionControls,
+                    ),
+                  ],
                 ),
               ),
-            GestureDetector(
-              onVerticalDragUpdate: !isMobile ? (_) {} : null,
-              child: AppSelectableText(
-                text: _controller.text,
-                style: textStyle,
-                editable: true,
-                controller: _controller,
-                focusNode: _focusNode,
-                onChanged: widget.onChanged,
-                contextMenuItems: widget.contextMenuItems,
-                selectionControls: _selectionControls,
-              ),
             ),
-          ],
-        ),
+          ),
+          const AppGap.s8(),
+          Row(
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AppSmallButton(
+                    square: true,
+                    content: [
+                      AppIcon.s16(
+                        theme.icons.characters.camera,
+                        color: theme.colors.white33,
+                      ),
+                    ],
+                    onTap: () {},
+                    inactiveColor: theme.colors.white8,
+                    pressedColor: theme.colors.white8,
+                  ),
+                  const AppGap.s8(),
+                  AppSmallButton(
+                    square: true,
+                    content: [
+                      AppIcon.s12(
+                        theme.icons.characters.gif,
+                        color: theme.colors.white33,
+                      ),
+                    ],
+                    onTap: () {},
+                    inactiveColor: theme.colors.white8,
+                    pressedColor: theme.colors.white8,
+                  ),
+                  const AppGap.s8(),
+                  AppSmallButton(
+                    square: true,
+                    content: [
+                      AppIcon.s16(
+                        theme.icons.characters.plus,
+                        outlineColor: theme.colors.white33,
+                        outlineThickness: LineThicknessData.normal().thick,
+                      ),
+                    ],
+                    onTap: () {},
+                    inactiveColor: theme.colors.white8,
+                    pressedColor: theme.colors.white8,
+                  ),
+                ],
+              ),
+              const Spacer(),
+              AppSmallButton(
+                content: [
+                  // AppIcon.s16(
+                  //   theme.icons.characters.send,
+                  //   color: AppColorsData.dark().white,
+                  // ),
+                  AppText.med14(
+                    'Done',
+                    color: AppColorsData.dark().white,
+                  ),
+                ],
+                onTap: () {
+                  // Handle send action
+                },
+                // onChevronTap: () {
+                //   // Handle chevron action
+                // },
+                inactiveGradient: theme.colors.blurple,
+                pressedGradient: theme.colors.blurple,
+              ),
+            ],
+          ),
+          const AppGap.s4(),
+        ],
       ),
     );
   }

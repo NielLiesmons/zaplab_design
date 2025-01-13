@@ -7,6 +7,7 @@ enum AppProfilePicSquareSize {
   s72,
   s80,
   s96,
+  s104,
 }
 
 class AppProfilePicSquare extends StatelessWidget {
@@ -33,6 +34,9 @@ class AppProfilePicSquare extends StatelessWidget {
         super(key: key);
   const AppProfilePicSquare.s96(this.imageUrl, {Key? key})
       : size = AppProfilePicSquareSize.s96,
+        super(key: key);
+  const AppProfilePicSquare.s104(this.imageUrl, {Key? key})
+      : size = AppProfilePicSquareSize.s104,
         super(key: key);
 
   final String imageUrl;
@@ -95,6 +99,8 @@ class AppProfilePicSquare extends StatelessWidget {
         return sizes.s80;
       case AppProfilePicSquareSize.s96:
         return sizes.s96;
+      case AppProfilePicSquareSize.s104:
+        return sizes.s104;
     }
   }
 }

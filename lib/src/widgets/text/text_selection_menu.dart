@@ -60,33 +60,119 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+    final isEditable = widget.editableTextState.widget.readOnly != true;
 
-    final defaultMenuItems = [
-      AppTextSelectionMenuItem(
-        label: 'Copy',
-        onTap: (state) => _handleAction(state.copySelection),
-      ),
-      AppTextSelectionMenuItem(
-        label: 'Cut',
-        onTap: (state) => _handleAction(state.cutSelection),
-      ),
-      AppTextSelectionMenuItem(
-        label: 'Paste',
-        onTap: (state) => _handleAction(state.pasteText),
-      ),
-      AppTextSelectionMenuItem(
-        label: 'Bold',
-        onTap: (state) => {/* TODO: Implement bold */},
-      ),
-      AppTextSelectionMenuItem(
-        label: 'Strikethrough',
-        onTap: (state) => {/* TODO: Implement strikethrough */},
-      ),
-      AppTextSelectionMenuItem(
-        label: 'List',
-        onTap: (state) => {/* TODO: Implement bullet point */},
-      ),
-    ];
+    final defaultMenuItems = isEditable
+        ? [
+            AppTextSelectionMenuItem(
+              label: 'Copy',
+              onTap: (state) => _handleAction(state.copySelection),
+            ),
+            AppTextSelectionMenuItem(
+              label: 'Cut',
+              onTap: (state) => _handleAction(state.cutSelection),
+            ),
+            AppTextSelectionMenuItem(
+              label: 'Paste',
+              onTap: (state) => _handleAction(state.pasteText),
+            ),
+            AppTextSelectionMenuItem(
+              label: 'Select All',
+              onTap: (state) => _handleAction(state.selectAll),
+            ),
+            AppTextSelectionMenuItem(
+              label: 'Bold',
+              onTap: (state) => _handleAction((cause) {
+                final selection = state.textEditingValue.selection;
+                if (selection.isValid && !selection.isCollapsed) {
+                  final text = state.textEditingValue.text;
+                  final selectedText =
+                      text.substring(selection.start, selection.end);
+                  final newText = text.replaceRange(
+                    selection.start,
+                    selection.end,
+                    '**$selectedText**',
+                  );
+                  state.updateEditingValue(
+                    TextEditingValue(
+                      text: newText,
+                      selection: TextSelection(
+                        baseOffset: selection.start,
+                        extentOffset: selection.end + 4,
+                      ),
+                    ),
+                  );
+                }
+              }),
+            ),
+            AppTextSelectionMenuItem(
+              label: 'Strikethrough',
+              onTap: (state) => _handleAction((cause) {
+                final selection = state.textEditingValue.selection;
+                if (selection.isValid && !selection.isCollapsed) {
+                  final text = state.textEditingValue.text;
+                  final selectedText =
+                      text.substring(selection.start, selection.end);
+                  final newText = text.replaceRange(
+                    selection.start,
+                    selection.end,
+                    '~~$selectedText~~',
+                  );
+                  state.updateEditingValue(
+                    TextEditingValue(
+                      text: newText,
+                      selection: TextSelection(
+                        baseOffset: selection.start,
+                        extentOffset: selection.end + 4,
+                      ),
+                    ),
+                  );
+                }
+              }),
+            ),
+            AppTextSelectionMenuItem(
+              label: 'List',
+              onTap: (state) => _handleAction((cause) {
+                final selection = state.textEditingValue.selection;
+                if (selection.isValid && !selection.isCollapsed) {
+                  final text = state.textEditingValue.text;
+                  final selectedText =
+                      text.substring(selection.start, selection.end);
+                  final lines = selectedText.split('\n');
+                  final bulletedLines =
+                      lines.map((line) => '- $line').join('\n');
+                  final newText = text.replaceRange(
+                    selection.start,
+                    selection.end,
+                    bulletedLines,
+                  );
+                  state.updateEditingValue(
+                    TextEditingValue(
+                      text: newText,
+                      selection: TextSelection(
+                        baseOffset: selection.start,
+                        extentOffset: selection.start + bulletedLines.length,
+                      ),
+                    ),
+                  );
+                }
+              }),
+            ),
+          ]
+        : [
+            AppTextSelectionMenuItem(
+              label: 'Copy',
+              onTap: (state) => _handleAction(state.copySelection),
+            ),
+            AppTextSelectionMenuItem(
+              label: 'Select All',
+              onTap: (state) => _handleAction(state.selectAll),
+            ),
+            AppTextSelectionMenuItem(
+              label: 'Look Up',
+              onTap: (state) => {/* TODO: Implement look up */},
+            ),
+          ];
 
     final items = widget.menuItems
             ?.where(
@@ -184,6 +270,11 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu> {
 
   void _handleAction(Function(SelectionChangedCause) action) {
     action(SelectionChangedCause.tap);
-    widget.editableTextState.hideToolbar();
+
+    // Only hide toolbar for actions that should dismiss the menu
+    if (action == widget.editableTextState.pasteText ||
+        action == widget.editableTextState.cutSelection) {
+      widget.editableTextState.hideToolbar();
+    }
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:ui' as ui;
-
-import 'theme.dart';
 import 'package:flutter/widgets.dart';
+import 'theme.dart';
 
 enum AppThemeColorMode {
   light,
@@ -11,7 +10,7 @@ enum AppThemeColorMode {
 
 /// Updates automatically the [AppTheme] regarding the current [MediaQuery],
 /// unless the color mode is overridden or set explicitly through the app settings.
-class AppResponsiveTheme extends StatelessWidget {
+class AppResponsiveTheme extends StatefulWidget {
   const AppResponsiveTheme({
     super.key,
     required this.child,
@@ -23,17 +22,19 @@ class AppResponsiveTheme extends StatelessWidget {
   final AppFormFactor? formFactor;
   final Widget child;
 
+  static _AppResponsiveThemeState of(BuildContext context) {
+    return context.findAncestorStateOfType<_AppResponsiveThemeState>()!;
+  }
+
   static AppThemeColorMode colorModeOf(BuildContext context) {
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
     final highContrast = MediaQuery.highContrastOf(context);
     if (platformBrightness == ui.Brightness.dark || highContrast) {
       return AppThemeColorMode.dark;
     }
-
     return AppThemeColorMode.light;
   }
 
-  /// Determines the form factor based on the screen width.
   static AppFormFactor formFactorOf(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
@@ -47,22 +48,30 @@ class AppResponsiveTheme extends StatelessWidget {
   }
 
   static double scaleOf(BuildContext context) {
-    // This could potentially be dynamic based on device characteristics
-    // but for now we'll keep it constant
     return 1.15;
   }
 
   @override
-  Widget build(BuildContext context) {
-    /// Start with a base theme
-    var theme = AppThemeData.normal();
+  State<AppResponsiveTheme> createState() => _AppResponsiveThemeState();
+}
 
-    /// Get scale factor
-    final scale = scaleOf(context);
+class _AppResponsiveThemeState extends State<AppResponsiveTheme> {
+  AppThemeColorMode? _colorMode;
+
+  AppThemeColorMode get colorMode =>
+      _colorMode ?? widget.colorMode ?? AppResponsiveTheme.colorModeOf(context);
+
+  void setColorMode(AppThemeColorMode? mode) {
+    setState(() => _colorMode = mode);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = AppThemeData.normal();
+    final scale = AppResponsiveTheme.scaleOf(context);
     theme = theme.withScale(scale);
 
-    /// Determines color mode based on app settings or device brightness
-    final colorMode = this.colorMode ?? colorModeOf(context);
+    final colorMode = this.colorMode;
     switch (colorMode) {
       case AppThemeColorMode.dark:
         theme = theme.withColors(AppColorsData.dark());
@@ -76,13 +85,13 @@ class AppResponsiveTheme extends StatelessWidget {
         break;
     }
 
-    // Set form factor based on device characteristics
-    var formFactor = this.formFactor ?? formFactorOf(context);
+    var formFactor =
+        widget.formFactor ?? AppResponsiveTheme.formFactorOf(context);
     theme = theme.withFormFactor(formFactor);
 
     return AppTheme(
       data: theme,
-      child: child,
+      child: widget.child,
     );
   }
 }
