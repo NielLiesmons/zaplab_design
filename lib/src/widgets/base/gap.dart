@@ -8,7 +8,9 @@ enum AppGapSize {
   s4,
   s6,
   s8,
+  s10,
   s12,
+  s14,
   s16,
   s20,
   s24,
@@ -35,8 +37,12 @@ extension AppGapSizeExtension on AppGapSize {
         return theme.sizes.s6;
       case AppGapSize.s8:
         return theme.sizes.s8;
+      case AppGapSize.s10:
+        return theme.sizes.s10;
       case AppGapSize.s12:
         return theme.sizes.s12;
+      case AppGapSize.s14:
+        return theme.sizes.s14;
       case AppGapSize.s16:
         return theme.sizes.s16;
       case AppGapSize.s20:
@@ -85,9 +91,17 @@ class AppGap extends StatelessWidget {
     super.key,
   }) : size = AppGapSize.s8;
 
+  const AppGap.s10({
+    super.key,
+  }) : size = AppGapSize.s10;
+
   const AppGap.s12({
     super.key,
   }) : size = AppGapSize.s12;
+
+  const AppGap.s14({
+    super.key,
+  }) : size = AppGapSize.s14;
 
   const AppGap.s16({
     super.key,

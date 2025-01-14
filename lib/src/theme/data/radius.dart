@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 
 class AppRadiusData extends Equatable {
   const AppRadiusData({
+    required this.rad4,
     required this.rad8,
     required this.rad12,
     required this.rad16,
@@ -13,13 +14,15 @@ class AppRadiusData extends Equatable {
   });
 
   const AppRadiusData.normal()
-      : rad8 = const Radius.circular(8),
+      : rad4 = const Radius.circular(4),
+        rad8 = const Radius.circular(8),
         rad12 = const Radius.circular(12),
         rad16 = const Radius.circular(16),
         rad24 = const Radius.circular(24),
         rad32 = const Radius.circular(32),
         rad40 = const Radius.circular(40);
 
+  final Radius rad4;
   final Radius rad8;
   final Radius rad12;
   final Radius rad16;
@@ -31,6 +34,7 @@ class AppRadiusData extends Equatable {
 
   @override
   List<Object?> get props => [
+        rad4.named('rad4'),
         rad8.named('rad8'),
         rad12.named('rad12'),
         rad16.named('rad16'),
@@ -43,6 +47,7 @@ class AppRadiusData extends Equatable {
 class AppBorderRadiusData extends Equatable {
   const AppBorderRadiusData(this._radius);
 
+  BorderRadius get rad4 => BorderRadius.all(_radius.rad4);
   BorderRadius get rad8 => BorderRadius.all(_radius.rad8);
   BorderRadius get rad12 => BorderRadius.all(_radius.rad12);
   BorderRadius get rad16 => BorderRadius.all(_radius.rad16);

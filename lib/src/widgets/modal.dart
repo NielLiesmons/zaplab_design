@@ -271,43 +271,48 @@ class AppModal extends StatelessWidget {
     return ValueListenableBuilder<bool>(
       valueListenable: _needsCompactMode,
       builder: (context, needsCompactMode, child) {
-        return Align(
-          alignment: Alignment.bottomCenter,
-          child: Stack(
-            children: [
-              // Background tap handler
-              GestureDetector(
-                onTap: () {
-                  final navigator = Navigator.of(context);
-                  if (navigator.canPop()) {
-                    navigator.pop();
-                  }
-                },
-                onVerticalDragUpdate: (details) {
-                  if (details.delta.dy > 0 && Navigator.of(context).canPop()) {
-                    Navigator.of(context).pop();
-                  }
-                },
-                child: const AppContainer(
-                  decoration: BoxDecoration(color: Color(0x00000000)),
+        return ModalScope(
+          isInsideModal: true,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Stack(
+              children: [
+                // Background tap handler
+                GestureDetector(
+                  onTap: () {
+                    final navigator = Navigator.of(context);
+                    if (navigator.canPop()) {
+                      navigator.pop();
+                    }
+                  },
+                  onVerticalDragUpdate: (details) {
+                    if (details.delta.dy > 0 &&
+                        Navigator.of(context).canPop()) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: const AppContainer(
+                    decoration: BoxDecoration(color: Color(0x00000000)),
+                  ),
                 ),
-              ),
-              // Main modal content
-              if (needsCompactMode)
-                _buildScrollableModal(
-                  context,
-                  theme,
-                  screenHeight,
-                  topBarVisible,
-                  modalOffset,
-                )
-              else
-                _buildCompactModal(context, theme),
-              // Bottom bar overlay (only in scrollable mode)
-              if (needsCompactMode &&
-                  (bottomBar != null || (Platform.isIOS || Platform.isAndroid)))
-                _buildBottomBarOverlay(context, theme),
-            ],
+                // Main modal content
+                if (needsCompactMode)
+                  _buildScrollableModal(
+                    context,
+                    theme,
+                    screenHeight,
+                    topBarVisible,
+                    modalOffset,
+                  )
+                else
+                  _buildCompactModal(context, theme),
+                // Bottom bar overlay (only in scrollable mode)
+                if (needsCompactMode &&
+                    (bottomBar != null ||
+                        (Platform.isIOS || Platform.isAndroid)))
+                  _buildBottomBarOverlay(context, theme),
+              ],
+            ),
           ),
         );
       },
@@ -500,33 +505,29 @@ class AppModal extends StatelessWidget {
                           ),
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                            child: ModalScope(
-                              isInsideModal: true,
-                              child: AppContainer(
-                                decoration: BoxDecoration(
-                                  color: theme.colors.grey66,
-                                ),
-                                child: ListView(
-                                  controller: scrollController,
-                                  padding: EdgeInsets.only(
-                                      bottom: totalBottomPadding),
-                                  children: [
-                                    if (includePadding)
-                                      AppContainer(
-                                        padding: AppEdgeInsets.s16(),
-                                        child: Column(
-                                          children: [
-                                            ...children,
-                                            // const AppBottomSafeArea(),
-                                          ],
-                                        ),
-                                      )
-                                    else ...[
-                                      ...children,
-                                      // const AppBottomSafeArea(),
-                                    ],
+                            child: AppContainer(
+                              decoration:
+                                  BoxDecoration(color: theme.colors.grey66),
+                              child: ListView(
+                                controller: scrollController,
+                                padding:
+                                    EdgeInsets.only(bottom: totalBottomPadding),
+                                children: [
+                                  if (includePadding)
+                                    AppContainer(
+                                      padding: AppEdgeInsets.s16(),
+                                      child: Column(
+                                        children: [
+                                          ...children,
+                                          const AppBottomSafeArea(),
+                                        ],
+                                      ),
+                                    )
+                                  else ...[
+                                    ...children,
+                                    const AppBottomSafeArea(),
                                   ],
-                                ),
+                                ],
                               ),
                             ),
                           ),
@@ -555,7 +556,7 @@ class AppModal extends StatelessWidget {
 
                       final dragHandleGap = Platform.isIOS || Platform.isAndroid
                           ? AppGapSize.s4
-                          : AppGapSize.s16;
+                          : AppGapSize.s32;
 
                       return AnimatedOpacity(
                         opacity: isVisible ? 1.0 : 0.0,

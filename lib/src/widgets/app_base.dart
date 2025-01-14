@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:io' show Platform;
-import 'dart:ui';
 import 'package:window_manager/window_manager.dart';
 
 // Define window size constraints
@@ -43,6 +42,7 @@ class AppBase extends StatelessWidget {
       windowManager
           .setSize(const Size(kDefaultWindowWidth, kDefaultWindowHeight));
       windowManager.center();
+      windowManager.setTitleBarStyle(TitleBarStyle.hidden);
     }
   }
 
@@ -73,7 +73,7 @@ class AppBase extends StatelessWidget {
         // colorMode: colorMode,
         child: MediaQuery(
           data: MediaQuery.of(context).copyWith(
-            textScaleFactor: textScaleFactor ?? 1.0,
+            textScaler: TextScaler.linear(textScaleFactor ?? 1.0),
           ),
           child: WidgetsApp.router(
             routerConfig: routerConfig,
