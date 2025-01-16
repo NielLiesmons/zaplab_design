@@ -15,3 +15,8 @@ and the Flutter guide for
 ## Zaplab Design
 
 UI widget library for Nostr Apps
+
+Documentation is in the works. 
+
+For now feel free to test some of the widgets with this APK: 
+https://drive.google.com/file/d/19Lh66OSArjJfEQbT-BqPL5bedtx6R1B2/view?usp=sharing
