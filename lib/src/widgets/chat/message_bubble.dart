@@ -1,5 +1,20 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
+class MessageBubbleScope extends InheritedWidget {
+  const MessageBubbleScope({
+    super.key,
+    required super.child,
+  });
+
+  static bool of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MessageBubbleScope>() !=
+        null;
+  }
+
+  @override
+  bool updateShouldNotify(MessageBubbleScope oldWidget) => false;
+}
+
 class AppMessageBubble extends StatelessWidget {
   final String message;
   final String? profileName;
@@ -7,8 +22,12 @@ class AppMessageBubble extends StatelessWidget {
   final bool showHeader;
   final bool isLastInStack;
   final String eventId;
+  final List<Reaction> reactions;
+  final List<Zap> zaps;
   final void Function(String) onActions;
   final void Function(String) onReply;
+  final void Function(String, String)? onReact;
+  final void Function(String, int, String?)? onZap;
 
   const AppMessageBubble({
     super.key,
@@ -18,8 +37,12 @@ class AppMessageBubble extends StatelessWidget {
     this.timestamp,
     this.showHeader = false,
     this.isLastInStack = false,
+    this.reactions = const [],
+    this.zaps = const [],
     required this.onActions,
     required this.onReply,
+    this.onReact,
+    this.onZap,
   });
 
   @override
@@ -39,51 +62,69 @@ class AppMessageBubble extends StatelessWidget {
       ),
       leftContent: AppIcon.s16(
         theme.icons.characters.reply,
-        outlineColor: theme.colors.white,
+        outlineColor: theme.colors.white66,
         outlineThickness: LineThicknessData.normal().medium,
       ),
       rightContent: AppIcon.s10(
         theme.icons.characters.chevronUp,
-        outlineColor: theme.colors.white,
+        outlineColor: theme.colors.white66,
         outlineThickness: LineThicknessData.normal().medium,
       ),
-      onSwipeLeft: () {
-        onActions(eventId);
-      },
-      onSwipeRight: () {
-        onReply(eventId);
-      },
-      child: IntrinsicWidth(
-        child: AppContainer(
-          padding: const AppEdgeInsets.symmetric(
-            horizontal: AppGapSize.s12,
-            vertical: AppGapSize.s8,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (showHeader) ...[
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (profileName != null)
-                      AppText.bold12(
-                        profileName!,
-                        color: theme.colors.white66,
-                      ),
-                    if (timestamp != null) ...[
-                      const AppGap.s8(),
-                      AppText.reg12(
-                        _formatTimestamp(timestamp!),
-                        color: theme.colors.white33,
-                      ),
+      onSwipeLeft: () => onActions(eventId),
+      onSwipeRight: () => onReply(eventId),
+      child: MessageBubbleScope(
+        child: IntrinsicWidth(
+          child: AppContainer(
+            padding: const AppEdgeInsets.symmetric(
+              horizontal: AppGapSize.s8,
+              vertical: AppGapSize.s8,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AppContainer(
+                  padding: const AppEdgeInsets.symmetric(
+                    horizontal: AppGapSize.s4,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (showHeader) ...[
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            if (profileName != null)
+                              AppText.bold12(
+                                profileName!,
+                                color: theme.colors.white66,
+                              ),
+                            if (timestamp != null) ...[
+                              const AppGap.s8(),
+                              AppText.reg12(
+                                _formatTimestamp(timestamp!),
+                                color: theme.colors.white33,
+                              ),
+                            ],
+                          ],
+                        ),
+                      ],
+                      AppMessageContent(content: message),
                     ],
-                  ],
+                  ),
                 ),
+                if (zaps.isNotEmpty || reactions.isNotEmpty) ...[
+                  const AppGap.s8(),
+                  AppInteractionPills(
+                    eventId: eventId,
+                    zaps: zaps,
+                    reactions: reactions,
+                    onZap: onZap,
+                    onReact: onReact,
+                  ),
+                ],
               ],
-              AppMessageContent(content: message),
-            ],
+            ),
           ),
         ),
       ),

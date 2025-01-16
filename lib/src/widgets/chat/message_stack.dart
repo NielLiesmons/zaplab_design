@@ -34,9 +34,15 @@ class AppMessageStack extends StatelessWidget {
                     showHeader: i == 0,
                     isLastInStack: i == messages.length - 1,
                     eventId: messages[i].eventId,
+                    reactions: messages[i].reactions,
+                    zaps: messages[i].zaps,
                     onActions: (eventId) =>
                         messages[i].onActions?.call(eventId),
                     onReply: (eventId) => messages[i].onReply?.call(eventId),
+                    onReact: (eventId, reactionImageUrl) =>
+                        print('React: $eventId with $reactionImageUrl'),
+                    onZap: (eventId, amount, comment) =>
+                        print('Zap: $eventId with $amount sats'),
                   ),
                 ],
               ],
@@ -57,6 +63,8 @@ class MessageData {
   final String eventId;
   final void Function(String)? onReply;
   final void Function(String)? onActions;
+  final List<Reaction> reactions;
+  final List<Zap> zaps;
 
   const MessageData({
     required this.message,
@@ -65,5 +73,7 @@ class MessageData {
     required this.eventId,
     this.onReply,
     this.onActions,
+    this.reactions = const [],
+    this.zaps = const [],
   });
 }

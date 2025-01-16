@@ -10,8 +10,14 @@ export 'chat/message_content.dart';
 export 'chat/message_feed.dart';
 export 'chat/message_stack.dart';
 
+export 'images/emoji_image.dart';
+
 export 'loading/loading_dots.dart';
 export 'loading/loading_bar.dart';
+
+export 'pills/interaction_pills.dart';
+export 'pills/reaction_pill.dart';
+export 'pills/zap_pill.dart';
 
 export 'profile_pics/profile_pic_live_story.dart';
 export 'profile_pics/profile_pic_live_stream.dart';
