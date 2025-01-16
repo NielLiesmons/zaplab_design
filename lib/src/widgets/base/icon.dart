@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 enum AppIconSize {
   s4,
   s8,
+  s10,
   s12,
   s14,
   s16,
@@ -20,6 +21,8 @@ extension AppIconSizeExtension on AppIconSizesData {
         return s4;
       case AppIconSize.s8:
         return s8;
+      case AppIconSize.s10:
+        return s10;
       case AppIconSize.s12:
         return s12;
       case AppIconSize.s14:
@@ -68,6 +71,16 @@ class AppIcon extends StatelessWidget {
     this.outlineColor,
     this.outlineThickness = 0.0,
   })  : size = AppIconSize.s8,
+        super(key: key);
+
+  const AppIcon.s10(
+    this.data, {
+    Key? key,
+    this.color,
+    this.gradient,
+    this.outlineColor,
+    this.outlineThickness = 0.0,
+  })  : size = AppIconSize.s10,
         super(key: key);
 
   const AppIcon.s12(

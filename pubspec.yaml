@@ -30,12 +30,12 @@ flutter:
     - family: Courier-Prime
       fonts:
         - asset: lib/fonts/Courier-Prime.ttf
-    - family: Zaplab-Icons
-      fonts:
-        - asset: lib/fonts/Zaplab-Icons.ttf
     - family: Inter
       fonts:
         - asset: lib/fonts/InterVariable.ttf
     - family: Lora
       fonts:
         - asset: lib/fonts/Lora[wght].ttf
+    - family: Zaplab-Icons
+      fonts:
+        - asset: lib/fonts/Zaplab-Icons.ttf

@@ -46,15 +46,19 @@ class AppProfilePicSquare extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final sizes = theme.sizes;
-    final icons = theme.icons; // Access your AppIconsData
+    final icons = theme.icons;
     final resolvedSize = _resolveSize(size, sizes);
     final thickness = LineThicknessData.normal().thin;
 
-    return Container(
+    final borderRadius = resolvedSize >= sizes.s72
+        ? theme.radius.asBorderRadius().rad24
+        : theme.radius.asBorderRadius().rad16;
+
+    return AppContainer(
       width: resolvedSize,
       height: resolvedSize,
       decoration: BoxDecoration(
-        borderRadius: theme.radius.asBorderRadius().rad16,
+        borderRadius: borderRadius,
         border: Border.all(
           color: theme.colors.white16,
           width: thickness,
@@ -62,7 +66,7 @@ class AppProfilePicSquare extends StatelessWidget {
         color: theme.colors.grey66,
       ),
       child: ClipRRect(
-        borderRadius: theme.radius.asBorderRadius().rad16,
+        borderRadius: borderRadius,
         child: Image.network(
           imageUrl,
           fit: BoxFit.cover,

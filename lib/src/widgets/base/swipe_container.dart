@@ -21,7 +21,7 @@ class AppSwipeContainer extends StatefulWidget {
     this.rightContent,
     this.onSwipeLeft,
     this.onSwipeRight,
-    this.actionWidth = 64,
+    this.actionWidth = 56,
     this.decoration,
     this.padding,
     this.margin,
@@ -34,8 +34,9 @@ class AppSwipeContainer extends StatefulWidget {
 }
 
 class _AppSwipeContainerState extends State<AppSwipeContainer>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _controller;
+  late AnimationController _popController;
   late Animation<double> _leftWidthAnimation;
   late Animation<double> _rightWidthAnimation;
   late Animation<Offset> _slideAnimation;
@@ -62,6 +63,10 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
     _controller = AnimationController(
       vsync: this,
       duration: AppDurationsData.normal().normal,
+    );
+    _popController = AnimationController(
+      vsync: this,
+      duration: AppDurationsData.normal().fast,
     );
     _slideAnimation = Tween<Offset>(
       begin: Offset.zero,
@@ -103,6 +108,7 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
   @override
   void dispose() {
     _controller.dispose();
+    _popController.dispose();
     super.dispose();
   }
 
@@ -141,6 +147,9 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
         parent: _controller,
         curve: Curves.easeInOut,
       ));
+
+      // Only trigger pop when reaching full scale during expansion
+      final previousScale = _leftScaleAnimation.value;
       _leftScaleAnimation = Tween<double>(
         begin: 0,
         end: progress.toDouble(),
@@ -148,8 +157,17 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
         parent: _controller,
         curve: Curves.elasticOut,
       ));
+
+      if (progress >= 0.99 &&
+          previousScale < 0.99 &&
+          !_popController.isAnimating) {
+        _popController.forward(from: 0).then((_) => _popController.reverse());
+      }
     } else if (_isRightActionVisible) {
       final progress = (-delta / widget.actionWidth).clamp(0, 1);
+
+      // Only trigger pop when reaching full scale during expansion
+      final previousScale = _rightScaleAnimation.value;
       _rightScaleAnimation = Tween<double>(
         begin: 0,
         end: progress.toDouble(),
@@ -157,6 +175,13 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
         parent: _controller,
         curve: Curves.elasticOut,
       ));
+
+      if (progress >= 0.99 &&
+          previousScale < 0.99 &&
+          !_popController.isAnimating) {
+        _popController.forward(from: 0).then((_) => _popController.reverse());
+      }
+
       _rightWidthAnimation = Tween<double>(
         begin: 0,
         end: (-delta).clamp(0, widget.actionWidth),
@@ -282,7 +307,14 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
                       child: Center(
                         child: ScaleTransition(
                           scale: _leftScaleAnimation,
-                          child: widget.leftContent,
+                          child: ScaleTransition(
+                            scale: Tween<double>(begin: 1.0, end: 1.25)
+                                .animate(CurvedAnimation(
+                              parent: _popController,
+                              curve: Curves.easeOut,
+                            )),
+                            child: widget.leftContent,
+                          ),
                         ),
                       ),
                     ),
@@ -306,7 +338,14 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
                       child: Center(
                         child: ScaleTransition(
                           scale: _rightScaleAnimation,
-                          child: widget.rightContent,
+                          child: ScaleTransition(
+                            scale: Tween<double>(begin: 1.0, end: 1.25)
+                                .animate(CurvedAnimation(
+                              parent: _popController,
+                              curve: Curves.easeOut,
+                            )),
+                            child: widget.rightContent,
+                          ),
                         ),
                       ),
                     ),

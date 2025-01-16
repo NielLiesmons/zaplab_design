@@ -29,6 +29,7 @@ class AppZapModal extends StatefulWidget {
             return AppContainer(
               child: Column(
                 children: [
+                  const AppGap.s4(),
                   AppZapSlider(
                     initialValue: amount,
                     otherZaps: otherZaps,

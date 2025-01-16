@@ -37,12 +37,12 @@ class AppMessageBubble extends StatelessWidget {
           bottomLeft: isLastInStack ? theme.radius.rad4 : theme.radius.rad16,
         ),
       ),
-      leftContent: AppIcon.s20(
+      leftContent: AppIcon.s16(
         theme.icons.characters.reply,
         outlineColor: theme.colors.white,
         outlineThickness: LineThicknessData.normal().medium,
       ),
-      rightContent: AppIcon.s12(
+      rightContent: AppIcon.s10(
         theme.icons.characters.chevronUp,
         outlineColor: theme.colors.white,
         outlineThickness: LineThicknessData.normal().medium,

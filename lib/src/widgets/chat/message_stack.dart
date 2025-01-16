@@ -43,6 +43,8 @@ class AppMessageStack extends StatelessWidget {
             ),
           ),
         ),
+        const AppGap.s20(),
+        const AppGap.s8(),
       ],
     );
   }
