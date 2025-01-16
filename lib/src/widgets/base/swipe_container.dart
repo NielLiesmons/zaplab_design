@@ -48,7 +48,7 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
   Axis? _lockedAxis;
   double _initialDragDelta = 0;
   static const double _kTouchSlopMobile = 8.0;
-  static const double _kTouchSlopDesktop = 32.0;
+  static const double _kTouchSlopDesktop = 40.0;
 
   double get _touchSlop {
     if (!Platform.isAndroid && !Platform.isIOS) {
