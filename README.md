@@ -10,12 +10,16 @@ For general information about developing packages, see the Dart guide for
 and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/to/develop-packages).
 -->
+![Zaplab Design](https://github.com/NielLiesmons/zaplab_design_demo/blob/main/images/Zaplab-Hero-Image.png)
 
-
-## Zaplab Design
+# Zaplab Design
 
 UI widget library for Nostr Apps
 
+## Docs
+
 Documentation is in the works. 
 
-For now feel free to test some of the widgets with this [Demo App (WIP)](https://github.com/NielLiesmons/zaplab_design/blob/main/demo_app/app-release.apk)
+## Demo App
+
+For now feel free to test some of the widgets with this [Demo App (WIP)](https://github.com/NielLiesmons/zaplab_design_demo/blob/main/demo_app/app-release.apk)
