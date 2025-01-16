@@ -18,4 +18,4 @@ UI widget library for Nostr Apps
 
 Documentation is in the works. 
 
-For now feel free to test some of the widgets with this [Demo App (WIP)](https://github.com/nielliesmons/zaplab_design/demo_app/app-release.apk)
+For now feel free to test some of the widgets with this [Demo App (WIP)](https://github.com/NielLiesmons/zaplab_design/blob/main/demo_app/app-release.apk)
