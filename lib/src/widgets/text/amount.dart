@@ -17,7 +17,7 @@ class AppAmount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formattedValue = value.toInt().toString().replaceAllMapped(
-        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.');
+        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
 
     return AppText(
       formattedValue,

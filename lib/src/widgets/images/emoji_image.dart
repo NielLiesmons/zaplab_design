@@ -19,9 +19,13 @@ class AppEmojiImage extends StatelessWidget {
       width: size,
       height: size,
       fit: BoxFit.contain,
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return const AppSkeletonLoader();
+      },
       errorBuilder: (context, error, stackTrace) {
         return AppIcon.s16(
-          theme.icons.characters.heart,
+          theme.icons.characters.emojiFill,
           color: theme.colors.white33,
         );
       },

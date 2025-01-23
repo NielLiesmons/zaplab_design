@@ -55,11 +55,14 @@ class AppIconCharactersData extends Equatable {
     required this.counter,
     required this.crown,
     required this.cross,
-    required this.delete,
+    required this.details,
     required this.drag,
     required this.download,
     required this.draft,
     required this.draw,
+    required this.emojiFill,
+    required this.emojiLine,
+    required this.expand,
     required this.flip,
     required this.focus,
     required this.gif,
@@ -99,6 +102,7 @@ class AppIconCharactersData extends Equatable {
     required this.star,
     required this.sticker,
     required this.text,
+    required this.tools,
     required this.transfer,
     required this.video,
     required this.voice,
@@ -112,9 +116,9 @@ class AppIconCharactersData extends Equatable {
         arrowDown: String.fromCharCodes([57344, 58323, 60960, 57526]),
         arrowUp: String.fromCharCodes([57344, 58045, 57440, 57469]),
         at: String.fromCharCodes([60468]),
+        backspace: String.fromCharCodes([58635, 60645, 57472]),
         backup: String.fromCharCodes([57344, 58676, 61323, 57407]),
         bell: String.fromCharCodes([58082, 58628]),
-        backspace: String.fromCharCodes([58635, 60645, 57472]),
         camera: String.fromCharCodes([57344, 58649, 58941, 57564]),
         check: String.fromCharCodes([58788, 61009, 57353]),
         chevronDown: String.fromCharCodes([57344, 59309, 61295, 57476]),
@@ -127,11 +131,14 @@ class AppIconCharactersData extends Equatable {
         counter: String.fromCharCodes([58258, 59222, 57597]),
         cross: String.fromCharCodes([58793, 59781, 57345]),
         crown: String.fromCharCodes([58793, 59788, 57352]),
-        delete: String.fromCharCodes([57344, 58618, 59771, 57430]),
+        details: String.fromCharCodes([58830, 59635, 57411]),
         download: String.fromCharCodes([58706, 60105, 57481]),
         draft: String.fromCharCodes([58807, 59291, 57346]),
         drag: String.fromCharCodes([58099, 60725]),
         draw: String.fromCharCodes([58099, 60741]),
+        expand: String.fromCharCodes([57344, 58574, 59170, 57447]),
+        emojiFill: String.fromCharCodes([58952, 61015, 57578]),
+        emojiLine: String.fromCharCodes([58953, 57618, 57435]),
         flip: String.fromCharCodes([58113, 57454]),
         focus: String.fromCharCodes([58834, 58702, 57353]),
         gif: String.fromCharCodes([57744, 57541]),
@@ -171,6 +178,7 @@ class AppIconCharactersData extends Equatable {
         star: String.fromCharCodes([58209, 58963]),
         sticker: String.fromCharCodes([57344, 59147, 60151, 57540]),
         text: String.fromCharCodes([58213, 58670]),
+        tools: String.fromCharCodes([59031, 60574, 57356]),
         transfer: String.fromCharCodes([58566, 59576, 57580]),
         video: String.fromCharCodes([59057, 57672, 57356]),
         voice: String.fromCharCodes([59059, 60948, 57347]),
@@ -197,11 +205,14 @@ class AppIconCharactersData extends Equatable {
   final String counter;
   final String crown;
   final String cross;
-  final String delete;
+  final String details;
   final String drag;
   final String download;
   final String draft;
   final String draw;
+  final String expand;
+  final String emojiFill;
+  final String emojiLine;
   final String flip;
   final String focus;
   final String gif;
@@ -241,6 +252,7 @@ class AppIconCharactersData extends Equatable {
   final String star;
   final String sticker;
   final String text;
+  final String tools;
   final String transfer;
   final String video;
   final String voice;
@@ -268,11 +280,14 @@ class AppIconCharactersData extends Equatable {
         counter.named('counter'),
         crown.named('crown'),
         cross.named('cross'),
-        delete.named('delete'),
+        details.named('details'),
         drag.named('drag'),
         download.named('download'),
         draft.named('draft'),
         draw.named('draw'),
+        expand.named('expand'),
+        emojiFill.named('emojiFill'),
+        emojiLine.named('emojiLine'),
         flip.named('flip'),
         focus.named('focus'),
         gif.named('gif'),
@@ -312,6 +327,7 @@ class AppIconCharactersData extends Equatable {
         star.named('star'),
         sticker.named('sticker'),
         text.named('text'),
+        tools.named('tools'),
         transfer.named('transfer'),
         video.named('video'),
         voice.named('voice'),
@@ -327,6 +343,7 @@ class AppIconSizesData extends Equatable {
     required this.s12,
     required this.s14,
     required this.s16,
+    required this.s18,
     required this.s20,
     required this.s24,
     required this.s28,
@@ -340,6 +357,7 @@ class AppIconSizesData extends Equatable {
         s12: 12.0,
         s14: 14.0,
         s16: 16.0,
+        s18: 18.0,
         s20: 20.0,
         s24: 24.0,
         s28: 28.0,
@@ -352,6 +370,7 @@ class AppIconSizesData extends Equatable {
   final double s12;
   final double s14;
   final double s16;
+  final double s18;
   final double s20;
   final double s24;
   final double s28;
@@ -365,6 +384,7 @@ class AppIconSizesData extends Equatable {
         s12.named('s12'),
         s14.named('s14'),
         s16.named('s16'),
+        s18.named('s18'),
         s20.named('s20'),
         s24.named('s24'),
         s28.named('s28'),

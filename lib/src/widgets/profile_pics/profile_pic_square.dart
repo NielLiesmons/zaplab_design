@@ -70,6 +70,10 @@ class AppProfilePicSquare extends StatelessWidget {
         child: Image.network(
           imageUrl,
           fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return const AppSkeletonLoader();
+          },
           errorBuilder: (context, error, stackTrace) {
             final fallbackIconSize = resolvedSize * 0.6;
             return Center(

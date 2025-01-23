@@ -85,6 +85,10 @@ class AppProfilePicStory extends StatelessWidget {
             child: Image.network(
               imageUrl,
               fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return const AppSkeletonLoader();
+              },
               errorBuilder: (context, error, stackTrace) {
                 final fallbackIconSize = adjustedInnerSize * 0.6;
                 return Center(

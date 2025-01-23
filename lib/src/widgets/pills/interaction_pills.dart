@@ -72,8 +72,9 @@ class _AppInteractionPillsState extends State<AppInteractionPills>
 
   @override
   Widget build(BuildContext context) {
-    if (widget.zaps.isEmpty && widget.reactions.isEmpty)
+    if (widget.zaps.isEmpty && widget.reactions.isEmpty) {
       return const SizedBox();
+    }
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -125,7 +126,7 @@ class _AppInteractionPillsState extends State<AppInteractionPills>
   }) {
     if (controller == null) {
       return AppContainer(
-        padding: const AppEdgeInsets.only(right: AppGapSize.s12),
+        padding: const AppEdgeInsets.only(right: AppGapSize.s8),
         child: child,
       );
     }
@@ -145,7 +146,7 @@ class _AppInteractionPillsState extends State<AppInteractionPills>
         ),
       ]).animate(controller),
       child: AppContainer(
-        padding: const AppEdgeInsets.only(right: AppGapSize.s12),
+        padding: const AppEdgeInsets.only(right: AppGapSize.s8),
         child: child,
       ),
     );

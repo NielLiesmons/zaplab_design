@@ -287,7 +287,9 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
               animation: _slideAnimation,
               builder: (context, child) => Transform.translate(
                 offset: _slideAnimation.value,
-                child: widget.child,
+                child: ClipRRect(
+                  child: widget.child,
+                ),
               ),
             ),
             // Left action overlay

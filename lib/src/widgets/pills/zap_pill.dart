@@ -24,17 +24,19 @@ class AppZapPill extends StatelessWidget {
       builder: (BuildContext context, TapState state, bool isFocused) {
         double scaleFactor = 1.0;
         if (state == TapState.pressed) {
-          scaleFactor = 0.99;
+          scaleFactor = 0.98;
         } else if (state == TapState.hover) {
-          scaleFactor = 1.01;
+          scaleFactor = 1.04;
         }
 
-        return Transform.scale(
+        return AnimatedScale(
           scale: scaleFactor,
+          duration: AppDurationsData.normal().fast,
+          curve: Curves.easeInOut,
           child: AppContainer(
             decoration: BoxDecoration(
               color: isInsideModal
-                  ? theme.colors.white16
+                  ? theme.colors.white8
                   : isInsideMessageBubble
                       ? theme.colors.white16
                       : theme.colors.grey66,

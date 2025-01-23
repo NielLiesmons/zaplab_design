@@ -17,13 +17,16 @@ class AppColorsData extends Equatable {
   final Color grey;
   final Color grey66;
   final Color grey33;
+  final Color blurpleColor;
+  final Color blurpleColor66;
+  final Color goldColor;
+  final Color goldColor66;
 
   /// Linear Gradients
   final Gradient blurple;
   final Gradient blurple66;
   final Gradient blurple33;
   final Gradient blurple16;
-  final Gradient blurpleLight;
   final Gradient rouge;
   final Gradient rouge66;
   final Gradient rouge33;
@@ -51,11 +54,14 @@ class AppColorsData extends Equatable {
     required this.grey,
     required this.grey66,
     required this.grey33,
+    required this.blurpleColor,
+    required this.blurpleColor66,
+    required this.goldColor,
+    required this.goldColor66,
     required this.blurple,
     required this.blurple66,
     required this.blurple33,
     required this.blurple16,
-    required this.blurpleLight,
     required this.rouge,
     required this.rouge66,
     required this.rouge33,
@@ -86,6 +92,10 @@ class AppColorsData extends Equatable {
         grey: const Color(0xFF232323),
         grey66: const Color(0xFF333333).withOpacity(0.66),
         grey33: const Color(0xFF333333).withOpacity(0.33),
+        blurpleColor: const Color(0xFF8483FE),
+        blurpleColor66: const Color(0xFF8483FE).withOpacity(0.66),
+        goldColor: const Color(0xFFF5C763),
+        goldColor66: const Color(0xFFF5C763).withOpacity(0.66),
 
         /// Linear Gradients (top-left to bottom-right alignment)
         blurple: const LinearGradient(
@@ -113,14 +123,6 @@ class AppColorsData extends Equatable {
           colors: [
             const Color(0xFF636AFF).withOpacity(0.16),
             const Color(0xFF5445FF).withOpacity(0.16)
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        blurpleLight: LinearGradient(
-          colors: [
-            const Color(0xFF888DFE),
-            const Color(0xFF7E73FF),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -233,6 +235,11 @@ class AppColorsData extends Equatable {
         grey: const Color(0xFFDCDCDC),
         grey66: const Color(0xFFCCCCCC).withOpacity(0.66),
         grey33: const Color(0xFFCCCCCC).withOpacity(0.33),
+        blurpleColor: const Color.fromARGB(255, 75, 75, 205),
+        blurpleColor66:
+            const Color.fromARGB(255, 75, 75, 205).withOpacity(0.66),
+        goldColor: const Color.fromARGB(255, 233, 173, 44),
+        goldColor66: const Color.fromARGB(255, 233, 173, 44).withOpacity(0.66),
 
         /// Linear Gradients (top-left to bottom-right alignment)
         blurple: const LinearGradient(
@@ -261,11 +268,6 @@ class AppColorsData extends Equatable {
             const Color(0xFF636AFF).withOpacity(0.16),
             const Color(0xFF5445FF).withOpacity(0.16)
           ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        blurpleLight: const LinearGradient(
-          colors: [Color(0xFF636AFF), Color(0xFF5445FF)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -377,6 +379,10 @@ class AppColorsData extends Equatable {
         grey: const Color(0xFF232323),
         grey66: const Color(0xFF333333).withOpacity(0.66),
         grey33: const Color(0xFF333333).withOpacity(0.33),
+        blurpleColor: const Color(0xFF8483FE),
+        blurpleColor66: const Color(0xFF8483FE).withOpacity(0.66),
+        goldColor: const Color(0xFFF5C763),
+        goldColor66: const Color(0xFFF5C763).withOpacity(0.66),
 
         /// Linear Gradients (top-left to bottom-right alignment)
         blurple: const LinearGradient(
@@ -404,14 +410,6 @@ class AppColorsData extends Equatable {
           colors: [
             const Color(0xFF636AFF).withOpacity(0.16),
             const Color(0xFF5445FF).withOpacity(0.16)
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        blurpleLight: LinearGradient(
-          colors: [
-            const Color(0xFF888DFE).withOpacity(0.33),
-            const Color(0xFF7E73FF).withOpacity(0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -523,6 +521,10 @@ class AppColorsData extends Equatable {
         grey.named('grey'),
         grey66.named('grey66'),
         grey33.named('grey33'),
+        blurpleColor.named('blurpleColor'),
+        blurpleColor66.named('blurpleColor66'),
+        goldColor.named('goldColor'),
+        goldColor66.named('goldColor66'),
         blurple.named('blurple'),
         blurple66.named('blurple66'),
         blurple33.named('blurple33'),

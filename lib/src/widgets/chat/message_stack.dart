@@ -59,21 +59,23 @@ class AppMessageStack extends StatelessWidget {
 class MessageData {
   final String message;
   final String profileName;
-  final DateTime timestamp;
   final String eventId;
-  final void Function(String)? onReply;
-  final void Function(String)? onActions;
+  final DateTime timestamp;
   final List<Reaction> reactions;
   final List<Zap> zaps;
+  final List<QuotedMessage>? quotedMessages;
+  final void Function(String)? onReply;
+  final void Function(String)? onActions;
 
   const MessageData({
     required this.message,
     required this.profileName,
-    required this.timestamp,
     required this.eventId,
-    this.onReply,
-    this.onActions,
+    required this.timestamp,
     this.reactions = const [],
     this.zaps = const [],
+    this.quotedMessages,
+    this.onReply,
+    this.onActions,
   });
 }

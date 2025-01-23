@@ -5,13 +5,15 @@ class AppTabButton extends StatelessWidget {
   const AppTabButton({
     super.key,
     required this.label,
+    required this.icon,
+    required this.onTap,
     this.count,
-    this.onTap,
     this.onLongPress,
     this.isSelected = false,
   });
 
   final String label;
+  final Widget icon;
   final int? count;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;

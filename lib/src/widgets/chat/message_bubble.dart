@@ -24,6 +24,7 @@ class AppMessageBubble extends StatelessWidget {
   final String eventId;
   final List<Reaction> reactions;
   final List<Zap> zaps;
+  final List<QuotedMessage>? quotedMessages;
   final void Function(String) onActions;
   final void Function(String) onReply;
   final void Function(String, String)? onReact;
@@ -39,6 +40,7 @@ class AppMessageBubble extends StatelessWidget {
     this.isLastInStack = false,
     this.reactions = const [],
     this.zaps = const [],
+    this.quotedMessages,
     required this.onActions,
     required this.onReply,
     this.onReact,
@@ -109,7 +111,10 @@ class AppMessageBubble extends StatelessWidget {
                           ],
                         ),
                       ],
-                      AppMessageContent(content: message),
+                      AppMessageContent(
+                        content: message,
+                        quotedMessages: quotedMessages,
+                      ),
                     ],
                   ),
                 ),

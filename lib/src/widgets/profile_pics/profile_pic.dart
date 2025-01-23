@@ -98,7 +98,7 @@ class AppProfilePic extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final sizes = theme.sizes;
-    final icons = theme.icons; // Access your AppIconsData
+    final icons = theme.icons;
     final resolvedSize = _resolveSize(size, sizes);
     final thickness = LineThicknessData.normal().thin;
 
@@ -117,6 +117,10 @@ class AppProfilePic extends StatelessWidget {
         child: Image.network(
           imageUrl,
           fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return const AppSkeletonLoader();
+          },
           errorBuilder: (context, error, stackTrace) {
             final fallbackIconSize = resolvedSize * 0.6;
             return Center(

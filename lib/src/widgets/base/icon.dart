@@ -8,6 +8,7 @@ enum AppIconSize {
   s12,
   s14,
   s16,
+  s18,
   s20,
   s24,
   s28,
@@ -29,6 +30,8 @@ extension AppIconSizeExtension on AppIconSizesData {
         return s14;
       case AppIconSize.s16:
         return s16;
+      case AppIconSize.s18:
+        return s18;
       case AppIconSize.s20:
         return s20;
       case AppIconSize.s24:
@@ -111,6 +114,16 @@ class AppIcon extends StatelessWidget {
     this.outlineColor,
     this.outlineThickness = 0.0,
   })  : size = AppIconSize.s16,
+        super(key: key);
+
+  const AppIcon.s18(
+    this.data, {
+    Key? key,
+    this.color,
+    this.gradient,
+    this.outlineColor,
+    this.outlineThickness = 0.0,
+  })  : size = AppIconSize.s18,
         super(key: key);
 
   const AppIcon.s20(

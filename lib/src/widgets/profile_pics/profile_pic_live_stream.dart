@@ -94,6 +94,10 @@ class AppProfilePicStream extends StatelessWidget {
             child: Image.network(
               imageUrl,
               fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return const AppSkeletonLoader();
+              },
               errorBuilder: (context, error, stackTrace) {
                 final fallbackIconSize = adjustedInnerSize2 * 0.6;
                 return Center(

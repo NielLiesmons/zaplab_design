@@ -29,13 +29,13 @@ flutter:
   fonts:
     - family: Courier-Prime
       fonts:
-        - asset: lib/fonts/Courier-Prime.ttf
+        - asset: assets/fonts/Courier-Prime.ttf
     - family: Inter
       fonts:
-        - asset: lib/fonts/InterVariable.ttf
+        - asset: assets/fonts/InterVariable.ttf
     - family: Lora
       fonts:
-        - asset: lib/fonts/Lora[wght].ttf
+        - asset: assets/fonts/Lora[wght].ttf
     - family: Zaplab-Icons
       fonts:
-        - asset: lib/fonts/Zaplab-Icons.ttf
+        - asset: assets/fonts/Zaplab-Icons.ttf

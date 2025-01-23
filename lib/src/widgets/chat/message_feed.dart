@@ -8,6 +8,7 @@ class Message {
   final DateTime timestamp;
   final List<Reaction> reactions;
   final List<Zap> zaps;
+  final List<QuotedMessage>? quotedMessages;
 
   const Message({
     required this.eventId,
@@ -17,6 +18,7 @@ class Message {
     required this.timestamp,
     this.reactions = const [],
     this.zaps = const [],
+    this.quotedMessages,
   });
 }
 
@@ -112,6 +114,7 @@ class _AppMessageFeedState extends State<AppMessageFeed> {
           timestamp: message.timestamp,
           reactions: [...message.reactions, data.$2],
           zaps: message.zaps,
+          quotedMessages: message.quotedMessages,
         );
       }
     });
@@ -130,6 +133,7 @@ class _AppMessageFeedState extends State<AppMessageFeed> {
           timestamp: message.timestamp,
           reactions: message.reactions,
           zaps: [...message.zaps, data.$2],
+          quotedMessages: message.quotedMessages,
         );
       }
     });
@@ -175,6 +179,7 @@ class _AppMessageFeedState extends State<AppMessageFeed> {
                         onActions: widget.onActions,
                         reactions: msg.reactions,
                         zaps: msg.zaps,
+                        quotedMessages: msg.quotedMessages,
                       ))
                   .toList(),
             ),
