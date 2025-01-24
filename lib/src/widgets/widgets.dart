@@ -1,6 +1,7 @@
 export 'base/base.dart';
 
 export 'apps/app_release_card.dart';
+export 'apps/app_small_card.dart';
 
 export 'buttons/button.dart';
 export 'buttons/cross_button.dart';
@@ -24,6 +25,9 @@ export 'pills/interaction_pills.dart';
 export 'pills/interaction_bar.dart';
 export 'pills/reaction_pill.dart';
 export 'pills/zap_pill.dart';
+
+export 'posts/feed_post.dart';
+export 'posts/post.dart';
 
 export 'profile_pics/profile_pic_live_story.dart';
 export 'profile_pics/profile_pic_live_stream.dart';

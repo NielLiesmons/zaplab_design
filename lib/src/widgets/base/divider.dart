@@ -33,7 +33,7 @@ class AppDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     return Center(
-      child: Container(
+      child: AppContainer(
         height: orientation == AppDividerOrientation.horizontal ? 0 : null,
         width: orientation == AppDividerOrientation.vertical ? 0 : null,
         decoration: BoxDecoration(

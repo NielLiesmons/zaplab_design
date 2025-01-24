@@ -27,8 +27,8 @@ class AppMessageBubble extends StatelessWidget {
   final List<QuotedMessage>? quotedMessages;
   final void Function(String) onActions;
   final void Function(String) onReply;
-  final void Function(String, String)? onReact;
-  final void Function(String, int, String?)? onZap;
+  final void Function(String, String)? onReactionTap;
+  final void Function(String, int, String?)? onZapTap;
 
   const AppMessageBubble({
     super.key,
@@ -43,8 +43,8 @@ class AppMessageBubble extends StatelessWidget {
     this.quotedMessages,
     required this.onActions,
     required this.onReply,
-    this.onReact,
-    this.onZap,
+    this.onReactionTap,
+    this.onZapTap,
   });
 
   @override
@@ -95,6 +95,7 @@ class AppMessageBubble extends StatelessWidget {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             if (profileName != null)
                               AppText.bold12(
@@ -124,8 +125,8 @@ class AppMessageBubble extends StatelessWidget {
                     eventId: eventId,
                     zaps: zaps,
                     reactions: reactions,
-                    onZap: onZap,
-                    onReact: onReact,
+                    onZapTap: onZapTap,
+                    onReactionTap: onReactionTap,
                   ),
                 ],
               ],

@@ -50,7 +50,7 @@ class AppQuotedMessage extends StatelessWidget {
         child: Row(
           children: [
             AppContainer(
-              width: 2.8,
+              width: LineThicknessData.normal().thick,
               decoration: BoxDecoration(
                 color: theme.colors.white66,
               ),

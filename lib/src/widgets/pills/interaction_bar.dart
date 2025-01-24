@@ -4,8 +4,8 @@ class AppInteractionBar extends StatefulWidget {
   final List<Zap> zaps;
   final List<Reaction> reactions;
   final String eventId;
-  final void Function(String, int, String?)? onZap;
-  final void Function(String, String)? onReact;
+  final void Function(String, int, String?)? onZapTap;
+  final void Function(String, String)? onReactionTap;
   final VoidCallback? onExpand;
 
   const AppInteractionBar({
@@ -13,8 +13,8 @@ class AppInteractionBar extends StatefulWidget {
     required this.eventId,
     this.zaps = const [],
     this.reactions = const [],
-    this.onZap,
-    this.onReact,
+    this.onZapTap,
+    this.onReactionTap,
     this.onExpand,
   });
 
@@ -135,8 +135,8 @@ class _AppInteractionBarState extends State<AppInteractionBar>
                       eventId: widget.eventId,
                       zaps: widget.zaps,
                       reactions: widget.reactions,
-                      onZap: widget.onZap,
-                      onReact: widget.onReact,
+                      onZapTap: widget.onZapTap,
+                      onReactionTap: widget.onReactionTap,
                     ),
                   ],
                 ),

@@ -1,6 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppReleaseCard extends StatelessWidget {
+class AppAppReleaseCard extends StatelessWidget {
   final String appName;
   final String releaseNumber;
   final String description;
@@ -10,7 +10,7 @@ class AppReleaseCard extends StatelessWidget {
   final VoidCallback onViewMore;
   final VoidCallback onInstall;
 
-  const AppReleaseCard({
+  const AppAppReleaseCard({
     super.key,
     required this.appName,
     required this.releaseNumber,
@@ -39,7 +39,15 @@ class AppReleaseCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppText.h2(appName),
+                  Row(
+                    children: [
+                      AppText.h2(appName),
+                      const AppGap.s12(),
+                      AppIcon.s14(theme.icons.characters.chevronRight,
+                          outlineColor: theme.colors.white33,
+                          outlineThickness: LineThicknessData.normal().medium),
+                    ],
+                  ),
                   AppText.reg12(
                     releaseNumber,
                     color: theme.colors.white66,

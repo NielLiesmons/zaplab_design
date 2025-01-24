@@ -15,6 +15,7 @@ class AppSmallButton extends StatelessWidget {
     this.hoveredColor,
     this.pressedColor,
     this.square = false,
+    this.rounded = false,
   });
 
   final List<Widget> content;
@@ -28,6 +29,7 @@ class AppSmallButton extends StatelessWidget {
   final Color? hoveredColor;
   final Color? pressedColor;
   final bool square;
+  final bool rounded;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +70,7 @@ class AppSmallButton extends StatelessWidget {
             child: AppSmallButtonLayout(
               content: content,
               square: square,
+              rounded: rounded,
               onChevronTap: onChevronTap,
               gradient: state == TapState.hover
                   ? effectiveHoveredGradient
@@ -95,6 +98,7 @@ class AppSmallButtonLayout extends StatelessWidget {
     this.backgroundColor,
     this.onChevronTap,
     this.square = false,
+    this.rounded = false,
   });
 
   final List<Widget> content;
@@ -102,6 +106,7 @@ class AppSmallButtonLayout extends StatelessWidget {
   final Color? backgroundColor;
   final VoidCallback? onChevronTap;
   final bool square;
+  final bool rounded;
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +115,9 @@ class AppSmallButtonLayout extends StatelessWidget {
 
     return AppContainer(
       decoration: BoxDecoration(
-        borderRadius: theme.radius.asBorderRadius().rad8,
+        borderRadius: rounded
+            ? theme.radius.asBorderRadius().rad16
+            : theme.radius.asBorderRadius().rad8,
         gradient: gradient,
         color: gradient == null ? backgroundColor : null,
       ),

@@ -17,8 +17,8 @@ class AppSwipeContainer extends StatefulWidget {
   const AppSwipeContainer({
     super.key,
     required this.child,
-    this.leftContent,
-    this.rightContent,
+    required this.leftContent,
+    required this.rightContent,
     this.onSwipeLeft,
     this.onSwipeRight,
     this.actionWidth = 56,
@@ -274,11 +274,8 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
       onHorizontalDragUpdate: _handleDragUpdate,
       onHorizontalDragEnd: _handleDragEnd,
       child: AppContainer(
-        decoration: widget.decoration,
-        padding: widget.padding,
+        decoration: widget.decoration ?? const BoxDecoration(),
         margin: widget.margin,
-        alignment: widget.alignment,
-        constraints: widget.constraints,
         clipBehavior: Clip.hardEdge,
         child: Stack(
           children: [
@@ -288,7 +285,12 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
               builder: (context, child) => Transform.translate(
                 offset: _slideAnimation.value,
                 child: ClipRRect(
-                  child: widget.child,
+                  child: AppContainer(
+                    padding: widget.padding,
+                    alignment: widget.alignment,
+                    constraints: widget.constraints,
+                    child: widget.child,
+                  ),
                 ),
               ),
             ),

@@ -4,16 +4,16 @@ class AppInteractionPills extends StatefulWidget {
   final List<Zap> zaps;
   final List<Reaction> reactions;
   final String eventId;
-  final void Function(String, int, String?)? onZap;
-  final void Function(String, String)? onReact;
+  final void Function(String, int, String?)? onZapTap;
+  final void Function(String, String)? onReactionTap;
 
   const AppInteractionPills({
     super.key,
     required this.eventId,
     this.zaps = const [],
     this.reactions = const [],
-    this.onZap,
-    this.onReact,
+    this.onZapTap,
+    this.onReactionTap,
   });
 
   @override
@@ -76,13 +76,18 @@ class _AppInteractionPillsState extends State<AppInteractionPills>
       return const SizedBox();
     }
 
+    final sortedZaps = List.from(widget.zaps)
+      ..sort((a, b) => b.amount.compareTo(a.amount) != 0
+          ? b.amount.compareTo(a.amount)
+          : a.timestamp.compareTo(b.timestamp));
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       clipBehavior: Clip.none,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ...widget.zaps.map((zap) {
+          ...sortedZaps.map((zap) {
             final key =
                 '${widget.eventId}-zap-${zap.timestamp.millisecondsSinceEpoch}';
             final controller = _pillControllers[key];
@@ -93,8 +98,8 @@ class _AppInteractionPillsState extends State<AppInteractionPills>
               child: AppZapPill(
                 amount: zap.amount,
                 profilePicUrl: zap.profilePicUrl,
-                onTap: () =>
-                    widget.onZap?.call(widget.eventId, zap.amount, zap.comment),
+                onTap: () => widget.onZapTap
+                    ?.call(widget.eventId, zap.amount, zap.comment),
               ),
             );
           }),
@@ -109,8 +114,8 @@ class _AppInteractionPillsState extends State<AppInteractionPills>
               child: AppReactionPill(
                 emojiUrl: reaction.emojiUrl,
                 profilePicUrl: reaction.profilePicUrl,
-                onTap: () =>
-                    widget.onReact?.call(widget.eventId, reaction.emojiUrl),
+                onTap: () => widget.onReactionTap
+                    ?.call(widget.eventId, reaction.emojiUrl),
               ),
             );
           }),

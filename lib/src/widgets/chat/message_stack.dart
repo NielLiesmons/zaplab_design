@@ -39,9 +39,9 @@ class AppMessageStack extends StatelessWidget {
                     onActions: (eventId) =>
                         messages[i].onActions?.call(eventId),
                     onReply: (eventId) => messages[i].onReply?.call(eventId),
-                    onReact: (eventId, reactionImageUrl) =>
+                    onReactionTap: (eventId, reactionImageUrl) =>
                         print('React: $eventId with $reactionImageUrl'),
-                    onZap: (eventId, amount, comment) =>
+                    onZapTap: (eventId, amount, comment) =>
                         print('Zap: $eventId with $amount sats'),
                   ),
                 ],
