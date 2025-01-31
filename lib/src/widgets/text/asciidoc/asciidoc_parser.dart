@@ -1,12 +1,92 @@
 import 'package:zaplab_design/src/widgets/text/asciidoc/asciidoc_element.dart';
 
 class AsciiDocParser {
-  List<AsciiDocElement> parse(String content) {
+  final _listCounter = _ListCounter();
+
+  List<AsciiDocElement> parse(String text) {
     final List<AsciiDocElement> elements = [];
-    final List<String> lines = content.split('\n');
+    final List<String> lines = text.split('\n');
+    int? lastListLevel;
 
     for (int i = 0; i < lines.length; i++) {
-      final String line = lines[i];
+      String line = lines[i].trim();
+
+      // Skip empty lines
+      if (line.isEmpty) {
+        continue;
+      }
+
+      // Handle horizontal rules
+      if (line == '---' || line == '- - -' || line == '***') {
+        elements.add(const AsciiDocElement(
+          type: AsciiDocElementType.horizontalRule,
+          content: '',
+        ));
+        continue;
+      }
+
+      // Reset counters only when we hit a non-list item
+      if (!line.startsWith('.')) {
+        _listCounter.reset();
+        lastListLevel = null;
+      }
+
+      // Unordered lists
+      if (line.startsWith('*')) {
+        final int level = _countLeadingAsterisk(line);
+        final String content = line.replaceAll(RegExp(r'^\*+\s*'), '').trim();
+
+        // Check if it's a checklist item
+        if (content.startsWith('[')) {
+          final bool? checked = _parseCheckboxState(content);
+          if (checked != null) {
+            elements.add(AsciiDocElement(
+              type: AsciiDocElementType.checkListItem,
+              content: content.substring(4).trim(), // Remove checkbox
+              level: level - 1,
+              checked: checked,
+            ));
+            continue;
+          }
+        }
+
+        elements.add(AsciiDocElement(
+          type: AsciiDocElementType.listItem,
+          content: content,
+          level: level - 1,
+        ));
+      }
+
+      // Ordered lists
+      if (line.startsWith('.')) {
+        final int level = _countLeadingDots(line);
+
+        // // Only reset if we went to a shallower level
+        // if (lastListLevel != null && level < lastListLevel) {
+        //   // _listCounter.reset();
+        // }
+        lastListLevel = level - 1;
+
+        elements.add(AsciiDocElement(
+          type: AsciiDocElementType.orderedListItem,
+          content: line.replaceAll(RegExp(r'^\.+\s*'), '').trim(),
+          level: level - 1,
+          attributes: {'number': _listCounter.nextNumber(level)},
+        ));
+        continue;
+      }
+
+      // Description lists
+      else if (line.contains('::')) {
+        final parts = line.split('::');
+        if (parts.length == 2) {
+          elements.add(AsciiDocElement(
+            type: AsciiDocElementType.descriptionListItem,
+            content: parts[0].trim(),
+            attributes: {'description': parts[1].trim()},
+          ));
+        }
+      }
 
       if (line.startsWith('=====')) {
         elements.add(AsciiDocElement(
@@ -58,15 +138,228 @@ class AsciiDocParser {
         ));
       }
 
-      // Handle regular paragraphs
-      else if (line.isNotEmpty) {
+      // Handle admonitions
+      else if (line.startsWith('NOTE:') ||
+          line.startsWith('TIP:') ||
+          line.startsWith('IMPORTANT:') ||
+          line.startsWith('WARNING:') ||
+          line.startsWith('CAUTION:')) {
+        final int colonIndex = line.indexOf(':');
+        final String type = line.substring(0, colonIndex);
+        final String admonitionContent = line.substring(colonIndex + 1).trim();
+
+        elements.add(AsciiDocElement(
+          type: AsciiDocElementType.admonition,
+          content: admonitionContent,
+          attributes: {'type': type.toLowerCase()},
+        ));
+      }
+
+      // Handle paragraph with styled text
+      if (!line.startsWith('=') &&
+          !line.startsWith('*') &&
+          !line.startsWith('.') &&
+          !line.startsWith('NOTE:') &&
+          !line.startsWith('TIP:') &&
+          !line.startsWith('IMPORTANT:') &&
+          !line.startsWith('WARNING:') &&
+          !line.startsWith('CAUTION:') &&
+          !line.startsWith('----')) {
         elements.add(AsciiDocElement(
           type: AsciiDocElementType.paragraph,
           content: line,
+          children: _parseStyledText(line),
         ));
       }
     }
 
     return elements;
+  }
+
+  int _countLeadingAsterisk(String line) {
+    int count = 0;
+    for (int i = 0; i < line.length; i++) {
+      if (line[i] == '*') {
+        count++;
+      } else {
+        break;
+      }
+    }
+    return count;
+  }
+
+  int _countLeadingDots(String line) {
+    int count = 0;
+    for (int i = 0; i < line.length; i++) {
+      if (line[i] == '.') {
+        count++;
+      } else {
+        break;
+      }
+    }
+    return count;
+  }
+
+  bool? _parseCheckboxState(String content) {
+    if (content.startsWith('[ ]')) return false;
+    if (content.startsWith('[*]') || content.startsWith('[x]')) return true;
+    return null;
+  }
+
+  List<AsciiDocElement>? _parseStyledText(String text) {
+    if (!text.contains('*') && !text.contains('_') && !text.contains('[.')) {
+      return null;
+    }
+
+    final List<AsciiDocElement> styledElements = [];
+    // Make combined patterns more specific and check them first
+    final RegExp combinedPattern =
+        RegExp(r'\*_(.*?)_\*'); // Only match *_text_* pattern
+    final RegExp combinedPattern2 =
+        RegExp(r'_\*(.*?)\*_'); // Only match _*text*_ pattern
+    final RegExp boldPattern =
+        RegExp(r'\*(?!_)(.*?)(?<!_)\*'); // Match * but not *_ or _*
+    final RegExp italicPattern =
+        RegExp(r'_(?!\*)(.*?)(?<!\*)_'); // Match _ but not _* or *_
+    final RegExp underlinePattern = RegExp(r'\[\.underline\]#(.*?)#');
+    final RegExp lineThroughPattern = RegExp(r'\[\.line-through\]#(.*?)#');
+
+    String remaining = text;
+    int currentPosition = 0;
+
+    while (currentPosition < text.length) {
+      final Match? combined1Match =
+          combinedPattern.matchAsPrefix(text, currentPosition);
+      final Match? combined2Match =
+          combinedPattern2.matchAsPrefix(text, currentPosition);
+      final Match? boldMatch = boldPattern.matchAsPrefix(text, currentPosition);
+      final Match? italicMatch =
+          italicPattern.matchAsPrefix(text, currentPosition);
+      final Match? underlineMatch =
+          underlinePattern.matchAsPrefix(text, currentPosition);
+      final Match? lineThroughMatch =
+          lineThroughPattern.matchAsPrefix(text, currentPosition);
+
+      final List<Match?> matches = [
+        combined1Match,
+        combined2Match,
+        boldMatch,
+        italicMatch,
+        underlineMatch,
+        lineThroughMatch
+      ].where((m) => m != null).toList();
+
+      if (matches.isEmpty) {
+        final nextSpecial =
+            text.indexOf(RegExp(r'[\*_\[]'), currentPosition + 1);
+        if (nextSpecial == -1) {
+          if (currentPosition < text.length) {
+            styledElements.add(AsciiDocElement(
+              type: AsciiDocElementType.styledText,
+              content: text.substring(currentPosition),
+            ));
+          }
+          break;
+        } else {
+          styledElements.add(AsciiDocElement(
+            type: AsciiDocElementType.styledText,
+            content: text.substring(currentPosition, nextSpecial),
+          ));
+          currentPosition = nextSpecial;
+          continue;
+        }
+      }
+
+      final Match firstMatch =
+          matches.reduce((a, b) => a!.start < b!.start ? a : b)!;
+
+      if (firstMatch.start > currentPosition) {
+        styledElements.add(AsciiDocElement(
+          type: AsciiDocElementType.styledText,
+          content: text.substring(currentPosition, firstMatch.start),
+        ));
+      }
+
+      final String content = firstMatch.group(1) ?? '';
+      final String style =
+          (firstMatch == combined1Match || firstMatch == combined2Match)
+              ? 'bold-italic'
+              : firstMatch == boldMatch
+                  ? 'bold'
+                  : firstMatch == italicMatch
+                      ? 'italic'
+                      : firstMatch == underlineMatch
+                          ? 'underline'
+                          : 'line-through';
+
+      styledElements.add(AsciiDocElement(
+        type: AsciiDocElementType.styledText,
+        content: content,
+        attributes: {'style': style},
+      ));
+
+      currentPosition = firstMatch.end;
+    }
+
+    return styledElements;
+  }
+}
+
+class _ListCounter {
+  final List<int> _numbers = [];
+  int? _lastLevel;
+
+  String nextNumber(int level) {
+    // Initialize if needed
+    while (_numbers.length < level) {
+      _numbers.add(0);
+    }
+
+    // If we're moving to a higher level (fewer dots)
+    if (_lastLevel != null && level < _lastLevel!) {
+      // Clear deeper levels
+      _numbers.length = level + 1;
+      // Increment this level
+      _numbers[level - 1]++;
+    }
+    // If we're at the same level
+    else if (level == _lastLevel) {
+      // Always increment when at the same level
+      _numbers[level - 1]++;
+    }
+    // If we're moving to a deeper level or first number
+    else {
+      // If we're moving deeper, keep parent numbers
+      if (level > 1 && _lastLevel != null && _lastLevel! < level) {
+        // Ensure we have space for the new level
+        while (_numbers.length < level) {
+          _numbers.add(0);
+        }
+        // Initialize this level at 1
+        _numbers[level - 1] = 1;
+      }
+      // If it's the first number at this level
+      else if (_numbers[level - 1] == 0) {
+        _numbers[level - 1] = 1;
+      }
+      // If we're at the same level but after a deeper level
+      else if (level == _lastLevel) {
+        _numbers[level - 1]++;
+      }
+    }
+
+    _lastLevel = level; // Changed this to maintain the actual level
+
+    // Build the number string
+    List<String> displayNumbers = [];
+    for (int i = 0; i < level; i++) {
+      displayNumbers.add(_numbers[i].toString());
+    }
+    return displayNumbers.join('.');
+  }
+
+  void reset() {
+    _numbers.clear();
+    _lastLevel = null;
   }
 }
