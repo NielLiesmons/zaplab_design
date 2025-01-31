@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:zaplab_design/src/utils/timestamp_formatter.dart';
 
 class MessageBubbleScope extends InheritedWidget {
   const MessageBubbleScope({
@@ -105,16 +106,16 @@ class AppMessageBubble extends StatelessWidget {
                             if (timestamp != null) ...[
                               const AppGap.s8(),
                               AppText.reg12(
-                                _formatTimestamp(timestamp!),
+                                TimestampFormatter.format(timestamp!,
+                                    format: TimestampFormat.relative),
                                 color: theme.colors.white33,
                               ),
                             ],
                           ],
                         ),
                       ],
-                      AppMessageContent(
+                      AppShortTextRenderer(
                         content: message,
-                        quotedMessages: quotedMessages,
                       ),
                     ],
                   ),
@@ -135,9 +136,5 @@ class AppMessageBubble extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _formatTimestamp(DateTime timestamp) {
-    return '${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}';
   }
 }

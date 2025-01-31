@@ -161,7 +161,7 @@ class _AppMessageFeedState extends State<AppMessageFeed> {
   Widget build(BuildContext context) {
     final List<List<Message>> messageStacks = _groupMessages(_messages);
     return AppContainer(
-      padding: const AppEdgeInsets.all(AppGapSize.s8),
+      padding: const AppEdgeInsets.all(AppGapSize.s6),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

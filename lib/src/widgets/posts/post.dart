@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:zaplab_design/src/utils/timestamp_formatter.dart';
 
 class AppPost extends StatelessWidget {
   final String content;
@@ -7,7 +8,7 @@ class AppPost extends StatelessWidget {
   final DateTime timestamp;
   final List<Reaction> reactions;
   final List<Zap> zaps;
-
+  final List<Community> communities;
   const AppPost({
     super.key,
     required this.content,
@@ -16,19 +17,8 @@ class AppPost extends StatelessWidget {
     required this.timestamp,
     this.reactions = const [],
     this.zaps = const [],
+    this.communities = const [],
   });
-
-  String _formatTimestamp(DateTime timestamp) {
-    final now = DateTime.now();
-    final difference = now.difference(timestamp);
-    if (difference.inMinutes < 60) {
-      return '${difference.inMinutes}m';
-    } else if (difference.inHours < 24) {
-      return '${difference.inHours}h';
-    } else {
-      return '${difference.inDays}d';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,16 +44,16 @@ class AppPost extends StatelessWidget {
                       children: [
                         AppText.bold14(profileName),
                         AppText.reg12(
-                          _formatTimestamp(timestamp),
+                          TimestampFormatter.format(timestamp,
+                              format: TimestampFormat.relative),
                           color: theme.colors.white33,
                         ),
                       ],
                     ),
-                    AppContainer(
-                      child: AppText.reg12(
-                        'TODO: communities',
-                        color: theme.colors.white33,
-                      ),
+                    const AppGap.s6(),
+                    AppCommunityStack(
+                      onTap: () {},
+                      communities: communities,
                     ),
                   ],
                 ),

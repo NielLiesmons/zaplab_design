@@ -1,10 +1,7 @@
+import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 enum AppProfilePicSize {
-  s2,
-  s4,
-  s6,
-  s8,
   s12,
   s16,
   s18,
@@ -24,75 +21,82 @@ enum AppProfilePicSize {
 }
 
 class AppProfilePic extends StatelessWidget {
-  const AppProfilePic(
+  AppProfilePic(
     this.imageUrl, {
     Key? key,
     this.size = AppProfilePicSize.s38,
-  }) : super(key: key);
+    VoidCallback? onTap,
+  })  : onTap = onTap ?? (() {}),
+        super(key: key);
 
-  const AppProfilePic.s2(this.imageUrl, {Key? key})
-      : size = AppProfilePicSize.s2,
-        super(key: key);
-  const AppProfilePic.s4(this.imageUrl, {Key? key})
-      : size = AppProfilePicSize.s4,
-        super(key: key);
-  const AppProfilePic.s6(this.imageUrl, {Key? key})
-      : size = AppProfilePicSize.s6,
-        super(key: key);
-  const AppProfilePic.s8(this.imageUrl, {Key? key})
-      : size = AppProfilePicSize.s8,
-        super(key: key);
-  const AppProfilePic.s12(this.imageUrl, {Key? key})
+  AppProfilePic.s12(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s12,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s16(this.imageUrl, {Key? key})
+  AppProfilePic.s16(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s16,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s18(this.imageUrl, {Key? key})
+  AppProfilePic.s18(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s18,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s20(this.imageUrl, {Key? key})
+  AppProfilePic.s20(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s20,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s24(this.imageUrl, {Key? key})
+  AppProfilePic.s24(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s24,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s28(this.imageUrl, {Key? key})
+  AppProfilePic.s28(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s28,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s32(this.imageUrl, {Key? key})
+  AppProfilePic.s32(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s32,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s38(this.imageUrl, {Key? key})
+  AppProfilePic.s38(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s38,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s40(this.imageUrl, {Key? key})
+  AppProfilePic.s40(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s40,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s48(this.imageUrl, {Key? key})
+  AppProfilePic.s48(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s48,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s56(this.imageUrl, {Key? key})
+  AppProfilePic.s56(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s56,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s64(this.imageUrl, {Key? key})
+  AppProfilePic.s64(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s64,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s72(this.imageUrl, {Key? key})
+  AppProfilePic.s72(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s72,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s80(this.imageUrl, {Key? key})
+  AppProfilePic.s80(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s80,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s96(this.imageUrl, {Key? key})
+  AppProfilePic.s96(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s96,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePic.s104(this.imageUrl, {Key? key})
+  AppProfilePic.s104(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSize.s104,
+        onTap = onTap ?? (() {}),
         super(key: key);
 
   final String imageUrl;
   final AppProfilePicSize size;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -102,54 +106,61 @@ class AppProfilePic extends StatelessWidget {
     final resolvedSize = _resolveSize(size, sizes);
     final thickness = LineThicknessData.normal().thin;
 
-    return Container(
-      width: resolvedSize,
-      height: resolvedSize,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: theme.colors.white16,
-          width: thickness,
-        ),
-        color: theme.colors.grey66,
-      ),
-      child: ClipOval(
-        child: Image.network(
-          imageUrl,
-          fit: BoxFit.cover,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return const AppSkeletonLoader();
-          },
-          errorBuilder: (context, error, stackTrace) {
-            final fallbackIconSize = resolvedSize * 0.6;
-            return Center(
-              child: Text(
-                icons.characters.profile,
-                style: TextStyle(
-                  fontFamily: icons.fontFamily,
-                  package: icons.fontPackage,
-                  fontSize: fallbackIconSize,
-                  color: theme.colors.white33,
-                ),
+    return TapBuilder(
+      onTap: onTap,
+      builder: (context, state, isFocused) {
+        double scaleFactor = 1.0;
+        if (state == TapState.pressed) {
+          scaleFactor = 0.98;
+        } else if (state == TapState.hover) {
+          scaleFactor = 1.02;
+        }
+
+        return Transform.scale(
+          scale: scaleFactor,
+          child: AppContainer(
+            width: resolvedSize,
+            height: resolvedSize,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: theme.colors.white16,
+                width: thickness,
               ),
-            );
-          },
-        ),
-      ),
+              color: theme.colors.grey66,
+            ),
+            child: ClipOval(
+              child: Image.network(
+                imageUrl,
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const AppSkeletonLoader();
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  final fallbackIconSize = resolvedSize * 0.6;
+                  return Center(
+                    child: Text(
+                      icons.characters.profile,
+                      style: TextStyle(
+                        fontFamily: icons.fontFamily,
+                        package: icons.fontPackage,
+                        fontSize: fallbackIconSize,
+                        color: theme.colors.white33,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
   double _resolveSize(AppProfilePicSize size, AppSizesData sizes) {
     switch (size) {
-      case AppProfilePicSize.s2:
-        return sizes.s2;
-      case AppProfilePicSize.s4:
-        return sizes.s4;
-      case AppProfilePicSize.s6:
-        return sizes.s6;
-      case AppProfilePicSize.s8:
-        return sizes.s8;
       case AppProfilePicSize.s12:
         return sizes.s12;
       case AppProfilePicSize.s16:

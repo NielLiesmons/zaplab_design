@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:zaplab_design/src/utils/timestamp_formatter.dart';
 
 class QuotedMessage {
   final String eventId;
@@ -31,10 +32,6 @@ class AppQuotedMessage extends StatelessWidget {
     required this.timestamp,
     this.eventId,
   });
-
-  String _formatTimestamp(DateTime timestamp) {
-    return '${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +73,8 @@ class AppQuotedMessage extends StatelessWidget {
                         ),
                         const Spacer(),
                         AppText.reg12(
-                          _formatTimestamp(timestamp),
+                          TimestampFormatter.format(timestamp,
+                              format: TimestampFormat.relative),
                           color: theme.colors.white33,
                         ),
                       ],

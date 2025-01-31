@@ -8,6 +8,7 @@ export 'padding.dart';
 export 'panel.dart';
 export 'safe_areas.dart';
 export 'scaffold.dart';
+export 'screen.dart';
 export 'skeleton_loader.dart';
 export 'swipe_container.dart';
 export 'swipe_panel.dart';

@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:tap_builder/tap_builder.dart';
 
 enum AppProfilePicSquareSize {
   s48,
@@ -11,36 +12,46 @@ enum AppProfilePicSquareSize {
 }
 
 class AppProfilePicSquare extends StatelessWidget {
-  const AppProfilePicSquare(
+  AppProfilePicSquare(
     this.imageUrl, {
     Key? key,
     this.size = AppProfilePicSquareSize.s56,
-  }) : super(key: key);
+    VoidCallback? onTap,
+  })  : onTap = onTap ?? (() {}),
+        super(key: key);
 
-  const AppProfilePicSquare.s48(this.imageUrl, {Key? key})
+  AppProfilePicSquare.s48(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s48,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePicSquare.s56(this.imageUrl, {Key? key})
+  AppProfilePicSquare.s56(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s56,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePicSquare.s64(this.imageUrl, {Key? key})
+  AppProfilePicSquare.s64(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s64,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePicSquare.s72(this.imageUrl, {Key? key})
+  AppProfilePicSquare.s72(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s72,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePicSquare.s80(this.imageUrl, {Key? key})
+  AppProfilePicSquare.s80(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s80,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePicSquare.s96(this.imageUrl, {Key? key})
+  AppProfilePicSquare.s96(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s96,
+        onTap = onTap ?? (() {}),
         super(key: key);
-  const AppProfilePicSquare.s104(this.imageUrl, {Key? key})
+  AppProfilePicSquare.s104(this.imageUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s104,
+        onTap = onTap ?? (() {}),
         super(key: key);
 
   final String imageUrl;
   final AppProfilePicSquareSize size;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -49,47 +60,61 @@ class AppProfilePicSquare extends StatelessWidget {
     final icons = theme.icons;
     final resolvedSize = _resolveSize(size, sizes);
     final thickness = LineThicknessData.normal().thin;
-
     final borderRadius = resolvedSize >= sizes.s72
         ? theme.radius.asBorderRadius().rad24
         : theme.radius.asBorderRadius().rad16;
 
-    return AppContainer(
-      width: resolvedSize,
-      height: resolvedSize,
-      decoration: BoxDecoration(
-        borderRadius: borderRadius,
-        border: Border.all(
-          color: theme.colors.white16,
-          width: thickness,
-        ),
-        color: theme.colors.grey66,
-      ),
-      child: ClipRRect(
-        borderRadius: borderRadius,
-        child: Image.network(
-          imageUrl,
-          fit: BoxFit.cover,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return const AppSkeletonLoader();
-          },
-          errorBuilder: (context, error, stackTrace) {
-            final fallbackIconSize = resolvedSize * 0.6;
-            return Center(
-              child: Text(
-                icons.characters.profile,
-                style: TextStyle(
-                  fontFamily: icons.fontFamily,
-                  package: icons.fontPackage,
-                  fontSize: fallbackIconSize,
-                  color: theme.colors.white33,
-                ),
+    return TapBuilder(
+      onTap: onTap,
+      builder: (context, state, isFocused) {
+        double scaleFactor = 1.0;
+        if (state == TapState.pressed) {
+          scaleFactor = 0.98;
+        } else if (state == TapState.hover) {
+          scaleFactor = 1.02;
+        }
+
+        return Transform.scale(
+          scale: scaleFactor,
+          child: AppContainer(
+            width: resolvedSize,
+            height: resolvedSize,
+            decoration: BoxDecoration(
+              borderRadius: borderRadius,
+              border: Border.all(
+                color: theme.colors.white16,
+                width: thickness,
               ),
-            );
-          },
-        ),
-      ),
+              color: theme.colors.grey66,
+            ),
+            child: ClipRRect(
+              borderRadius: borderRadius,
+              child: Image.network(
+                imageUrl,
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const AppSkeletonLoader();
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  final fallbackIconSize = resolvedSize * 0.6;
+                  return Center(
+                    child: Text(
+                      icons.characters.profile,
+                      style: TextStyle(
+                        fontFamily: icons.fontFamily,
+                        package: icons.fontPackage,
+                        fontSize: fallbackIconSize,
+                        color: theme.colors.white33,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 

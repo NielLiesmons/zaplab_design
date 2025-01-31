@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:zaplab_design/src/utils/timestamp_formatter.dart';
 
 class ReplyUserData {
   final String profileName;
@@ -35,18 +36,6 @@ class AppFeedPost extends StatelessWidget {
     this.onReply,
     this.onActions,
   });
-
-  String _formatTimestamp(DateTime timestamp) {
-    final now = DateTime.now();
-    final difference = now.difference(timestamp);
-    if (difference.inMinutes < 60) {
-      return '${difference.inMinutes}m';
-    } else if (difference.inHours < 24) {
-      return '${difference.inHours}h';
-    } else {
-      return '${difference.inDays}d';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +87,8 @@ class AppFeedPost extends StatelessWidget {
                             children: [
                               AppText.bold14(profileName),
                               AppText.reg12(
-                                _formatTimestamp(timestamp),
+                                TimestampFormatter.format(timestamp,
+                                    format: TimestampFormat.relative),
                                 color: theme.colors.white33,
                               ),
                             ],

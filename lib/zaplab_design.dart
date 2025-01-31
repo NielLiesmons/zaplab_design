@@ -1,4 +1,4 @@
-library zapchat_design;
+library zaplab_design;
 
 export 'package:flutter/widgets.dart';
 

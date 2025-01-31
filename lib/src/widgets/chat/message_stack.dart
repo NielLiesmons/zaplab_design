@@ -16,7 +16,7 @@ class AppMessageStack extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         AppContainer(
-          child: AppProfilePic.s24(profilePicUrl),
+          child: AppProfilePic.s32(profilePicUrl),
         ),
         const AppGap.s4(),
         Expanded(
@@ -49,8 +49,7 @@ class AppMessageStack extends StatelessWidget {
             ),
           ),
         ),
-        const AppGap.s20(),
-        const AppGap.s8(),
+        const AppGap.s32(),
       ],
     );
   }

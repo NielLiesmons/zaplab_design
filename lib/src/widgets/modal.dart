@@ -93,7 +93,7 @@ class AppModal extends StatelessWidget {
       PageRouteBuilder(
         opaque: false,
         barrierDismissible: true,
-        barrierColor: const Color(0x00000000),
+        barrierColor: theme.colors.black16,
         transitionDuration: theme.durations.normal,
         reverseTransitionDuration: theme.durations.normal,
         pageBuilder: (_, __, ___) {
@@ -228,16 +228,14 @@ class AppModal extends StatelessWidget {
       PageRouteBuilder(
         opaque: false,
         barrierDismissible: true,
-        barrierColor: const Color(0x00000000),
+        barrierColor: theme.colors.black16,
         transitionDuration: theme.durations.normal,
         reverseTransitionDuration: theme.durations.normal,
         pageBuilder: (_, __, ___) => Stack(
           children: [
             BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-              child: AppContainer(
-                decoration: BoxDecoration(color: theme.colors.black16),
-              ),
+              child: AppContainer(),
             ),
             AppModal(
               bottomBar: bottomBar,
@@ -554,10 +552,6 @@ class AppModal extends StatelessWidget {
                     builder: (context, isVisible, child) {
                       if (!isVisible) return const SizedBox.shrink();
 
-                      final dragHandleGap = Platform.isIOS || Platform.isAndroid
-                          ? AppGapSize.s4
-                          : AppGapSize.s32;
-
                       return AnimatedOpacity(
                         opacity: isVisible ? 1.0 : 0.0,
                         duration: AppDurationsData.normal().normal,
@@ -599,8 +593,8 @@ class AppModal extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     const AppTopSafeArea(),
-                                    AppGap(dragHandleGap),
-                                    const DragHandle(),
+                                    const AppGap.s4(),
+                                    const AppDragHandle(),
                                     if (topBar != null) topBar!,
                                   ],
                                 ),
