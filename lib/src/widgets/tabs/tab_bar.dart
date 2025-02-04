@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:flutter/gestures.dart';
 
 class AppTabBar extends StatefulWidget {
   const AppTabBar({
@@ -221,6 +222,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                         ? const NeverScrollableScrollPhysics()
                         : const ScrollPhysics(),
                     scrollDirection: Axis.horizontal,
+                    dragStartBehavior: DragStartBehavior.down,
                     child: AppContainer(
                       padding: const AppEdgeInsets.symmetric(
                         horizontal: AppGapSize.s12,

@@ -114,6 +114,7 @@ class AppMessageBubble extends StatelessWidget {
                           ],
                         ),
                       ],
+                      const AppGap.s2(),
                       AppShortTextRenderer(
                         content: message,
                       ),

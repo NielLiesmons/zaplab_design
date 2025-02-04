@@ -2,24 +2,38 @@ import 'dart:ui';
 import 'dart:io' show Platform;
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:flutter/scheduler.dart';
+
+class HistoryItem {
+  const HistoryItem({
+    required this.contentType,
+    required this.title,
+    // TODO: add callback
+  });
+
+  final String contentType;
+  final String title;
+  // TODO: add callback
+}
 
 class AppScreen extends StatefulWidget {
-  final Widget child;
-  final List<(String label, VoidCallback onTap)> history;
-  final Widget? topBarContent;
-  final VoidCallback? onHomeTap;
   const AppScreen({
     super.key,
     required this.child,
-    this.history = const [],
     this.topBarContent,
-    this.onHomeTap,
+    required this.onHomeTap,
+    this.history = const [],
   });
+
+  final Widget child;
+  final Widget? topBarContent;
+  final VoidCallback onHomeTap;
+  final List<HistoryItem> history;
 
   static Future<T?> show<T>(
     BuildContext context, {
     required Widget child,
-    List<(String label, VoidCallback onTap)> history = const [],
+    List<HistoryItem> history = const [],
     Widget? topBarContent,
     VoidCallback? onHomeTap,
   }) {
@@ -33,9 +47,10 @@ class AppScreen extends StatefulWidget {
         transitionDuration: theme.durations.fast,
         reverseTransitionDuration: theme.durations.normal,
         pageBuilder: (_, __, ___) => AppScreen(
-          history: history.take(3).toList(),
+          history: history,
           topBarContent: topBarContent,
           child: child,
+          onHomeTap: onHomeTap!,
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return Stack(
@@ -75,7 +90,8 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   static const double _topBarHeight = 64.0;
 
   final ScrollController _scrollController = ScrollController();
-  late AnimationController _animationController;
+  late AnimationController _animationControllerClose;
+  late AnimationController _animationControllerOpen;
   bool _showTopZone = false;
   double _currentDrag = 0;
   bool _isAtTop = true;
@@ -87,7 +103,11 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _scrollController.addListener(_handleScroll);
-    _animationController = AnimationController(
+    _animationControllerOpen = AnimationController(
+      duration: const Duration(milliseconds: 100),
+      vsync: this,
+    );
+    _animationControllerClose = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
@@ -100,14 +120,19 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _animationControllerOpen.dispose();
+    _animationControllerClose.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
   double get _menuHeight {
     final topPadding = MediaQuery.of(context).padding.top;
-    return 208.0 + (Platform.isIOS || Platform.isAndroid ? topPadding : 38.0);
+    final baseHeight =
+        94.0 + (Platform.isIOS || Platform.isAndroid ? topPadding : 38.0);
+    final historyHeight =
+        widget.history.length * AppTheme.of(context).sizes.s38;
+    return baseHeight + historyHeight;
   }
 
   void _handleScroll() {
@@ -117,40 +142,32 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
     });
   }
 
-  void _handleDrag(double delta) {
-    setState(() {
-      _currentDrag = (_currentDrag + delta).clamp(0, _menuHeight);
-      if (_currentDrag > _menuHeight * 0.9) {
-        _menuOpenedAt = DateTime.now();
-      }
-      _showTopZone = _currentDrag <= 7.0;
-    });
-  }
+  void _openMenu() {
+    final tween = Tween(
+      begin: _currentDrag,
+      end: _menuHeight,
+    ).animate(CurvedAnimation(
+      parent: _animationControllerOpen,
+      curve: Curves.easeOut,
+    ));
 
-  void _handleDragEnd(DragEndDetails details) {
-    final velocity = details.velocity.pixelsPerSecond.dy;
-
-    if (_currentDrag > _menuHeight / 2 || velocity > 500) {
-      // Snap to open
-      setState(() => _currentDrag = _menuHeight);
-    } else {
-      // Animate to close
-      final tween = Tween(
-        begin: _currentDrag,
-        end: 0.0,
-      ).animate(CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeOut,
-      ));
-
-      tween.addListener(() {
-        setState(() => _currentDrag = tween.value);
+    tween.addListener(() {
+      // Use addPostFrameCallback to avoid build during frame
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            _currentDrag = tween.value;
+            if (_currentDrag >= _menuHeight) {
+              _menuOpenedAt = DateTime.now();
+            }
+          });
+        }
       });
+    });
 
-      _animationController
-        ..reset()
-        ..forward();
-    }
+    _animationControllerOpen
+      ..reset()
+      ..forward();
   }
 
   void _closeMenu() {
@@ -158,20 +175,66 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
       begin: _currentDrag,
       end: 0.0,
     ).animate(CurvedAnimation(
-      parent: _animationController,
+      parent: _animationControllerClose,
       curve: Curves.easeOut,
     ));
 
     tween.addListener(() {
-      setState(() {
-        _currentDrag = tween.value;
-        _showTopZone = _currentDrag <= 7.0;
+      // Use addPostFrameCallback to avoid build during frame
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            _currentDrag = tween.value;
+            _showTopZone = _currentDrag <= 7.0;
+          });
+        }
       });
     });
 
-    _animationController
+    _animationControllerClose
       ..reset()
       ..forward();
+  }
+
+  void _handleDrag(double delta) {
+    setState(() {
+      _currentDrag = (_currentDrag + delta).clamp(0, _menuHeight).toDouble();
+      _showTopZone = _currentDrag <= 7.0; // Only show when near top
+    });
+  }
+
+  void _handleDragEnd(DragEndDetails details) {
+    final velocity = details.velocity.pixelsPerSecond.dy;
+
+    if (_currentDrag > _menuHeight * 0.66) {
+      // In top third when dragging up
+      if (velocity < -500) {
+        // Fast upward flick
+        _closeMenu();
+      } else {
+        _openMenu(); // Snap back to open
+      }
+    } else if (_currentDrag > _menuHeight * 0.33) {
+      // In middle third
+      if (velocity > 500) {
+        // Fast downward flick
+        _openMenu();
+      } else if (velocity < -500) {
+        // Fast upward flick
+        _closeMenu();
+      } else {
+        // Snap to nearest end based on direction
+        velocity > 0 ? _openMenu() : _closeMenu();
+      }
+    } else {
+      // In bottom third
+      if (velocity > 500) {
+        // Fast downward flick
+        _openMenu();
+      } else {
+        _closeMenu(); // Snap back to closed
+      }
+    }
   }
 
   @override
@@ -186,10 +249,11 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
           opacity: _showTopZone ? 1.0 : 0.0,
           child: AppContainer(
             height: Platform.isIOS || Platform.isAndroid
-                ? MediaQuery.of(context).padding.top
-                : 24,
+                ? MediaQuery.of(context).padding.top + 2
+                : 26,
             decoration: BoxDecoration(
-              color: theme.colors.black,
+              color:
+                  _currentDrag < 5 ? theme.colors.black : theme.colors.black33,
             ),
           ),
         ),
@@ -228,6 +292,9 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                             }
                           }
                         },
+                        onHorizontalDragStart: (_) {},
+                        onHorizontalDragUpdate: (_) {},
+                        onHorizontalDragEnd: (_) {},
                         child: AppContainer(
                           height: _menuHeight,
                           padding: const AppEdgeInsets.symmetric(
@@ -312,9 +379,15 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                           horizontal: AppGapSize.s16,
                                         ),
                                         child: Center(
-                                          child: AppText.reg14(
-                                            'More History...',
-                                            color: theme.colors.white66,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              AppText.reg12(
+                                                'More History...',
+                                                color: theme.colors.white66,
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -323,7 +396,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                 ),
                               ),
                               ...List.generate(
-                                3,
+                                widget.history.length,
                                 (index) => Transform.translate(
                                   offset: Offset(
                                       0,
@@ -364,9 +437,23 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                             horizontal: AppGapSize.s16,
                                           ),
                                           child: Center(
-                                            child: AppText.reg14(
-                                              widget.history[index].$1,
-                                              color: theme.colors.white66,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                AppText.reg12(
+                                                  widget.history[index]
+                                                      .contentType,
+                                                  color: theme.colors.white66,
+                                                ),
+                                                const AppGap.s8(),
+                                                AppText.reg12(
+                                                  widget.history[index].title,
+                                                  color: theme.colors.white,
+                                                  textOverflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
@@ -415,12 +502,25 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                         Positioned(
                           child: NotificationListener<ScrollNotification>(
                             onNotification: (notification) {
+                              if (notification.metrics.axis != Axis.vertical) {
+                                return false; // Ignore horizontal scroll notifications
+                              }
+
                               if (notification is ScrollUpdateNotification) {
                                 if (_isAtTop &&
                                     notification.metrics.pixels < 0) {
                                   if (notification.dragDetails != null) {
                                     _handleDrag(
                                         -notification.metrics.pixels * 0.2);
+                                    return true;
+                                  } else if (_currentDrag > 0) {
+                                    // Menu is partially open but no active drag
+                                    // Snap to nearest position based on current position
+                                    if (_currentDrag > _menuHeight * 0.33) {
+                                      _openMenu();
+                                    } else {
+                                      _closeMenu();
+                                    }
                                     return true;
                                   }
                                 }
@@ -457,8 +557,19 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                   : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
                               child: AppContainer(
                                 decoration: BoxDecoration(
+                                  gradient: _showTopBarContent
+                                      ? LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            theme.colors.black,
+                                            theme.colors.black
+                                                .withOpacity(0.33),
+                                          ],
+                                        )
+                                      : null,
                                   color: _showTopBarContent
-                                      ? theme.colors.black33
+                                      ? null
                                       : const Color(0x00000000),
                                 ),
                                 child: Column(
@@ -510,13 +621,17 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                   Navigator.canPop(context) &&
                                   (Platform.isIOS || Platform.isAndroid)) {
                                 Navigator.of(context).pop();
+                              } else {
+                                _handleDrag(details.primaryDelta!);
                               }
-                              _handleDrag(details.primaryDelta!);
                             },
                             onVerticalDragEnd: (details) {
                               _isInitialDrag = false;
                               _handleDragEnd(details);
                             },
+                            onHorizontalDragStart: (_) {},
+                            onHorizontalDragUpdate: (_) {},
+                            onHorizontalDragEnd: (_) {},
                             onTap: _currentDrag > 0 ? _closeMenu : null,
                             child: AppContainer(
                               height: _currentDrag > 0 ? 2000 : _topBarHeight,

@@ -57,7 +57,7 @@ class AppInputModal extends StatelessWidget {
     final theme = AppTheme.of(context);
     final modalOffset = ValueNotifier<double>(0.0);
     final keyboardHeight =
-        MediaQuery.of(context).viewInsets.bottom / theme.system.scale;
+        (MediaQuery.of(context).viewInsets.bottom / theme.system.scale);
     final bottomPadding =
         Platform.isIOS || Platform.isAndroid ? AppGapSize.s4 : AppGapSize.s16;
 

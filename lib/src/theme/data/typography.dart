@@ -109,7 +109,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Inter',
           package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
-          fontSize: 14,
+          fontSize: 14.5,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -122,7 +122,7 @@ class AppTypographyData extends Equatable {
           fontVariations: [
             FontVariation('wght', 500),
           ], // medium
-          fontSize: 14,
+          fontSize: 14.5,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -132,7 +132,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Inter',
           package: 'zaplab_design',
           fontWeight: FontWeight.w400, // regular
-          fontSize: 14,
+          fontSize: 14.5,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -175,7 +175,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Inter',
           package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
-          fontSize: 18,
+          fontSize: 10,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -211,7 +211,7 @@ class AppTypographyData extends Equatable {
           fontVariations: [
             FontVariation('wght', 500),
           ], // medium
-          fontSize: 14,
+          fontSize: 14.5,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -223,7 +223,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Inter',
           package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
-          fontSize: 18,
+          fontSize: 20,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -233,7 +233,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Inter',
           package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
-          fontSize: 15,
+          fontSize: 16,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -243,7 +243,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Inter',
           package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
-          fontSize: 15,
+          fontSize: 16,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -253,7 +253,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Inter',
           package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
-          fontSize: 13,
+          fontSize: 14.5,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -263,7 +263,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Inter',
           package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
-          fontSize: 13,
+          fontSize: 14.5,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -273,7 +273,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Lora',
           package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
-          fontSize: 15,
+          fontSize: 16,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -285,7 +285,7 @@ class AppTypographyData extends Equatable {
           fontVariations: [
             FontVariation('wght', 450), // Custom weight for great reading
           ],
-          fontSize: 15,
+          fontSize: 16,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -297,7 +297,7 @@ class AppTypographyData extends Equatable {
           fontVariations: [
             FontVariation('wght', 500),
           ], // medium
-          fontSize: 15,
+          fontSize: 16,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -307,7 +307,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Inter',
           package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
-          fontSize: 15,
+          fontSize: 16,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -317,7 +317,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Inter',
           package: 'zaplab_design',
           fontWeight: FontWeight.w400, // regular
-          fontSize: 15,
+          fontSize: 16,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -329,7 +329,7 @@ class AppTypographyData extends Equatable {
           fontVariations: [
             FontVariation('wght', 500),
           ], // medium
-          fontSize: 14,
+          fontSize: 16,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
