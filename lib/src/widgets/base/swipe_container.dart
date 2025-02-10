@@ -113,13 +113,17 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
   }
 
   void _handleDragStart(DragStartDetails details) {
-    _dragStart = details.localPosition.dx;
+    _dragStart = details.globalPosition.dx;
     _lockedAxis = null;
     _initialDragDelta = 0;
   }
 
   void _handleDragUpdate(DragUpdateDetails details) {
-    final delta = details.localPosition.dx - _dragStart;
+    if (isSelectingText) {
+      return;
+    }
+
+    final delta = details.globalPosition.dx - _dragStart;
 
     // If we haven't locked the direction yet
     if (_lockedAxis == null) {
@@ -128,13 +132,12 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
       // Only lock direction once we've passed the touch slop threshold
       if (_initialDragDelta > _touchSlop) {
         _lockedAxis = Axis.horizontal;
-        // Reset visibility states based on initial direction
         setState(() {
           _isLeftActionVisible = delta > 0 && widget.leftContent != null;
           _isRightActionVisible = delta < 0 && widget.rightContent != null;
         });
       } else {
-        return; // Don't process the drag until we pass threshold
+        return;
       }
     }
 

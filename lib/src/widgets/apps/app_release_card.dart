@@ -7,6 +7,10 @@ class AppAppReleaseCard extends StatelessWidget {
   final String profilePicUrl;
   final String publisherName;
   final String publisherPicUrl;
+  final String source;
+  final String size;
+  final String date;
+  final String license;
   final VoidCallback onViewMore;
   final VoidCallback onInstall;
 
@@ -18,6 +22,10 @@ class AppAppReleaseCard extends StatelessWidget {
     required this.profilePicUrl,
     required this.publisherName,
     required this.publisherPicUrl,
+    required this.source,
+    required this.size,
+    required this.date,
+    required this.license,
     required this.onViewMore,
     required this.onInstall,
   });
@@ -93,16 +101,24 @@ class AppAppReleaseCard extends StatelessWidget {
                               children: [
                                 AppText.reg14('Source',
                                     color: theme.colors.white66),
-                                Row(
-                                  children: [
-                                    AppEmojiImage(
-                                        emojiUrl:
-                                            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.emoji.co.uk%2Ffiles%2Fapple-emojis%2Fobjects-ios%2F733-file-folder.png&f=1&nofb=1&ipt=6e2c118ca3055fd7ae84c39656c3e56bf40c968aef9beb9c06be6edb69197aeb&ipo=images',
-                                        size: theme.sizes.s16),
-                                    const AppGap.s8(),
-                                    AppText.med14('Repo',
-                                        color: theme.colors.blurpleColor),
-                                  ],
+                                const AppGap.s12(),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      AppEmojiImage(
+                                          emojiUrl: 'emojis/folder.png',
+                                          size: theme.sizes.s16),
+                                      const AppGap.s8(),
+                                      Flexible(
+                                        child: AppText.med14(
+                                          source,
+                                          textOverflow: TextOverflow.ellipsis,
+                                          color: theme.colors.blurpleColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -112,7 +128,7 @@ class AppAppReleaseCard extends StatelessWidget {
                               children: [
                                 AppText.reg14('Size',
                                     color: theme.colors.white66),
-                                AppText.reg14('32 MB'),
+                                AppText.reg14(size),
                               ],
                             ),
                           ],
@@ -127,7 +143,8 @@ class AppAppReleaseCard extends StatelessWidget {
                               children: [
                                 AppText.reg14('Date',
                                     color: theme.colors.white66),
-                                AppText.reg14('21/04/25'),
+                                const AppGap.s12(),
+                                AppText.reg14(date),
                               ],
                             ),
                             const AppGap.s4(),
@@ -136,7 +153,11 @@ class AppAppReleaseCard extends StatelessWidget {
                               children: [
                                 AppText.reg14('License',
                                     color: theme.colors.white66),
-                                AppText.reg14('Unlicense'),
+                                const AppGap.s12(),
+                                Flexible(
+                                  child: AppText.reg14(license,
+                                      textOverflow: TextOverflow.ellipsis),
+                                ),
                               ],
                             ),
                           ],

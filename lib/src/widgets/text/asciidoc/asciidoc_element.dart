@@ -5,16 +5,21 @@ enum AsciiDocElementType {
   heading4, // ==== Heading
   heading5, // ===== Heading
   paragraph, // Regular text
-  codeBlock, // Code blocks
+  codeBlock, // [source,language]
   listItem, // * List items
-  orderedListItem,
-  checkListItem,
-  descriptionListItem,
-  qandaListItem,
+  orderedListItem, // . List items
+  checkListItem, // [x] List items
+  descriptionListItem, // : List items
+  qandaListItem, // ? List items
   link, // https://... or [text](url)
-  admonition,
-  horizontalRule, // Add this
-  styledText, // Add this
+  admonition, // NOTE: or TIP: or IMPORTANT: or WARNING: or CAUTION:
+  horizontalRule, // --- or *** or '''
+  styledText, //
+  image, // image::url[caption]
+  nostrProfile, // nostr:npub1... or nostr:nprofile1...
+  nostrEvent, // nostr:nevent1...
+  emoji, // :emoji:
+  hashtag, // Add this
 }
 
 class AsciiDocElement {

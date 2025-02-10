@@ -26,6 +26,8 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/emoji/
   fonts:
     - family: Courier-Prime
       fonts:

@@ -1,6 +1,11 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'text_selection_gesture_detector_builder.dart' as custom;
 
+final GlobalKey<EditableTextState> editableTextKey =
+    GlobalKey<EditableTextState>();
+
+bool isSelectingText = false;
+
 class AppSelectableText extends StatefulWidget {
   final String text;
   final TextStyle? style;
@@ -11,6 +16,7 @@ class AppSelectableText extends StatefulWidget {
   final void Function(String)? onChanged;
   final List<AppTextSelectionMenuItem>? contextMenuItems;
   final TextSelectionControls? selectionControls;
+  final TextSpan? textSpan;
 
   const AppSelectableText({
     super.key,
@@ -23,7 +29,35 @@ class AppSelectableText extends StatefulWidget {
     this.onChanged,
     this.contextMenuItems,
     this.selectionControls,
+    this.textSpan,
   });
+
+  static AppSelectableText rich(
+    TextSpan textSpan, {
+    Key? key,
+    TextStyle? style,
+    bool editable = false,
+    bool showContextMenu = true,
+    TextEditingController? controller,
+    FocusNode? focusNode,
+    void Function(String)? onChanged,
+    List<AppTextSelectionMenuItem>? contextMenuItems,
+    TextSelectionControls? selectionControls,
+  }) {
+    return AppSelectableText(
+      key: key,
+      text: '',
+      textSpan: textSpan,
+      style: style,
+      editable: editable,
+      showContextMenu: showContextMenu,
+      controller: controller,
+      focusNode: focusNode,
+      onChanged: onChanged,
+      contextMenuItems: contextMenuItems,
+      selectionControls: selectionControls,
+    );
+  }
 
   @override
   State<AppSelectableText> createState() => _AppSelectableTextState();
@@ -31,14 +65,15 @@ class AppSelectableText extends StatefulWidget {
 
 class _AppSelectableTextState extends State<AppSelectableText>
     implements custom.TextSelectionGestureDetectorBuilderDelegate {
+  @override
+  GlobalKey<EditableTextState> get editableTextKey => _editableTextKey;
+  final GlobalKey<EditableTextState> _editableTextKey =
+      GlobalKey<EditableTextState>();
+
   late TextEditingController _controller;
   late FocusNode _focusNode;
   late custom.TextSelectionGestureDetectorBuilder
       _selectionGestureDetectorBuilder;
-
-  @override
-  final GlobalKey<EditableTextState> editableTextKey =
-      GlobalKey<EditableTextState>();
 
   @override
   bool get forcePressEnabled => false;
@@ -82,7 +117,9 @@ class _AppSelectableTextState extends State<AppSelectableText>
       behavior: HitTestBehavior.translucent,
       child: EditableText(
         key: editableTextKey,
-        controller: _controller,
+        controller: widget.textSpan != null
+            ? _TextSpanEditingController(textSpan: widget.textSpan!)
+            : _controller,
         focusNode: _focusNode,
         style: textStyle,
         cursorColor: theme.colors.white,
@@ -101,6 +138,7 @@ class _AppSelectableTextState extends State<AppSelectableText>
         readOnly: !widget.editable,
         selectionColor: const Color(0xFF5C58FF).withOpacity(0.33),
         onSelectionChanged: (selection, cause) {
+          isSelectingText = !selection.isCollapsed;
           if (!selection.isCollapsed && widget.showContextMenu) {
             editableTextKey.currentState?.showToolbar();
           } else {
@@ -109,5 +147,31 @@ class _AppSelectableTextState extends State<AppSelectableText>
         },
       ),
     );
+  }
+}
+
+class _TextSpanEditingController extends TextEditingController {
+  _TextSpanEditingController({required TextSpan textSpan})
+      : _textSpan = textSpan,
+        super(text: textSpan.toPlainText(includeSemanticsLabels: false));
+
+  final TextSpan _textSpan;
+
+  @override
+  TextSpan buildTextSpan({
+    required BuildContext? context,
+    TextStyle? style,
+    required bool withComposing,
+  }) {
+    return TextSpan(
+      style: style,
+      children: <InlineSpan>[_textSpan],
+    );
+  }
+
+  @override
+  set text(String? newText) {
+    // This should never be reached.
+    throw UnimplementedError();
   }
 }

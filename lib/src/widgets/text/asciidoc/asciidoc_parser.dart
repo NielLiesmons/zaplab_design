@@ -16,6 +16,24 @@ class AsciiDocParser {
         continue;
       }
 
+      // Handle Nostr references as standalone lines
+      if (line.startsWith('nostr:')) {
+        if (line.startsWith('nostr:nevent1')) {
+          elements.add(AsciiDocElement(
+            type: AsciiDocElementType.nostrEvent,
+            content: line,
+          ));
+          continue;
+        } else if (line.startsWith('nostr:npub1') ||
+            line.startsWith('nostr:nprofile1')) {
+          elements.add(AsciiDocElement(
+            type: AsciiDocElementType.nostrProfile,
+            content: line,
+          ));
+          continue;
+        }
+      }
+
       // Handle horizontal rules
       if (line == '---' || line == '- - -' || line == '***') {
         elements.add(const AsciiDocElement(
@@ -29,6 +47,42 @@ class AsciiDocParser {
       if (!line.startsWith('.')) {
         _listCounter.reset();
         lastListLevel = null;
+      }
+
+      // Handle images and their captions first
+      if (line.startsWith('image::') ||
+          (line.startsWith('.') &&
+              i + 1 < lines.length &&
+              lines[i + 1].startsWith('image::'))) {
+        if (line.startsWith('.')) {
+          // Skip this iteration as we'll handle it in the next one
+          continue;
+        }
+
+        // Rest of the image handling code...
+        final RegExp imagePattern = RegExp(r'image::([^\[]+)\[(.*?)\]');
+        final Match? match = imagePattern.firstMatch(line);
+
+        if (match != null) {
+          final String path = match.group(1)!;
+          final String attributesStr =
+              match.group(2) ?? ''; // Default to empty string if no attributes
+
+          String? title;
+          if (i > 0 && lines[i - 1].trim().startsWith('.')) {
+            title = lines[i - 1].substring(1).trim();
+          }
+
+          elements.add(AsciiDocElement(
+            type: AsciiDocElementType.image,
+            content: path,
+            attributes: {
+              if (title != null) 'title': title,
+              'alt': attributesStr,
+            },
+          ));
+          continue;
+        }
       }
 
       // Unordered lists
@@ -164,11 +218,14 @@ class AsciiDocParser {
           !line.startsWith('IMPORTANT:') &&
           !line.startsWith('WARNING:') &&
           !line.startsWith('CAUTION:') &&
-          !line.startsWith('----')) {
+          !line.startsWith('----') &&
+          !line.startsWith('image::')) {
+        final children = _parseStyledText(line);
+
         elements.add(AsciiDocElement(
           type: AsciiDocElementType.paragraph,
           content: line,
-          children: _parseStyledText(line),
+          children: children,
         ));
       }
     }
@@ -207,7 +264,12 @@ class AsciiDocParser {
   }
 
   List<AsciiDocElement>? _parseStyledText(String text) {
-    if (!text.contains('*') && !text.contains('_') && !text.contains('[.')) {
+    if (!text.contains('*') &&
+        !text.contains('_') &&
+        !text.contains('[.') &&
+        !text.contains('nostr:') &&
+        !text.contains(':') &&
+        !text.contains('#')) {
       return null;
     }
 
@@ -223,6 +285,10 @@ class AsciiDocParser {
         RegExp(r'_(?!\*)(.*?)(?<!\*)_'); // Match _ but not _* or *_
     final RegExp underlinePattern = RegExp(r'\[\.underline\]#(.*?)#');
     final RegExp lineThroughPattern = RegExp(r'\[\.line-through\]#(.*?)#');
+    final RegExp nostrEventPattern = RegExp(r'nostr:nevent1\w+');
+    final RegExp nostrProfilePattern = RegExp(r'nostr:n(?:pub1|profile1)\w+');
+    final RegExp emojiPattern = RegExp(r':([a-zA-Z0-9_-]+):');
+    final RegExp hashtagPattern = RegExp(r'(?<=^|\s)#([a-zA-Z0-9_]+)');
 
     String remaining = text;
     int currentPosition = 0;
@@ -239,6 +305,14 @@ class AsciiDocParser {
           underlinePattern.matchAsPrefix(text, currentPosition);
       final Match? lineThroughMatch =
           lineThroughPattern.matchAsPrefix(text, currentPosition);
+      final Match? nostrEventMatch =
+          nostrEventPattern.firstMatch(text.substring(currentPosition));
+      final Match? nostrProfileMatch =
+          nostrProfilePattern.firstMatch(text.substring(currentPosition));
+      final Match? emojiMatch =
+          emojiPattern.firstMatch(text.substring(currentPosition));
+      final Match? hashtagMatch =
+          hashtagPattern.firstMatch(text.substring(currentPosition));
 
       final List<Match?> matches = [
         combined1Match,
@@ -246,12 +320,16 @@ class AsciiDocParser {
         boldMatch,
         italicMatch,
         underlineMatch,
-        lineThroughMatch
+        lineThroughMatch,
+        nostrEventMatch,
+        nostrProfileMatch,
+        emojiMatch,
+        hashtagMatch,
       ].where((m) => m != null).toList();
 
       if (matches.isEmpty) {
         final nextSpecial =
-            text.indexOf(RegExp(r'[\*_\[]'), currentPosition + 1);
+            text.indexOf(RegExp(r'[\*_\[nostr::#]'), currentPosition + 1);
         if (nextSpecial == -1) {
           if (currentPosition < text.length) {
             styledElements.add(AsciiDocElement(
@@ -270,8 +348,21 @@ class AsciiDocParser {
         }
       }
 
-      final Match firstMatch =
-          matches.reduce((a, b) => a!.start < b!.start ? a : b)!;
+      final Match firstMatch = matches.reduce((a, b) {
+        final aStart = a == nostrEventMatch ||
+                a == nostrProfileMatch ||
+                a == emojiMatch ||
+                a == hashtagMatch
+            ? currentPosition + a!.start
+            : a!.start;
+        final bStart = b == nostrEventMatch ||
+                b == nostrProfileMatch ||
+                b == emojiMatch ||
+                b == hashtagMatch
+            ? currentPosition + b!.start
+            : b!.start;
+        return aStart < bStart ? a : b;
+      })!;
 
       if (firstMatch.start > currentPosition) {
         styledElements.add(AsciiDocElement(
@@ -280,25 +371,60 @@ class AsciiDocParser {
         ));
       }
 
-      final String content = firstMatch.group(1) ?? '';
-      final String style =
-          (firstMatch == combined1Match || firstMatch == combined2Match)
-              ? 'bold-italic'
-              : firstMatch == boldMatch
-                  ? 'bold'
-                  : firstMatch == italicMatch
-                      ? 'italic'
-                      : firstMatch == underlineMatch
-                          ? 'underline'
-                          : 'line-through';
+      // Check for Nostr references first
+      if (nostrEventPattern.hasMatch(firstMatch[0]!)) {
+        styledElements.add(AsciiDocElement(
+          type: AsciiDocElementType.nostrEvent,
+          content: firstMatch[0]!,
+        ));
+        currentPosition = firstMatch == nostrEventMatch
+            ? currentPosition + firstMatch.end
+            : firstMatch.end;
+      } else if (nostrProfilePattern.hasMatch(firstMatch[0]!)) {
+        styledElements.add(AsciiDocElement(
+          type: AsciiDocElementType.nostrProfile,
+          content: firstMatch[0]!,
+        ));
+        currentPosition = firstMatch == nostrProfileMatch
+            ? currentPosition + firstMatch.end
+            : firstMatch.end;
+      } else if (emojiPattern.hasMatch(firstMatch[0]!)) {
+        styledElements.add(AsciiDocElement(
+          type: AsciiDocElementType.emoji,
+          content: firstMatch.group(1)!,
+        ));
+        currentPosition = firstMatch == emojiMatch
+            ? currentPosition + firstMatch.end
+            : firstMatch.end;
+      } else if (hashtagPattern.hasMatch(firstMatch[0]!)) {
+        styledElements.add(AsciiDocElement(
+          type: AsciiDocElementType.hashtag,
+          content: firstMatch.group(1)!,
+        ));
+        currentPosition = firstMatch == hashtagMatch
+            ? currentPosition + firstMatch.end
+            : firstMatch.end;
+      } else {
+        // Existing style handling
+        final String content = firstMatch.group(1) ?? '';
+        final String style =
+            (firstMatch == combined1Match || firstMatch == combined2Match)
+                ? 'bold-italic'
+                : firstMatch == boldMatch
+                    ? 'bold'
+                    : firstMatch == italicMatch
+                        ? 'italic'
+                        : firstMatch == underlineMatch
+                            ? 'underline'
+                            : 'line-through';
 
-      styledElements.add(AsciiDocElement(
-        type: AsciiDocElementType.styledText,
-        content: content,
-        attributes: {'style': style},
-      ));
-
-      currentPosition = firstMatch.end;
+        styledElements.add(AsciiDocElement(
+          type: AsciiDocElementType.styledText,
+          content: content,
+          attributes: {'style': style},
+        ));
+        currentPosition = firstMatch.end;
+      }
     }
 
     return styledElements;

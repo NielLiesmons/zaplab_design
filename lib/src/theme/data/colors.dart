@@ -223,8 +223,8 @@ class AppColorsData extends Equatable {
   factory AppColorsData.light() => AppColorsData(
         /// Colors (full or 66% / 33% transparent)
         white: const Color(0xFF000000),
-        white66: const Color(0xFF000000).withOpacity(0.66),
-        white33: const Color(0xFF000000).withOpacity(0.33),
+        white66: const Color(0xFF000000).withOpacity(0.55),
+        white33: const Color(0xFF000000).withOpacity(0.29),
         white16: const Color(0xFF000000).withOpacity(0.16),
         white8: const Color(0xFF000000).withOpacity(0.08),
         black: const Color(0xFFFFFFFF),
@@ -235,7 +235,7 @@ class AppColorsData extends Equatable {
         grey: const Color(0xFFDCDCDC),
         grey66: const Color(0xFFCCCCCC).withOpacity(0.66),
         grey33: const Color(0xFFCCCCCC).withOpacity(0.33),
-        blurpleColor: const Color.fromARGB(255, 75, 75, 205),
+        blurpleColor: const Color.fromRGBO(75, 75, 205, 1),
         blurpleColor66:
             const Color.fromARGB(255, 75, 75, 205).withOpacity(0.66),
         goldColor: const Color.fromARGB(255, 233, 173, 44),

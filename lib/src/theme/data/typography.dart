@@ -274,7 +274,7 @@ class AppTypographyData extends Equatable {
           package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
           fontSize: 16,
-          height: 1.5,
+          height: 1.7,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
@@ -286,7 +286,7 @@ class AppTypographyData extends Equatable {
             FontVariation('wght', 450), // Custom weight for great reading
           ],
           fontSize: 16,
-          height: 1.5,
+          height: 1.7,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
@@ -298,7 +298,7 @@ class AppTypographyData extends Equatable {
             FontVariation('wght', 500),
           ], // medium
           fontSize: 16,
-          height: 1.5,
+          height: 1.7,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
