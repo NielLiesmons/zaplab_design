@@ -40,6 +40,13 @@ export 'chat/quoted_message.dart';
 // Images
 export 'images/emoji_image.dart';
 export 'images/full_width_image.dart';
+
+// Interactions
+export 'interactions/interaction_pills.dart';
+export 'interactions/interaction_bar.dart';
+export 'interactions/reaction_pill.dart';
+export 'interactions/zap_pill.dart';
+
 // Loading
 export 'loading/loading_dots.dart';
 export 'loading/loading_bar.dart';
@@ -51,12 +58,6 @@ export 'modals/input_field.dart';
 export 'modals/input_modal.dart';
 export 'modals/zap_modal.dart';
 export 'modals/zap_slider.dart';
-
-// Pills
-export 'pills/interaction_pills.dart';
-export 'pills/interaction_bar.dart';
-export 'pills/reaction_pill.dart';
-export 'pills/zap_pill.dart';
 
 // Posts
 export 'posts/feed_post.dart';
@@ -88,6 +89,8 @@ export 'text/admonition.dart';
 export 'text/amount.dart';
 export 'text/code_block.dart';
 export 'text/event_card.dart';
+export 'text/short_text/short_text_element.dart';
+export 'text/short_text/short_text_parser.dart';
 export 'text/short_text/short_text_renderer.dart';
 export 'text/text.dart';
 export 'text/text_field.dart';
@@ -106,3 +109,6 @@ export 'toasts/toast.dart';
 export 'toasts/toast_alert.dart';
 export 'toasts/toast_info.dart';
 export 'toasts/toast_message.dart';
+
+// Zaps
+export 'zaps/zap_card.dart';

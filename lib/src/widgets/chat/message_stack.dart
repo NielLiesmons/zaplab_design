@@ -3,11 +3,19 @@ import 'package:zaplab_design/zaplab_design.dart';
 class AppMessageStack extends StatelessWidget {
   final String profilePicUrl;
   final List<MessageData> messages;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
+  final NostrHashtagResolver onResolveHashtag;
 
   const AppMessageStack({
     super.key,
     required this.profilePicUrl,
     required this.messages,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
+    required this.onResolveHashtag,
   });
 
   @override
@@ -43,6 +51,10 @@ class AppMessageStack extends StatelessWidget {
                         print('React: $eventId with $reactionImageUrl'),
                     onZapTap: (eventId, amount, comment) =>
                         print('Zap: $eventId with $amount sats'),
+                    onResolveEvent: onResolveEvent,
+                    onResolveProfile: onResolveProfile,
+                    onResolveEmoji: onResolveEmoji,
+                    onResolveHashtag: onResolveHashtag,
                   ),
                 ],
               ],

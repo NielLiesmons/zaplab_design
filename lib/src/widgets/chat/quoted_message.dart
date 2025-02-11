@@ -1,22 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:zaplab_design/src/utils/timestamp_formatter.dart';
 
-class QuotedMessage {
-  final String eventId;
-  final String content;
-  final String profileName;
-  final String profilePicUrl;
-  final DateTime timestamp;
-
-  const QuotedMessage({
-    required this.eventId,
-    required this.content,
-    required this.profileName,
-    required this.profilePicUrl,
-    required this.timestamp,
-  });
-}
-
 class AppQuotedMessage extends StatelessWidget {
   final String profileName;
   final String profilePicUrl;

@@ -61,6 +61,10 @@ class AppMessageFeed extends StatefulWidget {
   final void Function(String eventId)? onActions;
   final void Function(String messageId, String content)? onReact;
   final void Function(String messageId, int amount, String? comment)? onZap;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
+  final NostrHashtagResolver onResolveHashtag;
 
   const AppMessageFeed({
     super.key,
@@ -72,6 +76,10 @@ class AppMessageFeed extends StatefulWidget {
     this.onActions,
     this.onReact,
     this.onZap,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
+    required this.onResolveHashtag,
   });
 
   @override
@@ -168,6 +176,10 @@ class _AppMessageFeedState extends State<AppMessageFeed> {
           for (int i = 0; i < messageStacks.length; i++) ...[
             if (i > 0) const AppGap.s8(),
             AppMessageStack(
+              onResolveEvent: widget.onResolveEvent,
+              onResolveProfile: widget.onResolveProfile,
+              onResolveEmoji: widget.onResolveEmoji,
+              onResolveHashtag: widget.onResolveHashtag,
               profilePicUrl: messageStacks[i].first.profilePicUrl,
               messages: messageStacks[i]
                   .map((msg) => MessageData(

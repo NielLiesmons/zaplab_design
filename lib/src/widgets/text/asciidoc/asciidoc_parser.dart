@@ -16,24 +16,6 @@ class AsciiDocParser {
         continue;
       }
 
-      // Handle Nostr references as standalone lines
-      if (line.startsWith('nostr:')) {
-        if (line.startsWith('nostr:nevent1')) {
-          elements.add(AsciiDocElement(
-            type: AsciiDocElementType.nostrEvent,
-            content: line,
-          ));
-          continue;
-        } else if (line.startsWith('nostr:npub1') ||
-            line.startsWith('nostr:nprofile1')) {
-          elements.add(AsciiDocElement(
-            type: AsciiDocElementType.nostrProfile,
-            content: line,
-          ));
-          continue;
-        }
-      }
-
       // Handle horizontal rules
       if (line == '---' || line == '- - -' || line == '***') {
         elements.add(const AsciiDocElement(
@@ -290,7 +272,6 @@ class AsciiDocParser {
     final RegExp emojiPattern = RegExp(r':([a-zA-Z0-9_-]+):');
     final RegExp hashtagPattern = RegExp(r'(?<=^|\s)#([a-zA-Z0-9_]+)');
 
-    String remaining = text;
     int currentPosition = 0;
 
     while (currentPosition < text.length) {
@@ -306,13 +287,13 @@ class AsciiDocParser {
       final Match? lineThroughMatch =
           lineThroughPattern.matchAsPrefix(text, currentPosition);
       final Match? nostrEventMatch =
-          nostrEventPattern.firstMatch(text.substring(currentPosition));
+          nostrEventPattern.matchAsPrefix(text, currentPosition);
       final Match? nostrProfileMatch =
           nostrProfilePattern.firstMatch(text.substring(currentPosition));
       final Match? emojiMatch =
-          emojiPattern.firstMatch(text.substring(currentPosition));
+          emojiPattern.matchAsPrefix(text, currentPosition);
       final Match? hashtagMatch =
-          hashtagPattern.firstMatch(text.substring(currentPosition));
+          hashtagPattern.matchAsPrefix(text, currentPosition);
 
       final List<Match?> matches = [
         combined1Match,
@@ -328,42 +309,21 @@ class AsciiDocParser {
       ].where((m) => m != null).toList();
 
       if (matches.isEmpty) {
-        final nextSpecial =
-            text.indexOf(RegExp(r'[\*_\[nostr::#]'), currentPosition + 1);
-        if (nextSpecial == -1) {
-          if (currentPosition < text.length) {
-            styledElements.add(AsciiDocElement(
-              type: AsciiDocElementType.styledText,
-              content: text.substring(currentPosition),
-            ));
-          }
-          break;
-        } else {
+        // If no matches found, add one character and continue
+        if (currentPosition < text.length) {
           styledElements.add(AsciiDocElement(
             type: AsciiDocElementType.styledText,
-            content: text.substring(currentPosition, nextSpecial),
+            content: text[currentPosition],
           ));
-          currentPosition = nextSpecial;
-          continue;
         }
+        currentPosition++;
+        continue;
       }
 
-      final Match firstMatch = matches.reduce((a, b) {
-        final aStart = a == nostrEventMatch ||
-                a == nostrProfileMatch ||
-                a == emojiMatch ||
-                a == hashtagMatch
-            ? currentPosition + a!.start
-            : a!.start;
-        final bStart = b == nostrEventMatch ||
-                b == nostrProfileMatch ||
-                b == emojiMatch ||
-                b == hashtagMatch
-            ? currentPosition + b!.start
-            : b!.start;
-        return aStart < bStart ? a : b;
-      })!;
+      final Match firstMatch =
+          matches.reduce((a, b) => a!.start < b!.start ? a : b)!;
 
+      // Add any text before the match
       if (firstMatch.start > currentPosition) {
         styledElements.add(AsciiDocElement(
           type: AsciiDocElementType.styledText,
@@ -371,41 +331,12 @@ class AsciiDocParser {
         ));
       }
 
-      // Check for Nostr references first
-      if (nostrEventPattern.hasMatch(firstMatch[0]!)) {
-        styledElements.add(AsciiDocElement(
-          type: AsciiDocElementType.nostrEvent,
-          content: firstMatch[0]!,
-        ));
-        currentPosition = firstMatch == nostrEventMatch
-            ? currentPosition + firstMatch.end
-            : firstMatch.end;
-      } else if (nostrProfilePattern.hasMatch(firstMatch[0]!)) {
-        styledElements.add(AsciiDocElement(
-          type: AsciiDocElementType.nostrProfile,
-          content: firstMatch[0]!,
-        ));
-        currentPosition = firstMatch == nostrProfileMatch
-            ? currentPosition + firstMatch.end
-            : firstMatch.end;
-      } else if (emojiPattern.hasMatch(firstMatch[0]!)) {
-        styledElements.add(AsciiDocElement(
-          type: AsciiDocElementType.emoji,
-          content: firstMatch.group(1)!,
-        ));
-        currentPosition = firstMatch == emojiMatch
-            ? currentPosition + firstMatch.end
-            : firstMatch.end;
-      } else if (hashtagPattern.hasMatch(firstMatch[0]!)) {
-        styledElements.add(AsciiDocElement(
-          type: AsciiDocElementType.hashtag,
-          content: firstMatch.group(1)!,
-        ));
-        currentPosition = firstMatch == hashtagMatch
-            ? currentPosition + firstMatch.end
-            : firstMatch.end;
-      } else {
-        // Existing style handling
+      if (firstMatch == boldMatch ||
+          firstMatch == italicMatch ||
+          firstMatch == combined1Match ||
+          firstMatch == combined2Match ||
+          firstMatch == underlineMatch ||
+          firstMatch == lineThroughMatch) {
         final String content = firstMatch.group(1) ?? '';
         final String style =
             (firstMatch == combined1Match || firstMatch == combined2Match)
@@ -423,8 +354,32 @@ class AsciiDocParser {
           content: content,
           attributes: {'style': style},
         ));
-        currentPosition = firstMatch.end;
+      } else if (firstMatch == emojiMatch) {
+        styledElements.add(AsciiDocElement(
+          type: AsciiDocElementType.emoji,
+          content: firstMatch.group(1)!,
+        ));
+      } else if (firstMatch == hashtagMatch) {
+        styledElements.add(AsciiDocElement(
+          type: AsciiDocElementType.hashtag,
+          content: firstMatch.group(1)!,
+        ));
+      } else if (firstMatch == nostrEventMatch) {
+        styledElements.add(AsciiDocElement(
+          type: AsciiDocElementType.nostrEvent,
+          content: firstMatch[0]!,
+        ));
+      } else if (firstMatch == nostrProfileMatch) {
+        styledElements.add(AsciiDocElement(
+          type: AsciiDocElementType.nostrProfile,
+          content: firstMatch[0]!,
+        ));
+        currentPosition = firstMatch == nostrProfileMatch
+            ? currentPosition + firstMatch.end
+            : firstMatch.end;
       }
+
+      currentPosition = firstMatch.end;
     }
 
     return styledElements;

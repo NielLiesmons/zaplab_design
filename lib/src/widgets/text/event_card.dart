@@ -6,7 +6,9 @@ class AppEventCard extends StatelessWidget {
   final String profileName;
   final String profilePicUrl;
   final String? imageUrl;
-
+  final DateTime timestamp;
+  final String? amount;
+  final String? message;
   final VoidCallback? onTap;
 
   const AppEventCard({
@@ -15,7 +17,10 @@ class AppEventCard extends StatelessWidget {
     required this.title,
     required this.profileName,
     required this.profilePicUrl,
+    required this.timestamp,
     this.imageUrl,
+    this.amount,
+    this.message,
     this.onTap,
   });
 
@@ -28,6 +33,25 @@ class AppEventCard extends StatelessWidget {
         profilePicUrl: profilePicUrl,
         imageUrl: imageUrl ?? '',
         onTap: onTap,
+      );
+    }
+
+    if (contentType == 'message') {
+      return AppQuotedMessage(
+        profileName: profileName,
+        profilePicUrl: profilePicUrl,
+        content: message ?? '',
+        timestamp: timestamp,
+        eventId: null,
+      );
+    }
+
+    if (contentType == 'zap') {
+      return AppZapCard(
+        profileName: profileName,
+        profilePicUrl: profilePicUrl,
+        amount: amount ?? '',
+        message: message ?? '',
       );
     }
 

@@ -5,12 +5,14 @@ class AppProfileInline extends StatelessWidget {
   final String profileName;
   final String profilePicUrl;
   final void Function()? onTap;
+  final bool? isArticle;
 
   const AppProfileInline({
     super.key,
     required this.profileName,
     required this.profilePicUrl,
     this.onTap,
+    this.isArticle = false,
   });
 
   @override
@@ -27,7 +29,9 @@ class AppProfileInline extends StatelessWidget {
               const AppGap.s2(),
               if (profilePicUrl.isNotEmpty)
                 Transform.translate(
-                  offset: const Offset(0, 0.2),
+                  offset: isArticle == false
+                      ? const Offset(0, -0.1)
+                      : const Offset(0, 0.2),
                   child: AppProfilePic.s20(profilePicUrl),
                 )
               else
@@ -36,12 +40,24 @@ class AppProfileInline extends StatelessWidget {
               Transform.translate(
                 offset: const Offset(0, -0.2),
                 child: profileName.isNotEmpty
-                    ? AppText.boldArticle(
-                        profileName,
-                        color: theme.colors.blurpleColor,
-                      )
-                    : AppText.boldWiki('ProfileName',
-                        color: theme.colors.blurpleColor66),
+                    ? (isArticle == false)
+                        ? AppText.bold14(
+                            profileName,
+                            color: theme.colors.blurpleColor,
+                          )
+                        : AppText.boldArticle(
+                            profileName,
+                            color: theme.colors.blurpleColor,
+                          )
+                    : (isArticle == false)
+                        ? AppText.bold14(
+                            'ProfileName',
+                            color: theme.colors.blurpleColor66,
+                          )
+                        : AppText.boldArticle(
+                            'ProfileName',
+                            color: theme.colors.blurpleColor66,
+                          ),
               ),
             ],
           ),

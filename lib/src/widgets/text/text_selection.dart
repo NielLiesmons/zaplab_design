@@ -1,9 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'text_selection_gesture_detector_builder.dart' as custom;
 
-final GlobalKey<EditableTextState> editableTextKey =
-    GlobalKey<EditableTextState>();
-
 bool isSelectingText = false;
 
 class AppSelectableText extends StatefulWidget {

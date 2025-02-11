@@ -73,7 +73,7 @@ class AppArticleCard extends StatelessWidget {
                       Row(
                         children: [
                           const AppEmojiImage(
-                            emojiUrl: 'assets/images/emoji/article.png',
+                            emojiUrl: 'assets/emoji/article.png',
                             size: 16,
                           ),
                           const AppGap.s10(),

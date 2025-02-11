@@ -20,6 +20,7 @@ class AppPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final isInsideModal = ModalScope.of(context);
+    final isInsideMessage = MessageBubbleScope.of(context);
 
     return AppContainer(
       padding: padding ?? const AppEdgeInsets.all(AppGapSize.s16),
@@ -28,9 +29,11 @@ class AppPanel extends StatelessWidget {
       decoration: BoxDecoration(
         color: gradient == null
             ? (color ??
-                (isInsideModal
-                    ? (isLight ? theme.colors.white8 : theme.colors.black33)
-                    : theme.colors.grey66))
+                (isInsideMessage
+                    ? theme.colors.white8
+                    : (isInsideModal
+                        ? (isLight ? theme.colors.white8 : theme.colors.black33)
+                        : theme.colors.grey66)))
             : null,
         gradient: gradient,
         borderRadius: theme.radius.asBorderRadius().rad16,

@@ -7,4 +7,4 @@ export 'src/theme/responsive_theme.dart';
 
 export 'src/widgets/widgets.dart';
 
-// export 'src/pages.dart';
+export 'src/models/shared_types.dart';

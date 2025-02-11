@@ -1,45 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'dart:async';
 import 'package:tap_builder/tap_builder.dart';
-
-class NostrEventData {
-  final String contentType;
-  final String title;
-  final String profileName;
-  final String profilePicUrl;
-  final DateTime timestamp;
-  final void Function()? onTap;
-  // Add other fields as needed
-
-  const NostrEventData({
-    required this.contentType,
-    required this.title,
-    required this.profileName,
-    required this.profilePicUrl,
-    required this.timestamp,
-    this.onTap,
-  });
-}
-
-class NostrProfileData {
-  final String name;
-  final String? imageUrl;
-  final void Function()? onTap;
-  // Add other fields as needed
-
-  const NostrProfileData({
-    required this.name,
-    this.imageUrl,
-    this.onTap,
-  });
-}
-
-typedef NostrEventResolver = Future<NostrEventData> Function(String identifier);
-typedef NostrProfileResolver = Future<NostrProfileData> Function(
-    String identifier);
-typedef NostrEmojiResolver = Future<String> Function(String identifier);
-typedef NostrHashtagResolver = Future<void Function()?> Function(
-    String identifier);
 
 class AppAsciiDocRenderer extends StatelessWidget {
   final String content;
@@ -274,115 +234,151 @@ class AppAsciiDocRenderer extends StatelessWidget {
         );
       case AsciiDocElementType.paragraph:
         if (element.children != null) {
-          return AppSelectableText.rich(
-            TextSpan(
-              children: element.children!.map((child) {
-                if (child.type == AsciiDocElementType.nostrProfile) {
-                  return TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '@${child.content}',
-                        style: const TextStyle(
-                          color: Color(0xFF000000),
-                          fontSize: 0,
-                          height: 0,
-                          letterSpacing: 0,
-                          wordSpacing: 0,
-                        ),
-                      ),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: FutureBuilder<NostrProfileData>(
-                          future: onResolveProfile(child.content),
-                          builder: (context, snapshot) {
-                            return AppProfileInline(
-                              profileName: snapshot.data?.name ?? '',
-                              profilePicUrl: snapshot.data?.imageUrl ?? '',
-                              onTap: snapshot.data?.onTap,
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  );
-                } else if (child.type == AsciiDocElementType.emoji) {
-                  return TextSpan(
-                    children: [
-                      TextSpan(
-                        text: ':${child.content}:',
-                        style: const TextStyle(
-                          color: Color(0xFF000000),
-                          fontSize: 0,
-                          height: 0,
-                          letterSpacing: 0,
-                          wordSpacing: 0,
-                        ),
-                      ),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: FutureBuilder<String>(
-                          future: onResolveEmoji(child.content),
-                          builder: (context, snapshot) {
-                            return AppContainer(
-                              padding: const AppEdgeInsets.symmetric(
-                                  horizontal: AppGapSize.s2),
-                              child: AppEmojiImage(
-                                emojiUrl: snapshot.data ?? '',
-                                size: 16,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  );
-                } else if (child.type == AsciiDocElementType.hashtag) {
-                  return TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '#${child.content}',
-                        style: const TextStyle(
-                          color: Color(0xFF000000),
-                          fontSize: 0,
-                          height: 0,
-                          letterSpacing: 0,
-                          wordSpacing: 0,
-                        ),
-                      ),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: FutureBuilder<void Function()?>(
-                          future: onResolveHashtag(child.content),
-                          builder: (context, snapshot) {
-                            return TapBuilder(
-                              onTap: snapshot.data,
-                              builder: (context, state, hasFocus) {
-                                double scaleFactor = 1.0;
-                                if (state == TapState.pressed) {
-                                  scaleFactor = 0.99;
-                                } else if (state == TapState.hover) {
-                                  scaleFactor = 1.01;
-                                }
+          final List<Widget> paragraphPieces = [];
+          final List<InlineSpan> currentSpans = [];
 
-                                return Transform.scale(
-                                  scale: scaleFactor,
-                                  child: Text(
-                                    '#${child.content}',
-                                    style: theme.typography.regArticle.copyWith(
-                                      color: theme.colors.blurpleColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
+          for (var child in element.children!) {
+            if (child.type == AsciiDocElementType.nostrEvent) {
+              if (currentSpans.isNotEmpty) {
+                paragraphPieces.add(
+                  AppSelectableText.rich(
+                    TextSpan(children: List.from(currentSpans)),
+                    style: theme.typography.regArticle.copyWith(
+                      color: theme.colors.white,
+                    ),
+                  ),
+                );
+                currentSpans.clear();
+              }
+              paragraphPieces.add(const SizedBox(height: 8));
+              paragraphPieces.add(
+                AppContainer(
+                  child: FutureBuilder<NostrEventData>(
+                    future: onResolveEvent(child.content),
+                    builder: (context, snapshot) {
+                      return AppEventCard(
+                        contentType: snapshot.data?.contentType ?? '',
+                        title: snapshot.data?.title ?? '',
+                        message: snapshot.data?.message ?? '',
+                        profileName: snapshot.data?.profileName ?? '',
+                        profilePicUrl: snapshot.data?.profilePicUrl ?? '',
+                        timestamp: snapshot.data?.timestamp ?? DateTime.now(),
+                        onTap: snapshot.data?.onTap,
+                      );
+                    },
+                  ),
+                ),
+              );
+              paragraphPieces.add(const SizedBox(height: 8));
+            } else {
+              // Handle all other elements exactly as before
+              if (child.type == AsciiDocElementType.nostrProfile) {
+                currentSpans.add(TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '@${child.content}',
+                      style: const TextStyle(
+                        color: Color(0xFF000000),
+                        fontSize: 0,
+                        height: 0,
+                        letterSpacing: 0,
+                        wordSpacing: 0,
                       ),
-                    ],
-                  );
-                }
-                return TextSpan(
+                    ),
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: FutureBuilder<NostrProfileData>(
+                        future: onResolveProfile(child.content),
+                        builder: (context, snapshot) {
+                          return AppProfileInline(
+                            profileName: snapshot.data?.name ?? '',
+                            profilePicUrl: snapshot.data?.imageUrl ?? '',
+                            onTap: snapshot.data?.onTap,
+                            isArticle: true,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ));
+              } else if (child.type == AsciiDocElementType.emoji) {
+                currentSpans.add(TextSpan(
+                  children: [
+                    TextSpan(
+                      text: ':${child.content}:',
+                      style: const TextStyle(
+                        color: Color(0xFF000000),
+                        fontSize: 0,
+                        height: 0,
+                        letterSpacing: 0,
+                        wordSpacing: 0,
+                      ),
+                    ),
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: FutureBuilder<String>(
+                        future: onResolveEmoji(child.content),
+                        builder: (context, snapshot) {
+                          return AppContainer(
+                            padding: const AppEdgeInsets.symmetric(
+                                horizontal: AppGapSize.s2),
+                            child: AppEmojiImage(
+                              emojiUrl: snapshot.data ?? '',
+                              size: 16,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ));
+              } else if (child.type == AsciiDocElementType.hashtag) {
+                currentSpans.add(TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '#${child.content}',
+                      style: const TextStyle(
+                        color: Color(0xFF000000),
+                        fontSize: 0,
+                        height: 0,
+                        letterSpacing: 0,
+                        wordSpacing: 0,
+                      ),
+                    ),
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: FutureBuilder<void Function()?>(
+                        future: onResolveHashtag(child.content),
+                        builder: (context, snapshot) {
+                          return TapBuilder(
+                            onTap: snapshot.data,
+                            builder: (context, state, hasFocus) {
+                              double scaleFactor = 1.0;
+                              if (state == TapState.pressed) {
+                                scaleFactor = 0.99;
+                              } else if (state == TapState.hover) {
+                                scaleFactor = 1.01;
+                              }
+
+                              return Transform.scale(
+                                scale: scaleFactor,
+                                child: Text(
+                                  '#${child.content}',
+                                  style: theme.typography.regArticle.copyWith(
+                                    color: theme.colors.blurpleColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ));
+              } else {
+                currentSpans.add(TextSpan(
                   text: child.content,
                   style: theme.typography.regArticle.copyWith(
                     color: theme.colors.white,
@@ -400,21 +396,35 @@ class AppAsciiDocRenderer extends StatelessWidget {
                       _ => null,
                     },
                   ),
-                );
-              }).toList(),
-            ),
-            style: theme.typography.regArticle.copyWith(
-              color: theme.colors.white,
-            ),
-            showContextMenu: true,
-            selectionControls: AppTextSelectionControls(),
-            contextMenuItems: [
-              AppTextSelectionMenuItem(
-                label: 'Copy',
-                onTap: (state) =>
-                    state.copySelection(SelectionChangedCause.tap),
+                ));
+              }
+            }
+          }
+
+          // Add any remaining text
+          if (currentSpans.isNotEmpty) {
+            paragraphPieces.add(
+              AppSelectableText.rich(
+                TextSpan(children: List.from(currentSpans)),
+                style: theme.typography.regArticle.copyWith(
+                  color: theme.colors.white,
+                ),
+                showContextMenu: true,
+                selectionControls: AppTextSelectionControls(),
+                contextMenuItems: [
+                  AppTextSelectionMenuItem(
+                    label: 'Copy',
+                    onTap: (state) =>
+                        state.copySelection(SelectionChangedCause.tap),
+                  ),
+                ],
               ),
-            ],
+            );
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: paragraphPieces,
           );
         }
         return AppSelectableText(
@@ -427,31 +437,6 @@ class AppAsciiDocRenderer extends StatelessWidget {
         return AppFullWidthImage(
           url: element.content,
           caption: element.attributes?['title'],
-        );
-      case AsciiDocElementType.nostrProfile:
-        return FutureBuilder<NostrProfileData>(
-          future: onResolveProfile(element.content),
-          builder: (context, snapshot) {
-            return AppProfileInline(
-              profileName: snapshot.data?.name ?? '',
-              profilePicUrl: snapshot.data?.imageUrl ?? '',
-            );
-          },
-        );
-      case AsciiDocElementType.nostrEvent:
-        return AppContainer(
-          child: FutureBuilder<NostrEventData>(
-            future: onResolveEvent(element.content),
-            builder: (context, snapshot) {
-              return AppEventCard(
-                contentType: snapshot.data?.contentType ?? '',
-                title: snapshot.data?.title ?? '',
-                profileName: snapshot.data?.profileName ?? '',
-                profilePicUrl: snapshot.data?.profilePicUrl ?? '',
-                onTap: snapshot.data?.onTap,
-              );
-            },
-          ),
         );
       case AsciiDocElementType.styledText:
         return Text(
