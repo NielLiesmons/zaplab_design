@@ -1,57 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class Message {
-  final String eventId;
-  final String content;
-  final String profileName;
-  final String profilePicUrl;
-  final DateTime timestamp;
-  final List<Reaction> reactions;
-  final List<Zap> zaps;
-  final List<QuotedMessage>? quotedMessages;
-
-  const Message({
-    required this.eventId,
-    required this.content,
-    required this.profileName,
-    required this.profilePicUrl,
-    required this.timestamp,
-    this.reactions = const [],
-    this.zaps = const [],
-    this.quotedMessages,
-  });
-}
-
-class Reaction {
-  final String emojiUrl;
-  final String profileName;
-  final String profilePicUrl;
-  final DateTime timestamp;
-
-  const Reaction({
-    required this.emojiUrl,
-    required this.profileName,
-    required this.profilePicUrl,
-    required this.timestamp,
-  });
-}
-
-class Zap {
-  final int amount;
-  final String profileName;
-  final String profilePicUrl;
-  final String? comment;
-  final DateTime timestamp;
-
-  const Zap({
-    required this.amount,
-    required this.profileName,
-    required this.profilePicUrl,
-    this.comment,
-    required this.timestamp,
-  });
-}
-
 class AppMessageFeed extends StatefulWidget {
   final List<Message> initialMessages;
   final Stream<Message>? messageStream;
@@ -65,6 +13,9 @@ class AppMessageFeed extends StatefulWidget {
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
+  final LinkTapHandler onLinkTap;
+  final void Function(String eventId, String reactionImageUrl)? onReactionTap;
+  final void Function(String eventId, String amount, String? comment)? onZapTap;
 
   const AppMessageFeed({
     super.key,
@@ -80,6 +31,9 @@ class AppMessageFeed extends StatefulWidget {
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
+    required this.onLinkTap,
+    required this.onReactionTap,
+    required this.onZapTap,
   });
 
   @override
@@ -122,7 +76,6 @@ class _AppMessageFeedState extends State<AppMessageFeed> {
           timestamp: message.timestamp,
           reactions: [...message.reactions, data.$2],
           zaps: message.zaps,
-          quotedMessages: message.quotedMessages,
         );
       }
     });
@@ -141,7 +94,6 @@ class _AppMessageFeedState extends State<AppMessageFeed> {
           timestamp: message.timestamp,
           reactions: message.reactions,
           zaps: [...message.zaps, data.$2],
-          quotedMessages: message.quotedMessages,
         );
       }
     });
@@ -180,7 +132,12 @@ class _AppMessageFeedState extends State<AppMessageFeed> {
               onResolveProfile: widget.onResolveProfile,
               onResolveEmoji: widget.onResolveEmoji,
               onResolveHashtag: widget.onResolveHashtag,
+              onLinkTap: widget.onLinkTap,
               profilePicUrl: messageStacks[i].first.profilePicUrl,
+              onReply: widget.onReply,
+              onActions: widget.onActions,
+              onReactionTap: widget.onReactionTap,
+              onZapTap: widget.onZapTap,
               messages: messageStacks[i]
                   .map((msg) => MessageData(
                         message: msg.content,
@@ -191,7 +148,6 @@ class _AppMessageFeedState extends State<AppMessageFeed> {
                         onActions: widget.onActions,
                         reactions: msg.reactions,
                         zaps: msg.zaps,
-                        quotedMessages: msg.quotedMessages,
                       ))
                   .toList(),
             ),

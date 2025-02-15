@@ -7,6 +7,11 @@ class AppMessageStack extends StatelessWidget {
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
+  final LinkTapHandler onLinkTap;
+  final void Function(String eventId)? onReply;
+  final void Function(String eventId)? onActions;
+  final void Function(String eventId, String reactionImageUrl)? onReactionTap;
+  final void Function(String eventId, String amount, String? comment)? onZapTap;
 
   const AppMessageStack({
     super.key,
@@ -16,6 +21,11 @@ class AppMessageStack extends StatelessWidget {
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
+    required this.onLinkTap,
+    required this.onReply,
+    required this.onActions,
+    required this.onReactionTap,
+    required this.onZapTap,
   });
 
   @override
@@ -55,6 +65,7 @@ class AppMessageStack extends StatelessWidget {
                     onResolveProfile: onResolveProfile,
                     onResolveEmoji: onResolveEmoji,
                     onResolveHashtag: onResolveHashtag,
+                    onLinkTap: onLinkTap,
                   ),
                 ],
               ],

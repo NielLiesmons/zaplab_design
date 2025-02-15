@@ -81,6 +81,7 @@ class AppIconCharactersData extends Equatable {
     required this.mic,
     required this.mints,
     required this.music,
+    required this.nostr,
     required this.openBook,
     required this.openWith,
     required this.pause,
@@ -102,6 +103,7 @@ class AppIconCharactersData extends Equatable {
     required this.star,
     required this.sticker,
     required this.text,
+    required this.tilda,
     required this.tools,
     required this.transfer,
     required this.video,
@@ -157,6 +159,7 @@ class AppIconCharactersData extends Equatable {
         mic: String.fromCharCodes([57767, 57416]),
         mints: String.fromCharCodes([58930, 59014, 57346]),
         music: String.fromCharCodes([58935, 61155, 57350]),
+        nostr: String.fromCharCodes([58947, 58574, 57345]),
         openBook: String.fromCharCodes([57344, 57826, 60512, 57518]),
         openWith: String.fromCharCodes([57344, 57826, 58090, 57553]),
         pause: String.fromCharCodes([58969, 57952, 57351]),
@@ -177,6 +180,7 @@ class AppIconCharactersData extends Equatable {
         split: String.fromCharCodes([59018, 57778, 57355]),
         star: String.fromCharCodes([58209, 58963]),
         sticker: String.fromCharCodes([57344, 59147, 60151, 57540]),
+        tilda: String.fromCharCodes([59029, 57398, 57349]),
         text: String.fromCharCodes([58213, 58670]),
         tools: String.fromCharCodes([59031, 60574, 57356]),
         transfer: String.fromCharCodes([58566, 59576, 57580]),
@@ -231,6 +235,7 @@ class AppIconCharactersData extends Equatable {
   final String mic;
   final String mints;
   final String music;
+  final String nostr;
   final String openBook;
   final String openWith;
   final String pause;
@@ -252,6 +257,7 @@ class AppIconCharactersData extends Equatable {
   final String star;
   final String sticker;
   final String text;
+  final String tilda;
   final String tools;
   final String transfer;
   final String video;
@@ -306,6 +312,7 @@ class AppIconCharactersData extends Equatable {
         mic.named('mic'),
         mints.named('mints'),
         music.named('music'),
+        nostr.named('nostr'),
         openBook.named('openBook'),
         openWith.named('openWith'),
         pause.named('pause'),
@@ -327,6 +334,7 @@ class AppIconCharactersData extends Equatable {
         star.named('star'),
         sticker.named('sticker'),
         text.named('text'),
+        tilda.named('tilda'),
         tools.named('tools'),
         transfer.named('transfer'),
         video.named('video'),
@@ -348,6 +356,8 @@ class AppIconSizesData extends Equatable {
     required this.s24,
     required this.s28,
     required this.s32,
+    required this.s38,
+    required this.s40,
   });
 
   factory AppIconSizesData.normal() => const AppIconSizesData(
@@ -362,6 +372,8 @@ class AppIconSizesData extends Equatable {
         s24: 24.0,
         s28: 28.0,
         s32: 32.0,
+        s38: 38.0,
+        s40: 40.0,
       );
 
   final double s4;
@@ -375,6 +387,8 @@ class AppIconSizesData extends Equatable {
   final double s24;
   final double s28;
   final double s32;
+  final double s38;
+  final double s40;
 
   @override
   List<Object?> get props => [
@@ -389,5 +403,7 @@ class AppIconSizesData extends Equatable {
         s24.named('s24'),
         s28.named('s28'),
         s32.named('s32'),
+        s38.named('s38'),
+        s40.named('s40'),
       ];
 }

@@ -22,44 +22,56 @@ class AppProfileInline extends StatelessWidget {
     return TapBuilder(
       onTap: onTap,
       builder: (context, state, hasFocus) {
-        return IntrinsicWidth(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const AppGap.s2(),
-              if (profilePicUrl.isNotEmpty)
-                Transform.translate(
-                  offset: isArticle == false
-                      ? const Offset(0, -0.1)
-                      : const Offset(0, 0.2),
-                  child: AppProfilePic.s20(profilePicUrl),
-                )
-              else
-                AppProfilePic.s20('non-functional url'),
-              const AppGap.s4(),
-              Transform.translate(
-                offset: const Offset(0, -0.2),
-                child: profileName.isNotEmpty
-                    ? (isArticle == false)
-                        ? AppText.bold14(
-                            profileName,
-                            color: theme.colors.blurpleColor,
-                          )
-                        : AppText.boldArticle(
-                            profileName,
-                            color: theme.colors.blurpleColor,
-                          )
-                    : (isArticle == false)
-                        ? AppText.bold14(
-                            'ProfileName',
-                            color: theme.colors.blurpleColor66,
-                          )
-                        : AppText.boldArticle(
-                            'ProfileName',
-                            color: theme.colors.blurpleColor66,
-                          ),
-              ),
-            ],
+        return ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 160),
+          child: IntrinsicWidth(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (profilePicUrl.isNotEmpty)
+                  Transform.translate(
+                    offset: isArticle == false
+                        ? const Offset(0, -0.1)
+                        : const Offset(0, 0.2),
+                    child: AppProfilePic.s20(profilePicUrl),
+                  )
+                else
+                  AppProfilePic.s20('non-functional url'),
+                const AppGap.s4(),
+                Flexible(
+                  child: Transform.translate(
+                    offset: const Offset(0, -0.2),
+                    child: profileName.isNotEmpty
+                        ? (isArticle == false)
+                            ? AppText.bold14(
+                                profileName,
+                                color: theme.colors.blurpleColor,
+                                maxLines: 1,
+                                textOverflow: TextOverflow.ellipsis,
+                              )
+                            : AppText.boldArticle(
+                                profileName,
+                                color: theme.colors.blurpleColor,
+                                maxLines: 1,
+                                textOverflow: TextOverflow.ellipsis,
+                              )
+                        : (isArticle == false)
+                            ? AppText.bold14(
+                                'ProfileName',
+                                color: theme.colors.blurpleColor66,
+                                maxLines: 1,
+                                textOverflow: TextOverflow.ellipsis,
+                              )
+                            : AppText.boldArticle(
+                                'ProfileName',
+                                color: theme.colors.blurpleColor66,
+                                maxLines: 1,
+                                textOverflow: TextOverflow.ellipsis,
+                              ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

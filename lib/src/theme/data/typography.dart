@@ -243,7 +243,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Inter',
           package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
-          fontSize: 16,
+          fontSize: 14.5,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -263,7 +263,7 @@ class AppTypographyData extends Equatable {
           fontFamily: 'Inter',
           package: 'zaplab_design',
           fontWeight: FontWeight.w600, // technically semibold
-          fontSize: 14.5,
+          fontSize: 12,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,

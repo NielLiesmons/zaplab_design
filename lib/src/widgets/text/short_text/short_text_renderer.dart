@@ -1,5 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:flutter/gestures.dart';
 
 class AppShortTextRenderer extends StatelessWidget {
   final String content;
@@ -7,6 +8,7 @@ class AppShortTextRenderer extends StatelessWidget {
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
+  final LinkTapHandler onLinkTap;
 
   const AppShortTextRenderer({
     super.key,
@@ -15,6 +17,7 @@ class AppShortTextRenderer extends StatelessWidget {
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
+    required this.onLinkTap,
   });
 
   @override
@@ -62,11 +65,6 @@ class AppShortTextRenderer extends StatelessWidget {
           right: AppGapSize.s16,
         ),
       ShortTextElementType.listItem => const AppEdgeInsets.only(
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
-        ),
-      ShortTextElementType.orderedListItem => const AppEdgeInsets.only(
           bottom: AppGapSize.s6,
           left: AppGapSize.s16,
           right: AppGapSize.s16,
@@ -124,86 +122,8 @@ class AppShortTextRenderer extends StatelessWidget {
           code: element.content,
           language: element.attributes?['language'] ?? 'plain',
         );
-      case ShortTextElementType.admonition:
-        return AppAdmonition(
-          type: element.attributes?['type'] ?? 'note',
-          child: AppText.reg14(
-            element.content,
-            color: theme.colors.white,
-          ),
-        );
+
       case ShortTextElementType.listItem:
-      case ShortTextElementType.orderedListItem:
-        final String number = element.attributes?['number'] ?? '•';
-        final String displayNumber =
-            element.type == ShortTextElementType.orderedListItem
-                ? '$number.'
-                : number;
-        return Padding(
-          padding: EdgeInsets.only(
-            left: element.level * 12,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppContainer(
-                padding: const AppEdgeInsets.only(
-                  right: AppGapSize.s8,
-                ),
-                child: AppText.reg14(
-                  displayNumber,
-                  color: theme.colors.white66,
-                ),
-              ),
-              Expanded(
-                child: AppText.reg14(
-                  element.content,
-                  color: theme.colors.white,
-                ),
-              ),
-            ],
-          ),
-        );
-      case ShortTextElementType.checkListItem:
-        return Padding(
-          padding: EdgeInsets.only(
-            left: element.level * 16,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppCheckBox(
-                value: element.checked ?? false,
-                onChanged: null,
-              ),
-              const AppGap.s8(),
-              Expanded(
-                child: AppText.reg14(
-                  element.content,
-                  color: theme.colors.white,
-                ),
-              ),
-            ],
-          ),
-        );
-      case ShortTextElementType.descriptionListItem:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppText.bold14(element.content),
-            if (element.attributes?['description'] != null)
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  top: 4,
-                ),
-                child: AppText.reg14(
-                  element.attributes!['description']!,
-                  color: theme.colors.white66,
-                ),
-              ),
-          ],
-        );
       case ShortTextElementType.horizontalRule:
         return const AppContainer(
           padding: AppEdgeInsets.symmetric(vertical: AppGapSize.s16),
@@ -227,7 +147,7 @@ class AppShortTextRenderer extends StatelessWidget {
                 );
                 currentSpans.clear();
               }
-              paragraphPieces.add(const AppGap.s4());
+              paragraphPieces.add(const AppGap.s2());
               paragraphPieces.add(
                 FutureBuilder<NostrEventData>(
                   future: onResolveEvent(child.content),
@@ -236,15 +156,17 @@ class AppShortTextRenderer extends StatelessWidget {
                       contentType: snapshot.data?.contentType ?? '',
                       title: snapshot.data?.title ?? '',
                       message: snapshot.data?.message ?? '',
+                      imageUrl: snapshot.data?.imageUrl ?? '',
                       profileName: snapshot.data?.profileName ?? '',
                       profilePicUrl: snapshot.data?.profilePicUrl ?? '',
                       timestamp: snapshot.data?.timestamp ?? DateTime.now(),
+                      amount: snapshot.data?.amount ?? '',
                       onTap: snapshot.data?.onTap,
                     );
                   },
                 ),
               );
-              paragraphPieces.add(const AppGap.s4());
+              paragraphPieces.add(const AppGap.s2());
             } else {
               // Handle all other elements exactly as before
               if (child.type == ShortTextElementType.nostrProfile) {
@@ -351,6 +273,15 @@ class AppShortTextRenderer extends StatelessWidget {
                     ),
                   ],
                 ));
+              } else if (child.type == ShortTextElementType.link) {
+                currentSpans.add(TextSpan(
+                  text: child.content,
+                  style: theme.typography.reg14.copyWith(
+                    color: theme.colors.blurpleColor,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () => onLinkTap(child.content),
+                ));
               } else {
                 currentSpans.add(TextSpan(
                   text: child.content,
@@ -434,6 +365,7 @@ class AppShortTextRenderer extends StatelessWidget {
                 : null,
           ),
         );
+
       default:
         return AppText.reg14(element.content);
     }
@@ -447,7 +379,8 @@ class AppShortTextRenderer extends StatelessWidget {
       return TextSpan(
         text: element.content,
         style: TextStyle(
-          color: theme.colors.white,
+          color:
+              style == 'url' ? theme.colors.blurpleColor : theme.colors.white,
           fontWeight: (style == 'bold' || style == 'bold-italic')
               ? FontWeight.bold
               : null,
@@ -457,6 +390,7 @@ class AppShortTextRenderer extends StatelessWidget {
           decoration: switch (style) {
             'underline' => TextDecoration.underline,
             'line-through' => TextDecoration.lineThrough,
+            'url' => TextDecoration.underline,
             _ => null,
           },
         ),

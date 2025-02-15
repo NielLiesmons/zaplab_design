@@ -135,13 +135,13 @@ class AppAsciiDocRenderer extends StatelessWidget {
       case AsciiDocElementType.heading1:
         return AppText.longformh1(element.content);
       case AsciiDocElementType.heading2:
-        return AppText.longformh2(element.content);
+        return AppText.longformh2(element.content, color: theme.colors.white66);
       case AsciiDocElementType.heading3:
-        return AppText.longformh3(element.content, color: theme.colors.white66);
+        return AppText.longformh3(element.content);
       case AsciiDocElementType.heading4:
-        return AppText.longformh4(element.content);
+        return AppText.longformh4(element.content, color: theme.colors.white66);
       case AsciiDocElementType.heading5:
-        return AppText.longformh5(element.content, color: theme.colors.white66);
+        return AppText.longformh5(element.content);
       case AsciiDocElementType.codeBlock:
         return AppCodeBlock(
           code: element.content,
@@ -233,6 +233,16 @@ class AppAsciiDocRenderer extends StatelessWidget {
           child: AppDivider(),
         );
       case AsciiDocElementType.paragraph:
+        if (element.attributes?['role'] == 'lead') {
+          return AppSelectableText(
+            text: element.content,
+            style: theme.typography.regArticle.copyWith(
+              color: theme.colors.white,
+              fontSize: 17,
+              fontStyle: FontStyle.italic,
+            ),
+          );
+        }
         if (element.children != null) {
           final List<Widget> paragraphPieces = [];
           final List<InlineSpan> currentSpans = [];
@@ -260,6 +270,7 @@ class AppAsciiDocRenderer extends StatelessWidget {
                         contentType: snapshot.data?.contentType ?? '',
                         title: snapshot.data?.title ?? '',
                         message: snapshot.data?.message ?? '',
+                        imageUrl: snapshot.data?.imageUrl ?? '',
                         profileName: snapshot.data?.profileName ?? '',
                         profilePicUrl: snapshot.data?.profilePicUrl ?? '',
                         timestamp: snapshot.data?.timestamp ?? DateTime.now(),

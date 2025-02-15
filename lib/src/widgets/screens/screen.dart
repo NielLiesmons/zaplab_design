@@ -533,11 +533,24 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                               child: Column(
                                 children: [
                                   // Top padding to account for the gap and drag handle in the top bar
-                                  SizedBox(height: theme.sizes.s12),
+                                  SizedBox(height: theme.sizes.s10),
                                   // Actual content
                                   widget.child,
                                 ],
                               ),
+                            ),
+                          ),
+                        ),
+
+                        // Black bar that renders the top 8px of the screen always in black so that the blure of the top bar's white top border doesn't pick up on the screen content.
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          child: AppContainer(
+                            height: theme.sizes.s8,
+                            decoration: BoxDecoration(
+                              color: theme.colors.black,
                             ),
                           ),
                         ),

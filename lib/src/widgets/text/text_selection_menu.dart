@@ -31,19 +31,40 @@ class AppTextSelectionMenu extends StatefulWidget {
   State<AppTextSelectionMenu> createState() => _AppTextSelectionMenuState();
 }
 
-class _AppTextSelectionMenuState extends State<AppTextSelectionMenu> {
+class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
+    with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   bool _showGradient = true;
+  bool _showCheckmark = false;
+  late final AnimationController _scaleController;
+  late final Animation<double> _scaleAnimation;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    _scaleController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _scaleAnimation = TweenSequence<double>([
+      TweenSequenceItem(
+        tween: Tween(begin: 0.0, end: 1.2)
+            .chain(CurveTween(curve: Curves.easeOut)),
+        weight: 50.0,
+      ),
+      TweenSequenceItem(
+        tween: Tween(begin: 1.2, end: 1.0)
+            .chain(CurveTween(curve: Curves.easeOut)),
+        weight: 50.0,
+      ),
+    ]).animate(_scaleController);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _scaleController.dispose();
     super.dispose();
   }
 
@@ -57,6 +78,15 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu> {
     }
   }
 
+  void _handleCopyWithAnimation(EditableTextState state) {
+    state.copySelection(SelectionChangedCause.tap);
+    setState(() => _showCheckmark = true);
+    _scaleController.forward(from: 0.0);
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (mounted) setState(() => _showCheckmark = false);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
@@ -65,8 +95,28 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu> {
     final defaultMenuItems = isEditable
         ? [
             AppTextSelectionMenuItem(
-              label: 'Copy',
-              onTap: (state) => _handleAction(state.copySelection),
+              label: _showCheckmark ? 'Copied!' : 'Copy',
+              icon: _showCheckmark
+                  ? ScaleTransition(
+                      scale: _scaleAnimation,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AppIcon.s10(
+                            theme.icons.characters.check,
+                            outlineColor: theme.colors.white66,
+                            outlineThickness: LineThicknessData.normal().thick,
+                          ),
+                          const AppGap.s6(),
+                          AppText.med14(
+                            'Copied!',
+                            color: theme.colors.white,
+                          ),
+                        ],
+                      ),
+                    )
+                  : null,
+              onTap: (state) => _handleCopyWithAnimation(state),
             ),
             AppTextSelectionMenuItem(
               label: 'Cut',
@@ -161,8 +211,28 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu> {
           ]
         : [
             AppTextSelectionMenuItem(
-              label: 'Copy',
-              onTap: (state) => _handleAction(state.copySelection),
+              label: _showCheckmark ? null : 'Copy',
+              icon: _showCheckmark
+                  ? ScaleTransition(
+                      scale: _scaleAnimation,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AppIcon.s10(
+                            theme.icons.characters.check,
+                            outlineColor: theme.colors.white66,
+                            outlineThickness: LineThicknessData.normal().thick,
+                          ),
+                          const AppGap.s6(),
+                          AppText.med14(
+                            'Copied!',
+                            color: theme.colors.white,
+                          ),
+                        ],
+                      ),
+                    )
+                  : null,
+              onTap: (state) => _handleCopyWithAnimation(state),
             ),
             AppTextSelectionMenuItem(
               label: 'Select All',
@@ -214,7 +284,8 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu> {
                           children: [
                             _buildButton(
                               context,
-                              item.label!,
+                              item.label,
+                              item.icon,
                               () => item.onTap(widget.editableTextState),
                             ),
                             if (!isLast) const AppDivider.vertical(),
@@ -251,7 +322,8 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu> {
     );
   }
 
-  Widget _buildButton(BuildContext context, String label, VoidCallback onTap) {
+  Widget _buildButton(
+      BuildContext context, String? label, Widget? icon, VoidCallback onTap) {
     final theme = AppTheme.of(context);
     return GestureDetector(
       onTap: onTap,
@@ -260,10 +332,11 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu> {
           horizontal: AppGapSize.s12,
           vertical: AppGapSize.s8,
         ),
-        child: AppText.med14(
-          label,
-          color: theme.colors.white,
-        ),
+        child: icon ??
+            AppText.med14(
+              label!,
+              color: theme.colors.white,
+            ),
       ),
     );
   }

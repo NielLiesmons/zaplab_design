@@ -67,63 +67,6 @@ class ShortTextParser {
         }
       }
 
-      // Unordered lists
-      if (line.startsWith('*')) {
-        final int level = _countLeadingAsterisk(line);
-        final String content = line.replaceAll(RegExp(r'^\*+\s*'), '').trim();
-
-        // Check if it's a checklist item
-        if (content.startsWith('[')) {
-          final bool? checked = _parseCheckboxState(content);
-          if (checked != null) {
-            elements.add(ShortTextElement(
-              type: ShortTextElementType.checkListItem,
-              content: content.substring(4).trim(), // Remove checkbox
-              level: level - 1,
-              checked: checked,
-            ));
-            continue;
-          }
-        }
-
-        elements.add(ShortTextElement(
-          type: ShortTextElementType.listItem,
-          content: content,
-          level: level - 1,
-        ));
-      }
-
-      // Ordered lists
-      if (line.startsWith('.')) {
-        final int level = _countLeadingDots(line);
-
-        // // Only reset if we went to a shallower level
-        // if (lastListLevel != null && level < lastListLevel) {
-        //   // _listCounter.reset();
-        // }
-        lastListLevel = level - 1;
-
-        elements.add(ShortTextElement(
-          type: ShortTextElementType.orderedListItem,
-          content: line.replaceAll(RegExp(r'^\.+\s*'), '').trim(),
-          level: level - 1,
-          attributes: {'number': _listCounter.nextNumber(level)},
-        ));
-        continue;
-      }
-
-      // Description lists
-      else if (line.contains('::')) {
-        final parts = line.split('::');
-        if (parts.length == 2) {
-          elements.add(ShortTextElement(
-            type: ShortTextElementType.descriptionListItem,
-            content: parts[0].trim(),
-            attributes: {'description': parts[1].trim()},
-          ));
-        }
-      }
-
       if (line.startsWith('=====')) {
         elements.add(ShortTextElement(
           type: ShortTextElementType.heading5,
@@ -174,34 +117,11 @@ class ShortTextParser {
         ));
       }
 
-      // Handle admonitions
-      else if (line.startsWith('NOTE:') ||
-          line.startsWith('TIP:') ||
-          line.startsWith('IMPORTANT:') ||
-          line.startsWith('WARNING:') ||
-          line.startsWith('CAUTION:')) {
-        final int colonIndex = line.indexOf(':');
-        final String type = line.substring(0, colonIndex);
-        final String admonitionContent = line.substring(colonIndex + 1).trim();
-
-        elements.add(ShortTextElement(
-          type: ShortTextElementType.admonition,
-          content: admonitionContent,
-          attributes: {'type': type.toLowerCase()},
-        ));
-      }
-
       // Handle paragraph with styled text
       if (!line.startsWith('=') &&
           !line.startsWith('*') &&
           !line.startsWith('.') &&
-          !line.startsWith('NOTE:') &&
-          !line.startsWith('TIP:') &&
-          !line.startsWith('IMPORTANT:') &&
-          !line.startsWith('WARNING:') &&
-          !line.startsWith('CAUTION:') &&
-          !line.startsWith('----') &&
-          !line.startsWith('image::')) {
+          !line.startsWith('----')) {
         final children = _parseStyledText(line);
 
         elements.add(ShortTextElement(
@@ -215,43 +135,15 @@ class ShortTextParser {
     return elements;
   }
 
-  int _countLeadingAsterisk(String line) {
-    int count = 0;
-    for (int i = 0; i < line.length; i++) {
-      if (line[i] == '*') {
-        count++;
-      } else {
-        break;
-      }
-    }
-    return count;
-  }
-
-  int _countLeadingDots(String line) {
-    int count = 0;
-    for (int i = 0; i < line.length; i++) {
-      if (line[i] == '.') {
-        count++;
-      } else {
-        break;
-      }
-    }
-    return count;
-  }
-
-  bool? _parseCheckboxState(String content) {
-    if (content.startsWith('[ ]')) return false;
-    if (content.startsWith('[*]') || content.startsWith('[x]')) return true;
-    return null;
-  }
-
   List<ShortTextElement>? _parseStyledText(String text) {
     if (!text.contains('*') &&
         !text.contains('_') &&
         !text.contains('[.') &&
         !text.contains('nostr:') &&
         !text.contains(':') &&
-        !text.contains('#')) {
+        !text.contains('#') &&
+        !text.contains('http') &&
+        !text.contains('https')) {
       return null;
     }
 
@@ -271,6 +163,13 @@ class ShortTextParser {
     final RegExp nostrProfilePattern = RegExp(r'nostr:n(?:pub1|profile1)\w+');
     final RegExp emojiPattern = RegExp(r':([a-zA-Z0-9_-]+):');
     final RegExp hashtagPattern = RegExp(r'(?<=^|\s)#([a-zA-Z0-9_]+)');
+    final RegExp imageUrlPattern = RegExp(
+        r'https?:\/\/[^\s<>"]+?\/[^\s<>"]+?\.(png|jpe?g|gif|webp|avif)(\?[^"\s<>]*)?',
+        caseSensitive: false);
+    final RegExp urlPattern = RegExp(
+      r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)',
+      caseSensitive: false,
+    );
 
     int currentPosition = 0;
 
@@ -294,6 +193,9 @@ class ShortTextParser {
           emojiPattern.matchAsPrefix(text, currentPosition);
       final Match? hashtagMatch =
           hashtagPattern.matchAsPrefix(text, currentPosition);
+      final Match? imageUrlMatch =
+          imageUrlPattern.matchAsPrefix(text, currentPosition);
+      final Match? urlMatch = urlPattern.matchAsPrefix(text, currentPosition);
 
       final List<Match?> matches = [
         combined1Match,
@@ -306,6 +208,8 @@ class ShortTextParser {
         nostrProfileMatch,
         emojiMatch,
         hashtagMatch,
+        imageUrlMatch,
+        urlMatch,
       ].where((m) => m != null).toList();
 
       if (matches.isEmpty) {
@@ -372,6 +276,16 @@ class ShortTextParser {
       } else if (firstMatch == nostrProfileMatch) {
         styledElements.add(ShortTextElement(
           type: ShortTextElementType.nostrProfile,
+          content: firstMatch[0]!,
+        ));
+      } else if (firstMatch == imageUrlMatch) {
+        styledElements.add(ShortTextElement(
+          type: ShortTextElementType.image,
+          content: firstMatch[0]!,
+        ));
+      } else if (firstMatch == urlMatch) {
+        styledElements.add(ShortTextElement(
+          type: ShortTextElementType.link,
           content: firstMatch[0]!,
         ));
       }

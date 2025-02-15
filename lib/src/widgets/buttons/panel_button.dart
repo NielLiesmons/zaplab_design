@@ -35,17 +35,15 @@ class AppPanelButton extends StatelessWidget {
           onTap: onTap,
           onLongPress: onLongPress,
           builder: (context, state, hasFocus) {
-            // Scale factors based on the button state
             double scaleFactor = 1.0;
             if (state == TapState.pressed) {
-              scaleFactor = 0.99;
+              scaleFactor = 0.98;
             } else if (state == TapState.hover) {
-              scaleFactor = 1.01;
+              scaleFactor = 1.005;
             }
 
-            return AnimatedScale(
+            return Transform.scale(
               scale: scaleFactor,
-              duration: const Duration(milliseconds: 100),
               child: AppPanel(
                 color: color,
                 gradient: gradient,

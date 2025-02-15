@@ -32,34 +32,33 @@ class AppArticleCard extends StatelessWidget {
             aspectRatio: 16 / 9,
             child: AppContainer(
               width: double.infinity,
-              decoration: BoxDecoration(
-                color: theme.colors.grey33,
-                border: Border.all(
-                  color: isInsideModal
-                      ? theme.colors.white16
-                      : theme.colors.grey66,
-                  width: LineThicknessData.normal().medium,
+              padding: const AppEdgeInsets.all(AppGapSize.s2),
+              child: AppContainer(
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  color: theme.colors.grey33,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(14.6),
+                    topRight: Radius.circular(14.6),
+                  ),
                 ),
-                borderRadius: BorderRadius.only(
-                  topLeft: theme.radius.rad16,
-                  topRight: theme.radius.rad16,
-                ),
+                child: imageUrl.isNotEmpty
+                    ? Image.network(
+                        imageUrl,
+                        fit: BoxFit.cover,
+                      )
+                    : const AppSkeletonLoader(),
               ),
-              clipBehavior: Clip.antiAlias,
-              child: imageUrl.isNotEmpty
-                  ? Image.network(
-                      imageUrl,
-                      fit: BoxFit.cover,
-                    )
-                  : const AppSkeletonLoader(),
             ),
           ),
 
           // Event info section
           AppContainer(
-            padding: const AppEdgeInsets.symmetric(
-              horizontal: AppGapSize.s12,
-              vertical: AppGapSize.s10,
+            padding: const AppEdgeInsets.only(
+              left: AppGapSize.s12,
+              right: AppGapSize.s12,
+              top: AppGapSize.s8,
+              bottom: AppGapSize.s10,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,

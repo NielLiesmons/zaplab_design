@@ -1,7 +1,12 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppSkeletonLoader extends StatefulWidget {
-  const AppSkeletonLoader({super.key});
+  final Widget? child;
+
+  const AppSkeletonLoader({
+    super.key,
+    this.child,
+  });
 
   @override
   State<AppSkeletonLoader> createState() => _AppSkeletonLoaderState();
@@ -46,6 +51,7 @@ class _AppSkeletonLoaderState extends State<AppSkeletonLoader>
               stops: const [0.0, 0.5, 1.0],
             ),
           ),
+          child: widget.child,
         );
       },
     );

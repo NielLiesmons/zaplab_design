@@ -65,13 +65,16 @@ class TextSelectionGestureDetectorBuilder {
         cursor: SystemMouseCursors.text,
         child: GestureDetector(
           key: key,
-          behavior: behavior ?? HitTestBehavior.translucent,
+          behavior: behavior ?? HitTestBehavior.deferToChild,
           onDoubleTapDown: _handleDoubleClick,
           child: Listener(
             onPointerDown: (PointerDownEvent event) {
-              editableText.hideToolbar();
-              _dragStartPosition = event.position;
-              _handleMouseSelection(event.position, SelectionChangedCause.tap);
+              if (event.buttons == kPrimaryButton) {
+                editableText.hideToolbar();
+                _dragStartPosition = event.position;
+                _handleMouseSelection(
+                    event.position, SelectionChangedCause.tap);
+              }
             },
             onPointerMove: (PointerMoveEvent event) {
               if (event.buttons == kPrimaryButton &&
@@ -87,14 +90,16 @@ class TextSelectionGestureDetectorBuilder {
               }
             },
             onPointerUp: (PointerUpEvent event) {
-              _isDragging = false;
-              _dragStartPosition = null;
-              // Show toolbar if text is selected
-              final selection = editableText.textEditingValue.selection;
-              if (!selection.isCollapsed) {
-                editableText.showToolbar();
+              if (_isDragging) {
+                _isDragging = false;
+                _dragStartPosition = null;
+                final selection = editableText.textEditingValue.selection;
+                if (!selection.isCollapsed) {
+                  editableText.showToolbar();
+                }
               }
             },
+            behavior: HitTestBehavior.deferToChild,
             child: child,
           ),
         ),

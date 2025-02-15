@@ -30,10 +30,7 @@ export 'buttons/small_button.dart';
 
 // Chat
 export 'chat/message_bubble.dart';
-export 'chat/message_content.dart';
 export 'chat/message_feed.dart';
-export 'chat/message_parser.dart';
-export 'chat/message_segment.dart';
 export 'chat/message_stack.dart';
 export 'chat/quoted_message.dart';
 

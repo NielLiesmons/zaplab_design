@@ -111,7 +111,7 @@ class _AppSelectableTextState extends State<AppSelectableText>
     );
 
     return _selectionGestureDetectorBuilder.buildGestureDetector(
-      behavior: HitTestBehavior.translucent,
+      behavior: HitTestBehavior.deferToChild,
       child: EditableText(
         key: editableTextKey,
         controller: widget.textSpan != null

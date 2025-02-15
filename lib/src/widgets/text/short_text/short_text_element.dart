@@ -7,15 +7,10 @@ enum ShortTextElementType {
   paragraph, // Regular text
   codeBlock, // [source,language]
   listItem, // * List items
-  orderedListItem, // . List items
-  checkListItem, // [x] List items
-  descriptionListItem, // : List items
-  qandaListItem, // ? List items
   link, // https://... or [text](url)
-  admonition, // NOTE: or TIP: or IMPORTANT: or WARNING: or CAUTION:
   horizontalRule, // --- or *** or '''
   styledText, //
-  image, // image::url[caption]
+  image, // url.png or url.jpg or url.gif or url.svg
   nostrProfile, // nostr:npub1... or nostr:nprofile1...
   nostrEvent, // nostr:nevent1...
   emoji, // :emoji:

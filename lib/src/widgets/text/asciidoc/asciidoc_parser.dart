@@ -191,6 +191,21 @@ class AsciiDocParser {
         ));
       }
 
+      // In the parse method, before handling paragraphs, add this check
+      if (line.startsWith('[.lead]')) {
+        // Skip this line and process the next one as a lead paragraph
+        i++;
+        if (i < lines.length) {
+          final String paragraphContent = lines[i].trim();
+          elements.add(AsciiDocElement(
+            type: AsciiDocElementType.paragraph,
+            content: paragraphContent,
+            attributes: {'role': 'lead'},
+          ));
+        }
+        continue;
+      }
+
       // Handle paragraph with styled text
       if (!line.startsWith('=') &&
           !line.startsWith('*') &&
