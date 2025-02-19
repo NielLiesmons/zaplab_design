@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:flutter/gestures.dart';
 
-class AppShortTextRenderer extends StatelessWidget {
+class AppEditableShortTextRenderer extends StatelessWidget {
   final String content;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
@@ -10,7 +10,7 @@ class AppShortTextRenderer extends StatelessWidget {
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
 
-  const AppShortTextRenderer({
+  const AppEditableShortTextRenderer({
     super.key,
     required this.content,
     required this.onResolveEvent,
@@ -22,7 +22,7 @@ class AppShortTextRenderer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final parser = AppShortTextParser();
+    final parser = AppEditableShortTextParser();
     final elements = parser.parse(content);
 
     return Column(

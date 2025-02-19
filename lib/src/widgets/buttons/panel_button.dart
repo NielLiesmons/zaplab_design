@@ -37,9 +37,9 @@ class AppPanelButton extends StatelessWidget {
           builder: (context, state, isFocused) {
             double scaleFactor = 1.0;
             if (state == TapState.pressed) {
-              scaleFactor = 0.98;
+              scaleFactor = 0.99;
             } else if (state == TapState.hover) {
-              scaleFactor = 1.005;
+              scaleFactor = 1.0;
             }
 
             return Transform.scale(

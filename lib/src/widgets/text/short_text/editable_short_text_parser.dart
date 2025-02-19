@@ -1,6 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppShortTextParser {
+class AppEditableShortTextParser {
   final _listCounter = _ListCounter();
 
   List<AppShortTextElement> parse(String text) {

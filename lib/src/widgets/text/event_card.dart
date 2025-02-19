@@ -9,6 +9,8 @@ class AppEventCard extends StatelessWidget {
   final DateTime timestamp;
   final String? amount;
   final String? message;
+  final String? content;
+
   final VoidCallback? onTap;
 
   const AppEventCard({
@@ -21,6 +23,7 @@ class AppEventCard extends StatelessWidget {
     required this.timestamp,
     this.amount,
     this.message,
+    this.content,
     this.onTap,
   });
 
@@ -95,6 +98,19 @@ class AppEventCard extends StatelessWidget {
           profilePicUrl: profilePicUrl,
           amount: amount ?? '',
           message: message ?? '',
+          onTap: onTap,
+        ),
+      );
+    }
+
+    if (contentType == 'post') {
+      return ConstrainedBox(
+        constraints: BoxConstraints(minWidth: minWidth),
+        child: AppPostCard(
+          profileName: profileName,
+          profilePicUrl: profilePicUrl,
+          timestamp: timestamp,
+          content: content ?? '',
           onTap: onTap,
         ),
       );

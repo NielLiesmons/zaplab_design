@@ -73,43 +73,66 @@ class AppActionsModal extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppContainer(
-              decoration: BoxDecoration(
-                color: theme.colors.black33,
-                borderRadius: theme.radius.asBorderRadius().rad16,
-              ),
-              padding: const AppEdgeInsets.all(AppGapSize.s8),
-              child: Column(
-                children: [
-                  AppQuotedMessage(
-                    message: message ?? '',
-                    profileName: profileName,
-                    profilePicUrl: profilePicUrl,
-                    timestamp: DateTime.now(),
-                  ),
-                  AppContainer(
-                    padding: const AppEdgeInsets.only(
-                      left: AppGapSize.s8,
-                      right: AppGapSize.s8,
-                      top: AppGapSize.s12,
-                      bottom: AppGapSize.s4,
+            TapBuilder(
+              onTap: () {
+                // TODO: add onTap as a paremeter
+              },
+              builder: (context, state, isFocused) {
+                double scaleFactor = 1.0;
+                if (state == TapState.pressed) {
+                  scaleFactor = 0.98;
+                } else if (state == TapState.hover) {
+                  scaleFactor = 1.00;
+                }
+
+                return AnimatedScale(
+                  scale: scaleFactor,
+                  duration: AppDurationsData.normal().fast,
+                  curve: Curves.easeInOut,
+                  child: AppContainer(
+                    decoration: BoxDecoration(
+                      color: theme.colors.black33,
+                      borderRadius: theme.radius.asBorderRadius().rad16,
+                      border: Border.all(
+                        color: theme.colors.white33,
+                        width: LineThicknessData.normal().thin,
+                      ),
                     ),
-                    child: Row(
+                    padding: const AppEdgeInsets.all(AppGapSize.s8),
+                    child: Column(
                       children: [
-                        AppText.med14(
-                          'Reply',
-                          color: theme.colors.white33,
+                        AppQuotedMessage(
+                          message: message ?? '',
+                          profileName: profileName,
+                          profilePicUrl: profilePicUrl,
+                          timestamp: DateTime.now(),
                         ),
-                        const Spacer(),
-                        AppIcon.s16(
-                          theme.icons.characters.voice,
-                          color: theme.colors.white33,
+                        AppContainer(
+                          padding: const AppEdgeInsets.only(
+                            left: AppGapSize.s8,
+                            right: AppGapSize.s8,
+                            top: AppGapSize.s12,
+                            bottom: AppGapSize.s4,
+                          ),
+                          child: Row(
+                            children: [
+                              AppText.med14(
+                                'Reply',
+                                color: theme.colors.white33,
+                              ),
+                              const Spacer(),
+                              AppIcon.s16(
+                                theme.icons.characters.voice,
+                                color: theme.colors.white33,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
+                );
+              },
             ),
             const AppGap.s12(),
             Row(children: [

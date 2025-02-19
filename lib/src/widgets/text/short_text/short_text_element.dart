@@ -1,10 +1,11 @@
-enum ShortTextElementType {
+enum AppShortTextElementType {
   heading1, // = Heading
   heading2, // == Heading
   heading3, // === Heading
   heading4, // ==== Heading
   heading5, // ===== Heading
   paragraph, // Regular text
+  blockQuote, // Add this
   codeBlock, // [source,language]
   listItem, // * List items
   link, // https://... or [text](url)
@@ -17,15 +18,15 @@ enum ShortTextElementType {
   hashtag, // Add this
 }
 
-class ShortTextElement {
-  final ShortTextElementType type;
+class AppShortTextElement {
+  final AppShortTextElementType type;
   final String content;
   final Map<String, String>? attributes; // For code blocks: language, etc.
   final int level; // For nested lists
   final bool? checked; // For checklists
-  final List<ShortTextElement>? children; // Add this for nested styling
+  final List<AppShortTextElement>? children; // Add this for nested styling
 
-  const ShortTextElement({
+  const AppShortTextElement({
     required this.type,
     required this.content,
     this.attributes,

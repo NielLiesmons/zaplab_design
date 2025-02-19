@@ -60,6 +60,7 @@ export 'modals/zap_slider.dart';
 // Posts
 export 'posts/feed_post.dart';
 export 'posts/post.dart';
+export 'posts/post_card.dart';
 
 // Profiles
 export 'profiles/profile_inline.dart';
@@ -87,6 +88,8 @@ export 'text/admonition.dart';
 export 'text/amount.dart';
 export 'text/code_block.dart';
 export 'text/event_card.dart';
+export 'text/short_text/editable_short_text_parser.dart';
+export 'text/short_text/editable_short_text_renderer.dart';
 export 'text/short_text/short_text_element.dart';
 export 'text/short_text/short_text_parser.dart';
 export 'text/short_text/short_text_renderer.dart';

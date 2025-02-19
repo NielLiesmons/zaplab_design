@@ -101,6 +101,7 @@ class NostrEvent {
   final String contentType;
   final String? title;
   final String? message;
+  final String? content;
   final String? imageUrl;
   final String profileName;
   final String profilePicUrl;
@@ -113,6 +114,7 @@ class NostrEvent {
     required this.contentType,
     this.title,
     this.message,
+    this.content,
     this.imageUrl,
     required this.profileName,
     required this.profilePicUrl,

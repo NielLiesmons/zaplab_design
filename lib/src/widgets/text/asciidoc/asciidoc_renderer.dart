@@ -273,6 +273,7 @@ class AppAsciiDocRenderer extends StatelessWidget {
                         contentType: snapshot.data?.contentType ?? '',
                         title: snapshot.data?.title ?? '',
                         message: snapshot.data?.message ?? '',
+                        content: snapshot.data?.content ?? '',
                         imageUrl: snapshot.data?.imageUrl ?? '',
                         profileName: snapshot.data?.profileName ?? '',
                         profilePicUrl: snapshot.data?.profilePicUrl ?? '',
