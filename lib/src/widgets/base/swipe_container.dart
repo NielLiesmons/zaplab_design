@@ -165,6 +165,9 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
           previousScale < 0.99 &&
           !_popController.isAnimating) {
         _popController.forward(from: 0).then((_) => _popController.reverse());
+        Future.delayed(const Duration(milliseconds: 300), () {
+          widget.onSwipeLeft?.call();
+        });
       }
     } else if (_isRightActionVisible) {
       final progress = (-delta / widget.actionWidth).clamp(0, 1);
@@ -183,6 +186,9 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
           previousScale < 0.99 &&
           !_popController.isAnimating) {
         _popController.forward(from: 0).then((_) => _popController.reverse());
+        Future.delayed(const Duration(milliseconds: 360), () {
+          widget.onSwipeRight?.call();
+        });
       }
 
       _rightWidthAnimation = Tween<double>(
@@ -211,14 +217,6 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
   void _handleDragEnd(DragEndDetails details) {
     _lockedAxis = null;
     _initialDragDelta = 0;
-    final velocity = details.velocity.pixelsPerSecond.dx;
-    final threshold = widget.actionWidth * 0.5;
-
-    if (_isLeftActionVisible && velocity > threshold) {
-      widget.onSwipeRight?.call();
-    } else if (_isRightActionVisible && velocity < -threshold) {
-      widget.onSwipeLeft?.call();
-    }
 
     setState(() {
       _isLeftActionVisible = false;

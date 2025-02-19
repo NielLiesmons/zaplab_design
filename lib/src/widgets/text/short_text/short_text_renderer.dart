@@ -74,9 +74,6 @@ class AppShortTextRenderer extends StatelessWidget {
           left: AppGapSize.s16,
           right: AppGapSize.s16,
         ),
-      ShortTextElementType.image => const AppEdgeInsets.only(
-          bottom: AppGapSize.s8,
-        ),
       _ => const AppEdgeInsets.only(
           bottom: AppGapSize.s4,
         ),
@@ -149,7 +146,7 @@ class AppShortTextRenderer extends StatelessWidget {
               }
               paragraphPieces.add(const AppGap.s2());
               paragraphPieces.add(
-                FutureBuilder<NostrEventData>(
+                FutureBuilder<NostrEvent>(
                   future: onResolveEvent(child.content),
                   builder: (context, snapshot) {
                     return AppEventCard(
@@ -184,12 +181,12 @@ class AppShortTextRenderer extends StatelessWidget {
                     ),
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
-                      child: FutureBuilder<NostrProfileData>(
+                      child: FutureBuilder<Profile>(
                         future: onResolveProfile(child.content),
                         builder: (context, snapshot) {
                           return AppProfileInline(
-                            profileName: snapshot.data?.name ?? '',
-                            profilePicUrl: snapshot.data?.imageUrl ?? '',
+                            profileName: snapshot.data?.profileName ?? '',
+                            profilePicUrl: snapshot.data?.profilePicUrl ?? '',
                             onTap: snapshot.data?.onTap,
                           );
                         },
@@ -220,6 +217,7 @@ class AppShortTextRenderer extends StatelessWidget {
                                 horizontal: AppGapSize.s2),
                             child: AppEmojiImage(
                               emojiUrl: snapshot.data ?? '',
+                              emojiName: snapshot.data ?? '',
                               size: 16,
                             ),
                           );
@@ -282,6 +280,25 @@ class AppShortTextRenderer extends StatelessWidget {
                   recognizer: TapGestureRecognizer()
                     ..onTap = () => onLinkTap(child.content),
                 ));
+              } else if (child.type == ShortTextElementType.image) {
+                if (currentSpans.isNotEmpty) {
+                  paragraphPieces.add(
+                    AppSelectableText.rich(
+                      TextSpan(children: List.from(currentSpans)),
+                      style: theme.typography.reg14.copyWith(
+                        color: theme.colors.white,
+                      ),
+                    ),
+                  );
+                  currentSpans.clear();
+                }
+                paragraphPieces.add(const AppGap.s2());
+                paragraphPieces.add(
+                  AppImageCard(
+                    url: child.content,
+                  ),
+                );
+                paragraphPieces.add(const AppGap.s2());
               } else {
                 currentSpans.add(TextSpan(
                   text: child.content,
@@ -348,11 +365,7 @@ class AppShortTextRenderer extends StatelessWidget {
             ),
           ),
         );
-      case ShortTextElementType.image:
-        return AppFullWidthImage(
-          url: element.content,
-          caption: element.attributes?['title'],
-        );
+
       case ShortTextElementType.styledText:
         return Text(
           element.content,

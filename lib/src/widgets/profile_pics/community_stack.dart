@@ -1,16 +1,6 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class Community {
-  final String profilePicUrl;
-  final String name;
-
-  const Community({
-    required this.profilePicUrl,
-    required this.name,
-  });
-}
-
 class AppCommunityStack extends StatelessWidget {
   AppCommunityStack({
     super.key,
@@ -67,7 +57,7 @@ class AppCommunityStack extends StatelessWidget {
                           child: Center(
                             child: AppText.reg12(
                               communities.length == 1
-                                  ? communities.first.name
+                                  ? communities.first.communityName
                                   : '${communities.length} Communities',
                               color: theme.colors.white66,
                             ),

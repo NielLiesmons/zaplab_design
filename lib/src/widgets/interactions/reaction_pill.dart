@@ -3,12 +3,14 @@ import 'package:tap_builder/tap_builder.dart';
 
 class AppReactionPill extends StatelessWidget {
   final String emojiUrl;
+  final String emojiName;
   final String profilePicUrl;
   final VoidCallback onTap;
 
   const AppReactionPill({
     super.key,
     required this.emojiUrl,
+    required this.emojiName,
     required this.profilePicUrl,
     required this.onTap,
   });
@@ -51,7 +53,7 @@ class AppReactionPill extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                AppEmojiImage(emojiUrl: emojiUrl),
+                AppEmojiImage(emojiUrl: emojiUrl, emojiName: emojiName),
                 const AppGap.s6(),
                 AppProfilePic.s18(profilePicUrl),
               ],

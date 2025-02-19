@@ -9,6 +9,12 @@ class AppPost extends StatelessWidget {
   final List<Reaction> reactions;
   final List<Zap> zaps;
   final List<Community> communities;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
+  final NostrHashtagResolver onResolveHashtag;
+  final LinkTapHandler onLinkTap;
+
   const AppPost({
     super.key,
     required this.content,
@@ -18,6 +24,11 @@ class AppPost extends StatelessWidget {
     this.reactions = const [],
     this.zaps = const [],
     this.communities = const [],
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
+    required this.onResolveHashtag,
+    required this.onLinkTap,
   });
 
   @override
@@ -52,7 +63,8 @@ class AppPost extends StatelessWidget {
                     ),
                     const AppGap.s6(),
                     AppCommunityStack(
-                      onTap: () {},
+                      onTap:
+                          () {}, // TODO: Add AppModal.show -> Community cards in the modal
                       communities: communities,
                     ),
                   ],
@@ -67,7 +79,7 @@ class AppPost extends StatelessWidget {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: AppInteractionPills(
-                eventId: '',
+                nevent: '',
                 reactions: reactions,
                 zaps: zaps,
               ),

@@ -46,6 +46,10 @@ class AppArticleCard extends StatelessWidget {
                     ? Image.network(
                         imageUrl,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          print('Error loading asset: $error');
+                          return AppSkeletonLoader();
+                        },
                       )
                     : const AppSkeletonLoader(),
               ),
@@ -73,6 +77,7 @@ class AppArticleCard extends StatelessWidget {
                         children: [
                           const AppEmojiImage(
                             emojiUrl: 'assets/emoji/article.png',
+                            emojiName: 'article',
                             size: 16,
                           ),
                           const AppGap.s10(),

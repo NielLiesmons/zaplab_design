@@ -15,51 +15,51 @@ enum AppProfilePicStorySize {
 
 class AppProfilePicStory extends StatelessWidget {
   AppProfilePicStory(
-    this.imageUrl, {
+    this.profilePicUrl, {
     Key? key,
     this.size = AppProfilePicStorySize.s38,
     VoidCallback? onTap,
   })  : onTap = onTap ?? (() {}),
         super(key: key);
 
-  AppProfilePicStory.s38(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicStory.s38(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicStorySize.s38,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicStory.s40(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicStory.s40(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicStorySize.s40,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicStory.s48(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicStory.s48(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicStorySize.s48,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicStory.s56(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicStory.s56(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicStorySize.s56,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicStory.s64(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicStory.s64(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicStorySize.s64,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicStory.s72(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicStory.s72(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicStorySize.s72,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicStory.s80(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicStory.s80(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicStorySize.s80,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicStory.s96(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicStory.s96(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicStorySize.s96,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicStory.s104(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicStory.s104(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicStorySize.s104,
         onTap = onTap ?? (() {}),
         super(key: key);
 
-  final String imageUrl;
+  final String profilePicUrl;
   final AppProfilePicStorySize size;
   final VoidCallback onTap;
 
@@ -108,7 +108,7 @@ class AppProfilePicStory extends StatelessWidget {
                 ),
                 child: ClipOval(
                   child: Image.network(
-                    imageUrl,
+                    profilePicUrl,
                     fit: BoxFit.cover,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;

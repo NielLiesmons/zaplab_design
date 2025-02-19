@@ -1,5 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:flutter/gestures.dart';
 
 class AppAsciiDocRenderer extends StatelessWidget {
   final String content;
@@ -7,6 +8,7 @@ class AppAsciiDocRenderer extends StatelessWidget {
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
+  final LinkTapHandler onLinkTap;
 
   const AppAsciiDocRenderer({
     super.key,
@@ -15,6 +17,7 @@ class AppAsciiDocRenderer extends StatelessWidget {
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
+    required this.onLinkTap,
   });
 
   @override
@@ -263,7 +266,7 @@ class AppAsciiDocRenderer extends StatelessWidget {
               paragraphPieces.add(const SizedBox(height: 8));
               paragraphPieces.add(
                 AppContainer(
-                  child: FutureBuilder<NostrEventData>(
+                  child: FutureBuilder<NostrEvent>(
                     future: onResolveEvent(child.content),
                     builder: (context, snapshot) {
                       return AppEventCard(
@@ -298,12 +301,12 @@ class AppAsciiDocRenderer extends StatelessWidget {
                     ),
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
-                      child: FutureBuilder<NostrProfileData>(
+                      child: FutureBuilder<Profile>(
                         future: onResolveProfile(child.content),
                         builder: (context, snapshot) {
                           return AppProfileInline(
-                            profileName: snapshot.data?.name ?? '',
-                            profilePicUrl: snapshot.data?.imageUrl ?? '',
+                            profileName: snapshot.data?.profileName ?? '',
+                            profilePicUrl: snapshot.data?.profilePicUrl ?? '',
                             onTap: snapshot.data?.onTap,
                             isArticle: true,
                           );
@@ -335,6 +338,7 @@ class AppAsciiDocRenderer extends StatelessWidget {
                                 horizontal: AppGapSize.s2),
                             child: AppEmojiImage(
                               emojiUrl: snapshot.data ?? '',
+                              emojiName: snapshot.data ?? '',
                               size: 16,
                             ),
                           );
@@ -387,6 +391,15 @@ class AppAsciiDocRenderer extends StatelessWidget {
                       ),
                     ),
                   ],
+                ));
+              } else if (child.type == AsciiDocElementType.link) {
+                currentSpans.add(TextSpan(
+                  text: child.content,
+                  style: theme.typography.regArticle.copyWith(
+                    color: theme.colors.blurpleColor,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () => onLinkTap(child.content),
                 ));
               } else {
                 currentSpans.add(TextSpan(

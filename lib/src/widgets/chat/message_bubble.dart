@@ -22,13 +22,13 @@ class AppMessageBubble extends StatelessWidget {
   final DateTime? timestamp;
   final bool showHeader;
   final bool isLastInStack;
-  final String eventId;
+  final String nevent;
   final List<Reaction> reactions;
   final List<Zap> zaps;
-  final void Function(String) onActions;
+  final Future<void> Function(BuildContext context, String nevent) onActions;
   final void Function(String) onReply;
-  final void Function(String, String)? onReactionTap;
-  final void Function(String, int, String?)? onZapTap;
+  final void Function(String)? onReactionTap;
+  final void Function(String)? onZapTap;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -37,7 +37,7 @@ class AppMessageBubble extends StatelessWidget {
   const AppMessageBubble({
     super.key,
     required this.message,
-    required this.eventId,
+    required this.nevent,
     this.profileName,
     this.timestamp,
     this.showHeader = false,
@@ -83,8 +83,8 @@ class AppMessageBubble extends StatelessWidget {
             outlineColor: theme.colors.white66,
             outlineThickness: LineThicknessData.normal().medium,
           ),
-          onSwipeLeft: () => onActions(eventId),
-          onSwipeRight: () => onReply(eventId),
+          onSwipeLeft: () => onReply(nevent),
+          onSwipeRight: () => onActions(context, nevent),
           child: MessageBubbleScope(
             child: LayoutBuilder(
               builder: (context, bubbleConstraints) {
@@ -154,7 +154,7 @@ class AppMessageBubble extends StatelessWidget {
                           if (zaps.isNotEmpty || reactions.isNotEmpty) ...[
                             const AppGap.s2(),
                             AppInteractionPills(
-                              eventId: eventId,
+                              nevent: nevent,
                               zaps: zaps,
                               reactions: reactions,
                               onZapTap: onZapTap,

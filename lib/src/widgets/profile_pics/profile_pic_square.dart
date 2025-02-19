@@ -13,43 +13,43 @@ enum AppProfilePicSquareSize {
 
 class AppProfilePicSquare extends StatelessWidget {
   AppProfilePicSquare(
-    this.imageUrl, {
+    this.profilePicUrl, {
     Key? key,
     this.size = AppProfilePicSquareSize.s56,
     VoidCallback? onTap,
   })  : onTap = onTap ?? (() {}),
         super(key: key);
 
-  AppProfilePicSquare.s48(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicSquare.s48(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s48,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicSquare.s56(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicSquare.s56(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s56,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicSquare.s64(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicSquare.s64(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s64,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicSquare.s72(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicSquare.s72(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s72,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicSquare.s80(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicSquare.s80(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s80,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicSquare.s96(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicSquare.s96(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s96,
         onTap = onTap ?? (() {}),
         super(key: key);
-  AppProfilePicSquare.s104(this.imageUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicSquare.s104(this.profilePicUrl, {Key? key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s104,
         onTap = onTap ?? (() {}),
         super(key: key);
 
-  final String imageUrl;
+  final String profilePicUrl;
   final AppProfilePicSquareSize size;
   final VoidCallback onTap;
 
@@ -90,7 +90,7 @@ class AppProfilePicSquare extends StatelessWidget {
             child: ClipRRect(
               borderRadius: borderRadius,
               child: Image.network(
-                imageUrl,
+                profilePicUrl,
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;

@@ -266,7 +266,9 @@ class AsciiDocParser {
         !text.contains('[.') &&
         !text.contains('nostr:') &&
         !text.contains(':') &&
-        !text.contains('#')) {
+        !text.contains('#') &&
+        !text.contains('http') &&
+        !text.contains('www')) {
       return null;
     }
 
@@ -285,8 +287,11 @@ class AsciiDocParser {
     final RegExp nostrEventPattern = RegExp(r'nostr:nevent1\w+');
     final RegExp nostrProfilePattern = RegExp(r'nostr:n(?:pub1|profile1)\w+');
     final RegExp emojiPattern = RegExp(r':([a-zA-Z0-9_-]+):');
-    final RegExp hashtagPattern = RegExp(r'(?<=^|\s)#([a-zA-Z0-9_]+)');
-
+    final RegExp hashtagPattern = RegExp(r'(?<=^|\s)#([a-zA-Z0-9_-]+)');
+    final RegExp urlPattern = RegExp(
+      r'(?:https?:\/\/|www\.)([-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*))',
+      caseSensitive: false,
+    );
     int currentPosition = 0;
 
     while (currentPosition < text.length) {
@@ -309,6 +314,7 @@ class AsciiDocParser {
           emojiPattern.matchAsPrefix(text, currentPosition);
       final Match? hashtagMatch =
           hashtagPattern.matchAsPrefix(text, currentPosition);
+      final Match? urlMatch = urlPattern.matchAsPrefix(text, currentPosition);
 
       final List<Match?> matches = [
         combined1Match,
@@ -321,6 +327,7 @@ class AsciiDocParser {
         nostrProfileMatch,
         emojiMatch,
         hashtagMatch,
+        urlMatch,
       ].where((m) => m != null).toList();
 
       if (matches.isEmpty) {
@@ -382,8 +389,16 @@ class AsciiDocParser {
       } else if (firstMatch == nostrEventMatch) {
         styledElements.add(AsciiDocElement(
           type: AsciiDocElementType.nostrEvent,
-          content: firstMatch[0]!,
+          content: firstMatch[0]!.trim(),
         ));
+
+        // Skip any whitespace after the match before continuing
+        int nextPosition = firstMatch.end;
+        while (nextPosition < text.length && text[nextPosition] == ' ') {
+          nextPosition++;
+        }
+        currentPosition = nextPosition;
+        continue;
       } else if (firstMatch == nostrProfileMatch) {
         styledElements.add(AsciiDocElement(
           type: AsciiDocElementType.nostrProfile,
@@ -392,6 +407,11 @@ class AsciiDocParser {
         currentPosition = firstMatch == nostrProfileMatch
             ? currentPosition + firstMatch.end
             : firstMatch.end;
+      } else if (firstMatch == urlMatch) {
+        styledElements.add(AsciiDocElement(
+          type: AsciiDocElementType.link,
+          content: firstMatch[0]!,
+        ));
       }
 
       currentPosition = firstMatch.end;

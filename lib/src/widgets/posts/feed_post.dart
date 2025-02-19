@@ -22,6 +22,11 @@ class AppFeedPost extends StatelessWidget {
   final int totalReplies;
   final VoidCallback? onReply;
   final VoidCallback? onActions;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
+  final NostrHashtagResolver onResolveHashtag;
+  final LinkTapHandler onLinkTap;
 
   const AppFeedPost({
     super.key,
@@ -35,6 +40,11 @@ class AppFeedPost extends StatelessWidget {
     this.totalReplies = 0,
     this.onReply,
     this.onActions,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
+    required this.onResolveHashtag,
+    required this.onLinkTap,
   });
 
   @override
@@ -94,7 +104,14 @@ class AppFeedPost extends StatelessWidget {
                             ],
                           ),
                           const AppGap.s2(),
-                          AppText.reg14(content),
+                          AppShortTextRenderer(
+                            content: content,
+                            onResolveEvent: onResolveEvent,
+                            onResolveProfile: onResolveProfile,
+                            onResolveEmoji: onResolveEmoji,
+                            onResolveHashtag: onResolveHashtag,
+                            onLinkTap: onLinkTap,
+                          ),
                           if (reactions.isNotEmpty || zaps.isNotEmpty) ...[
                             const AppGap.s8(),
                             AppContainer(
@@ -128,7 +145,7 @@ class AppFeedPost extends StatelessWidget {
                                           padding:
                                               const EdgeInsets.only(left: 62),
                                           child: AppInteractionPills(
-                                            eventId: '',
+                                            nevent: '',
                                             reactions: reactions,
                                             zaps: zaps,
                                           ),

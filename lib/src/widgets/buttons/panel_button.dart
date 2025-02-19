@@ -34,7 +34,7 @@ class AppPanelButton extends StatelessWidget {
         TapBuilder(
           onTap: onTap,
           onLongPress: onLongPress,
-          builder: (context, state, hasFocus) {
+          builder: (context, state, isFocused) {
             double scaleFactor = 1.0;
             if (state == TapState.pressed) {
               scaleFactor = 0.98;

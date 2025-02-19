@@ -31,42 +31,6 @@ class ShortTextParser {
         lastListLevel = null;
       }
 
-      // Handle images and their captions first
-      if (line.startsWith('image::') ||
-          (line.startsWith('.') &&
-              i + 1 < lines.length &&
-              lines[i + 1].startsWith('image::'))) {
-        if (line.startsWith('.')) {
-          // Skip this iteration as we'll handle it in the next one
-          continue;
-        }
-
-        // Rest of the image handling code...
-        final RegExp imagePattern = RegExp(r'image::([^\[]+)\[(.*?)\]');
-        final Match? match = imagePattern.firstMatch(line);
-
-        if (match != null) {
-          final String path = match.group(1)!;
-          final String attributesStr =
-              match.group(2) ?? ''; // Default to empty string if no attributes
-
-          String? title;
-          if (i > 0 && lines[i - 1].trim().startsWith('.')) {
-            title = lines[i - 1].substring(1).trim();
-          }
-
-          elements.add(ShortTextElement(
-            type: ShortTextElementType.image,
-            content: path,
-            attributes: {
-              if (title != null) 'title': title,
-              'alt': attributesStr,
-            },
-          ));
-          continue;
-        }
-      }
-
       if (line.startsWith('=====')) {
         elements.add(ShortTextElement(
           type: ShortTextElementType.heading5,
@@ -167,13 +131,15 @@ class ShortTextParser {
         r'https?:\/\/[^\s<>"]+?\/[^\s<>"]+?\.(png|jpe?g|gif|webp|avif)(\?[^"\s<>]*)?',
         caseSensitive: false);
     final RegExp urlPattern = RegExp(
-      r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)',
+      r'(?:https?:\/\/|www\.)([-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*))',
       caseSensitive: false,
     );
 
     int currentPosition = 0;
 
     while (currentPosition < text.length) {
+      final Match? imageUrlMatch =
+          imageUrlPattern.matchAsPrefix(text, currentPosition);
       final Match? combined1Match =
           combinedPattern.matchAsPrefix(text, currentPosition);
       final Match? combined2Match =
@@ -193,11 +159,10 @@ class ShortTextParser {
           emojiPattern.matchAsPrefix(text, currentPosition);
       final Match? hashtagMatch =
           hashtagPattern.matchAsPrefix(text, currentPosition);
-      final Match? imageUrlMatch =
-          imageUrlPattern.matchAsPrefix(text, currentPosition);
       final Match? urlMatch = urlPattern.matchAsPrefix(text, currentPosition);
 
       final List<Match?> matches = [
+        imageUrlMatch,
         combined1Match,
         combined2Match,
         boldMatch,
@@ -208,7 +173,6 @@ class ShortTextParser {
         nostrProfileMatch,
         emojiMatch,
         hashtagMatch,
-        imageUrlMatch,
         urlMatch,
       ].where((m) => m != null).toList();
 
@@ -224,8 +188,14 @@ class ShortTextParser {
         continue;
       }
 
-      final Match firstMatch =
-          matches.reduce((a, b) => a!.start < b!.start ? a : b)!;
+      final Match firstMatch = matches.reduce((a, b) {
+        // If starts are equal, prioritize image URLs over regular URLs
+        if (a!.start == b!.start) {
+          if (a == imageUrlMatch) return a;
+          if (b == imageUrlMatch) return b;
+        }
+        return a.start < b.start ? a : b;
+      })!;
 
       // Add any text before the match
       if (firstMatch.start > currentPosition) {
@@ -271,8 +241,16 @@ class ShortTextParser {
       } else if (firstMatch == nostrEventMatch) {
         styledElements.add(ShortTextElement(
           type: ShortTextElementType.nostrEvent,
-          content: firstMatch[0]!,
+          content: firstMatch[0]!.trim(),
         ));
+
+        // Skip any whitespace after the match before continuing
+        int nextPosition = firstMatch.end;
+        while (nextPosition < text.length && text[nextPosition] == ' ') {
+          nextPosition++;
+        }
+        currentPosition = nextPosition;
+        continue;
       } else if (firstMatch == nostrProfileMatch) {
         styledElements.add(ShortTextElement(
           type: ShortTextElementType.nostrProfile,
@@ -281,8 +259,16 @@ class ShortTextParser {
       } else if (firstMatch == imageUrlMatch) {
         styledElements.add(ShortTextElement(
           type: ShortTextElementType.image,
-          content: firstMatch[0]!,
+          content: firstMatch[0]!.trim(),
         ));
+
+        // Skip any whitespace after the match before continuing
+        int nextPosition = firstMatch.end;
+        while (nextPosition < text.length && text[nextPosition] == ' ') {
+          nextPosition++;
+        }
+        currentPosition = nextPosition;
+        continue;
       } else if (firstMatch == urlMatch) {
         styledElements.add(ShortTextElement(
           type: ShortTextElementType.link,

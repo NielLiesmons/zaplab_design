@@ -30,13 +30,13 @@ export 'buttons/small_button.dart';
 
 // Chat
 export 'chat/message_bubble.dart';
-export 'chat/message_feed.dart';
 export 'chat/message_stack.dart';
 export 'chat/quoted_message.dart';
 
 // Images
 export 'images/emoji_image.dart';
 export 'images/full_width_image.dart';
+export 'images/image_card.dart';
 
 // Interactions
 export 'interactions/interaction_pills.dart';
@@ -49,6 +49,7 @@ export 'loading/loading_dots.dart';
 export 'loading/loading_bar.dart';
 
 // Modals
+export 'modals/actions_modal.dart';
 export 'modals/modal.dart';
 export 'modals/amount_modal.dart';
 export 'modals/input_field.dart';

@@ -3,13 +3,13 @@ import 'package:zaplab_design/zaplab_design.dart';
 class AppInteractionPills extends StatefulWidget {
   final List<Zap> zaps;
   final List<Reaction> reactions;
-  final String eventId;
-  final void Function(String, int, String?)? onZapTap;
-  final void Function(String, String)? onReactionTap;
+  final String nevent;
+  final void Function(String)? onZapTap;
+  final void Function(String)? onReactionTap;
 
   const AppInteractionPills({
     super.key,
-    required this.eventId,
+    required this.nevent,
     this.zaps = const [],
     this.reactions = const [],
     this.onZapTap,
@@ -35,14 +35,14 @@ class _AppInteractionPillsState extends State<AppInteractionPills>
     for (final zap in widget.zaps) {
       if (!oldWidget.zaps.contains(zap)) {
         _animateNewPill(
-            '${widget.eventId}-zap-${zap.timestamp.millisecondsSinceEpoch}');
+            '${widget.nevent}-zap-${zap.timestamp.millisecondsSinceEpoch}');
       }
     }
     // Check for new reactions
     for (final reaction in widget.reactions) {
       if (!oldWidget.reactions.contains(reaction)) {
         _animateNewPill(
-            '${widget.eventId}-reaction-${reaction.timestamp.millisecondsSinceEpoch}');
+            '${widget.nevent}-reaction-${reaction.timestamp.millisecondsSinceEpoch}');
       }
     }
   }
@@ -89,7 +89,7 @@ class _AppInteractionPillsState extends State<AppInteractionPills>
         children: [
           ...sortedZaps.map((zap) {
             final key =
-                '${widget.eventId}-zap-${zap.timestamp.millisecondsSinceEpoch}';
+                '${widget.nevent}-zap-${zap.timestamp.millisecondsSinceEpoch}';
             final controller = _pillControllers[key];
 
             return _buildAnimatedPill(
@@ -98,14 +98,13 @@ class _AppInteractionPillsState extends State<AppInteractionPills>
               child: AppZapPill(
                 amount: zap.amount,
                 profilePicUrl: zap.profilePicUrl,
-                onTap: () => widget.onZapTap
-                    ?.call(widget.eventId, zap.amount, zap.comment),
+                onTap: () => widget.onZapTap,
               ),
             );
           }),
           ...widget.reactions.map((reaction) {
             final key =
-                '${widget.eventId}-reaction-${reaction.timestamp.millisecondsSinceEpoch}';
+                '${widget.nevent}-reaction-${reaction.timestamp.millisecondsSinceEpoch}';
             final controller = _pillControllers[key];
 
             return _buildAnimatedPill(
@@ -113,9 +112,9 @@ class _AppInteractionPillsState extends State<AppInteractionPills>
               controller: controller,
               child: AppReactionPill(
                 emojiUrl: reaction.emojiUrl,
+                emojiName: reaction.emojiName,
                 profilePicUrl: reaction.profilePicUrl,
-                onTap: () => widget.onReactionTap
-                    ?.call(widget.eventId, reaction.emojiUrl),
+                onTap: () => widget.onReactionTap,
               ),
             );
           }),

@@ -6,7 +6,6 @@ class AppEventCard extends StatelessWidget {
   final String? imageUrl;
   final String profileName;
   final String profilePicUrl;
-
   final DateTime timestamp;
   final String? amount;
   final String? message;
@@ -81,7 +80,7 @@ class AppEventCard extends StatelessWidget {
         child: AppQuotedMessage(
           profileName: profileName,
           profilePicUrl: profilePicUrl,
-          content: message ?? '',
+          message: message ?? '',
           timestamp: timestamp,
           eventId: null,
         ),
@@ -122,6 +121,7 @@ class AppEventCard extends StatelessWidget {
                     children: [
                       AppEmojiImage(
                         emojiUrl: 'assets/emoji/$contentType.png',
+                        emojiName: contentType,
                         size: 16,
                       ),
                       const AppGap.s10(),

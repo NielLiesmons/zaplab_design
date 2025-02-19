@@ -1,14 +1,6 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class Profile {
-  final String profilePicUrl;
-
-  const Profile({
-    required this.profilePicUrl,
-  });
-}
-
 class AppProfileStack extends StatelessWidget {
   AppProfileStack({
     super.key,
@@ -97,7 +89,7 @@ class AppProfileStack extends StatelessWidget {
                                     ],
                                   ),
                                   child: AppProfilePic.s32(
-                                    _visibleProfiles[i].profilePicUrl,
+                                    _visibleProfiles[i].profilePicUrl ?? '',
                                     onTap: onTap,
                                   ),
                                 ),

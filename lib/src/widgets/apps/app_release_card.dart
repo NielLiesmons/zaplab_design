@@ -108,6 +108,7 @@ class AppAppReleaseCard extends StatelessWidget {
                                     children: [
                                       AppEmojiImage(
                                           emojiUrl: 'emojis/folder.png',
+                                          emojiName: 'folder',
                                           size: theme.sizes.s16),
                                       const AppGap.s8(),
                                       Flexible(

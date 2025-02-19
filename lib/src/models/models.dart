@@ -1,6 +1,24 @@
+// Community
+class Community {
+  final String profilePicUrl;
+  final String communityName;
+  final String ncommunity;
+  final String? description;
+  final List<Profile>? inYourNetwork;
+
+  const Community({
+    required this.profilePicUrl,
+    required this.communityName,
+    required this.ncommunity,
+    this.description,
+    this.inYourNetwork,
+  });
+}
+
+// Message
 class Message {
-  final String eventId;
-  final String content;
+  final String nevent;
+  final String message;
   final String profileName;
   final String profilePicUrl;
   final DateTime timestamp;
@@ -8,8 +26,8 @@ class Message {
   final List<Zap> zaps;
 
   const Message({
-    required this.eventId,
-    required this.content,
+    required this.nevent,
+    required this.message,
     required this.profileName,
     required this.profilePicUrl,
     required this.timestamp,
@@ -18,21 +36,28 @@ class Message {
   });
 }
 
+// Reaction
+typedef NostrEmojiResolver = Future<String> Function(String identifier);
+
 class Reaction {
   final String emojiUrl;
+  final String emojiName;
   final String profileName;
   final String profilePicUrl;
   final DateTime timestamp;
 
   const Reaction({
     required this.emojiUrl,
+    required this.emojiName,
     required this.profileName,
     required this.profilePicUrl,
     required this.timestamp,
   });
 }
 
+// Zap
 class Zap {
+  final String nevent;
   final int amount;
   final String profileName;
   final String profilePicUrl;
@@ -40,6 +65,7 @@ class Zap {
   final DateTime timestamp;
 
   const Zap({
+    required this.nevent,
     required this.amount,
     required this.profileName,
     required this.profilePicUrl,
@@ -48,15 +74,16 @@ class Zap {
   });
 }
 
+// Quoted Message
 class QuotedMessage {
-  final String eventId;
+  final String nevent;
   final String content;
   final String profileName;
   final String profilePicUrl;
   final DateTime timestamp;
 
   const QuotedMessage({
-    required this.eventId,
+    required this.nevent,
     required this.content,
     required this.profileName,
     required this.profilePicUrl,
@@ -64,7 +91,11 @@ class QuotedMessage {
   });
 }
 
-class NostrEventData {
+// Event
+typedef NostrEventResolver = Future<NostrEvent> Function(String identifier);
+
+class NostrEvent {
+  final String nevent;
   final String contentType;
   final String? title;
   final String? message;
@@ -75,7 +106,8 @@ class NostrEventData {
   final String? amount;
   final void Function()? onTap;
 
-  const NostrEventData({
+  const NostrEvent({
+    required this.nevent,
     required this.contentType,
     this.title,
     this.message,
@@ -88,22 +120,26 @@ class NostrEventData {
   });
 }
 
-class NostrProfileData {
-  final String name;
-  final String? imageUrl;
+// Profile
+typedef NostrProfileResolver = Future<Profile> Function(String identifier);
+
+class Profile {
+  final String npub;
+  final String profileName;
+  final String profilePicUrl;
   final void Function()? onTap;
 
-  const NostrProfileData({
-    required this.name,
-    this.imageUrl,
+  const Profile({
+    required this.npub,
+    required this.profileName,
+    required this.profilePicUrl,
     this.onTap,
   });
 }
 
-typedef NostrEventResolver = Future<NostrEventData> Function(String identifier);
-typedef NostrProfileResolver = Future<NostrProfileData> Function(
-    String identifier);
-typedef NostrEmojiResolver = Future<String> Function(String identifier);
+// Hashtag
 typedef NostrHashtagResolver = Future<void Function()?> Function(
     String identifier);
+
+// Links
 typedef LinkTapHandler = void Function(String url);

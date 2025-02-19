@@ -89,6 +89,9 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
                       child: Image.network(
                         widget.url,
                         fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return AppSkeletonLoader();
+                        },
                       ),
                     ),
                   );

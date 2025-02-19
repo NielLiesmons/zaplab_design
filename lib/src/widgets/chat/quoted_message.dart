@@ -4,7 +4,7 @@ import 'package:zaplab_design/src/utils/timestamp_formatter.dart';
 class AppQuotedMessage extends StatelessWidget {
   final String profileName;
   final String profilePicUrl;
-  final String content;
+  final String message;
   final DateTime timestamp;
   final String? eventId;
 
@@ -12,7 +12,7 @@ class AppQuotedMessage extends StatelessWidget {
     super.key,
     required this.profileName,
     required this.profilePicUrl,
-    required this.content,
+    required this.message,
     required this.timestamp,
     this.eventId,
   });
@@ -41,7 +41,7 @@ class AppQuotedMessage extends StatelessWidget {
                 padding: const AppEdgeInsets.only(
                   left: AppGapSize.s8,
                   right: AppGapSize.s12,
-                  top: AppGapSize.s8,
+                  top: AppGapSize.s6,
                   bottom: AppGapSize.s6,
                 ),
                 child: Column(
@@ -63,13 +63,13 @@ class AppQuotedMessage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const AppGap.s2(),
+                    const AppGap.s4(),
                     AppContainer(
                       padding: const AppEdgeInsets.only(
                         left: AppGapSize.s2,
                       ),
-                      child: AppText.reg14(
-                        content,
+                      child: AppText.reg12(
+                        message,
                         color: theme.colors.white66,
                         maxLines: 1,
                         textOverflow: TextOverflow.ellipsis,

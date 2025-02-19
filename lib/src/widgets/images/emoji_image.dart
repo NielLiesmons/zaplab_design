@@ -2,11 +2,13 @@ import 'package:zaplab_design/zaplab_design.dart';
 
 class AppEmojiImage extends StatelessWidget {
   final String emojiUrl;
+  final String emojiName;
   final double size;
 
   const AppEmojiImage({
     super.key,
     required this.emojiUrl,
+    required this.emojiName,
     this.size = 18,
   });
 
@@ -24,7 +26,6 @@ class AppEmojiImage extends StatelessWidget {
         height: size,
         fit: BoxFit.contain,
         errorBuilder: (context, error, stackTrace) {
-          print('Error loading asset: $error');
           return AppIcon.s16(
             theme.icons.characters.emojiFill,
             color: theme.colors.white33,
