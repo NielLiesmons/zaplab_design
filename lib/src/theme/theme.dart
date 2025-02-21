@@ -6,6 +6,7 @@ export 'data/data.dart';
 
 export 'data/borders.dart';
 export 'data/colors.dart';
+export 'data/default_data.dart';
 export 'data/durations.dart';
 export 'data/form_factor.dart';
 export 'data/icons.dart';

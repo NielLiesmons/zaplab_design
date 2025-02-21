@@ -22,9 +22,11 @@ class AppTabView extends StatefulWidget {
   const AppTabView({
     super.key,
     required this.tabs,
+    required this.controller,
   });
 
   final List<TabData> tabs;
+  final AppTabController controller;
 
   @override
   State<AppTabView> createState() => _AppTabViewState();
@@ -51,6 +53,13 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
       parent: _slideController,
       curve: Curves.easeInOut,
     ));
+    widget.controller.addListener(_handleTabChange);
+  }
+
+  void _handleTabChange() {
+    setState(() {
+      _selectedIndex = widget.controller.index;
+    });
   }
 
   Future<void> _showSettingsModal(BuildContext context, TabData tab) async {
@@ -113,7 +122,7 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
                 tabs: widget.tabs,
                 selectedIndex: _selectedIndex,
                 onTabSelected: (index) {
-                  setState(() => _selectedIndex = index);
+                  widget.controller.animateTo(index);
                 },
                 onTabLongPress: (index) {
                   _showSettingsModal(context, widget.tabs[index]);
@@ -169,6 +178,7 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
   @override
   void dispose() {
     _slideController.dispose();
+    widget.controller.removeListener(_handleTabChange);
     super.dispose();
   }
 }

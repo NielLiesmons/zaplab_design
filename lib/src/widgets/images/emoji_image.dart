@@ -52,3 +52,31 @@ class AppEmojiImage extends StatelessWidget {
     );
   }
 }
+
+class AppEmojiContentType extends StatelessWidget {
+  const AppEmojiContentType(
+      {super.key, required this.contentType, this.size = 36});
+  final String contentType;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
+
+    return Image(
+      image: AssetImage(
+        'assets/emoji/$contentType.png',
+        package: 'zaplab_design',
+      ),
+      width: size,
+      height: size,
+      fit: BoxFit.contain,
+      errorBuilder: (context, error, stackTrace) {
+        return AppIcon.s16(
+          theme.icons.characters.emojiFill,
+          color: theme.colors.white33,
+        );
+      },
+    );
+  }
+}

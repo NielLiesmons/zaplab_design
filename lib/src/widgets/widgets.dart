@@ -29,6 +29,7 @@ export 'buttons/panel_button.dart';
 export 'buttons/small_button.dart';
 
 // Chat
+export 'chat/chat_home_panel.dart';
 export 'chat/message_bubble.dart';
 export 'chat/message_stack.dart';
 export 'chat/quoted_message.dart';
@@ -102,6 +103,7 @@ export 'text/text_selection_menu.dart';
 // Tabs
 export 'tabs/tab_bar.dart';
 export 'tabs/tab_button.dart';
+export 'tabs/tab_controller.dart';
 export 'tabs/tab_grid.dart';
 export 'tabs/tab_view.dart';
 

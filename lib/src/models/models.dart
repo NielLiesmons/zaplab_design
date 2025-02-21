@@ -46,14 +46,14 @@ class Reaction {
   final String emojiName;
   final String profileName;
   final String profilePicUrl;
-  final DateTime timestamp;
+  final DateTime? timestamp;
 
   const Reaction({
     required this.emojiUrl,
     required this.emojiName,
     required this.profileName,
     required this.profilePicUrl,
-    required this.timestamp,
+    this.timestamp,
   });
 }
 

@@ -9,6 +9,8 @@ class AppPost extends StatelessWidget {
   final List<Reaction> reactions;
   final List<Zap> zaps;
   final List<Community> communities;
+  final void Function(String)? onReactionTap;
+  final void Function(String)? onZapTap;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -24,6 +26,8 @@ class AppPost extends StatelessWidget {
     this.reactions = const [],
     this.zaps = const [],
     this.communities = const [],
+    this.onReactionTap,
+    this.onZapTap,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,

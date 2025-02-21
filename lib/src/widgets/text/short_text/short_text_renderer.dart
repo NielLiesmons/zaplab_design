@@ -36,43 +36,9 @@ class AppShortTextRenderer extends StatelessWidget {
 
   Widget _buildElementWithSpacing(
       AppShortTextElement element, BuildContext context) {
-    final theme = AppTheme.of(context);
     final AppEdgeInsets spacing = switch (element.type) {
-      AppShortTextElementType.heading1 => const AppEdgeInsets.only(
-          top: AppGapSize.s4,
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
-        ),
-      AppShortTextElementType.heading2 => const AppEdgeInsets.only(
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
-        ),
-      AppShortTextElementType.heading3 => const AppEdgeInsets.only(
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
-        ),
-      AppShortTextElementType.heading4 => const AppEdgeInsets.only(
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
-        ),
-      AppShortTextElementType.heading5 => const AppEdgeInsets.only(
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
-        ),
       AppShortTextElementType.listItem => const AppEdgeInsets.only(
           bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
-        ),
-      AppShortTextElementType.horizontalRule => const AppEdgeInsets.only(
-          bottom: AppGapSize.none,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
         ),
       _ => const AppEdgeInsets.only(
           bottom: AppGapSize.s4,
@@ -102,18 +68,9 @@ class AppShortTextRenderer extends StatelessWidget {
 
   Widget _buildElement(BuildContext context, AppShortTextElement element) {
     final theme = AppTheme.of(context);
+    final isInsideMessageBubble = MessageBubbleScope.of(context);
 
     switch (element.type) {
-      case AppShortTextElementType.heading1:
-        return AppText.longformh1(element.content);
-      case AppShortTextElementType.heading2:
-        return AppText.longformh2(element.content);
-      case AppShortTextElementType.heading3:
-        return AppText.longformh3(element.content, color: theme.colors.white66);
-      case AppShortTextElementType.heading4:
-        return AppText.longformh4(element.content);
-      case AppShortTextElementType.heading5:
-        return AppText.longformh5(element.content, color: theme.colors.white66);
       case AppShortTextElementType.codeBlock:
         return AppCodeBlock(
           code: element.content,
@@ -121,11 +78,6 @@ class AppShortTextRenderer extends StatelessWidget {
         );
 
       case AppShortTextElementType.listItem:
-      case AppShortTextElementType.horizontalRule:
-        return const AppContainer(
-          padding: AppEdgeInsets.symmetric(vertical: AppGapSize.s16),
-          child: AppDivider(),
-        );
       case AppShortTextElementType.paragraph:
         if (element.children != null) {
           final List<Widget> paragraphPieces = [];
@@ -328,8 +280,9 @@ class AppShortTextRenderer extends StatelessWidget {
           if (currentSpans.isNotEmpty) {
             paragraphPieces.add(
               AppContainer(
-                padding: const AppEdgeInsets.symmetric(
-                  horizontal: AppGapSize.s4,
+                padding: AppEdgeInsets.symmetric(
+                  horizontal:
+                      isInsideMessageBubble ? AppGapSize.s4 : AppGapSize.none,
                 ),
                 child: AppSelectableText.rich(
                   TextSpan(children: List.from(currentSpans)),
@@ -356,8 +309,8 @@ class AppShortTextRenderer extends StatelessWidget {
           );
         }
         return AppContainer(
-          padding: const AppEdgeInsets.symmetric(
-            horizontal: AppGapSize.s4,
+          padding: AppEdgeInsets.symmetric(
+            horizontal: isInsideMessageBubble ? AppGapSize.s4 : AppGapSize.none,
           ),
           child: AppSelectableText(
             text: element.content,

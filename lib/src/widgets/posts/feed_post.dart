@@ -12,6 +12,7 @@ class ReplyUserData {
 }
 
 class AppFeedPost extends StatelessWidget {
+  final String nevent;
   final String content;
   final String profileName;
   final String profilePicUrl;
@@ -20,16 +21,18 @@ class AppFeedPost extends StatelessWidget {
   final List<Zap> zaps;
   final List<ReplyUserData> topReplies;
   final int totalReplies;
-  final VoidCallback? onReply;
-  final VoidCallback? onActions;
+  final void Function(String) onReply;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
+  final List<double> recentAmounts;
+  final List<Reaction> recentReactions;
 
   const AppFeedPost({
     super.key,
+    required this.nevent,
     required this.content,
     required this.profileName,
     required this.profilePicUrl,
@@ -38,13 +41,14 @@ class AppFeedPost extends StatelessWidget {
     this.zaps = const [],
     this.topReplies = const [],
     this.totalReplies = 0,
-    this.onReply,
-    this.onActions,
+    required this.onReply,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
+    this.recentAmounts = DefaultData.defaultAmounts,
+    this.recentReactions = DefaultData.defaultReactions,
   });
 
   @override
@@ -65,8 +69,17 @@ class AppFeedPost extends StatelessWidget {
             outlineColor: theme.colors.white66,
             outlineThickness: LineThicknessData.normal().medium,
           ),
-          onSwipeLeft: onActions,
-          onSwipeRight: onReply,
+          onSwipeLeft: () => onReply(nevent),
+          onSwipeRight: () => AppActionsModal.show(
+            context,
+            profileName: profileName,
+            eventId: nevent,
+            contentType: 'post',
+            title: content,
+            profilePicUrl: profilePicUrl,
+            recentAmounts: recentAmounts,
+            recentReactions: recentReactions,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -113,7 +126,7 @@ class AppFeedPost extends StatelessWidget {
                             onLinkTap: onLinkTap,
                           ),
                           if (reactions.isNotEmpty || zaps.isNotEmpty) ...[
-                            const AppGap.s8(),
+                            const AppGap.s4(),
                             AppContainer(
                               height: 30,
                               child: Stack(
@@ -181,6 +194,7 @@ class AppFeedPost extends StatelessWidget {
                               const Spacer(),
                               if (topReplies.length > 2)
                                 AppProfilePic.s12(topReplies[2].profilePicUrl),
+                              const AppGap.s2()
                             ],
                           ),
                         ],

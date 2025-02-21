@@ -89,48 +89,138 @@ class AppActionsModal extends StatelessWidget {
                   scale: scaleFactor,
                   duration: AppDurationsData.normal().fast,
                   curve: Curves.easeInOut,
-                  child: AppContainer(
-                    decoration: BoxDecoration(
-                      color: theme.colors.black33,
-                      borderRadius: theme.radius.asBorderRadius().rad16,
-                      border: Border.all(
-                        color: theme.colors.white33,
-                        width: LineThicknessData.normal().thin,
-                      ),
-                    ),
-                    padding: const AppEdgeInsets.all(AppGapSize.s8),
-                    child: Column(
-                      children: [
-                        AppQuotedMessage(
-                          message: message ?? '',
-                          profileName: profileName,
-                          profilePicUrl: profilePicUrl,
-                          timestamp: DateTime.now(),
-                        ),
-                        AppContainer(
-                          padding: const AppEdgeInsets.only(
-                            left: AppGapSize.s8,
-                            right: AppGapSize.s8,
-                            top: AppGapSize.s12,
-                            bottom: AppGapSize.s4,
+                  child: contentType == 'message'
+                      ? AppContainer(
+                          decoration: BoxDecoration(
+                            color: theme.colors.black33,
+                            borderRadius: theme.radius.asBorderRadius().rad16,
+                            border: Border.all(
+                              color: theme.colors.white33,
+                              width: LineThicknessData.normal().thin,
+                            ),
                           ),
-                          child: Row(
+                          padding: const AppEdgeInsets.all(AppGapSize.s8),
+                          child: Column(
                             children: [
-                              AppText.med14(
-                                'Reply',
-                                color: theme.colors.white33,
+                              AppQuotedMessage(
+                                message: message ?? '',
+                                profileName: profileName,
+                                profilePicUrl: profilePicUrl,
+                                timestamp: DateTime.now(),
                               ),
-                              const Spacer(),
-                              AppIcon.s16(
-                                theme.icons.characters.voice,
-                                color: theme.colors.white33,
+                              AppContainer(
+                                padding: const AppEdgeInsets.only(
+                                  left: AppGapSize.s8,
+                                  right: AppGapSize.s8,
+                                  top: AppGapSize.s12,
+                                  bottom: AppGapSize.s4,
+                                ),
+                                child: Row(
+                                  children: [
+                                    AppText.med14(
+                                      'Reply',
+                                      color: theme.colors.white33,
+                                    ),
+                                    const Spacer(),
+                                    AppIcon.s16(
+                                      theme.icons.characters.voice,
+                                      color: theme.colors.white33,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
+                        )
+                      : Column(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                AppProfilePic.s40(profilePicUrl),
+                                const AppGap.s12(),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          AppEmojiImage(
+                                            emojiUrl:
+                                                'assets/emoji/$contentType.png',
+                                            emojiName: contentType,
+                                            size: 16,
+                                          ),
+                                          const AppGap.s10(),
+                                          Expanded(
+                                            child: AppText.reg14(
+                                              title ?? '',
+                                              maxLines: 1,
+                                              textOverflow:
+                                                  TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const AppGap.s2(),
+                                      AppText.reg12(
+                                        profileName,
+                                        color: theme.colors.white66,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const AppGap.s8(),
+                              ],
+                            ),
+                            Row(children: [
+                              AppContainer(
+                                width: theme.sizes.s38,
+                                child: Center(
+                                  child: AppContainer(
+                                    decoration: BoxDecoration(
+                                        color: theme.colors.white33),
+                                    width: LineThicknessData.normal().medium,
+                                    height: theme.sizes.s16,
+                                  ),
+                                ),
+                              ),
+                            ]),
+                            AppContainer(
+                              height: theme.sizes.s40,
+                              decoration: BoxDecoration(
+                                color: theme.colors.black33,
+                                borderRadius:
+                                    theme.radius.asBorderRadius().rad16,
+                                border: Border.all(
+                                  color: theme.colors.white33,
+                                  width: LineThicknessData.normal().thin,
+                                ),
+                              ),
+                              padding: const AppEdgeInsets.all(AppGapSize.s8),
+                              child: AppContainer(
+                                padding: const AppEdgeInsets.only(
+                                  left: AppGapSize.s8,
+                                  right: AppGapSize.s8,
+                                ),
+                                child: Row(
+                                  children: [
+                                    AppText.med14(
+                                      'Reply',
+                                      color: theme.colors.white33,
+                                    ),
+                                    const Spacer(),
+                                    AppIcon.s16(
+                                      theme.icons.characters.voice,
+                                      color: theme.colors.white33,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
                 );
               },
             ),
