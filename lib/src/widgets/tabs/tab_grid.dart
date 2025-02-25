@@ -39,7 +39,7 @@ class AppTabGrid extends StatelessWidget {
                     child: AppPanelButton(
                       padding: const AppEdgeInsets.only(
                         top: AppGapSize.s20,
-                        bottom: AppGapSize.s16,
+                        bottom: AppGapSize.s14,
                       ),
                       onTap: () => _handleTabSelection(row * 3 + col),
                       gradient: row * 3 + col == selectedIndex

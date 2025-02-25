@@ -17,6 +17,23 @@ class Community {
   });
 }
 
+// Profile
+typedef NostrProfileResolver = Future<Profile> Function(String identifier);
+
+class Profile {
+  final String npub;
+  final String profileName;
+  final String profilePicUrl;
+  final void Function()? onTap;
+
+  const Profile({
+    required this.npub,
+    required this.profileName,
+    required this.profilePicUrl,
+    this.onTap,
+  });
+}
+
 // Message
 class Message {
   final String nevent;
@@ -124,26 +141,65 @@ class NostrEvent {
   });
 }
 
-// Profile
-typedef NostrProfileResolver = Future<Profile> Function(String identifier);
-
-class Profile {
-  final String npub;
-  final String profileName;
-  final String profilePicUrl;
-  final void Function()? onTap;
-
-  const Profile({
-    required this.npub,
-    required this.profileName,
-    required this.profilePicUrl,
-    this.onTap,
-  });
-}
-
 // Hashtag
 typedef NostrHashtagResolver = Future<void Function()?> Function(
     String identifier);
 
 // Links
 typedef LinkTapHandler = void Function(String url);
+
+// Post
+class Post {
+  final String nevent;
+  final String profileName;
+  final String profilePicUrl;
+  final String content;
+  final DateTime timestamp;
+  final List<Reaction> reactions;
+  final List<Zap> zaps;
+
+  const Post({
+    required this.nevent,
+    required this.profileName,
+    required this.profilePicUrl,
+    required this.content,
+    required this.timestamp,
+    this.reactions = const [],
+    this.zaps = const [],
+  });
+}
+
+// Article
+class Article {
+  final String nevent;
+  final String profileName;
+  final String profilePicUrl;
+  final String title;
+  final String imageUrl;
+  final String? content;
+  final DateTime? timestamp;
+  final List<Reaction>? reactions;
+  final List<Zap>? zaps;
+  final NostrEmojiResolver? onResolveEmoji;
+  final NostrEventResolver? onResolveEvent;
+  final NostrProfileResolver? onResolveProfile;
+  final NostrHashtagResolver? onResolveHashtag;
+  final LinkTapHandler? onLinkTap;
+
+  const Article({
+    required this.nevent,
+    required this.profileName,
+    required this.profilePicUrl,
+    required this.title,
+    required this.imageUrl,
+    this.content,
+    this.timestamp,
+    this.reactions,
+    this.zaps,
+    this.onResolveEmoji,
+    this.onResolveEvent,
+    this.onResolveProfile,
+    this.onResolveHashtag,
+    this.onLinkTap,
+  });
+}

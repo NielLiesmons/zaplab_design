@@ -55,7 +55,7 @@ class AppEmojiImage extends StatelessWidget {
 
 class AppEmojiContentType extends StatelessWidget {
   const AppEmojiContentType(
-      {super.key, required this.contentType, this.size = 36});
+      {super.key, required this.contentType, this.size = 32});
   final String contentType;
   final double size;
 

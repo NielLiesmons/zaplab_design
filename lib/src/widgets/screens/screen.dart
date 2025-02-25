@@ -17,80 +17,24 @@ class HistoryItem {
 }
 
 class AppScreen extends StatefulWidget {
+  final Widget child;
+  final Widget? topBarContent;
+  final Widget? bottomBarContent;
+  final List<HistoryItem> history;
+  final VoidCallback onHomeTap;
+  final bool alwaysShowTopBar;
+  final bool customTopBar;
+
   const AppScreen({
     super.key,
     required this.child,
     this.topBarContent,
     this.bottomBarContent,
-    required this.onHomeTap,
     this.history = const [],
+    required this.onHomeTap,
     this.alwaysShowTopBar = false,
     this.customTopBar = false,
   });
-
-  final Widget child;
-  final Widget? topBarContent;
-  final Widget? bottomBarContent;
-  final VoidCallback onHomeTap;
-  final List<HistoryItem> history;
-  final bool alwaysShowTopBar;
-  final bool customTopBar;
-
-  static Future<T?> show<T>(
-    BuildContext context, {
-    required Widget child,
-    Widget? topBarContent,
-    Widget? bottomBarContent,
-    List<HistoryItem> history = const [],
-    VoidCallback? onHomeTap,
-    bool alwaysShowTopBar = false,
-    bool customTopBar = false,
-  }) {
-    final theme = AppTheme.of(context);
-
-    return Navigator.of(context).push(
-      PageRouteBuilder(
-        opaque: false,
-        barrierDismissible: true,
-        barrierColor: const Color(0x00000000),
-        transitionDuration: theme.durations.fast,
-        reverseTransitionDuration: theme.durations.normal,
-        pageBuilder: (_, __, ___) => AppScreen(
-          child: child,
-          topBarContent: topBarContent,
-          bottomBarContent: bottomBarContent,
-          history: history,
-          onHomeTap: onHomeTap!,
-          alwaysShowTopBar: alwaysShowTopBar,
-          customTopBar: customTopBar,
-        ),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return Stack(
-            children: [
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                child: AppContainer(
-                  decoration: BoxDecoration(
-                    color: theme.colors.grey33,
-                  ),
-                ),
-              ),
-              SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0, 1),
-                  end: Offset.zero,
-                ).animate(CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeInOut,
-                )),
-                child: child,
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
 
   @override
   State<AppScreen> createState() => _AppScreenState();

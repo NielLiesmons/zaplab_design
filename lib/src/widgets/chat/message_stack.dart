@@ -2,8 +2,6 @@ import 'package:zaplab_design/zaplab_design.dart';
 
 class AppMessageStack extends StatelessWidget {
   final List<Message> messages;
-  final List<double> recentAmounts;
-  final List<Reaction> recentReactions;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -16,8 +14,6 @@ class AppMessageStack extends StatelessWidget {
   const AppMessageStack({
     super.key,
     required this.messages,
-    this.recentAmounts = const [],
-    this.recentReactions = const [],
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -61,8 +57,8 @@ class AppMessageStack extends StatelessWidget {
                       contentType: 'message',
                       profilePicUrl: messages[i].profilePicUrl,
                       message: messages[i].message,
-                      recentAmounts: recentAmounts,
-                      recentReactions: recentReactions,
+                      recentAmounts: const [],
+                      recentReactions: const [],
                     ),
                     onReply: onReply,
                     onReactionTap: onReactionTap,

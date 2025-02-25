@@ -3,25 +3,30 @@ import 'package:zaplab_design/src/utils/timestamp_formatter.dart';
 import 'package:tap_builder/tap_builder.dart';
 
 class AppChatHomePanel extends StatelessWidget {
+  final String npub;
   final String profileName;
   final String profilePicUrl;
   final String lastMessage;
   final String? lastMessageProfileName;
   final DateTime lastMessageTimeStamp;
   final Map<String, int> contentCounts;
-  final int mainCount;
-  final VoidCallback? onTap;
+  final int? mainCount;
+  final void Function(BuildContext context, String npub)? onNavigateToChat;
+  final void Function(BuildContext context, String npub, String contentType)?
+      onNavigateToContent;
 
   const AppChatHomePanel({
     super.key,
+    required this.npub,
     required this.profileName,
     required this.profilePicUrl,
     required this.lastMessage,
     this.lastMessageProfileName,
     required this.lastMessageTimeStamp,
     this.contentCounts = const {},
-    required this.mainCount,
-    this.onTap,
+    this.mainCount,
+    this.onNavigateToChat,
+    this.onNavigateToContent,
   });
 
   (String, double) _getCountDisplay(int count) {
@@ -34,10 +39,15 @@ class AppChatHomePanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    final (displayCount, containerWidth) = _getCountDisplay(mainCount);
+    final (displayCount, containerWidth) = _getCountDisplay(mainCount!);
 
     return TapBuilder(
-      onTap: onTap,
+      onTap: onNavigateToChat == null
+          ? null
+          : () => onNavigateToChat!(
+                context,
+                profileName,
+              ),
       builder: (context, state, hasFocus) {
         return Column(children: [
           AppSwipeContainer(

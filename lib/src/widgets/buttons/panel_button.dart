@@ -75,7 +75,7 @@ class AppPanelButton extends StatelessWidget {
                     child: Center(
                       child: AppText.med12(
                         count.toString(),
-                        color: AppColorsData.dark().white66,
+                        color: theme.colors.white66,
                       ),
                     ),
                   ),

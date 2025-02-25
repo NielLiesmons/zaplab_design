@@ -153,21 +153,31 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const AppDivider(),
-                AppContainer(
-                  padding: const AppEdgeInsets.all(AppGapSize.s12),
-                  child: AppTabGrid(
-                    tabs: widget.tabs,
-                    selectedIndex: _selectedIndex,
-                    onTabSelected: (index) {
-                      setState(() {
-                        _selectedIndex = index;
-                        _isExpanded = false;
-                      });
-                      _slideController.reverse();
-                    },
-                    tabBarKey: _tabBarKey,
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.66 -
+                        MediaQuery.of(context).padding.top -
+                        MediaQuery.of(context).padding.bottom,
+                  ),
+                  child: SingleChildScrollView(
+                    child: AppContainer(
+                      padding: const AppEdgeInsets.all(AppGapSize.s12),
+                      child: AppTabGrid(
+                        tabs: widget.tabs,
+                        selectedIndex: _selectedIndex,
+                        onTabSelected: (index) {
+                          setState(() {
+                            _selectedIndex = index;
+                            _isExpanded = false;
+                          });
+                          _slideController.reverse();
+                        },
+                        tabBarKey: _tabBarKey,
+                      ),
+                    ),
                   ),
                 ),
+                const AppDivider()
               ],
             ),
           ),
