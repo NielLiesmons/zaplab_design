@@ -13,7 +13,11 @@ class DefaultData {
 
   static const List<Reaction> defaultReactions = [
     Reaction(
-      profileName: 'Niel Liesmons',
+      npub:
+          'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      nevent:
+          'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      profileName: 'Zaplab',
       profilePicUrl:
           'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
       emojiUrl:
@@ -21,7 +25,11 @@ class DefaultData {
       emojiName: 'laughing',
     ),
     Reaction(
-      profileName: 'Niel Liesmons',
+      npub:
+          'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      nevent:
+          'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      profileName: 'Zaplab',
       profilePicUrl:
           'https://clipart.info/images/ccovers/1516250282red-heart-emoji.png',
       emojiUrl:
@@ -29,7 +37,11 @@ class DefaultData {
       emojiName: 'heart',
     ),
     Reaction(
-      profileName: 'Niel Liesmons',
+      npub:
+          'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      nevent:
+          'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      profileName: 'Zaplab',
       profilePicUrl:
           'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
       emojiUrl:
@@ -37,7 +49,11 @@ class DefaultData {
       emojiName: '90',
     ),
     Reaction(
-      profileName: 'Niel Liesmons',
+      npub:
+          'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      nevent:
+          'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      profileName: 'Zaplab',
       profilePicUrl:
           'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
       emojiUrl:
@@ -45,7 +61,11 @@ class DefaultData {
       emojiName: 'todo',
     ),
     Reaction(
-      profileName: 'Niel Liesmons',
+      npub:
+          'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      nevent:
+          'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      profileName: 'Zaplab',
       profilePicUrl:
           'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
       emojiUrl:
@@ -53,7 +73,11 @@ class DefaultData {
       emojiName: 'todo',
     ),
     Reaction(
-      profileName: 'Niel Liesmons',
+      npub:
+          'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      nevent:
+          'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      profileName: 'Zaplab',
       profilePicUrl:
           'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
       emojiUrl:
@@ -61,7 +85,11 @@ class DefaultData {
       emojiName: 'todo',
     ),
     Reaction(
-      profileName: 'Niel Liesmons',
+      npub:
+          'npub1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      nevent:
+          'nevent1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
+      profileName: 'Zaplab',
       profilePicUrl:
           'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
       emojiUrl: 'https://nogood.studio/nostr/emotes/NoGood_Yo.gif',

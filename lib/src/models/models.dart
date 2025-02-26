@@ -2,16 +2,16 @@
 
 // Community
 class Community {
+  final String npub;
   final String profilePicUrl;
   final String communityName;
-  final String ncommunity;
   final String? description;
   final List<Profile>? inYourNetwork;
 
   const Community({
+    required this.npub,
     required this.profilePicUrl,
     required this.communityName,
-    required this.ncommunity,
     this.description,
     this.inYourNetwork,
   });
@@ -37,6 +37,7 @@ class Profile {
 // Message
 class Message {
   final String nevent;
+  final String npub;
   final String message;
   final String profileName;
   final String profilePicUrl;
@@ -46,6 +47,7 @@ class Message {
 
   const Message({
     required this.nevent,
+    required this.npub,
     required this.message,
     required this.profileName,
     required this.profilePicUrl,
@@ -59,37 +61,47 @@ class Message {
 typedef NostrEmojiResolver = Future<String> Function(String identifier);
 
 class Reaction {
-  final String emojiUrl;
-  final String emojiName;
+  final String npub;
+  final String nevent;
   final String profileName;
   final String profilePicUrl;
+  final String emojiUrl;
+  final String emojiName;
   final DateTime? timestamp;
+  final bool isOutgoing;
 
   const Reaction({
-    required this.emojiUrl,
-    required this.emojiName,
+    required this.npub,
+    required this.nevent,
     required this.profileName,
     required this.profilePicUrl,
+    required this.emojiUrl,
+    required this.emojiName,
     this.timestamp,
+    this.isOutgoing = false,
   });
 }
 
 // Zap
 class Zap {
+  final String npub;
   final String nevent;
   final int amount;
   final String profileName;
   final String profilePicUrl;
-  final String? comment;
+  final String? message;
   final DateTime timestamp;
+  final bool isOutgoing;
 
   const Zap({
+    required this.npub,
     required this.nevent,
     required this.amount,
     required this.profileName,
     required this.profilePicUrl,
-    this.comment,
+    this.message,
     required this.timestamp,
+    this.isOutgoing = false,
   });
 }
 
@@ -114,6 +126,7 @@ class QuotedMessage {
 typedef NostrEventResolver = Future<NostrEvent> Function(String identifier);
 
 class NostrEvent {
+  final String npub;
   final String nevent;
   final String contentType;
   final String? title;
@@ -127,6 +140,7 @@ class NostrEvent {
   final void Function()? onTap;
 
   const NostrEvent({
+    required this.npub,
     required this.nevent,
     required this.contentType,
     this.title,
@@ -150,6 +164,7 @@ typedef LinkTapHandler = void Function(String url);
 
 // Post
 class Post {
+  final String npub;
   final String nevent;
   final String profileName;
   final String profilePicUrl;
@@ -159,6 +174,7 @@ class Post {
   final List<Zap> zaps;
 
   const Post({
+    required this.npub,
     required this.nevent,
     required this.profileName,
     required this.profilePicUrl,
@@ -171,6 +187,7 @@ class Post {
 
 // Article
 class Article {
+  final String npub;
   final String nevent;
   final String profileName;
   final String profilePicUrl;
@@ -187,6 +204,7 @@ class Article {
   final LinkTapHandler? onLinkTap;
 
   const Article({
+    required this.npub,
     required this.nevent,
     required this.profileName,
     required this.profilePicUrl,

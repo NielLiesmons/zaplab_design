@@ -5,14 +5,18 @@ class AppReactionPill extends StatelessWidget {
   final String emojiUrl;
   final String emojiName;
   final String profilePicUrl;
+  final String npub;
   final VoidCallback onTap;
+  final bool isOutgoing;
 
   const AppReactionPill({
     super.key,
     required this.emojiUrl,
     required this.emojiName,
     required this.profilePicUrl,
+    required this.npub,
     required this.onTap,
+    this.isOutgoing = false,
   });
 
   @override
@@ -42,6 +46,7 @@ class AppReactionPill extends StatelessWidget {
                   : isInsideMessageBubble
                       ? theme.colors.white16
                       : theme.colors.grey66,
+              gradient: isOutgoing ? theme.colors.blurple : null,
               borderRadius: BorderRadius.all(theme.radius.rad16),
             ),
             padding: const AppEdgeInsets.only(

@@ -1,5 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'dart:io';
 
 extension StringExtension on String {
   String formatTabLabel() {
@@ -17,6 +18,7 @@ class AppChatScreen extends StatefulWidget {
     required this.messages,
     required this.posts,
     required this.articles,
+    required this.currentNpub,
     this.focusedMessageNevent,
     this.mainCount,
     required this.contentCounts,
@@ -30,6 +32,7 @@ class AppChatScreen extends StatefulWidget {
   final List<Message> messages;
   final List<Post> posts;
   final List<Article> articles;
+  final String currentNpub;
   final String? focusedMessageNevent;
   final int? mainCount;
   final Map<String, int> contentCounts;
@@ -159,17 +162,21 @@ class _AppChatScreenState extends State<AppChatScreen> {
   }
 
   Widget _buildContent() {
-    switch (_tabController.index) {
-      case 0:
+    final contentTypes = widget.contentCounts.keys.toList();
+    final selectedType = contentTypes[_tabController.index];
+
+    switch (selectedType) {
+      case 'chat':
         return AppChatFeed(
           messages: widget.messages,
+          currentNpub: widget.currentNpub,
           onResolveEvent: (id) async => throw UnimplementedError(),
           onResolveProfile: (id) async => throw UnimplementedError(),
           onResolveEmoji: (id) async => throw UnimplementedError(),
           onResolveHashtag: (id) async => throw UnimplementedError(),
           onLinkTap: (url) async => throw UnimplementedError(),
         );
-      case 1:
+      case 'post':
         return AppPostsFeed(
           posts: widget.posts,
           onResolveEvent: (id) async => throw UnimplementedError(),
@@ -178,13 +185,15 @@ class _AppChatScreenState extends State<AppChatScreen> {
           onResolveHashtag: (id) async => throw UnimplementedError(),
           onLinkTap: (url) async => throw UnimplementedError(),
         );
-      case 2:
+      case 'article':
         return AppArticlesFeed(
           articles: widget.articles,
           onTap: (url) async => throw UnimplementedError(),
         );
       default:
-        return const SizedBox.shrink();
+        return Center(
+          child: AppText.h1(selectedType.formatTabLabel()),
+        );
     }
   }
 
@@ -209,6 +218,12 @@ class _AppChatScreenState extends State<AppChatScreen> {
             const AppGap.s24(),
             const AppGap.s2(),
             _buildContent(),
+            const AppGap.s16(),
+            const AppGap.s38(),
+            (Platform.isIOS || Platform.isAndroid)
+                ? const AppGap.s4()
+                : const AppGap.s16(),
+            const AppBottomSafeArea()
           ],
         ),
       ),

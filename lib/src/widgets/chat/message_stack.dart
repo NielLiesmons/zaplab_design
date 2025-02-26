@@ -2,6 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 
 class AppMessageStack extends StatelessWidget {
   final List<Message> messages;
+  final bool isOutgoing;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -14,6 +15,7 @@ class AppMessageStack extends StatelessWidget {
   const AppMessageStack({
     super.key,
     required this.messages,
+    this.isOutgoing = false,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -27,17 +29,27 @@ class AppMessageStack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: isOutgoing
+          ? MainAxisAlignment.end // Outgoing messages aligned right
+          : MainAxisAlignment.start, // Incoming messages aligned left
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        AppContainer(
-          child: AppProfilePic.s32(messages.first.profilePicUrl),
-        ),
-        const AppGap.s4(),
+        if (!isOutgoing) ...[
+          AppContainer(
+            child: AppProfilePic.s32(messages.first.profilePicUrl),
+          ),
+          const AppGap.s4(),
+        ] else ...[
+          const AppGap.s64(),
+          const AppGap.s4(),
+        ],
         Expanded(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 28),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: isOutgoing
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
               children: [
                 for (int i = 0; i < messages.length; i++) ...[
                   if (i > 0) const AppGap.s2(),
@@ -45,8 +57,10 @@ class AppMessageStack extends StatelessWidget {
                     message: messages[i].message,
                     profileName: messages[i].profileName,
                     timestamp: messages[i].timestamp,
-                    showHeader: i == 0,
+                    showHeader:
+                        i == 0 && !isOutgoing, // Only show header for incoming
                     isLastInStack: i == messages.length - 1,
+                    isOutgoing: isOutgoing,
                     nevent: messages[i].nevent,
                     reactions: messages[i].reactions,
                     zaps: messages[i].zaps,
@@ -74,7 +88,7 @@ class AppMessageStack extends StatelessWidget {
             ),
           ),
         ),
-        const AppGap.s32(),
+        if (!isOutgoing) const AppGap.s32(),
       ],
     );
   }

@@ -22,6 +22,7 @@ class AppMessageBubble extends StatelessWidget {
   final DateTime? timestamp;
   final bool showHeader;
   final bool isLastInStack;
+  final bool isOutgoing;
   final String nevent;
   final List<Reaction> reactions;
   final List<Zap> zaps;
@@ -42,6 +43,7 @@ class AppMessageBubble extends StatelessWidget {
     this.timestamp,
     this.showHeader = false,
     this.isLastInStack = false,
+    this.isOutgoing = false,
     this.reactions = const [],
     this.zaps = const [],
     required this.onActions,
@@ -65,12 +67,16 @@ class AppMessageBubble extends StatelessWidget {
         return AppSwipeContainer(
           decoration: BoxDecoration(
             color: isInsideModal ? theme.colors.white16 : theme.colors.grey66,
+            gradient: isOutgoing ? theme.colors.blurple66 : null,
             borderRadius: BorderRadius.only(
               topLeft: theme.radius.rad16,
               topRight: theme.radius.rad16,
-              bottomRight: theme.radius.rad16,
-              bottomLeft:
-                  isLastInStack ? theme.radius.rad4 : theme.radius.rad16,
+              bottomRight: isOutgoing
+                  ? (isLastInStack ? theme.radius.rad4 : theme.radius.rad16)
+                  : theme.radius.rad16,
+              bottomLeft: !isOutgoing
+                  ? (isLastInStack ? theme.radius.rad4 : theme.radius.rad16)
+                  : theme.radius.rad16,
             ),
           ),
           leftContent: AppIcon.s16(
@@ -108,7 +114,7 @@ class AppMessageBubble extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              if (showHeader) ...[
+                              if (showHeader && !isOutgoing) ...[
                                 AppContainer(
                                   padding: const AppEdgeInsets.only(
                                     left: AppGapSize.s4,

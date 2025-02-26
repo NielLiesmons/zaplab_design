@@ -39,6 +39,8 @@ class AppInteractionPills extends StatelessWidget {
                 child: AppZapPill(
                   amount: zap.amount,
                   profilePicUrl: zap.profilePicUrl,
+                  npub: zap.npub,
+                  isOutgoing: zap.isOutgoing ?? false,
                   onTap: () => onZapTap?.call(nevent),
                 ),
               )),
@@ -48,6 +50,8 @@ class AppInteractionPills extends StatelessWidget {
                   emojiUrl: reaction.emojiUrl,
                   emojiName: reaction.emojiName,
                   profilePicUrl: reaction.profilePicUrl,
+                  npub: reaction.npub,
+                  isOutgoing: reaction.isOutgoing ?? false,
                   onTap: () => onReactionTap?.call(nevent),
                 ),
               )),

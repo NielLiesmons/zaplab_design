@@ -4,13 +4,17 @@ import 'package:tap_builder/tap_builder.dart';
 class AppZapPill extends StatelessWidget {
   final int amount;
   final String profilePicUrl;
+  final String npub;
   final VoidCallback onTap;
+  final bool isOutgoing;
 
   const AppZapPill({
     super.key,
     required this.amount,
     required this.profilePicUrl,
+    required this.npub,
     required this.onTap,
+    this.isOutgoing = false,
   });
 
   @override
@@ -40,6 +44,7 @@ class AppZapPill extends StatelessWidget {
                   : isInsideMessageBubble
                       ? theme.colors.white16
                       : theme.colors.grey66,
+              gradient: isOutgoing ? theme.colors.blurple : null,
               borderRadius: BorderRadius.all(theme.radius.rad16),
             ),
             padding: const AppEdgeInsets.only(
