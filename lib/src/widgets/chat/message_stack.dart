@@ -8,6 +8,7 @@ class AppMessageStack extends StatelessWidget {
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
+  final void Function(String) onActions;
   final void Function(String) onReply;
   final void Function(String) onReactionTap;
   final void Function(String) onZapTap;
@@ -21,6 +22,7 @@ class AppMessageStack extends StatelessWidget {
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
+    required this.onActions,
     required this.onReply,
     required this.onReactionTap,
     required this.onZapTap,
@@ -64,16 +66,7 @@ class AppMessageStack extends StatelessWidget {
                     nevent: messages[i].nevent,
                     reactions: messages[i].reactions,
                     zaps: messages[i].zaps,
-                    onActions: (context, nevent) => AppActionsModal.show(
-                      context,
-                      profileName: messages[i].profileName,
-                      eventId: nevent,
-                      contentType: 'message',
-                      profilePicUrl: messages[i].profilePicUrl,
-                      message: messages[i].message,
-                      recentAmounts: const [],
-                      recentReactions: const [],
-                    ),
+                    onActions: onActions,
                     onReply: onReply,
                     onReactionTap: onReactionTap,
                     onZapTap: onZapTap,

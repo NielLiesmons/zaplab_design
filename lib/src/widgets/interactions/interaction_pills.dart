@@ -28,30 +28,58 @@ class AppInteractionPills extends StatelessWidget {
     final sortedReactions = List.from(reactions)
       ..sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
 
+    final outgoingZaps = sortedZaps.where((zap) => zap.isOutgoing == true);
+    final incomingZaps = sortedZaps.where((zap) => zap.isOutgoing != true);
+    final outgoingReactions =
+        sortedReactions.where((reaction) => reaction.isOutgoing == true);
+    final incomingReactions =
+        sortedReactions.where((reaction) => reaction.isOutgoing != true);
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       clipBehavior: Clip.none,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ...sortedZaps.map((zap) => AppContainer(
+          ...outgoingZaps.map((zap) => AppContainer(
                 padding: const AppEdgeInsets.only(right: AppGapSize.s8),
                 child: AppZapPill(
                   amount: zap.amount,
                   profilePicUrl: zap.profilePicUrl,
                   npub: zap.npub,
-                  isOutgoing: zap.isOutgoing ?? false,
+                  isOutgoing: true,
                   onTap: () => onZapTap?.call(nevent),
                 ),
               )),
-          ...sortedReactions.map((reaction) => AppContainer(
+          ...outgoingReactions.map((reaction) => AppContainer(
                 padding: const AppEdgeInsets.only(right: AppGapSize.s8),
                 child: AppReactionPill(
                   emojiUrl: reaction.emojiUrl,
                   emojiName: reaction.emojiName,
                   profilePicUrl: reaction.profilePicUrl,
                   npub: reaction.npub,
-                  isOutgoing: reaction.isOutgoing ?? false,
+                  isOutgoing: true,
+                  onTap: () => onReactionTap?.call(nevent),
+                ),
+              )),
+          ...incomingZaps.map((zap) => AppContainer(
+                padding: const AppEdgeInsets.only(right: AppGapSize.s8),
+                child: AppZapPill(
+                  amount: zap.amount,
+                  profilePicUrl: zap.profilePicUrl,
+                  npub: zap.npub,
+                  isOutgoing: false,
+                  onTap: () => onZapTap?.call(nevent),
+                ),
+              )),
+          ...incomingReactions.map((reaction) => AppContainer(
+                padding: const AppEdgeInsets.only(right: AppGapSize.s8),
+                child: AppReactionPill(
+                  emojiUrl: reaction.emojiUrl,
+                  emojiName: reaction.emojiName,
+                  profilePicUrl: reaction.profilePicUrl,
+                  npub: reaction.npub,
+                  isOutgoing: false,
                   onTap: () => onReactionTap?.call(nevent),
                 ),
               )),

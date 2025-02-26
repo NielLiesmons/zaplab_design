@@ -73,8 +73,8 @@ export 'posts/post.dart';
 export 'posts/post_card.dart';
 
 // Profiles
+export 'profiles/current_profile_card.dart';
 export 'profiles/profile_inline.dart';
-
 // Profile Pics
 export 'profile_pics/community_stack.dart';
 export 'profile_pics/profile_pic_story.dart';

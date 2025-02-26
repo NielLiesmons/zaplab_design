@@ -7,6 +7,10 @@ class AppChatFeed extends StatelessWidget {
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
+  final void Function(String) onActions;
+  final void Function(String) onReply;
+  final void Function(String) onReactionTap;
+  final void Function(String) onZapTap;
   final LinkTapHandler onLinkTap;
 
   const AppChatFeed({
@@ -17,6 +21,10 @@ class AppChatFeed extends StatelessWidget {
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
+    required this.onActions,
+    required this.onReply,
+    required this.onReactionTap,
+    required this.onZapTap,
     required this.onLinkTap,
   });
 
@@ -62,10 +70,11 @@ class AppChatFeed extends StatelessWidget {
                   onResolveEmoji: onResolveEmoji,
                   onResolveHashtag: onResolveHashtag,
                   isOutgoing: group.first.npub == currentNpub,
+                  onReply: onReply,
+                  onActions: onActions,
+                  onReactionTap: onReactionTap,
+                  onZapTap: onZapTap,
                   onLinkTap: onLinkTap,
-                  onReply: (eventId) {}, // Implement these
-                  onReactionTap: (eventId) {},
-                  onZapTap: (eventId) {},
                 ),
                 const AppGap.s8(),
               ],

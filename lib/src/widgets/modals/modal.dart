@@ -12,6 +12,9 @@ class AppModal extends StatelessWidget {
   final String? title;
   final String? description;
   final List<Widget> children;
+  final Color? barrierColor;
+  final bool handleNavigation;
+  final double initialChildSize;
 
   const AppModal({
     Key? key,
@@ -22,6 +25,9 @@ class AppModal extends StatelessWidget {
     this.title,
     this.description,
     required this.children,
+    this.barrierColor,
+    this.handleNavigation = true,
+    this.initialChildSize = 0.80,
   }) : super(key: key);
 
   static Future<T?> show<T>(
@@ -35,59 +41,6 @@ class AppModal extends StatelessWidget {
     String? description,
   }) {
     final theme = AppTheme.of(context);
-    // Create default topBar if title is provided
-    Widget? resolvedTopBar = topBar;
-    if (topBar == null && title != null) {
-      resolvedTopBar = AppContainer(
-        padding: const AppEdgeInsets.all(AppGapSize.s12),
-        alignment: Alignment.center,
-        child: AppText.med16(
-          title,
-          color: theme.colors.white,
-        ),
-      );
-    }
-
-    // Create header widgets if any header info is provided
-    List<Widget> headerWidgets = [];
-    if (profilePicUrl != null || title != null || description != null) {
-      if (profilePicUrl != null) {
-        headerWidgets.addAll([
-          const AppGap.s8(),
-          AppProfilePic.s80(profilePicUrl),
-        ]);
-      }
-
-      if (title != null) {
-        headerWidgets.addAll([
-          const AppGap.s8(),
-          AppText.h1(
-            title,
-            color: theme.colors.white,
-          ),
-        ]);
-      }
-
-      if (description != null) {
-        headerWidgets.addAll([
-          const AppGap.s4(),
-          AppText.med16(
-            description,
-            color: theme.colors.white66,
-          ),
-        ]);
-      }
-
-      if (headerWidgets.isNotEmpty) {
-        headerWidgets.add(const AppGap.s8());
-      }
-    }
-
-    // Combine header widgets with provided children
-    final List<Widget> allChildren = [...headerWidgets, ...children];
-
-    // Create a GlobalKey to measure content height
-    final contentKey = GlobalKey();
 
     return Navigator.of(context).push(
       PageRouteBuilder(
@@ -96,64 +49,17 @@ class AppModal extends StatelessWidget {
         barrierColor: theme.colors.black16,
         transitionDuration: theme.durations.normal,
         reverseTransitionDuration: theme.durations.normal,
-        pageBuilder: (_, __, ___) {
-          // Create a hidden container to measure content
-          final measuringWidget = Opacity(
-            opacity: 0,
-            child: AppContainer(
-              key: contentKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (topBar != null) topBar,
-                  ...allChildren,
-                  if (bottomBar != null) bottomBar,
-                ],
-              ),
-            ),
-          );
-
-          return Stack(
-            children: [
-              // Measuring widget
-              measuringWidget,
-              // Backdrop
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                child: AppContainer(
-                  decoration: BoxDecoration(color: theme.colors.black16),
-                ),
-              ),
-              // Actual modal
-              Builder(
-                builder: (context) {
-                  // Measure content after build
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    final RenderBox? box = contentKey.currentContext
-                        ?.findRenderObject() as RenderBox?;
-                    if (box != null) {
-                      final contentHeight = box.size.height;
-                      final screenHeight = MediaQuery.of(context).size.height;
-                      final maxAllowedHeight = screenHeight * 0.8;
-                      _needsCompactMode.value =
-                          contentHeight > maxAllowedHeight;
-                    }
-                  });
-
-                  return AppModal(
-                    topBar: resolvedTopBar,
-                    bottomBar: bottomBar,
-                    includePadding: includePadding,
-                    profilePicUrl: profilePicUrl,
-                    title: title,
-                    description: description,
-                    children: allChildren,
-                  );
-                },
-              ),
-            ],
-          );
-        },
+        pageBuilder: (_, __, ___) => AppModal(
+          topBar: topBar,
+          bottomBar: bottomBar,
+          includePadding: includePadding,
+          profilePicUrl: profilePicUrl,
+          title: title,
+          description: description,
+          children: children,
+          barrierColor: theme.colors.black16,
+          handleNavigation: true,
+        ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           final curvedAnimation = CurvedAnimation(
             parent: animation,
@@ -182,17 +88,35 @@ class AppModal extends StatelessWidget {
     double initialChildSize = 0.64,
   }) {
     final theme = AppTheme.of(context);
-    final topBarVisible = ValueNotifier<bool>(false);
-    final modalOffset = ValueNotifier<double>(0.0);
-    final screenHeight = MediaQuery.of(context).size.height;
 
-    // Create header widgets if any header info is provided
+    return Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        barrierDismissible: true,
+        barrierColor: theme.colors.black16,
+        transitionDuration: theme.durations.normal,
+        reverseTransitionDuration: theme.durations.normal,
+        pageBuilder: (_, __, ___) => AppModal(
+          bottomBar: bottomBar,
+          profilePicUrl: profilePicUrl,
+          title: title,
+          description: description,
+          children: children,
+          barrierColor: theme.colors.black16,
+          handleNavigation: true,
+          initialChildSize: initialChildSize,
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildHeaderWidgets(AppThemeData theme) {
     List<Widget> headerWidgets = [];
     if (profilePicUrl != null || title != null || description != null) {
       if (profilePicUrl != null) {
         headerWidgets.addAll([
           const AppGap.s8(),
-          AppProfilePic.s80(profilePicUrl),
+          AppProfilePic.s80(profilePicUrl!),
         ]);
       }
 
@@ -200,7 +124,7 @@ class AppModal extends StatelessWidget {
         headerWidgets.addAll([
           const AppGap.s8(),
           AppText.h1(
-            title,
+            title!,
             color: theme.colors.white,
           ),
         ]);
@@ -210,7 +134,7 @@ class AppModal extends StatelessWidget {
         headerWidgets.addAll([
           const AppGap.s4(),
           AppText.med16(
-            description,
+            description!,
             color: theme.colors.white66,
           ),
         ]);
@@ -220,43 +144,7 @@ class AppModal extends StatelessWidget {
         headerWidgets.add(const AppGap.s8());
       }
     }
-
-    // Combine header widgets with provided children
-    final List<Widget> allChildren = [...headerWidgets, ...children];
-
-    return Navigator.of(context).push(
-      PageRouteBuilder(
-        opaque: false,
-        barrierDismissible: true,
-        barrierColor: theme.colors.black16,
-        transitionDuration: theme.durations.normal,
-        reverseTransitionDuration: theme.durations.normal,
-        pageBuilder: (_, __, ___) => Stack(
-          children: [
-            BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-              child: AppContainer(),
-            ),
-            AppModal(
-              bottomBar: bottomBar,
-              children: allChildren,
-            )._buildScrollableModal(
-              context,
-              theme,
-              screenHeight,
-              topBarVisible,
-              modalOffset,
-              initialChildSize: initialChildSize,
-            ),
-            if (bottomBar != null)
-              AppModal(
-                bottomBar: bottomBar,
-                children: const [],
-              )._buildBottomBarOverlay(context, theme),
-          ],
-        ),
-      ),
-    );
+    return headerWidgets;
   }
 
   @override
@@ -266,58 +154,133 @@ class AppModal extends StatelessWidget {
     final topBarVisible = ValueNotifier<bool>(false);
     final modalOffset = ValueNotifier<double>(0.0);
 
-    return ValueListenableBuilder<bool>(
+    // Create header widgets and combine with children
+    final headerWidgets = _buildHeaderWidgets(theme);
+    final allChildren = [...headerWidgets, ...children];
+
+    // Create default topBar if title is provided and no custom topBar
+    Widget? resolvedTopBar = topBar;
+    if (topBar == null && title != null) {
+      resolvedTopBar = AppContainer(
+        padding: const AppEdgeInsets.all(AppGapSize.s12),
+        alignment: Alignment.center,
+        child: AppText.med16(
+          title!,
+          color: theme.colors.white,
+        ),
+      );
+    }
+
+    // Measure content if needed
+    final contentKey = GlobalKey();
+    final measuringWidget = Opacity(
+      opacity: 0,
+      child: AppContainer(
+        key: contentKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (resolvedTopBar != null) resolvedTopBar,
+            ...allChildren,
+            if (bottomBar != null) bottomBar!,
+          ],
+        ),
+      ),
+    );
+
+    Widget modalContent = ValueListenableBuilder<bool>(
       valueListenable: _needsCompactMode,
       builder: (context, needsCompactMode, child) {
         return ModalScope(
           isInsideModal: true,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Stack(
-              children: [
-                // Background tap handler
-                GestureDetector(
-                  onTap: () {
-                    final navigator = Navigator.of(context);
-                    if (navigator.canPop()) {
-                      navigator.pop();
-                    }
-                  },
-                  onVerticalDragUpdate: (details) {
-                    if (details.delta.dy > 0 &&
-                        Navigator.of(context).canPop()) {
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: const AppContainer(
-                    decoration: BoxDecoration(color: Color(0x00000000)),
+          child: Stack(
+            children: [
+              if (barrierColor != null)
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                  child: AppContainer(
+                    decoration: BoxDecoration(color: barrierColor),
                   ),
                 ),
-                // Main modal content
-                if (needsCompactMode)
-                  _buildScrollableModal(
-                    context,
-                    theme,
-                    screenHeight,
-                    topBarVisible,
-                    modalOffset,
-                  )
-                else
-                  _buildCompactModal(context, theme),
-                // Bottom bar overlay (only in scrollable mode)
-                if (needsCompactMode &&
-                    (bottomBar != null ||
-                        (Platform.isIOS || Platform.isAndroid)))
-                  _buildBottomBarOverlay(context, theme),
-              ],
-            ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Stack(
+                  children: [
+                    if (handleNavigation)
+                      GestureDetector(
+                        onTap: () {
+                          if (Navigator.of(context).canPop()) {
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        onVerticalDragUpdate: (details) {
+                          if (details.delta.dy > 0 &&
+                              Navigator.of(context).canPop()) {
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        child: const AppContainer(
+                          decoration: BoxDecoration(color: Color(0x00000000)),
+                        ),
+                      ),
+                    if (needsCompactMode)
+                      _buildScrollableModal(
+                        context,
+                        theme,
+                        screenHeight,
+                        topBarVisible,
+                        modalOffset,
+                        resolvedTopBar,
+                        allChildren,
+                        initialChildSize: initialChildSize,
+                      )
+                    else
+                      _buildCompactModal(
+                        context,
+                        theme,
+                        resolvedTopBar,
+                        allChildren,
+                      ),
+                    if (needsCompactMode &&
+                        (bottomBar != null ||
+                            (Platform.isIOS || Platform.isAndroid)))
+                      _buildBottomBarOverlay(context, theme),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
       },
     );
+
+    return Stack(
+      children: [
+        measuringWidget,
+        Builder(
+          builder: (context) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              final RenderBox? box =
+                  contentKey.currentContext?.findRenderObject() as RenderBox?;
+              if (box != null) {
+                final contentHeight = box.size.height;
+                final maxAllowedHeight = screenHeight * 0.8;
+                _needsCompactMode.value = contentHeight > maxAllowedHeight;
+              }
+            });
+            return modalContent;
+          },
+        ),
+      ],
+    );
   }
 
-  Widget _buildCompactModal(BuildContext context, AppThemeData theme) {
+  Widget _buildCompactModal(
+    BuildContext context,
+    AppThemeData theme,
+    Widget? resolvedTopBar,
+    List<Widget> allChildren,
+  ) {
     final bottomPadding =
         Platform.isIOS || Platform.isAndroid ? AppGapSize.s4 : AppGapSize.s16;
     final modalOffset = ValueNotifier<double>(0.0);
@@ -384,14 +347,14 @@ class AppModal extends StatelessWidget {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  ...children,
+                                  ...allChildren,
                                   if (bottomBar == null)
                                     const AppBottomSafeArea(),
                                 ],
                               ),
                             )
                           else ...[
-                            ...children,
+                            ...allChildren,
                             if (bottomBar == null) const AppBottomSafeArea(),
                           ],
                           if (bottomBar != null)
@@ -428,7 +391,9 @@ class AppModal extends StatelessWidget {
     AppThemeData theme,
     double screenHeight,
     ValueNotifier<bool> topBarVisible,
-    ValueNotifier<double> modalOffset, {
+    ValueNotifier<double> modalOffset,
+    Widget? resolvedTopBar,
+    List<Widget> allChildren, {
     double initialChildSize = 0.80,
   }) {
     final bottomBarHeight = bottomBar != null ? theme.sizes.s64 : 0.0;
@@ -516,13 +481,13 @@ class AppModal extends StatelessWidget {
                                       padding: AppEdgeInsets.s16(),
                                       child: Column(
                                         children: [
-                                          ...children,
+                                          ...allChildren,
                                           const AppBottomSafeArea(),
                                         ],
                                       ),
                                     )
                                   else ...[
-                                    ...children,
+                                    ...allChildren,
                                     const AppBottomSafeArea(),
                                   ],
                                 ],
@@ -595,7 +560,7 @@ class AppModal extends StatelessWidget {
                                     const AppTopSafeArea(),
                                     const AppGap.s4(),
                                     const AppDragHandle(),
-                                    if (topBar != null) topBar!,
+                                    if (resolvedTopBar != null) resolvedTopBar!,
                                   ],
                                 ),
                               ),

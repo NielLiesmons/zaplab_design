@@ -26,7 +26,7 @@ class AppMessageBubble extends StatelessWidget {
   final String nevent;
   final List<Reaction> reactions;
   final List<Zap> zaps;
-  final Future<void> Function(BuildContext context, String nevent) onActions;
+  final void Function(String) onActions;
   final void Function(String) onReply;
   final void Function(String)? onReactionTap;
   final void Function(String)? onZapTap;
@@ -90,7 +90,7 @@ class AppMessageBubble extends StatelessWidget {
             outlineThickness: LineThicknessData.normal().medium,
           ),
           onSwipeLeft: () => onReply(nevent),
-          onSwipeRight: () => onActions(context, nevent),
+          onSwipeRight: () => onActions(nevent),
           child: MessageBubbleScope(
             child: LayoutBuilder(
               builder: (context, bubbleConstraints) {

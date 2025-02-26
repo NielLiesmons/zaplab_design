@@ -44,7 +44,7 @@ class AppZapPill extends StatelessWidget {
                   : isInsideMessageBubble
                       ? theme.colors.white16
                       : theme.colors.grey66,
-              gradient: isOutgoing ? theme.colors.blurple : null,
+              gradient: isOutgoing ? theme.colors.gold : null,
               borderRadius: BorderRadius.all(theme.radius.rad16),
             ),
             padding: const AppEdgeInsets.only(
@@ -61,13 +61,17 @@ class AppZapPill extends StatelessWidget {
                   children: [
                     AppIcon.s12(
                       theme.icons.characters.zap,
-                      color: theme.colors.white66,
+                      color: isOutgoing
+                          ? AppColorsData.dark().black
+                          : theme.colors.black66,
                     ),
                     const AppGap.s4(),
                     AppAmount(
                       amount.toDouble(),
                       level: AppTextLevel.med12,
-                      color: theme.colors.white66,
+                      color: isOutgoing
+                          ? AppColorsData.dark().black
+                          : theme.colors.white66,
                     ),
                   ],
                 ),

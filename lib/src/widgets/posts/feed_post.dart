@@ -73,7 +73,7 @@ class AppFeedPost extends StatelessWidget {
           onSwipeRight: () => AppActionsModal.show(
             context,
             profileName: profileName,
-            eventId: nevent,
+            nevent: nevent,
             contentType: 'post',
             title: content,
             profilePicUrl: profilePicUrl,

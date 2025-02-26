@@ -10,6 +10,28 @@ extension StringExtension on String {
 }
 
 class AppChatScreen extends StatefulWidget {
+  final String npub;
+  final String profileName;
+  final String profilePicUrl;
+  final List<Message> messages;
+  final List<Post> posts;
+  final List<Article> articles;
+  final String currentNpub;
+  final String? focusedMessageNevent;
+  final int? mainCount;
+  final Map<String, int> contentCounts;
+  final void Function(NostrEvent event)? onNostrEvent;
+  final VoidCallback? onHomeTap;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
+  final NostrHashtagResolver onResolveHashtag;
+  final LinkTapHandler onLinkTap;
+  final void Function(String) onActions;
+  final void Function(String) onReply;
+  final void Function(String) onReactionTap;
+  final void Function(String) onZapTap;
+
   const AppChatScreen({
     super.key,
     required this.npub,
@@ -24,20 +46,16 @@ class AppChatScreen extends StatefulWidget {
     required this.contentCounts,
     this.onNostrEvent,
     this.onHomeTap,
+    required this.onLinkTap,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
+    required this.onResolveHashtag,
+    required this.onActions,
+    required this.onReply,
+    required this.onReactionTap,
+    required this.onZapTap,
   });
-
-  final String npub;
-  final String profileName;
-  final String profilePicUrl;
-  final List<Message> messages;
-  final List<Post> posts;
-  final List<Article> articles;
-  final String currentNpub;
-  final String? focusedMessageNevent;
-  final int? mainCount;
-  final Map<String, int> contentCounts;
-  final void Function(NostrEvent event)? onNostrEvent;
-  final VoidCallback? onHomeTap;
 
   @override
   State<AppChatScreen> createState() => _AppChatScreenState();
@@ -170,20 +188,24 @@ class _AppChatScreenState extends State<AppChatScreen> {
         return AppChatFeed(
           messages: widget.messages,
           currentNpub: widget.currentNpub,
-          onResolveEvent: (id) async => throw UnimplementedError(),
-          onResolveProfile: (id) async => throw UnimplementedError(),
-          onResolveEmoji: (id) async => throw UnimplementedError(),
-          onResolveHashtag: (id) async => throw UnimplementedError(),
-          onLinkTap: (url) async => throw UnimplementedError(),
+          onResolveEvent: widget.onResolveEvent,
+          onResolveProfile: widget.onResolveProfile,
+          onResolveEmoji: widget.onResolveEmoji,
+          onResolveHashtag: widget.onResolveHashtag,
+          onActions: widget.onActions,
+          onReply: widget.onReply,
+          onReactionTap: widget.onReactionTap,
+          onZapTap: widget.onZapTap,
+          onLinkTap: widget.onLinkTap,
         );
       case 'post':
         return AppPostsFeed(
           posts: widget.posts,
-          onResolveEvent: (id) async => throw UnimplementedError(),
-          onResolveProfile: (id) async => throw UnimplementedError(),
-          onResolveEmoji: (id) async => throw UnimplementedError(),
-          onResolveHashtag: (id) async => throw UnimplementedError(),
-          onLinkTap: (url) async => throw UnimplementedError(),
+          onResolveEvent: widget.onResolveEvent,
+          onResolveProfile: widget.onResolveProfile,
+          onResolveEmoji: widget.onResolveEmoji,
+          onResolveHashtag: widget.onResolveHashtag,
+          onLinkTap: widget.onLinkTap,
         );
       case 'article':
         return AppArticlesFeed(
