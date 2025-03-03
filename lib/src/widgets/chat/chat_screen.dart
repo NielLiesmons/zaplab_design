@@ -10,23 +10,30 @@ extension StringExtension on String {
 }
 
 class AppChatScreen extends StatefulWidget {
+  // Profile related
   final String npub;
   final String profileName;
   final String profilePicUrl;
+  final VoidCallback? onProfileTap;
+  // Current profile
+  final String currentNpub;
+  // Content related
+  final int? mainCount;
+  final Map<String, int> contentCounts;
   final List<Message> messages;
   final List<Post> posts;
   final List<Article> articles;
-  final String currentNpub;
-  final String? focusedMessageNevent;
-  final int? mainCount;
-  final Map<String, int> contentCounts;
-  final void Function(NostrEvent event)? onNostrEvent;
+  // Other actions & settings
   final VoidCallback? onHomeTap;
+  final VoidCallback? onNotificationsTap;
+  final String? focusedMessageNevent;
+  // Short text rendering
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
+  // Actions on individual events
   final void Function(String) onActions;
   final void Function(String) onReply;
   final void Function(String) onReactionTap;
@@ -34,23 +41,31 @@ class AppChatScreen extends StatefulWidget {
 
   const AppChatScreen({
     super.key,
+    // Profile related
     required this.npub,
     required this.profileName,
     required this.profilePicUrl,
-    required this.messages,
-    required this.posts,
-    required this.articles,
+    this.onProfileTap,
+    // Current user
     required this.currentNpub,
-    this.focusedMessageNevent,
+    // Content related
     this.mainCount,
     required this.contentCounts,
-    this.onNostrEvent,
+    this.focusedMessageNevent,
+    this.messages = const [],
+    this.posts = const [],
+    this.articles = const [],
+    // Other actions & settings
     this.onHomeTap,
-    required this.onLinkTap,
+    this.onNotificationsTap,
+
+    // Actions on individual events
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
+    required this.onLinkTap,
+    // Actions on individual events
     required this.onActions,
     required this.onReply,
     required this.onReactionTap,
@@ -90,80 +105,90 @@ class _AppChatScreenState extends State<AppChatScreen> {
 
     return Column(
       children: [
-        // Your existing header
-        AppContainer(
-          padding: const AppEdgeInsets.only(
-            left: AppGapSize.s12,
-            right: AppGapSize.s12,
-            top: AppGapSize.s4,
-            bottom: AppGapSize.s12,
-          ),
-          child: Row(
-            children: [
-              AppProfilePic.s32(profilePicUrl),
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const AppGap.s12(),
-                    Expanded(
-                      child: AppText.bold14(
-                        profileName,
-                      ),
-                    ),
-                    Stack(
-                      clipBehavior: Clip.none,
+        // Header
+        TapBuilder(
+          onTap: widget.onProfileTap,
+          builder: (context, state, hasFocus) {
+            return AppContainer(
+              padding: const AppEdgeInsets.only(
+                left: AppGapSize.s12,
+                right: AppGapSize.s12,
+                top: AppGapSize.s4,
+                bottom: AppGapSize.s12,
+              ),
+              child: Row(
+                children: [
+                  AppProfilePic.s32(profilePicUrl, onTap: widget.onProfileTap),
+                  Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        AppContainer(
-                          height: 32,
-                          width: 32,
-                          decoration: BoxDecoration(
-                            color: theme.colors.grey66,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            child: AppIcon(
-                              theme.icons.characters.bell,
-                              color: theme.colors.white33,
-                            ),
+                        const AppGap.s12(),
+                        Expanded(
+                          child: AppText.bold14(
+                            profileName,
                           ),
                         ),
-                        Positioned(
-                          top: -4,
-                          right: -10,
-                          child: AppContainer(
-                            height: theme.sizes.s20,
-                            padding: const AppEdgeInsets.symmetric(
-                              horizontal: AppGapSize.s6,
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: theme.colors.blurple,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(
-                                minWidth: 8,
-                              ),
-                              child: Center(
-                                child: AppText.med10(
-                                  '$mainCount',
-                                  color: AppColorsData.dark().white,
+                        TapBuilder(
+                          onTap: widget.onNotificationsTap,
+                          builder: (context, state, hasFocus) {
+                            return Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                AppContainer(
+                                  height: 32,
+                                  width: 32,
+                                  decoration: BoxDecoration(
+                                    color: theme.colors.grey66,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                    child: AppIcon(
+                                      theme.icons.characters.bell,
+                                      color: theme.colors.white33,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
+                                Positioned(
+                                  top: -4,
+                                  right: -10,
+                                  child: AppContainer(
+                                    height: theme.sizes.s20,
+                                    padding: const AppEdgeInsets.symmetric(
+                                      horizontal: AppGapSize.s6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      gradient: theme.colors.blurple,
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    child: ConstrainedBox(
+                                      constraints: const BoxConstraints(
+                                        minWidth: 8,
+                                      ),
+                                      child: Center(
+                                        child: AppText.med10(
+                                          '$mainCount',
+                                          color: AppColorsData.dark().white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
+                        const AppGap.s10(),
                       ],
                     ),
-                    const AppGap.s10(),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
 
-        // Modified tab bar
+        // Tab view, used as a Tab Bar only. The actual Tab content is rendered in _buildContent()
         AppTabView(
           controller: _tabController,
           tabs: [

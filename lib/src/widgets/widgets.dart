@@ -74,7 +74,9 @@ export 'posts/post_card.dart';
 
 // Profiles
 export 'profiles/current_profile_card.dart';
+export 'profiles/other_profile_card.dart';
 export 'profiles/profile_inline.dart';
+
 // Profile Pics
 export 'profile_pics/community_stack.dart';
 export 'profile_pics/profile_pic_story.dart';
@@ -90,6 +92,9 @@ export 'screens/screen.dart';
 export 'selector/selector.dart';
 export 'selector/selector_button.dart';
 
+// Settings
+export 'settings/settings_screen.dart';
+export 'settings/setting_section.dart';
 // Text
 export 'text/asciidoc/asciidoc_renderer.dart';
 export 'text/asciidoc/asciidoc_parser.dart';
@@ -98,6 +103,7 @@ export 'text/admonition.dart';
 export 'text/amount.dart';
 export 'text/code_block.dart';
 export 'text/event_card.dart';
+export 'text/section_title.dart';
 export 'text/short_text/editable_short_text_parser.dart';
 export 'text/short_text/editable_short_text_renderer.dart';
 export 'text/short_text/short_text_element.dart';
@@ -117,7 +123,8 @@ export 'tabs/tab_grid.dart';
 export 'tabs/tab_view.dart';
 
 // Transitions
-export 'transitions/bottom_slide.dart';
+export 'transitions/slide_in_screen.dart';
+export 'transitions/slide_in_modal.dart';
 
 // Toasts
 export 'toasts/toast.dart';

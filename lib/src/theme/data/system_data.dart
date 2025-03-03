@@ -18,8 +18,20 @@ class AppSystemData extends Equatable {
             : desktopScaleFactor,
       );
 
+  factory AppSystemData.small() => AppSystemData(
+        scale: (Platform.isAndroid || Platform.isIOS
+                ? mobileScaleFactor
+                : desktopScaleFactor) *
+            0.95,
+      );
+
+  factory AppSystemData.large() => AppSystemData(
+        scale: (Platform.isAndroid || Platform.isIOS
+                ? mobileScaleFactor
+                : desktopScaleFactor) *
+            1.05,
+      );
+
   @override
-  List<Object?> get props => [
-        scale.named('scale'),
-      ];
+  List<Object?> get props => [scale.named('scale')];
 }

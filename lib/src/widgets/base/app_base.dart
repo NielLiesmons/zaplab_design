@@ -20,6 +20,7 @@ class AppBase extends StatelessWidget {
   final List<Locale> supportedLocales;
   final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
   final double? textScaleFactor;
+  final AppThemeColorMode? colorMode;
 
   AppBase({
     super.key,
@@ -31,6 +32,7 @@ class AppBase extends StatelessWidget {
     this.supportedLocales = const <Locale>[Locale('en', 'US')],
     this.localizationsDelegates,
     this.textScaleFactor,
+    this.colorMode,
   }) {
     // Initialize window settings in constructor
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -63,31 +65,30 @@ class AppBase extends StatelessWidget {
       overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
     );
 
-    // final brightness = MediaQuery.of(context).platformBrightness;
-    // final colorMode = brightness == Brightness.dark
-    //     ? AppThemeColorMode.dark
-    //     : AppThemeColorMode.light;
+    // Get the current theme mode from the context
+    final responsiveTheme = AppResponsiveTheme.of(context);
+    final effectiveColorMode = colorMode ?? responsiveTheme.colorMode;
+    print(
+        'AppBase using theme mode from context: ${responsiveTheme.colorMode}');
+    print('AppBase using effective color mode: $effectiveColorMode');
 
     return AppResponsiveWrapper(
-      child: AppResponsiveTheme(
-        // colorMode: colorMode,
-        child: MediaQuery(
-          data: MediaQuery.of(context).copyWith(
-            textScaler: TextScaler.linear(textScaleFactor ?? 1.0),
-          ),
-          child: WidgetsApp.router(
-            routerConfig: routerConfig,
-            builder: (context, child) {
-              return AppScaffold(
-                body: child ?? const SizedBox.shrink(),
-              );
-            },
-            title: title,
-            locale: locale,
-            localizationsDelegates: localizationsDelegates,
-            supportedLocales: supportedLocales,
-            color: const Color(0xFF000000),
-          ),
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+          textScaler: TextScaler.linear(textScaleFactor ?? 1.0),
+        ),
+        child: WidgetsApp.router(
+          routerConfig: routerConfig,
+          builder: (context, child) {
+            return AppScaffold(
+              body: child ?? const SizedBox.shrink(),
+            );
+          },
+          title: title,
+          locale: locale,
+          localizationsDelegates: localizationsDelegates,
+          supportedLocales: supportedLocales,
+          color: const Color(0xFF000000),
         ),
       ),
     );

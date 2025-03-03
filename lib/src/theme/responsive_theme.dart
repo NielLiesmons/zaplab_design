@@ -8,6 +8,18 @@ enum AppThemeColorMode {
   dark,
 }
 
+enum AppTextScale {
+  small,
+  normal,
+  large,
+}
+
+enum AppSystemScale {
+  small,
+  normal,
+  large,
+}
+
 /// Updates automatically the [AppTheme] regarding the current [MediaQuery],
 /// unless the color mode is overridden or set explicitly through the app settings.
 class AppResponsiveTheme extends StatefulWidget {
@@ -16,10 +28,14 @@ class AppResponsiveTheme extends StatefulWidget {
     required this.child,
     this.colorMode,
     this.formFactor,
+    this.textScale,
+    this.systemScale,
   });
 
   final AppThemeColorMode? colorMode;
   final AppFormFactor? formFactor;
+  final AppTextScale? textScale;
+  final AppSystemScale? systemScale;
   final Widget child;
 
   static _AppResponsiveThemeState of(BuildContext context) {
@@ -47,9 +63,7 @@ class AppResponsiveTheme extends StatefulWidget {
     }
   }
 
-  static double scaleOf(BuildContext context) {
-    return 1.15;
-  }
+  static AppTextScale textScaleOf(BuildContext context) => AppTextScale.normal;
 
   @override
   State<AppResponsiveTheme> createState() => _AppResponsiveThemeState();
@@ -57,19 +71,60 @@ class AppResponsiveTheme extends StatefulWidget {
 
 class _AppResponsiveThemeState extends State<AppResponsiveTheme> {
   AppThemeColorMode? _colorMode;
+  AppTextScale? _textScale;
+  AppSystemScale? _systemScale;
 
   AppThemeColorMode get colorMode =>
       _colorMode ?? widget.colorMode ?? AppResponsiveTheme.colorModeOf(context);
+
+  AppTextScale get textScale =>
+      _textScale ?? widget.textScale ?? AppResponsiveTheme.textScaleOf(context);
+
+  AppSystemScale get systemScale {
+    final scale = _systemScale ?? widget.systemScale ?? AppSystemScale.normal;
+    print('Getting system scale: $scale'); // Debug print
+    return scale;
+  }
 
   void setColorMode(AppThemeColorMode? mode) {
     setState(() => _colorMode = mode);
   }
 
+  void setTextScale(AppTextScale scale) {
+    setState(() => _textScale = scale);
+  }
+
+  void setSystemScale(AppSystemScale scale) {
+    print('Setting system scale to: $scale'); // Debug print
+    setState(() => _systemScale = scale);
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = AppThemeData.normal();
-    final scale = AppResponsiveTheme.scaleOf(context);
-    theme = theme.withScale(scale);
+
+    // Get system scale based on selection
+    final systemData = switch (systemScale) {
+      AppSystemScale.small => AppSystemData.small(),
+      AppSystemScale.large => AppSystemData.large(),
+      AppSystemScale.normal => AppSystemData.normal(),
+    };
+    print('System data scale: ${systemData.scale}'); // Debug print
+
+    // Apply typography based on text scale
+    switch (textScale) {
+      case AppTextScale.small:
+        theme = theme.withTypography(AppTypographyData.small());
+        break;
+      case AppTextScale.large:
+        theme = theme.withTypography(AppTypographyData.large());
+        break;
+      default:
+        theme = theme.withTypography(AppTypographyData.normal());
+    }
+
+    // Apply system scale to UI elements
+    theme = theme.withScale(systemData.scale);
 
     final colorMode = this.colorMode;
     switch (colorMode) {

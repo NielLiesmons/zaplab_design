@@ -2,8 +2,8 @@ import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:ui';
 
-class AppBottomSlide extends CustomTransitionPage {
-  AppBottomSlide({
+class AppSlideInScreen extends CustomTransitionPage {
+  AppSlideInScreen({
     required Widget child,
     LocalKey? key,
   }) : super(

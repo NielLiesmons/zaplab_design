@@ -6,14 +6,14 @@ class AppSelectorButton extends StatelessWidget {
   final List<Widget> unselectedContent;
   final bool isSelected;
   final bool emphasized;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const AppSelectorButton({
     super.key,
     required this.selectedContent,
     required this.unselectedContent,
     required this.isSelected,
-    required this.onTap,
+    this.onTap,
     this.emphasized = false,
   });
 
@@ -22,7 +22,7 @@ class AppSelectorButton extends StatelessWidget {
     final theme = AppTheme.of(context);
 
     return TapBuilder(
-      onTap: onTap,
+      onTap: onTap ?? () {},
       builder: (context, state, hasFocus) {
         double scaleFactor = 1.0;
         if (state == TapState.pressed) {

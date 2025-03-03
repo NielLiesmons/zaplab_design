@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 
-import 'system_data.dart';
+import '../theme.dart';
 
 class AppScrollBehavior extends ScrollBehavior {
   const AppScrollBehavior();
@@ -53,7 +53,7 @@ class AppResponsiveWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final scale = AppSystemData.normal().scale;
+        final scale = AppTheme.of(context).system.scale;
 
         return ScrollConfiguration(
           behavior: const AppScrollBehavior(),

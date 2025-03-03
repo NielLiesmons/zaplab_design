@@ -359,6 +359,648 @@ class AppTypographyData extends Equatable {
         ),
       );
 
+  factory AppTypographyData.small() => const AppTypographyData(
+        /// App Typography
+        h1: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 24,
+          height: 1.5,
+          letterSpacing: 0.3,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        h2: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 20,
+          height: 1.5,
+          letterSpacing: 0.3,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        h3: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 11,
+          height: 1.5,
+          letterSpacing: 2.2,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        bold16: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontVariations: [
+            FontVariation('wght', 600),
+          ], // technically semibold
+          fontSize: 15,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        med16: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w500,
+          fontVariations: [
+            FontVariation('wght', 500),
+          ],
+          fontSize: 15,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        reg16: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 15,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        bold14: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 14,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        med14: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w500,
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 14,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        reg14: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 14,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        bold12: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 11,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        med12: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w500,
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 11,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        reg12: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 11,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        bold10: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 9.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        med10: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w500,
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 9.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        reg10: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 9.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        link: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w500,
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 14,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+
+        /// Long Form Typography
+        longformh1: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 20,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        longformh2: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 15,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        longformh3: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 14,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        longformh4: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 14,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        longformh5: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 11,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        boldArticle: TextStyle(
+          fontFamily: 'Lora',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 15,
+          height: 1.7,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        regArticle: TextStyle(
+          fontFamily: 'Lora',
+          package: 'zaplab_design',
+          fontVariations: [
+            FontVariation('wght', 450), // Custom weight for great reading
+          ],
+          fontSize: 15,
+          height: 1.7,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        linkArticle: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 15,
+          height: 1.7,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        boldWiki: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 15,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        regWiki: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 15,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        linkWiki: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 15,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        code: TextStyle(
+          fontFamily: 'Courier-Prime',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 14,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        caption: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 11,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+      );
+
+  factory AppTypographyData.large() => const AppTypographyData(
+        /// App Typography
+        h1: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 24,
+          height: 1.5,
+          letterSpacing: 0.3,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        h2: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 20,
+          height: 1.5,
+          letterSpacing: 0.3,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        h3: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 12.5,
+          height: 1.5,
+          letterSpacing: 2.2,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        bold16: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontVariations: [
+            FontVariation('wght', 600),
+          ], // technically semibold
+          fontSize: 16.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        med16: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w500,
+          fontVariations: [
+            FontVariation('wght', 500),
+          ],
+          fontSize: 16.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        reg16: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 16.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        bold14: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 15,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        med14: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w500,
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 15,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        reg14: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 15,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        bold12: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 12.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        med12: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w500,
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 12,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        reg12: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 12.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        bold10: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 11,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        med10: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w500,
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 11,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        reg10: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 11,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        link: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w500,
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 15,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+
+        /// Long Form Typography
+        longformh1: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 20,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        longformh2: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 16.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        longformh3: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 15,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        longformh4: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 15,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        longformh5: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 12.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        boldArticle: TextStyle(
+          fontFamily: 'Lora',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 16.5,
+          height: 1.7,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        regArticle: TextStyle(
+          fontFamily: 'Lora',
+          package: 'zaplab_design',
+          fontVariations: [
+            FontVariation('wght', 450), // Custom weight for great reading
+          ],
+          fontSize: 16.5,
+          height: 1.7,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        linkArticle: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 16.5,
+          height: 1.7,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        boldWiki: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 16.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        regWiki: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 16.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        linkWiki: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 16.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        code: TextStyle(
+          fontFamily: 'Courier-Prime',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 15.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        caption: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 12.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+      );
+
   /// App Typography
   final TextStyle h1;
   final TextStyle h2;

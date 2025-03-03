@@ -333,22 +333,22 @@ class AppColorsData extends Equatable {
         ),
 
         greydient: const LinearGradient(
-          colors: [Color(0xFFFFFFFF), Color(0xFFDBDBFF)],
+          colors: [Color(0xFF535367), Color(0xFF232323)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         greydient66: LinearGradient(
           colors: [
-            const Color(0xFFFFFFFF).withOpacity(0.66),
-            const Color(0xFFDBDBFF).withOpacity(0.66)
+            const Color(0xFF535367).withOpacity(0.66),
+            const Color(0xFF232323).withOpacity(0.66)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         greydient33: LinearGradient(
           colors: [
-            const Color(0xFFFFFFFF).withOpacity(0.33),
-            const Color(0xFFDBDBFF).withOpacity(0.33)
+            const Color(0xFF535367).withOpacity(0.33),
+            const Color(0xFF232323).withOpacity(0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,

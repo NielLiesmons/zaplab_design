@@ -159,7 +159,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   void _handleDrag(double delta) {
     setState(() {
       // Check for empty history pop condition first
-      if (widget.history.isEmpty && _currentDrag + delta > 56) {
+      if (widget.history.isEmpty && _currentDrag + delta > 32) {
         if (Navigator.canPop(context)) {
           Navigator.of(context).pop();
         }
@@ -598,10 +598,13 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                           AppContainer(
                                                             padding:
                                                                 const AppEdgeInsets
-                                                                    .symmetric(
-                                                              horizontal:
-                                                                  AppGapSize
-                                                                      .s12,
+                                                                    .only(
+                                                              left: AppGapSize
+                                                                  .s12,
+                                                              right: AppGapSize
+                                                                  .s12,
+                                                              bottom: AppGapSize
+                                                                  .s12,
                                                             ),
                                                             child: widget
                                                                 .topBarContent!,
@@ -679,7 +682,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
           bottom: 0,
           left: 0,
           right: 0,
-          child: widget.bottomBarContent!,
+          child: widget.bottomBarContent ?? const SizedBox.shrink(),
         ),
       ],
     );

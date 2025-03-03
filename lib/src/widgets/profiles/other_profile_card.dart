@@ -1,21 +1,19 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:zaplab_design/src/utils/npub_utils.dart';
 
-class AppCurrentProfileCard extends StatelessWidget {
+class AppOtherProfileCard extends StatelessWidget {
   final String npub;
   final String profileName;
   final String profilePicUrl;
-  final VoidCallback? onEdit;
-  final VoidCallback? onView;
+  final VoidCallback? onSelect;
   final VoidCallback? onShare;
 
-  const AppCurrentProfileCard({
+  const AppOtherProfileCard({
     super.key,
     required this.npub,
     required this.profileName,
     required this.profilePicUrl,
-    this.onEdit,
-    this.onView,
+    this.onSelect,
     this.onShare,
   });
 
@@ -25,10 +23,15 @@ class AppCurrentProfileCard extends StatelessWidget {
 
     return AppContainer(
       width: 256,
+      height: 144,
       padding: const AppEdgeInsets.all(AppGapSize.s16),
       decoration: BoxDecoration(
-        color: theme.colors.grey66,
+        color: theme.colors.grey33,
         borderRadius: theme.radius.asBorderRadius().rad16,
+        border: Border.all(
+          color: theme.colors.grey,
+          width: LineThicknessData.normal().medium,
+        ),
       ),
       child: Column(
         children: [
@@ -85,31 +88,17 @@ class AppCurrentProfileCard extends StatelessWidget {
               ],
             ),
           ),
-          const AppGap.s40(),
+          const Spacer(),
           Row(
             children: [
               AppSmallButton(
-                onTap: onView,
+                onTap: onSelect,
                 rounded: true,
                 inactiveColor: theme.colors.white8,
                 content: [
                   const AppGap.s4(),
                   AppText.med12(
-                    'View',
-                    color: theme.colors.white66,
-                  ),
-                  const AppGap.s4(),
-                ],
-              ),
-              const AppGap.s12(),
-              AppSmallButton(
-                onTap: onEdit,
-                rounded: true,
-                inactiveColor: theme.colors.white8,
-                content: [
-                  const AppGap.s4(),
-                  AppText.med12(
-                    'Edit',
+                    'Select',
                     color: theme.colors.white66,
                   ),
                   const AppGap.s4(),

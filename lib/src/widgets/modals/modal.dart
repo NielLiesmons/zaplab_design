@@ -46,7 +46,7 @@ class AppModal extends StatelessWidget {
       PageRouteBuilder(
         opaque: false,
         barrierDismissible: true,
-        barrierColor: theme.colors.black16,
+        barrierColor: const Color(0x00000000),
         transitionDuration: theme.durations.normal,
         reverseTransitionDuration: theme.durations.normal,
         pageBuilder: (_, __, ___) => AppModal(
@@ -57,7 +57,6 @@ class AppModal extends StatelessWidget {
           title: title,
           description: description,
           children: children,
-          barrierColor: theme.colors.black16,
           handleNavigation: true,
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -195,13 +194,12 @@ class AppModal extends StatelessWidget {
           isInsideModal: true,
           child: Stack(
             children: [
-              if (barrierColor != null)
-                BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                  child: AppContainer(
-                    decoration: BoxDecoration(color: barrierColor),
-                  ),
+              BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                child: AppContainer(
+                  decoration: BoxDecoration(color: theme.colors.black16),
                 ),
+              ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Stack(

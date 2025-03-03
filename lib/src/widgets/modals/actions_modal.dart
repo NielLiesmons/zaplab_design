@@ -282,11 +282,7 @@ class AppActionsModal extends StatelessWidget {
           },
         ),
         const AppGap.s12(),
-        Row(children: [
-          const AppGap.s12(),
-          AppText.h3('REACT', color: theme.colors.white66),
-        ]),
-        const AppGap.s8(),
+        const AppSectionTitle('React'),
         AppContainer(
           height: 52,
           width: double.infinity,
@@ -397,12 +393,8 @@ class AppActionsModal extends StatelessWidget {
             ],
           ),
         ),
-        AppGap.s12(),
-        Row(children: [
-          const AppGap.s12(),
-          AppText.h3('ZAP', color: theme.colors.white66),
-        ]),
-        const AppGap.s8(),
+        const AppGap.s12(),
+        const AppSectionTitle('Zap'),
         AppContainer(
           height: 52,
           width: double.infinity,
@@ -530,11 +522,7 @@ class AppActionsModal extends StatelessWidget {
           ),
         ),
         const AppGap.s12(),
-        Row(children: [
-          const AppGap.s12(),
-          AppText.h3('ACTIONS', color: theme.colors.white66),
-        ]),
-        const AppGap.s8(),
+        const AppSectionTitle('Actions'),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

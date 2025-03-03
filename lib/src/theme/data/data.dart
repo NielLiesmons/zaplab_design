@@ -126,4 +126,19 @@ class AppThemeData extends Equatable {
       platform: platform,
     );
   }
+
+  AppThemeData withTypography(AppTypographyData typography) {
+    return AppThemeData(
+      borders: borders,
+      colors: colors,
+      durations: durations,
+      formFactor: formFactor,
+      icons: icons,
+      radius: radius,
+      sizes: sizes,
+      typography: typography,
+      system: system,
+      platform: platform,
+    );
+  }
 }

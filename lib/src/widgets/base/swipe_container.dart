@@ -165,7 +165,7 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
           previousScale < 0.99 &&
           !_popController.isAnimating) {
         _popController.forward(from: 0).then((_) => _popController.reverse());
-        Future.delayed(const Duration(milliseconds: 300), () {
+        Future.delayed(const Duration(milliseconds: 222), () {
           widget.onSwipeLeft?.call();
         });
       }

@@ -46,7 +46,7 @@ class AppChatHomePanel extends StatelessWidget {
           ? null
           : () => onNavigateToChat!(
                 context,
-                profileName,
+                npub,
               ),
       builder: (context, state, hasFocus) {
         return Column(children: [
@@ -76,7 +76,15 @@ class AppChatHomePanel extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    AppProfilePic.s48(profilePicUrl),
+                    AppProfilePic.s48(
+                      profilePicUrl,
+                      onTap: onNavigateToChat == null
+                          ? null
+                          : () => onNavigateToChat!(
+                                context,
+                                npub,
+                              ),
+                    ),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
