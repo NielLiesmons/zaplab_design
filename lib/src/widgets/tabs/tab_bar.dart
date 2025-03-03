@@ -1,5 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter/gestures.dart';
+import 'dart:async';
 
 class AppTabBar extends StatefulWidget {
   const AppTabBar({
@@ -32,6 +33,8 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
   late Animation<double> _fullWidthAnimation;
   final Map<int, GlobalKey> _tabKeys = {};
   bool _isExpanded = false;
+  Timer? _startPositionTimer;
+  bool _canOpenActionZone = true;
 
   @override
   void initState() {
@@ -87,8 +90,17 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
     if (!_scrollController.hasClients || _isExpanded) return;
     final theme = AppTheme.of(context);
 
+    if (_scrollController.position.pixels > 0.1) {
+      _canOpenActionZone = false;
+    } else if (!_canOpenActionZone) {
+      _startPositionTimer?.cancel();
+      _startPositionTimer = Timer(const Duration(milliseconds: 100), () {
+        _canOpenActionZone = true;
+      });
+    }
+
     final delta = _scrollController.position.pixels - _initialScrollPosition;
-    if (delta < 0) {
+    if (delta < 0 && _canOpenActionZone) {
       final progress = (-delta / theme.sizes.s56).clamp(0, 1);
 
       final previousScale = _actionScaleAnimation.value;
