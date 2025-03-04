@@ -133,7 +133,7 @@ class _AppSelectableTextState extends State<AppSelectableText>
         rendererIgnoresPointer: !widget.editable,
         enableSuggestions: widget.editable,
         readOnly: !widget.editable,
-        selectionColor: const Color(0xFF5C58FF).withOpacity(0.33),
+        selectionColor: const Color(0xFF5C58FF).withValues(alpha: 0.33),
         onSelectionChanged: (selection, cause) {
           isSelectingText = !selection.isCollapsed;
           if (!selection.isCollapsed && widget.showContextMenu) {

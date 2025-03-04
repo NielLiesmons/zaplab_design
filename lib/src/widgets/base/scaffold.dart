@@ -2,10 +2,10 @@ import 'package:zaplab_design/zaplab_design.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
-    Key? key,
+    super.key,
     required this.body,
     this.backgroundColor,
-  }) : super(key: key);
+  });
 
   final Widget body;
   final Color? backgroundColor;

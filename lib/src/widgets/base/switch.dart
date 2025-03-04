@@ -2,19 +2,19 @@ import 'package:zaplab_design/zaplab_design.dart';
 
 class AppSwitch extends StatefulWidget {
   const AppSwitch({
-    Key? key,
+    super.key,
     this.value = false,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   final bool value;
   final ValueChanged<bool>? onChanged;
 
   @override
-  _AppSwitchState createState() => _AppSwitchState();
+  AppSwitchState createState() => AppSwitchState();
 }
 
-class _AppSwitchState extends State<AppSwitch>
+class AppSwitchState extends State<AppSwitch>
     with SingleTickerProviderStateMixin {
   bool _isOn = false;
   late AnimationController _controller;

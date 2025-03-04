@@ -144,7 +144,8 @@ class AppFeedPost extends StatelessWidget {
                                           colors: [
                                             const Color(0x00000000),
                                             const Color(0x00000000),
-                                            theme.colors.white.withOpacity(0.5),
+                                            theme.colors.white
+                                                .withValues(alpha: 0.5),
                                             theme.colors.white,
                                           ],
                                         ).createShader(Rect.fromLTWH(
@@ -213,7 +214,7 @@ class AppFeedPost extends StatelessWidget {
             ],
           ),
         ),
-        AppDivider.horizontal(),
+        const AppDivider.horizontal(),
       ],
     );
   }

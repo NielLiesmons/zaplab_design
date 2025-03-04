@@ -5,7 +5,7 @@ import 'padding.dart';
 
 class AppContainer extends StatelessWidget {
   const AppContainer({
-    Key? key,
+    super.key,
     this.width,
     this.height,
     this.padding,
@@ -18,7 +18,7 @@ class AppContainer extends StatelessWidget {
     this.transform,
     this.transformAlignment,
     this.child,
-  }) : super(key: key);
+  });
 
   final AppEdgeInsets? padding;
   final AppEdgeInsets? margin;

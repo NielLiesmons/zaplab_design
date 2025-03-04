@@ -18,7 +18,7 @@ class AppPreferencesModal extends StatelessWidget {
         AppSelector(
           children: [
             AppSelectorButton(
-              selectedContent: [AppText.med14('System')],
+              selectedContent: const [AppText.med14('System')],
               unselectedContent: [
                 AppText.med14(
                   'System',
@@ -29,7 +29,7 @@ class AppPreferencesModal extends StatelessWidget {
               onTap: () {},
             ),
             AppSelectorButton(
-              selectedContent: [AppText.med14('Dark')],
+              selectedContent: const [AppText.med14('Dark')],
               unselectedContent: [
                 AppText.med14(
                   'Dark',
@@ -40,7 +40,7 @@ class AppPreferencesModal extends StatelessWidget {
               onTap: () {},
             ),
             AppSelectorButton(
-              selectedContent: [AppText.med14('Gray')],
+              selectedContent: const [AppText.med14('Gray')],
               unselectedContent: [
                 AppText.med14(
                   'Gray',
@@ -50,6 +50,7 @@ class AppPreferencesModal extends StatelessWidget {
               isSelected: false,
               onTap: () {
                 Future.microtask(() {
+                  // ignore: use_build_context_synchronously
                   AppResponsiveTheme.of(context).setColorMode(
                     AppThemeColorMode.grey,
                   );
@@ -57,7 +58,7 @@ class AppPreferencesModal extends StatelessWidget {
               },
             ),
             AppSelectorButton(
-              selectedContent: [AppText.med14('Light')],
+              selectedContent: const [AppText.med14('Light')],
               unselectedContent: [
                 AppText.med14(
                   'Light',

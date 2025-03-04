@@ -122,9 +122,9 @@ class AppChatHomePanel extends StatelessWidget {
                                       begin: Alignment.centerLeft,
                                       end: Alignment.centerRight,
                                       colors: [
-                                        theme.colors.black.withOpacity(1),
-                                        theme.colors.black.withOpacity(0),
-                                        theme.colors.black.withOpacity(0),
+                                        theme.colors.black.withValues(alpha: 1),
+                                        theme.colors.black.withValues(alpha: 0),
+                                        theme.colors.black.withValues(alpha: 0),
                                       ],
                                       stops: const [0.0, 0.6, 1.0],
                                     ).createShader(Rect.fromLTWH(
@@ -140,8 +140,10 @@ class AppChatHomePanel extends StatelessWidget {
                                         begin: Alignment.centerLeft,
                                         end: Alignment.centerRight,
                                         colors: [
-                                          theme.colors.black.withOpacity(0),
-                                          theme.colors.black.withOpacity(1),
+                                          theme.colors.black
+                                              .withValues(alpha: 0),
+                                          theme.colors.black
+                                              .withValues(alpha: 1),
                                         ],
                                         stops: const [0.0, 1.0],
                                       ).createShader(Rect.fromLTWH(

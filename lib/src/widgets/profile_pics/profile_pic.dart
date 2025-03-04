@@ -23,76 +23,59 @@ enum AppProfilePicSize {
 class AppProfilePic extends StatelessWidget {
   AppProfilePic(
     this.profilePicUrl, {
-    Key? key,
+    super.key,
     this.size = AppProfilePicSize.s38,
     VoidCallback? onTap,
-  })  : onTap = onTap ?? (() {}),
-        super(key: key);
+  }) : onTap = onTap ?? (() {});
 
-  AppProfilePic.s12(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePic.s12(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s12,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s16(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s16(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s16,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s18(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s18(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s18,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s20(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s20(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s20,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s24(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s24(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s24,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s28(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s28(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s28,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s32(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s32(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s32,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s38(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s38(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s38,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s40(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s40(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s40,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s48(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s48(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s48,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s56(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s56(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s56,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s64(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s64(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s64,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s72(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s72(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s72,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s80(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s80(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s80,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s96(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s96(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s96,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePic.s104(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePic.s104(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSize.s104,
-        onTap = onTap ?? (() {}),
-        super(key: key);
+        onTap = onTap ?? (() {});
 
   final String profilePicUrl;
   final AppProfilePicSize size;

@@ -54,143 +54,130 @@ extension AppIconSizeExtension on AppIconSizesData {
 class AppIcon extends StatelessWidget {
   const AppIcon(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.size = AppIconSize.s16,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : super(key: key);
+  });
 
   const AppIcon.s4(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  })  : size = AppIconSize.s4,
-        super(key: key);
+  }) : size = AppIconSize.s4;
 
   const AppIcon.s8(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  })  : size = AppIconSize.s8,
-        super(key: key);
+  }) : size = AppIconSize.s8;
 
   const AppIcon.s10(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  })  : size = AppIconSize.s10,
-        super(key: key);
+  }) : size = AppIconSize.s10;
 
   const AppIcon.s12(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  })  : size = AppIconSize.s12,
-        super(key: key);
+  }) : size = AppIconSize.s12;
 
   const AppIcon.s14(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  })  : size = AppIconSize.s14,
-        super(key: key);
+  }) : size = AppIconSize.s14;
 
   const AppIcon.s16(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  })  : size = AppIconSize.s16,
-        super(key: key);
+  }) : size = AppIconSize.s16;
 
   const AppIcon.s18(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  })  : size = AppIconSize.s18,
-        super(key: key);
+  }) : size = AppIconSize.s18;
 
   const AppIcon.s20(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  })  : size = AppIconSize.s20,
-        super(key: key);
+  }) : size = AppIconSize.s20;
 
   const AppIcon.s24(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  })  : size = AppIconSize.s24,
-        super(key: key);
+  }) : size = AppIconSize.s24;
 
   const AppIcon.s28(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  })  : size = AppIconSize.s28,
-        super(key: key);
+  }) : size = AppIconSize.s28;
 
   const AppIcon.s32(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  })  : size = AppIconSize.s32,
-        super(key: key);
+  }) : size = AppIconSize.s32;
 
   const AppIcon.s38(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  })  : size = AppIconSize.s38,
-        super(key: key);
+  }) : size = AppIconSize.s38;
 
   const AppIcon.s40(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  })  : size = AppIconSize.s40,
-        super(key: key);
+  }) : size = AppIconSize.s40;
 
   final String data;
   final Color? color;
@@ -249,13 +236,13 @@ class AppIcon extends StatelessWidget {
 class AppAnimatedIcon extends StatelessWidget {
   const AppAnimatedIcon(
     this.data, {
-    Key? key,
+    super.key,
     this.color,
     this.size = AppIconSize.s16,
     this.outlineColor,
     this.outlineThickness = 0.0,
     this.duration = const Duration(milliseconds: 200),
-  }) : super(key: key);
+  });
 
   final String data;
   final Color? color;

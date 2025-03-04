@@ -3,19 +3,19 @@ import 'package:zaplab_design/zaplab_design.dart';
 
 class AppCheckBox extends StatefulWidget {
   const AppCheckBox({
-    Key? key,
+    super.key,
     this.value = false,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   final bool value;
   final ValueChanged<bool>? onChanged;
 
   @override
-  _AppCheckBoxState createState() => _AppCheckBoxState();
+  AppCheckBoxState createState() => AppCheckBoxState();
 }
 
-class _AppCheckBoxState extends State<AppCheckBox>
+class AppCheckBoxState extends State<AppCheckBox>
     with SingleTickerProviderStateMixin {
   bool _isChecked = false;
   late AnimationController _controller;

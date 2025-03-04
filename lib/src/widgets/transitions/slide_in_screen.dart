@@ -4,11 +4,9 @@ import 'dart:ui';
 
 class AppSlideInScreen extends CustomTransitionPage {
   AppSlideInScreen({
-    required Widget child,
-    LocalKey? key,
+    required super.child,
+    super.key,
   }) : super(
-          key: key,
-          child: child,
           opaque: false,
           barrierDismissible: true,
           barrierColor: const Color(0x00000000),

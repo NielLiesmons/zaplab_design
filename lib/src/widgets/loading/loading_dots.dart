@@ -2,14 +2,14 @@ import 'package:flutter/widgets.dart';
 
 class AppLoadingDots extends StatefulWidget {
   const AppLoadingDots({
-    Key? key,
+    super.key,
     this.color = const Color(0xFFFFFFFF),
     this.startingDelays = const [
       0.0,
       0.2,
       0.4
     ], // Default delays for each rectangle
-  }) : super(key: key);
+  });
 
   final Color color;
   final List<double>

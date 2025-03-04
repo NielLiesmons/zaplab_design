@@ -307,7 +307,7 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
                           colors: [
-                            theme.colors.black33.withOpacity(0),
+                            theme.colors.black33.withValues(alpha: 0),
                             theme.colors.black33,
                           ],
                         ),

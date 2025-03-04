@@ -2,7 +2,7 @@ import 'package:bech32/bech32.dart';
 
 String npubToHex(String npub) {
   try {
-    final decoded = Bech32Codec().decode(npub);
+    final decoded = const Bech32Codec().decode(npub);
     final data = decoded.data;
     final converted = convertBits(data, 5, 8, false);
     return converted

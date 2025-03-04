@@ -17,7 +17,7 @@ class AppModal extends StatelessWidget {
   final double initialChildSize;
 
   const AppModal({
-    Key? key,
+    super.key,
     this.topBar,
     this.bottomBar,
     this.includePadding = true,
@@ -28,7 +28,7 @@ class AppModal extends StatelessWidget {
     this.barrierColor,
     this.handleNavigation = true,
     this.initialChildSize = 0.80,
-  }) : super(key: key);
+  });
 
   static Future<T?> show<T>(
     BuildContext context, {
@@ -56,8 +56,8 @@ class AppModal extends StatelessWidget {
           profilePicUrl: profilePicUrl,
           title: title,
           description: description,
-          children: children,
           handleNavigation: true,
+          children: children,
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           final curvedAnimation = CurvedAnimation(
@@ -100,10 +100,10 @@ class AppModal extends StatelessWidget {
           profilePicUrl: profilePicUrl,
           title: title,
           description: description,
-          children: children,
           barrierColor: theme.colors.black16,
           handleNavigation: true,
           initialChildSize: initialChildSize,
+          children: children,
         ),
       ),
     );
@@ -476,7 +476,7 @@ class AppModal extends StatelessWidget {
                                 children: [
                                   if (includePadding)
                                     AppContainer(
-                                      padding: AppEdgeInsets.s16(),
+                                      padding: const AppEdgeInsets.s16(),
                                       child: Column(
                                         children: [
                                           ...allChildren,
@@ -558,7 +558,7 @@ class AppModal extends StatelessWidget {
                                     const AppTopSafeArea(),
                                     const AppGap.s4(),
                                     const AppDragHandle(),
-                                    if (resolvedTopBar != null) resolvedTopBar!,
+                                    if (resolvedTopBar != null) resolvedTopBar,
                                   ],
                                 ),
                               ),
@@ -622,6 +622,7 @@ class AppModal extends StatelessWidget {
 
 class ModalScope extends InheritedWidget {
   const ModalScope({
+    super.key,
     required super.child,
     required this.isInsideModal,
   });
