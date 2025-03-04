@@ -571,7 +571,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                               colors: [
                                                 theme.colors.black,
                                                 theme.colors.black
-                                                    .withOpacity(0.33),
+                                                    .withValues(alpha: 0.33),
                                               ],
                                             )
                                           : null,

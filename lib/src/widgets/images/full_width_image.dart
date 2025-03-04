@@ -90,7 +90,7 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
                         widget.url,
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) {
-                          return AppSkeletonLoader();
+                          return const AppSkeletonLoader();
                         },
                       ),
                     ),

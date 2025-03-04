@@ -48,7 +48,7 @@ class AppThemeData extends Equatable {
   final AppTypographyData typography;
   final AppSystemData system;
   final TargetPlatform? _platform;
-  TargetPlatform get platform => defaultTargetPlatform;
+  TargetPlatform get platform => _platform ?? defaultTargetPlatform;
 
   @override
   List<Object?> get props => [

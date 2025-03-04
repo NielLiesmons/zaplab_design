@@ -19,7 +19,6 @@ class AppArticleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final isInsideModal = ModalScope.of(context);
 
     return AppPanelButton(
       padding: const AppEdgeInsets.all(AppGapSize.none),
@@ -48,7 +47,7 @@ class AppArticleCard extends StatelessWidget {
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           print('Error loading asset: $error');
-                          return AppSkeletonLoader();
+                          return const AppSkeletonLoader();
                         },
                       )
                     : const AppSkeletonLoader(),

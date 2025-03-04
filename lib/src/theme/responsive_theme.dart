@@ -38,8 +38,8 @@ class AppResponsiveTheme extends StatefulWidget {
   final AppSystemScale? systemScale;
   final Widget child;
 
-  static _AppResponsiveThemeState of(BuildContext context) {
-    return context.findAncestorStateOfType<_AppResponsiveThemeState>()!;
+  static AppResponsiveThemeState of(BuildContext context) {
+    return context.findAncestorStateOfType<AppResponsiveThemeState>()!;
   }
 
   static AppThemeColorMode colorModeOf(BuildContext context) {
@@ -66,10 +66,10 @@ class AppResponsiveTheme extends StatefulWidget {
   static AppTextScale textScaleOf(BuildContext context) => AppTextScale.normal;
 
   @override
-  State<AppResponsiveTheme> createState() => _AppResponsiveThemeState();
+  State<AppResponsiveTheme> createState() => AppResponsiveThemeState();
 }
 
-class _AppResponsiveThemeState extends State<AppResponsiveTheme> {
+class AppResponsiveThemeState extends State<AppResponsiveTheme> {
   AppThemeColorMode? _colorMode;
   AppTextScale? _textScale;
   AppSystemScale? _systemScale;
@@ -127,18 +127,11 @@ class _AppResponsiveThemeState extends State<AppResponsiveTheme> {
     theme = theme.withScale(systemData.scale);
 
     final colorMode = this.colorMode;
-    switch (colorMode) {
-      case AppThemeColorMode.dark:
-        theme = theme.withColors(AppColorsData.dark());
-        break;
-      case AppThemeColorMode.grey:
-        theme = theme.withColors(AppColorsData.grey());
-        break;
-      case AppThemeColorMode.light:
-      default:
-        theme = theme.withColors(AppColorsData.light());
-        break;
-    }
+    theme = switch (colorMode) {
+      AppThemeColorMode.dark => theme.withColors(AppColorsData.dark()),
+      AppThemeColorMode.grey => theme.withColors(AppColorsData.grey()),
+      AppThemeColorMode.light => theme.withColors(AppColorsData.light()),
+    };
 
     var formFactor =
         widget.formFactor ?? AppResponsiveTheme.formFactorOf(context);

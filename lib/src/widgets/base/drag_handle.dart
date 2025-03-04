@@ -2,7 +2,7 @@ import 'package:zaplab_design/src/theme/theme.dart';
 import 'package:flutter/widgets.dart';
 
 class AppDragHandle extends StatelessWidget {
-  const AppDragHandle({Key? key}) : super(key: key);
+  const AppDragHandle({super.key});
 
   @override
   Widget build(BuildContext context) {

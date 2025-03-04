@@ -1,5 +1,3 @@
-//// These models are only temporary and will be replaced by the models of our separet Models package
-
 // Community
 class Community {
   final String npub;

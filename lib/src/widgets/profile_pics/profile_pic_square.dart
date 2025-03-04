@@ -14,40 +14,32 @@ enum AppProfilePicSquareSize {
 class AppProfilePicSquare extends StatelessWidget {
   AppProfilePicSquare(
     this.profilePicUrl, {
-    Key? key,
+    super.key,
     this.size = AppProfilePicSquareSize.s56,
     VoidCallback? onTap,
-  })  : onTap = onTap ?? (() {}),
-        super(key: key);
+  }) : onTap = onTap ?? (() {});
 
-  AppProfilePicSquare.s48(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+  AppProfilePicSquare.s48(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s48,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePicSquare.s56(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePicSquare.s56(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s56,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePicSquare.s64(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePicSquare.s64(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s64,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePicSquare.s72(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePicSquare.s72(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s72,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePicSquare.s80(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePicSquare.s80(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s80,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePicSquare.s96(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePicSquare.s96(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s96,
-        onTap = onTap ?? (() {}),
-        super(key: key);
-  AppProfilePicSquare.s104(this.profilePicUrl, {Key? key, VoidCallback? onTap})
+        onTap = onTap ?? (() {});
+  AppProfilePicSquare.s104(this.profilePicUrl, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s104,
-        onTap = onTap ?? (() {}),
-        super(key: key);
+        onTap = onTap ?? (() {});
 
   final String profilePicUrl;
   final AppProfilePicSquareSize size;

@@ -89,7 +89,7 @@ class AppProfileStack extends StatelessWidget {
                                     ],
                                   ),
                                   child: AppProfilePic.s32(
-                                    _visibleProfiles[i].profilePicUrl ?? '',
+                                    _visibleProfiles[i].profilePicUrl,
                                     onTap: onTap,
                                   ),
                                 ),

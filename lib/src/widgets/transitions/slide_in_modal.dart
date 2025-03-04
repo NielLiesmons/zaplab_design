@@ -1,14 +1,11 @@
-import 'dart:ui';
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppSlideInModal extends CustomTransitionPage {
   AppSlideInModal({
-    required Widget child,
-    LocalKey? key,
+    required super.child,
+    super.key,
   }) : super(
-          key: key,
-          child: child,
           opaque: false,
           barrierDismissible: true,
           barrierColor: const Color(0x00000000),
