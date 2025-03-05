@@ -211,8 +211,8 @@ class AppModal extends StatelessWidget {
                             Navigator.of(context).pop();
                           }
                         },
-                        onVerticalDragUpdate: (details) {
-                          if (details.delta.dy > 0 &&
+                        onVerticalDragStart: (details) {
+                          if (details.localPosition.dy > 0 &&
                               Navigator.of(context).canPop()) {
                             Navigator.of(context).pop();
                           }
@@ -294,14 +294,13 @@ class AppModal extends StatelessWidget {
               onVerticalDragUpdate: (details) {
                 if (details.delta.dy > 0) {
                   modalOffset.value += details.delta.dy;
-                  if (modalOffset.value > 160) {
-                    Navigator.of(context).pop();
-                  }
                 }
               },
               onVerticalDragEnd: (details) {
-                if (modalOffset.value > 0 && modalOffset.value <= 160) {
+                if (modalOffset.value > 0 && modalOffset.value <= 80) {
                   modalOffset.value = 0;
+                } else if (modalOffset.value > 80) {
+                  Navigator.of(context).pop();
                 }
               },
               child: AppContainer(
