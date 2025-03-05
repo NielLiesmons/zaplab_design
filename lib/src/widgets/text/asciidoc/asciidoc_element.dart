@@ -20,6 +20,7 @@ enum AsciiDocElementType {
   nostrEvent, // nostr:nevent1...
   emoji, // :emoji:
   hashtag, // Add this
+  monospace, // `text`
 }
 
 class AsciiDocElement {

@@ -348,6 +348,49 @@ class AppAsciiDocRenderer extends StatelessWidget {
                     ),
                   ],
                 ));
+              } else if (child.type == AsciiDocElementType.monospace) {
+                currentSpans.add(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '`${child.content}`',
+                        style: const TextStyle(
+                          color: Color(0xFF000000),
+                          fontSize: 0,
+                          height: 0,
+                          letterSpacing: 0,
+                          wordSpacing: 0,
+                        ),
+                      ),
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const AppGap.s2(),
+                            AppContainer(
+                              height: 22,
+                              padding: const AppEdgeInsets.only(
+                                left: AppGapSize.s4,
+                                right: AppGapSize.s4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: theme.colors.white16,
+                                borderRadius:
+                                    theme.radius.asBorderRadius().rad4,
+                              ),
+                              child: AppText.code(
+                                child.content,
+                                color: theme.colors.white66,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               } else if (child.type == AsciiDocElementType.hashtag) {
                 currentSpans.add(TextSpan(
                   children: [
