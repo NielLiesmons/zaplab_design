@@ -263,12 +263,13 @@ class AsciiDocParser {
   List<AsciiDocElement>? _parseStyledText(String text) {
     if (!text.contains('*') &&
         !text.contains('_') &&
-        !text.contains('[.') &&
+        !text.contains('`') &&
         !text.contains('nostr:') &&
         !text.contains(':') &&
         !text.contains('#') &&
         !text.contains('http') &&
-        !text.contains('www')) {
+        !text.contains('www') &&
+        !text.contains("'")) {
       return null;
     }
 
@@ -292,6 +293,7 @@ class AsciiDocParser {
       r'(?:https?:\/\/|www\.)([-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*))',
       caseSensitive: false,
     );
+    final RegExp monospacePattern = RegExp(r"'([^']+)'");
     int currentPosition = 0;
 
     while (currentPosition < text.length) {
@@ -315,6 +317,8 @@ class AsciiDocParser {
       final Match? hashtagMatch =
           hashtagPattern.matchAsPrefix(text, currentPosition);
       final Match? urlMatch = urlPattern.matchAsPrefix(text, currentPosition);
+      final Match? monospaceMatch =
+          monospacePattern.firstMatch(text.substring(currentPosition));
 
       final List<Match?> matches = [
         combined1Match,
@@ -323,6 +327,7 @@ class AsciiDocParser {
         italicMatch,
         underlineMatch,
         lineThroughMatch,
+        monospaceMatch,
         nostrEventMatch,
         nostrProfileMatch,
         emojiMatch,
@@ -412,6 +417,11 @@ class AsciiDocParser {
           type: AsciiDocElementType.link,
           content: firstMatch[0]!,
         ));
+      } else if (firstMatch == monospaceMatch) {
+        styledElements.add(AsciiDocElement(
+          type: AsciiDocElementType.monospace,
+          content: firstMatch.group(1)!,
+        ));
       }
 
       currentPosition = firstMatch.end;
@@ -464,9 +474,8 @@ class _ListCounter {
       }
     }
 
-    _lastLevel = level; // Changed this to maintain the actual level
+    _lastLevel = level;
 
-    // Build the number string
     List<String> displayNumbers = [];
     for (int i = 0; i < level; i++) {
       displayNumbers.add(_numbers[i].toString());
