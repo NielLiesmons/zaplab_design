@@ -24,7 +24,7 @@ class AppTabGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final rowCount = (tabs.length / 3).ceil();
-    final isInsideModal = ModalScope.of(context);
+    // final isInsideModal = ModalScope.of(context);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -64,7 +64,7 @@ class AppTabGrid extends StatelessWidget {
                     ),
                   )
                 else
-                  Expanded(child: const SizedBox()),
+                  const Expanded(child: SizedBox()),
                 if (col < 2) const AppGap.s12(),
               ],
             ],

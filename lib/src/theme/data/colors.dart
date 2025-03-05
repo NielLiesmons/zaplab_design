@@ -80,22 +80,22 @@ class AppColorsData extends Equatable {
   factory AppColorsData.dark() => AppColorsData(
         /// Colors (full or 66% / 33% transparent)
         white: const Color(0xFFFFFFFF),
-        white66: const Color(0xFFFFFFFF).withOpacity(0.66),
-        white33: const Color(0xFFFFFFFF).withOpacity(0.33),
-        white16: const Color(0xFFFFFFFF).withOpacity(0.16),
-        white8: const Color(0xFFFFFFFF).withOpacity(0.08),
+        white66: const Color(0xFFFFFFFF).withValues(alpha: 0.66),
+        white33: const Color(0xFFFFFFFF).withValues(alpha: 0.33),
+        white16: const Color(0xFFFFFFFF).withValues(alpha: 0.16),
+        white8: const Color(0xFFFFFFFF).withValues(alpha: 0.08),
         black: const Color(0xFF000000),
-        black66: const Color(0xFF000000).withOpacity(0.66),
-        black33: const Color(0xFF000000).withOpacity(0.33),
-        black16: const Color(0xFF000000).withOpacity(0.16),
-        black8: const Color(0xFF000000).withOpacity(0.08),
+        black66: const Color(0xFF000000).withValues(alpha: 0.66),
+        black33: const Color(0xFF000000).withValues(alpha: 0.33),
+        black16: const Color(0xFF000000).withValues(alpha: 0.16),
+        black8: const Color(0xFF000000).withValues(alpha: 0.08),
         grey: const Color(0xFF232323),
-        grey66: const Color(0xFF333333).withOpacity(0.66),
-        grey33: const Color(0xFF333333).withOpacity(0.33),
+        grey66: const Color(0xFF333333).withValues(alpha: 0.66),
+        grey33: const Color(0xFF333333).withValues(alpha: 0.33),
         blurpleColor: const Color(0xFF8483FE),
-        blurpleColor66: const Color(0xFF8483FE).withOpacity(0.66),
+        blurpleColor66: const Color(0xFF8483FE).withValues(alpha: 0.66),
         goldColor: const Color(0xFFF5C763),
-        goldColor66: const Color(0xFFF5C763).withOpacity(0.66),
+        goldColor66: const Color(0xFFF5C763).withValues(alpha: 0.66),
 
         /// Linear Gradients (top-left to bottom-right alignment)
         blurple: const LinearGradient(
@@ -105,24 +105,24 @@ class AppColorsData extends Equatable {
         ),
         blurple66: LinearGradient(
           colors: [
-            const Color(0xFF636AFF).withOpacity(0.66),
-            const Color(0xFF5445FF).withOpacity(0.66)
+            const Color(0xFF636AFF).withValues(alpha: 0.66),
+            const Color(0xFF5445FF).withValues(alpha: 0.66)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         blurple33: LinearGradient(
           colors: [
-            const Color(0xFF636AFF).withOpacity(0.33),
-            const Color(0xFF5445FF).withOpacity(0.33)
+            const Color(0xFF636AFF).withValues(alpha: 0.33),
+            const Color(0xFF5445FF).withValues(alpha: 0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         blurple16: LinearGradient(
           colors: [
-            const Color(0xFF636AFF).withOpacity(0.16),
-            const Color(0xFF5445FF).withOpacity(0.16)
+            const Color(0xFF636AFF).withValues(alpha: 0.16),
+            const Color(0xFF5445FF).withValues(alpha: 0.16)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -135,24 +135,24 @@ class AppColorsData extends Equatable {
         ),
         rouge66: LinearGradient(
           colors: [
-            const Color(0xFFFF416E).withOpacity(0.66),
-            const Color(0xFFFF005C).withOpacity(0.66)
+            const Color(0xFFFF416E).withValues(alpha: 0.66),
+            const Color(0xFFFF005C).withValues(alpha: 0.66)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         rouge33: LinearGradient(
           colors: [
-            const Color(0xFFFF416E).withOpacity(0.33),
-            const Color(0xFFFF005C).withOpacity(0.33)
+            const Color(0xFFFF416E).withValues(alpha: 0.33),
+            const Color(0xFFFF005C).withValues(alpha: 0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         rouge16: LinearGradient(
           colors: [
-            const Color(0xFFFF416E).withOpacity(0.16),
-            const Color(0xFFFF005C).withOpacity(0.16)
+            const Color(0xFFFF416E).withValues(alpha: 0.16),
+            const Color(0xFFFF005C).withValues(alpha: 0.16)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -165,24 +165,24 @@ class AppColorsData extends Equatable {
         ),
         gold66: LinearGradient(
           colors: [
-            const Color(0xFFFFC736).withOpacity(0.66),
-            const Color(0xFFFFAD31).withOpacity(0.66)
+            const Color(0xFFFFC736).withValues(alpha: 0.66),
+            const Color(0xFFFFAD31).withValues(alpha: 0.66)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         gold33: LinearGradient(
           colors: [
-            const Color(0xFFFFC736).withOpacity(0.33),
-            const Color(0xFFFFAD31).withOpacity(0.33)
+            const Color(0xFFFFC736).withValues(alpha: 0.33),
+            const Color(0xFFFFAD31).withValues(alpha: 0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         gold16: LinearGradient(
           colors: [
-            const Color(0xFFFFC736).withOpacity(0.16),
-            const Color(0xFFFFAD31).withOpacity(0.16)
+            const Color(0xFFFFC736).withValues(alpha: 0.16),
+            const Color(0xFFFFAD31).withValues(alpha: 0.16)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -195,24 +195,24 @@ class AppColorsData extends Equatable {
         ),
         greydient66: LinearGradient(
           colors: [
-            const Color(0xFFFFFFFF).withOpacity(0.66),
-            const Color(0xFFDBDBFF).withOpacity(0.66)
+            const Color(0xFFFFFFFF).withValues(alpha: 0.66),
+            const Color(0xFFDBDBFF).withValues(alpha: 0.66)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         greydient33: LinearGradient(
           colors: [
-            const Color(0xFFFFFFFF).withOpacity(0.33),
-            const Color(0xFFDBDBFF).withOpacity(0.33)
+            const Color(0xFFFFFFFF).withValues(alpha: 0.33),
+            const Color(0xFFDBDBFF).withValues(alpha: 0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         greydient16: LinearGradient(
           colors: [
-            const Color(0xFFFFFFFF).withOpacity(0.16),
-            const Color(0xFFDBDBFF).withOpacity(0.16)
+            const Color(0xFFFFFFFF).withValues(alpha: 0.16),
+            const Color(0xFFDBDBFF).withValues(alpha: 0.16)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -223,23 +223,24 @@ class AppColorsData extends Equatable {
   factory AppColorsData.light() => AppColorsData(
         /// Colors (full or 66% / 33% transparent)
         white: const Color(0xFF000000),
-        white66: const Color(0xFF000000).withOpacity(0.55),
-        white33: const Color(0xFF000000).withOpacity(0.29),
-        white16: const Color(0xFF000000).withOpacity(0.16),
-        white8: const Color(0xFF000000).withOpacity(0.08),
+        white66: const Color(0xFF000000).withValues(alpha: 0.55),
+        white33: const Color(0xFF000000).withValues(alpha: 0.29),
+        white16: const Color(0xFF000000).withValues(alpha: 0.16),
+        white8: const Color(0xFF000000).withValues(alpha: 0.08),
         black: const Color(0xFFFFFFFF),
-        black66: const Color(0xFFFFFFFF).withOpacity(0.66),
-        black33: const Color(0xFFFFFFFF).withOpacity(0.33),
-        black16: const Color(0xFFFFFFFF).withOpacity(0.16),
-        black8: const Color(0xFFFFFFFF).withOpacity(0.08),
+        black66: const Color(0xFFFFFFFF).withValues(alpha: 0.66),
+        black33: const Color(0xFFFFFFFF).withValues(alpha: 0.33),
+        black16: const Color(0xFFFFFFFF).withValues(alpha: 0.16),
+        black8: const Color(0xFFFFFFFF).withValues(alpha: 0.08),
         grey: const Color(0xFFDCDCDC),
-        grey66: const Color(0xFFCCCCCC).withOpacity(0.66),
-        grey33: const Color(0xFFCCCCCC).withOpacity(0.33),
+        grey66: const Color(0xFFCCCCCC).withValues(alpha: 0.66),
+        grey33: const Color(0xFFCCCCCC).withValues(alpha: 0.33),
         blurpleColor: const Color.fromRGBO(75, 75, 205, 1),
         blurpleColor66:
-            const Color.fromARGB(255, 75, 75, 205).withOpacity(0.66),
+            const Color.fromARGB(255, 75, 75, 205).withValues(alpha: 0.66),
         goldColor: const Color.fromARGB(255, 233, 173, 44),
-        goldColor66: const Color.fromARGB(255, 233, 173, 44).withOpacity(0.66),
+        goldColor66:
+            const Color.fromARGB(255, 233, 173, 44).withValues(alpha: 0.66),
 
         /// Linear Gradients (top-left to bottom-right alignment)
         blurple: const LinearGradient(
@@ -249,24 +250,24 @@ class AppColorsData extends Equatable {
         ),
         blurple66: LinearGradient(
           colors: [
-            const Color(0xFF636AFF).withOpacity(0.66),
-            const Color(0xFF5445FF).withOpacity(0.66)
+            const Color(0xFF636AFF).withValues(alpha: 0.66),
+            const Color(0xFF5445FF).withValues(alpha: 0.66)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         blurple33: LinearGradient(
           colors: [
-            const Color(0xFF636AFF).withOpacity(0.33),
-            const Color(0xFF5445FF).withOpacity(0.33)
+            const Color(0xFF636AFF).withValues(alpha: 0.33),
+            const Color(0xFF5445FF).withValues(alpha: 0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         blurple16: LinearGradient(
           colors: [
-            const Color(0xFF636AFF).withOpacity(0.16),
-            const Color(0xFF5445FF).withOpacity(0.16)
+            const Color(0xFF636AFF).withValues(alpha: 0.16),
+            const Color(0xFF5445FF).withValues(alpha: 0.16)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -279,24 +280,24 @@ class AppColorsData extends Equatable {
         ),
         rouge66: LinearGradient(
           colors: [
-            const Color(0xFFFF416E).withOpacity(0.66),
-            const Color(0xFFFF005C).withOpacity(0.66)
+            const Color(0xFFFF416E).withValues(alpha: 0.66),
+            const Color(0xFFFF005C).withValues(alpha: 0.66)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         rouge33: LinearGradient(
           colors: [
-            const Color(0xFFFF416E).withOpacity(0.33),
-            const Color(0xFFFF005C).withOpacity(0.33)
+            const Color(0xFFFF416E).withValues(alpha: 0.33),
+            const Color(0xFFFF005C).withValues(alpha: 0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         rouge16: LinearGradient(
           colors: [
-            const Color(0xFFFF416E).withOpacity(0.16),
-            const Color(0xFFFF005C).withOpacity(0.16)
+            const Color(0xFFFF416E).withValues(alpha: 0.16),
+            const Color(0xFFFF005C).withValues(alpha: 0.16)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -309,24 +310,24 @@ class AppColorsData extends Equatable {
         ),
         gold66: LinearGradient(
           colors: [
-            const Color(0xFFFFC736).withOpacity(0.66),
-            const Color(0xFFFFAD31).withOpacity(0.66)
+            const Color(0xFFFFC736).withValues(alpha: 0.66),
+            const Color(0xFFFFAD31).withValues(alpha: 0.66)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         gold33: LinearGradient(
           colors: [
-            const Color(0xFFFFC736).withOpacity(0.33),
-            const Color(0xFFFFAD31).withOpacity(0.33)
+            const Color(0xFFFFC736).withValues(alpha: 0.33),
+            const Color(0xFFFFAD31).withValues(alpha: 0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         gold16: LinearGradient(
           colors: [
-            const Color(0xFFFFC736).withOpacity(0.16),
-            const Color(0xFFFFAD31).withOpacity(0.16)
+            const Color(0xFFFFC736).withValues(alpha: 0.16),
+            const Color(0xFFFFAD31).withValues(alpha: 0.16)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -339,24 +340,24 @@ class AppColorsData extends Equatable {
         ),
         greydient66: LinearGradient(
           colors: [
-            const Color(0xFF535367).withOpacity(0.66),
-            const Color(0xFF232323).withOpacity(0.66)
+            const Color(0xFF535367).withValues(alpha: 0.66),
+            const Color(0xFF232323).withValues(alpha: 0.66)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         greydient33: LinearGradient(
           colors: [
-            const Color(0xFF535367).withOpacity(0.33),
-            const Color(0xFF232323).withOpacity(0.33)
+            const Color(0xFF535367).withValues(alpha: 0.33),
+            const Color(0xFF232323).withValues(alpha: 0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         greydient16: LinearGradient(
           colors: [
-            const Color(0xFFFFFFFF).withOpacity(0.16),
-            const Color(0xFFDBDBFF).withOpacity(0.16)
+            const Color(0xFFFFFFFF).withValues(alpha: 0.16),
+            const Color(0xFFDBDBFF).withValues(alpha: 0.16)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -367,22 +368,22 @@ class AppColorsData extends Equatable {
   factory AppColorsData.grey() => AppColorsData(
         /// Colors (full or 66% / 33% transparent)
         white: const Color(0xFFFFFFFF),
-        white66: const Color(0xFFFFFFFF).withOpacity(0.66),
-        white33: const Color(0xFFFFFFFF).withOpacity(0.33),
-        white16: const Color(0xFFFFFFFF).withOpacity(0.16),
-        white8: const Color(0xFFFFFFFF).withOpacity(0.08),
+        white66: const Color(0xFFFFFFFF).withValues(alpha: 0.66),
+        white33: const Color(0xFFFFFFFF).withValues(alpha: 0.33),
+        white16: const Color(0xFFFFFFFF).withValues(alpha: 0.16),
+        white8: const Color(0xFFFFFFFF).withValues(alpha: 0.08),
         black: const Color(0xFF181818),
-        black66: const Color(0xFF181818).withOpacity(0.66),
-        black33: const Color(0xFF000000).withOpacity(0.33),
-        black16: const Color(0xFF000000).withOpacity(0.16),
-        black8: const Color(0xFF000000).withOpacity(0.08),
+        black66: const Color(0xFF181818).withValues(alpha: 0.66),
+        black33: const Color(0xFF000000).withValues(alpha: 0.33),
+        black16: const Color(0xFF000000).withValues(alpha: 0.16),
+        black8: const Color(0xFF000000).withValues(alpha: 0.08),
         grey: const Color(0xFF232323),
-        grey66: const Color(0xFF333333).withOpacity(0.66),
-        grey33: const Color(0xFF333333).withOpacity(0.33),
+        grey66: const Color(0xFF333333).withValues(alpha: 0.66),
+        grey33: const Color(0xFF333333).withValues(alpha: 0.33),
         blurpleColor: const Color(0xFF8483FE),
-        blurpleColor66: const Color(0xFF8483FE).withOpacity(0.66),
+        blurpleColor66: const Color(0xFF8483FE).withValues(alpha: 0.66),
         goldColor: const Color(0xFFF5C763),
-        goldColor66: const Color(0xFFF5C763).withOpacity(0.66),
+        goldColor66: const Color(0xFFF5C763).withValues(alpha: 0.66),
 
         /// Linear Gradients (top-left to bottom-right alignment)
         blurple: const LinearGradient(
@@ -392,24 +393,24 @@ class AppColorsData extends Equatable {
         ),
         blurple66: LinearGradient(
           colors: [
-            const Color(0xFF636AFF).withOpacity(0.66),
-            const Color(0xFF5445FF).withOpacity(0.66)
+            const Color(0xFF636AFF).withValues(alpha: 0.66),
+            const Color(0xFF5445FF).withValues(alpha: 0.66)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         blurple33: LinearGradient(
           colors: [
-            const Color(0xFF636AFF).withOpacity(0.33),
-            const Color(0xFF5445FF).withOpacity(0.33)
+            const Color(0xFF636AFF).withValues(alpha: 0.33),
+            const Color(0xFF5445FF).withValues(alpha: 0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         blurple16: LinearGradient(
           colors: [
-            const Color(0xFF636AFF).withOpacity(0.16),
-            const Color(0xFF5445FF).withOpacity(0.16)
+            const Color(0xFF636AFF).withValues(alpha: 0.16),
+            const Color(0xFF5445FF).withValues(alpha: 0.16)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -422,24 +423,24 @@ class AppColorsData extends Equatable {
         ),
         rouge66: LinearGradient(
           colors: [
-            const Color(0xFFFF416E).withOpacity(0.66),
-            const Color(0xFFFF005C).withOpacity(0.66)
+            const Color(0xFFFF416E).withValues(alpha: 0.66),
+            const Color(0xFFFF005C).withValues(alpha: 0.66)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         rouge33: LinearGradient(
           colors: [
-            const Color(0xFFFF416E).withOpacity(0.33),
-            const Color(0xFFFF005C).withOpacity(0.33)
+            const Color(0xFFFF416E).withValues(alpha: 0.33),
+            const Color(0xFFFF005C).withValues(alpha: 0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         rouge16: LinearGradient(
           colors: [
-            const Color(0xFFFF416E).withOpacity(0.16),
-            const Color(0xFFFF005C).withOpacity(0.16)
+            const Color(0xFFFF416E).withValues(alpha: 0.16),
+            const Color(0xFFFF005C).withValues(alpha: 0.16)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -452,24 +453,24 @@ class AppColorsData extends Equatable {
         ),
         gold66: LinearGradient(
           colors: [
-            const Color(0xFFFFC736).withOpacity(0.66),
-            const Color(0xFFFFAD31).withOpacity(0.66)
+            const Color(0xFFFFC736).withValues(alpha: 0.66),
+            const Color(0xFFFFAD31).withValues(alpha: 0.66)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         gold33: LinearGradient(
           colors: [
-            const Color(0xFFFFC736).withOpacity(0.33),
-            const Color(0xFFFFAD31).withOpacity(0.33)
+            const Color(0xFFFFC736).withValues(alpha: 0.33),
+            const Color(0xFFFFAD31).withValues(alpha: 0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         gold16: LinearGradient(
           colors: [
-            const Color(0xFFFFC736).withOpacity(0.16),
-            const Color(0xFFFFAD31).withOpacity(0.16)
+            const Color(0xFFFFC736).withValues(alpha: 0.16),
+            const Color(0xFFFFAD31).withValues(alpha: 0.16)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -482,24 +483,24 @@ class AppColorsData extends Equatable {
         ),
         greydient66: LinearGradient(
           colors: [
-            const Color(0xFFFFFFFF).withOpacity(0.66),
-            const Color(0xFFDBDBFF).withOpacity(0.66)
+            const Color(0xFFFFFFFF).withValues(alpha: 0.66),
+            const Color(0xFFDBDBFF).withValues(alpha: 0.66)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         greydient33: LinearGradient(
           colors: [
-            const Color(0xFFFFFFFF).withOpacity(0.33),
-            const Color(0xFFDBDBFF).withOpacity(0.33)
+            const Color(0xFFFFFFFF).withValues(alpha: 0.33),
+            const Color(0xFFDBDBFF).withValues(alpha: 0.33)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         greydient16: LinearGradient(
           colors: [
-            const Color(0xFFFFFFFF).withOpacity(0.16),
-            const Color(0xFFDBDBFF).withOpacity(0.16)
+            const Color(0xFFFFFFFF).withValues(alpha: 0.16),
+            const Color(0xFFDBDBFF).withValues(alpha: 0.16)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,

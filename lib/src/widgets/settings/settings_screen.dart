@@ -1,5 +1,4 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:tap_builder/tap_builder.dart';
 
 class AppSettingsScreen extends StatefulWidget {
   // Profiles in use
@@ -121,7 +120,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
             ),
           ),
           const AppGap.s12(),
-          AppText.h2('Profiles'),
+          const AppText.h2('Profiles'),
         ],
       ),
     );

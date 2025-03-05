@@ -26,7 +26,7 @@ class AppImageCard extends StatelessWidget {
         url,
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
-          return AppSkeletonLoader();
+          return const AppSkeletonLoader();
         },
       ),
     );
