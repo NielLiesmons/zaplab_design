@@ -3,15 +3,28 @@ import 'package:tap_builder/tap_builder.dart';
 import 'dart:ui';
 
 class AppActionsModal extends StatelessWidget {
+  // Event related
   final String nevent;
   final String contentType;
   final String profileName;
   final String profilePicUrl;
-  final List<Reaction> recentReactions;
-  final List<double> recentAmounts;
   final String? message;
   final String? title;
   final String? imageUrl;
+  // Reactions
+  final List<Reaction> recentReactions;
+  final Function(String) onReactionTap;
+  final VoidCallback onMoreReactionsTap;
+  // Zaps
+  final List<double> recentAmounts;
+  final Function(double) onZapTap;
+  final VoidCallback onMoreZapsTap;
+  // Other actions
+  final Function() onReportTap;
+  final Function() onAddProfileTap;
+  final Function() onOpenWithTap;
+  final Function() onLabelTap;
+  final Function() onShareTap;
 
   const AppActionsModal({
     super.key,
@@ -19,11 +32,20 @@ class AppActionsModal extends StatelessWidget {
     required this.contentType,
     required this.profileName,
     required this.profilePicUrl,
-    required this.recentReactions,
-    required this.recentAmounts,
     this.message,
     this.title,
     this.imageUrl,
+    required this.recentReactions,
+    required this.onReactionTap,
+    required this.onMoreReactionsTap,
+    required this.recentAmounts,
+    required this.onZapTap,
+    required this.onMoreZapsTap,
+    required this.onReportTap,
+    required this.onAddProfileTap,
+    required this.onOpenWithTap,
+    required this.onLabelTap,
+    required this.onShareTap,
   });
 
   static Future<void> show(
