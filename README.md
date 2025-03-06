@@ -14,12 +14,24 @@ and the Flutter guide for
 
 # Zaplab Design
 
-UI widget library for Nostr Apps
+Flutter UI package with: 
+* All the basics widgets devs expect (Buttons, Text, Checkboxes, Toasts, Modals, ...)
+* Tons of Nostr-specific widgets, going from very simple (Icon Font, Emoji, ...) to very complete (Zap modals, Text editors, Chat screens, ...)
+
+Built to play nice with:
+* Android & Desktop (Web and iOS work, but get less attention)
+* Any router, provider and Nostr dev kit solution 
+
+## Unique to Zaplab Design
+- zap modal
+- swipe actions anywhere
+- visual secret key generation
+- innovative navigation
+
+## Tailored to Nostr
+[x] custom emoji (for Nostr content types and more)
+[x] custom icon font 
 
 ## Docs
 
 Documentation is in the works. 
-
-## Demo App
-
-For now feel free to test some of the widgets with this [Demo App (WIP)](https://github.com/NielLiesmons/zaplab_design_demo/blob/main/demo_app/app-release.apk)
