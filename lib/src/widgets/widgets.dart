@@ -53,6 +53,9 @@ export 'interactions/interaction_bar.dart';
 export 'interactions/reaction_pill.dart';
 export 'interactions/zap_pill.dart';
 
+// Keys
+export 'keys/slot_machine.dart';
+
 // Loading
 export 'loading/loading_dots.dart';
 export 'loading/loading_bar.dart';
