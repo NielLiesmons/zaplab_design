@@ -28,13 +28,14 @@ Docs:
 * Install the Zaplab Docs app (coming end of March)
 
 ## Unique to Zaplab Design
-### Zapping in context
-### Scrollable modals
-### Swipe actions anywhere
-### Enjoyable secret key generation
-### Travel back 
-### Asciidoc for Flutter
-### Syntax Light
+![Unique to Zaplab](https://github.com/NielLiesmons/zaplab_design_demo/blob/main/images/Zaplab-Unique.png)
+* Zapping in context
+* Scrollable modals
+* Swipe actions anywhere
+* Enjoyable secret key generation
+* Travel back 
+* Asciidoc for Flutter
+* Syntax Light
 
 ## Tailored to Nostr
 ### Custom Emoji  
