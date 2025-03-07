@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 
-import '../theme.dart';
+import '../theme/theme.dart';
 
 class AppScrollBehavior extends ScrollBehavior {
   const AppScrollBehavior();

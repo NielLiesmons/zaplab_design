@@ -1,5 +1,5 @@
-import 'dart:io' show Platform;
 import 'package:flutter/widgets.dart';
+import 'package:zaplab_design/src/utils/platform.dart';
 
 /// A widget that creates empty space with the height of the top system bar
 class AppTopSafeArea extends StatelessWidget {
@@ -7,9 +7,9 @@ class AppTopSafeArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isOnMobile = Platform.isIOS || Platform.isAndroid;
     return SizedBox(
-      height: isOnMobile ? MediaQuery.of(context).padding.top : 24.0,
+      height:
+          PlatformUtils.isMobile ? MediaQuery.of(context).padding.top : 24.0,
     );
   }
 }

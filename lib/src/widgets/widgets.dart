@@ -6,7 +6,7 @@ export 'apps/app_small_card.dart';
 export 'articles/article_card.dart';
 export 'articles/articles_feed.dart';
 // Base
-export 'base/app_base.dart';
+export 'base/base.dart';
 export 'base/checkbox.dart';
 export 'base/container.dart';
 export 'base/divider.dart';

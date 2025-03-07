@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:io' show Platform;
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppInputModal extends StatelessWidget {
@@ -59,7 +58,7 @@ class AppInputModal extends StatelessWidget {
     final keyboardHeight =
         (MediaQuery.of(context).viewInsets.bottom / theme.system.scale);
     final bottomPadding =
-        Platform.isIOS || Platform.isAndroid ? AppGapSize.s4 : AppGapSize.s16;
+        PlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
 
     return Stack(
       children: [
@@ -101,7 +100,7 @@ class AppInputModal extends StatelessWidget {
                 offset: Offset(0,
                     offset - keyboardHeight), // Only keyboard adjustment here
                 child: GestureDetector(
-                  onVerticalDragUpdate: Platform.isIOS || Platform.isAndroid
+                  onVerticalDragUpdate: PlatformUtils.isMobile
                       ? (details) {
                           if (details.delta.dy > 0) {
                             modalOffset.value += details.delta.dy;
@@ -112,7 +111,7 @@ class AppInputModal extends StatelessWidget {
                           }
                         }
                       : null,
-                  onVerticalDragEnd: Platform.isIOS || Platform.isAndroid
+                  onVerticalDragEnd: PlatformUtils.isMobile
                       ? (details) {
                           if (modalOffset.value > 0 &&
                               modalOffset.value <= 160) {

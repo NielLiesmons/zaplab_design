@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'dart:io' show Platform;
+
 import 'package:zaplab_design/zaplab_design.dart';
 
 final _needsCompactMode = ValueNotifier<bool>(false);
@@ -240,8 +240,7 @@ class AppModal extends StatelessWidget {
                         allChildren,
                       ),
                     if (needsCompactMode &&
-                        (bottomBar != null ||
-                            (Platform.isIOS || Platform.isAndroid)))
+                        (bottomBar != null || PlatformUtils.isMobile))
                       _buildBottomBarOverlay(context, theme),
                   ],
                 ),
@@ -280,7 +279,7 @@ class AppModal extends StatelessWidget {
     List<Widget> allChildren,
   ) {
     final bottomPadding =
-        Platform.isIOS || Platform.isAndroid ? AppGapSize.s4 : AppGapSize.s16;
+        PlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
     final modalOffset = ValueNotifier<double>(0.0);
 
     return ValueListenableBuilder<double>(
@@ -577,8 +576,8 @@ class AppModal extends StatelessWidget {
   }
 
   Widget _buildBottomBarOverlay(BuildContext context, AppThemeData theme) {
-    final isOnMobile = Platform.isIOS || Platform.isAndroid;
-    final bottomPadding = isOnMobile ? AppGapSize.s4 : AppGapSize.s16;
+    final bottomPadding =
+        PlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
 
     return Positioned(
       bottom: 0,
@@ -609,7 +608,7 @@ class AppModal extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (bottomBar != null) bottomBar!,
-                if (isOnMobile) const AppBottomSafeArea(),
+                if (PlatformUtils.isMobile) const AppBottomSafeArea(),
               ],
             ),
           ),

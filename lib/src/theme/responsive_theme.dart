@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/widgets.dart';
 import 'theme.dart';
 
@@ -43,6 +44,15 @@ class AppResponsiveTheme extends StatefulWidget {
   }
 
   static AppThemeColorMode colorModeOf(BuildContext context) {
+    if (kIsWeb) {
+      // For web, we'll use the system preference through MediaQuery
+      final platformBrightness = MediaQuery.platformBrightnessOf(context);
+      return platformBrightness == ui.Brightness.dark
+          ? AppThemeColorMode.dark
+          : AppThemeColorMode.light;
+    }
+
+    // For native platforms, use the existing logic
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
     final highContrast = MediaQuery.highContrastOf(context);
     if (platformBrightness == ui.Brightness.dark || highContrast) {

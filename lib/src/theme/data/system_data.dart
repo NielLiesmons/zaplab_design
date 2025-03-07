@@ -1,6 +1,6 @@
 import 'package:zaplab_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
-import 'dart:io' show Platform;
+import 'package:zaplab_design/src/utils/platform.dart';
 
 const mobileScaleFactor = 1.15;
 const desktopScaleFactor = 1.08;
@@ -13,23 +13,19 @@ class AppSystemData extends Equatable {
   });
 
   factory AppSystemData.normal() => AppSystemData(
-        scale: Platform.isAndroid || Platform.isIOS
-            ? mobileScaleFactor
-            : desktopScaleFactor,
+        scale: PlatformUtils.isMobile ? mobileScaleFactor : desktopScaleFactor,
       );
 
   factory AppSystemData.small() => AppSystemData(
-        scale: (Platform.isAndroid || Platform.isIOS
-                ? mobileScaleFactor
-                : desktopScaleFactor) *
-            0.95,
+        scale:
+            (PlatformUtils.isMobile ? mobileScaleFactor : desktopScaleFactor) *
+                0.95,
       );
 
   factory AppSystemData.large() => AppSystemData(
-        scale: (Platform.isAndroid || Platform.isIOS
-                ? mobileScaleFactor
-                : desktopScaleFactor) *
-            1.05,
+        scale:
+            (PlatformUtils.isMobile ? mobileScaleFactor : desktopScaleFactor) *
+                1.05,
       );
 
   @override

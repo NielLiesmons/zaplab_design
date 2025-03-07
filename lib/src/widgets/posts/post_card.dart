@@ -1,5 +1,4 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:zaplab_design/src/utils/timestamp_formatter.dart';
 
 class AppPostCard extends StatelessWidget {
   final String content;

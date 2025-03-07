@@ -1,5 +1,3 @@
-// feed of AppFeedPost
-
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppPostsFeed extends StatelessWidget {

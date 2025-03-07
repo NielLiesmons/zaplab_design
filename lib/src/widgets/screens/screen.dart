@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:io' show Platform;
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:flutter/scheduler.dart';
@@ -87,8 +86,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
 
   double get _menuHeight {
     final topPadding = MediaQuery.of(context).padding.top;
-    final baseHeight =
-        94.0 + (Platform.isIOS || Platform.isAndroid ? topPadding : 38.0);
+    final baseHeight = 94.0 + (PlatformUtils.isMobile ? topPadding : 38.0);
     final historyHeight =
         widget.history.length * AppTheme.of(context).sizes.s38;
     return baseHeight + historyHeight;
@@ -224,7 +222,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
             Opacity(
               opacity: _showTopZone ? 1.0 : 0.0,
               child: AppContainer(
-                height: Platform.isIOS || Platform.isAndroid
+                height: PlatformUtils.isMobile
                     ? MediaQuery.of(context).padding.top + 2
                     : 26,
                 decoration: BoxDecoration(
@@ -255,7 +253,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                               if (_currentDrag > 0) {
                                 if (details.primaryDelta! > 0 &&
                                     Navigator.canPop(context) &&
-                                    (Platform.isIOS || Platform.isAndroid)) {
+                                    PlatformUtils.isMobile) {
                                   final now = DateTime.now();
                                   if (_menuOpenedAt != null &&
                                       now
@@ -476,7 +474,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                         minHeight: MediaQuery.of(context).size.height *
                                 theme.system.scale -
                             (_topBarHeight +
-                                (Platform.isIOS || Platform.isAndroid
+                                (PlatformUtils.isMobile
                                     ? MediaQuery.of(context).padding.top
                                     : 24)),
                       ),
@@ -642,7 +640,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                       _menuOpenedAt != null &&
                                       details.primaryDelta! > 0 &&
                                       Navigator.canPop(context) &&
-                                      (Platform.isIOS || Platform.isAndroid)) {
+                                      PlatformUtils.isMobile) {
                                     Navigator.of(context).pop();
                                   } else {
                                     _handleDrag(details.primaryDelta!);

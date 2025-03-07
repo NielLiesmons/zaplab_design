@@ -1,5 +1,4 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'dart:io' show Platform;
 
 class AppSwipeContainer extends StatefulWidget {
   final Widget child;
@@ -51,7 +50,7 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
   static const double _kTouchSlopDesktop = 40.0;
 
   double get _touchSlop {
-    if (!Platform.isAndroid && !Platform.isIOS) {
+    if (!PlatformUtils.isMobile) {
       return _kTouchSlopDesktop;
     }
     return _kTouchSlopMobile;

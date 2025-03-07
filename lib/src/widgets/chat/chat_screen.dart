@@ -1,6 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
-import 'dart:io';
 
 extension StringExtension on String {
   String formatTabLabel() {
@@ -267,9 +266,7 @@ class _AppChatScreenState extends State<AppChatScreen> {
             _buildContent(),
             const AppGap.s16(),
             const AppGap.s38(),
-            (Platform.isIOS || Platform.isAndroid)
-                ? const AppGap.s4()
-                : const AppGap.s16(),
+            PlatformUtils.isMobile ? const AppGap.s4() : const AppGap.s16(),
             const AppBottomSafeArea()
           ],
         ),

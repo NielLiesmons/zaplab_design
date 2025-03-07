@@ -1,6 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:ui';
-import 'dart:io';
 
 class AppToast extends StatefulWidget {
   const AppToast({
@@ -91,7 +90,6 @@ class _AppToastState extends State<AppToast>
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final width = MediaQuery.of(context).size.width;
-    final isOnMobile = Platform.isIOS || Platform.isAndroid;
 
     return ValueListenableBuilder<double>(
       valueListenable: _offset,
@@ -145,7 +143,9 @@ class _AppToastState extends State<AppToast>
                               left: AppGapSize.s16,
                               right: AppGapSize.s16,
                               bottom: AppGapSize.s16,
-                              top: isOnMobile ? AppGapSize.s4 : AppGapSize.s16,
+                              top: PlatformUtils.isMobile
+                                  ? AppGapSize.s4
+                                  : AppGapSize.s16,
                             ),
                             constraints: BoxConstraints(maxWidth: width),
                             child: widget.children.first,

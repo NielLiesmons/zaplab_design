@@ -21,17 +21,24 @@ Flutter UI package with:
 Built to play nice with:
 * Android & Desktop (Web and iOS work, but get less attention)
 * Any router, provider and Nostr dev kit solution 
+* The rest of the Zaplab stack 
+
+Docs: 
+* Install the Zaplab Docs app
+* Reacd online
 
 ## Unique to Zaplab Design
-- zap modal
-- swipe actions anywhere
-- visual secret key generation
-- innovative navigation
+### Zapping in context
+### Scrollable modals
+### Swipe actions anywhere
+### Enjoyable secret key generation
+### Travel back 
+### Asciidoc for Flutter
 
 ## Tailored to Nostr
-[x] custom emoji (for Nostr content types and more)
-[x] custom icon font 
-
-## Docs
-
-Documentation is in the works. 
+### Custom Emoji  
+For Nostr content types and more)
+### Custom Icon Font 
+Line and fill icosn
+### Rich Nostr Text
+Parsing, rendering and editing

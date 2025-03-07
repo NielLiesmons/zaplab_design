@@ -1,13 +1,12 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:ui';
-import 'dart:io';
 
 class AppBottomBar extends StatelessWidget {
   AppBottomBar({
     super.key,
     required this.child,
     bool? roundedTop,
-  }) : roundedTop = roundedTop ?? (Platform.isIOS || Platform.isAndroid);
+  }) : roundedTop = roundedTop ?? (PlatformUtils.isMobile);
 
   final Widget child;
   final bool roundedTop;
@@ -16,7 +15,7 @@ class AppBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final bottomPadding =
-        Platform.isIOS || Platform.isAndroid ? AppGapSize.s4 : AppGapSize.s16;
+        PlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
 
     return AppContainer(
       decoration: BoxDecoration(
