@@ -31,33 +31,6 @@ class AppShortTextParser {
         lastListLevel = null;
       }
 
-      if (line.startsWith('=====')) {
-        elements.add(AppShortTextElement(
-          type: AppShortTextElementType.heading5,
-          content: line.replaceAll('=====', '').trim(),
-        ));
-      } else if (line.startsWith('====')) {
-        elements.add(AppShortTextElement(
-          type: AppShortTextElementType.heading4,
-          content: line.replaceAll('====', '').trim(),
-        ));
-      } else if (line.startsWith('===')) {
-        elements.add(AppShortTextElement(
-          type: AppShortTextElementType.heading3,
-          content: line.replaceAll('===', '').trim(),
-        ));
-      } else if (line.startsWith('==')) {
-        elements.add(AppShortTextElement(
-          type: AppShortTextElementType.heading2,
-          content: line.replaceAll('==', '').trim(),
-        ));
-      } else if (line.startsWith('=')) {
-        elements.add(AppShortTextElement(
-          type: AppShortTextElementType.heading1,
-          content: line.replaceAll('=', '').trim(),
-        ));
-      }
-
       // Handle code blocks
       else if (line.startsWith('----')) {
         final StringBuffer codeContent = StringBuffer();

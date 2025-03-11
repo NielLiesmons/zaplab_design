@@ -1,9 +1,4 @@
 enum AppShortTextElementType {
-  heading1, // = Heading
-  heading2, // == Heading
-  heading3, // === Heading
-  heading4, // ==== Heading
-  heading5, // ===== Heading
   paragraph, // Regular text
   blockQuote, // Add this
   codeBlock, // [source,language]
