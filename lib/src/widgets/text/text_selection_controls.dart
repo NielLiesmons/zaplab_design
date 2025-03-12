@@ -93,10 +93,10 @@ class AppTextSelectionControls extends TextSelectionControls {
     return CompositedTransformFollower(
       link: editableTextState.renderEditable.startHandleLayerLink,
       offset: Offset(
-          startPoint.dx <= 360 / 3
+          startPoint.dx <= MediaQuery.of(context).size.width / 3
               ? 0
               : // Left third
-              startPoint.dx >= (360 * 2 / 3)
+              startPoint.dx >= (MediaQuery.of(context).size.width * 2 / 3)
                   ? -(2 * theme.sizes.s104)
                   : // Right third
                   -theme.sizes.s104, // Middle third

@@ -32,6 +32,9 @@ class Profile {
   });
 }
 
+// Mention
+typedef NostrMentionResolver = Future<List<Profile>> Function(String query);
+
 // Message
 class Message {
   final String nevent;

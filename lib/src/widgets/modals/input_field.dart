@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppInputField extends StatefulWidget {
@@ -47,79 +45,11 @@ class AppInputField extends StatefulWidget {
 }
 
 class _AppInputFieldState extends State<AppInputField> {
-  late final TextEditingController _controller;
-  late final FocusNode _focusNode;
-  final _selectionControls = AppTextSelectionControls();
-  bool _hasText = false;
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = widget.controller ?? TextEditingController();
-    _focusNode = widget.focusNode ?? FocusNode();
-    _controller.addListener(_handleTextChange);
-    _focusNode.addListener(_handleFocusChange);
-  }
-
-  @override
-  void dispose() {
-    _controller.removeListener(_handleTextChange);
-    _focusNode.removeListener(_handleFocusChange);
-    if (widget.controller == null) {
-      _controller.dispose();
-    }
-    if (widget.focusNode == null) {
-      _focusNode.dispose();
-    }
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _handleTextChange() {
-    final hadText = _hasText;
-    final hasText = _controller.text.isNotEmpty;
-
-    if (hadText != hasText) {
-      setState(() {
-        _hasText = hasText;
-      });
-    }
-  }
-
-  void _handleFocusChange() {
-    if (_focusNode.hasFocus) {
-      setState(() {});
-    }
-  }
-
-  void _scrollUp() {
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(
-        _scrollController.offset - 50,
-        duration: const Duration(milliseconds: 100),
-        curve: Curves.easeOut,
-      );
-    }
-  }
-
-  void _scrollDown() {
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(
-        _scrollController.offset + 50,
-        duration: const Duration(milliseconds: 100),
-        curve: Curves.easeOut,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final isMobile = defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.android;
 
-    final defaultTextStyle = theme.typography.reg14.copyWith(
+    final defaultTextStyle = theme.typography.reg16.copyWith(
       color: theme.colors.white,
     );
 
@@ -144,49 +74,35 @@ class _AppInputFieldState extends State<AppInputField> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: theme.sizes.s38,
-              maxHeight: 2 * theme.sizes.s104,
-            ),
-            child: Listener(
-              onPointerSignal: (event) {
-                if (event is PointerScrollEvent) {
-                  if (event.scrollDelta.dy > 0) {
-                    _scrollDown();
-                  } else if (event.scrollDelta.dy < 0) {
-                    _scrollUp();
-                  }
-                }
-              },
-              child: SingleChildScrollView(
-                physics: isMobile
-                    ? const ClampingScrollPhysics()
-                    : const AlwaysScrollableScrollPhysics(),
-                controller: _scrollController,
-                child: Stack(
-                  fit: StackFit.passthrough,
-                  children: [
-                    if (!_hasText && widget.placeholder != null)
-                      IgnorePointer(
-                        child: Row(
-                          children: widget.placeholder!,
-                        ),
-                      ),
-                    AppSelectableText(
-                      text: _controller.text,
-                      style: textStyle,
-                      editable: true,
-                      controller: _controller,
-                      focusNode: _focusNode,
-                      onChanged: widget.onChanged,
-                      contextMenuItems: widget.contextMenuItems,
-                      selectionControls: _selectionControls,
-                    ),
-                  ],
+          AppEditableText(
+            text: widget.controller?.text ?? '',
+            style: textStyle,
+            controller: widget.controller,
+            focusNode: widget.focusNode,
+            onChanged: widget.onChanged,
+            contextMenuItems: widget.contextMenuItems,
+            placeholder: widget.placeholder,
+            onResolveMentions: (query) async {
+              print('Querying mentions for: $query');
+              // For testing, return some dummy data
+              return [
+                Profile(
+                  npub: '1234',
+                  profileName: 'Alice',
+                  profilePicUrl: '',
                 ),
-              ),
-            ),
+                Profile(
+                  npub: '5678',
+                  profileName: 'Bob',
+                  profilePicUrl: '',
+                ),
+                Profile(
+                  npub: '91011',
+                  profileName: 'Charlie',
+                  profilePicUrl: '',
+                ),
+              ];
+            },
           ),
           const AppGap.s8(),
           Row(
@@ -250,9 +166,6 @@ class _AppInputFieldState extends State<AppInputField> {
                 onTap: () {
                   // Handle send action
                 },
-                // onChevronTap: () {
-                //   // Handle chevron action
-                // },
                 inactiveGradient: theme.colors.blurple,
                 pressedGradient: theme.colors.blurple,
               ),

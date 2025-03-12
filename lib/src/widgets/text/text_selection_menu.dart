@@ -39,6 +39,27 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
   late final AnimationController _scaleController;
   late final Animation<double> _scaleAnimation;
 
+  double _calculateWidth(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final selectionX = widget.position.dx;
+    final thirdOfScreen = screenWidth / 3;
+
+    // Calculate which third of the screen the selection starts in
+    final selectionThird = (selectionX / thirdOfScreen).floor();
+
+    // Adjust width based on position
+    switch (selectionThird) {
+      case 0: // Left third
+        return screenWidth * 0.5;
+      case 1: // Middle third
+        return screenWidth * 0.4;
+      case 2: // Right third
+        return screenWidth * 0.4;
+      default:
+        return screenWidth * 0.5;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -87,12 +108,11 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
+  List<AppTextSelectionMenuItem> _getMenuItems() {
     final theme = AppTheme.of(context);
     final isEditable = widget.editableTextState.widget.readOnly != true;
 
-    final defaultMenuItems = isEditable
+    return isEditable
         ? [
             AppTextSelectionMenuItem(
               label: _showCheckmark ? 'Copied!' : 'Copy',
@@ -130,88 +150,10 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
               label: 'Select All',
               onTap: (state) => _handleAction(state.selectAll),
             ),
-            AppTextSelectionMenuItem(
-              label: 'Bold',
-              onTap: (state) => _handleAction((cause) {
-                final selection = state.textEditingValue.selection;
-                if (selection.isValid && !selection.isCollapsed) {
-                  final text = state.textEditingValue.text;
-                  final selectedText =
-                      text.substring(selection.start, selection.end);
-                  final newText = text.replaceRange(
-                    selection.start,
-                    selection.end,
-                    '**$selectedText**',
-                  );
-                  state.updateEditingValue(
-                    TextEditingValue(
-                      text: newText,
-                      selection: TextSelection(
-                        baseOffset: selection.start,
-                        extentOffset: selection.end + 4,
-                      ),
-                    ),
-                  );
-                }
-              }),
-            ),
-            AppTextSelectionMenuItem(
-              label: 'Strikethrough',
-              onTap: (state) => _handleAction((cause) {
-                final selection = state.textEditingValue.selection;
-                if (selection.isValid && !selection.isCollapsed) {
-                  final text = state.textEditingValue.text;
-                  final selectedText =
-                      text.substring(selection.start, selection.end);
-                  final newText = text.replaceRange(
-                    selection.start,
-                    selection.end,
-                    '~~$selectedText~~',
-                  );
-                  state.updateEditingValue(
-                    TextEditingValue(
-                      text: newText,
-                      selection: TextSelection(
-                        baseOffset: selection.start,
-                        extentOffset: selection.end + 4,
-                      ),
-                    ),
-                  );
-                }
-              }),
-            ),
-            AppTextSelectionMenuItem(
-              label: 'List',
-              onTap: (state) => _handleAction((cause) {
-                final selection = state.textEditingValue.selection;
-                if (selection.isValid && !selection.isCollapsed) {
-                  final text = state.textEditingValue.text;
-                  final selectedText =
-                      text.substring(selection.start, selection.end);
-                  final lines = selectedText.split('\n');
-                  final bulletedLines =
-                      lines.map((line) => '- $line').join('\n');
-                  final newText = text.replaceRange(
-                    selection.start,
-                    selection.end,
-                    bulletedLines,
-                  );
-                  state.updateEditingValue(
-                    TextEditingValue(
-                      text: newText,
-                      selection: TextSelection(
-                        baseOffset: selection.start,
-                        extentOffset: selection.start + bulletedLines.length,
-                      ),
-                    ),
-                  );
-                }
-              }),
-            ),
           ]
         : [
             AppTextSelectionMenuItem(
-              label: _showCheckmark ? null : 'Copy',
+              label: _showCheckmark ? 'Copied!' : 'Copy',
               icon: _showCheckmark
                   ? ScaleTransition(
                       scale: _scaleAnimation,
@@ -238,24 +180,29 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
               label: 'Select All',
               onTap: (state) => _handleAction(state.selectAll),
             ),
-            AppTextSelectionMenuItem(
-              label: 'Look Up',
-              onTap: (state) => {/* TODO: Implement look up */},
-            ),
           ];
+  }
 
-    final items = widget.menuItems
-            ?.where(
-              (item) => item.isVisible?.call(widget.editableTextState) ?? true,
-            )
-            .toList() ??
-        defaultMenuItems;
+  void _handleAction(Function(SelectionChangedCause) action) {
+    action(SelectionChangedCause.tap);
+    if (action == widget.editableTextState.pasteText ||
+        action == widget.editableTextState.cutSelection) {
+      widget.editableTextState.hideToolbar();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
+    final menuWidth = _calculateWidth(context);
+    final items = widget.menuItems ?? _getMenuItems();
 
     return Align(
       alignment: Alignment.topLeft,
-      child: SizedBox(
-        width: 196,
-        height: theme.sizes.s38,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: menuWidth,
+        ),
         child: ClipRRect(
           borderRadius: theme.radius.asBorderRadius().rad8,
           child: BackdropFilter(
@@ -339,15 +286,5 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
             ),
       ),
     );
-  }
-
-  void _handleAction(Function(SelectionChangedCause) action) {
-    action(SelectionChangedCause.tap);
-
-    // Only hide toolbar for actions that should dismiss the menu
-    if (action == widget.editableTextState.pasteText ||
-        action == widget.editableTextState.cutSelection) {
-      widget.editableTextState.hideToolbar();
-    }
   }
 }

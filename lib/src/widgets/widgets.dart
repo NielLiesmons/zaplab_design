@@ -106,14 +106,15 @@ export 'text/admonition.dart';
 export 'text/amount.dart';
 export 'text/code_block.dart';
 export 'text/event_card.dart';
+export 'text/editable_text.dart';
 export 'text/section_title.dart';
 export 'text/short_text/editable_short_text_parser.dart';
 export 'text/short_text/short_text_element.dart';
 export 'text/short_text/short_text_parser.dart';
 export 'text/short_text/short_text_renderer.dart';
 export 'text/text.dart';
-export 'text/text_field.dart';
-export 'text/text_selection.dart';
+export 'text/text_mention_menu.dart';
+export 'text/selectable_text.dart';
 export 'text/text_selection_controls.dart';
 export 'text/text_selection_menu.dart';
 
