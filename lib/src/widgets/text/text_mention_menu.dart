@@ -53,43 +53,13 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
     }
   }
 
-  void _insertMention(Profile profile) {
-    final state = widget.editableTextState;
-    final text = state.textEditingValue.text;
-    final selection = state.textEditingValue.selection;
-
-    final beforeCursor = text.substring(0, selection.baseOffset);
-    final lastAtSymbol = beforeCursor.lastIndexOf('@');
-
-    if (lastAtSymbol != -1) {
-      final newText = text.replaceRange(
-        lastAtSymbol,
-        selection.baseOffset,
-        '@${profile.profileName} ',
-      );
-
-      state.updateEditingValue(
-        TextEditingValue(
-          text: newText,
-          selection: TextSelection.collapsed(
-            offset: lastAtSymbol +
-                profile.profileName.length +
-                2, // +2 for @ and space
-          ),
-        ),
-      );
-    }
-  }
-
   double _calculateWidth(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final selectionX = widget.position.dx;
     final thirdOfScreen = screenWidth / 3;
 
-    // Calculate which third of the screen the selection starts in
     final selectionThird = (selectionX / thirdOfScreen).floor();
 
-    // Adjust width based on position
     switch (selectionThird) {
       case 0: // Left third
         return screenWidth * 0.5;
@@ -100,6 +70,37 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
       default:
         return screenWidth * 0.5;
     }
+  }
+
+  Widget _buildMentionItem(AppTextMentionMenuItem item) {
+    final theme = AppTheme.of(context);
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => item.onTap(widget.editableTextState),
+        child: AppContainer(
+          height: theme.sizes.s38,
+          padding: const AppEdgeInsets.symmetric(
+            horizontal: AppGapSize.s12,
+            vertical: AppGapSize.s8,
+          ),
+          child: Row(
+            children: [
+              AppProfilePic(item.profile.profilePicUrl,
+                  size: AppProfilePicSize.s24),
+              const AppGap.s8(),
+              Expanded(
+                child: AppText.med14(
+                  item.profile.profileName,
+                  color: theme.colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -137,23 +138,12 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
                     controller: _scrollController,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: items.map((item) {
-                        final isLast = item == items.last;
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              height: itemHeight,
-                              child: _buildMentionItem(
-                                context,
-                                item.profile,
-                                () => item.onTap(widget.editableTextState),
-                              ),
-                            ),
-                            if (!isLast) const AppDivider.horizontal(),
-                          ],
-                        );
-                      }).toList(),
+                      children: [
+                        for (final item in items) ...[
+                          _buildMentionItem(item),
+                          if (item != items.last) const AppDivider.horizontal(),
+                        ],
+                      ],
                     ),
                   ),
                 ),
@@ -179,53 +169,6 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMentionItem(
-      BuildContext context, Profile profile, VoidCallback onTap) {
-    final theme = AppTheme.of(context);
-    return GestureDetector(
-      onTap: onTap,
-      child: AppContainer(
-        padding: const AppEdgeInsets.symmetric(
-          horizontal: AppGapSize.s12,
-          vertical: AppGapSize.s8,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Image.network(
-                profile.profilePicUrl,
-                width: 24,
-                height: 24,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => AppContainer(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: theme.colors.white16,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: AppText.med14(
-                      profile.profileName[0].toUpperCase(),
-                      color: theme.colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const AppGap.s8(),
-            AppText.med14(
-              profile.profileName,
-              color: theme.colors.white,
-            ),
-          ],
         ),
       ),
     );

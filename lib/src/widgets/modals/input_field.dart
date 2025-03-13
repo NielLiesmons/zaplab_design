@@ -59,9 +59,12 @@ class _AppInputFieldState extends State<AppInputField> {
         defaultTextStyle;
 
     return AppContainer(
-      padding: const AppEdgeInsets.symmetric(
-        horizontal: AppGapSize.s12,
-        vertical: AppGapSize.s8,
+      clipBehavior: Clip.hardEdge,
+      padding: const AppEdgeInsets.only(
+        left: AppGapSize.s12,
+        right: AppGapSize.s12,
+        top: AppGapSize.s10,
+        bottom: AppGapSize.s8,
       ),
       decoration: BoxDecoration(
         color: widget.backgroundColor ?? theme.colors.black33,
