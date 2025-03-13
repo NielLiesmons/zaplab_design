@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart' show Material, Colors;
-import 'package:flutter/rendering.dart' show RenderEditable;
 import 'package:zaplab_design/zaplab_design.dart';
 import 'text_selection_gesture_detector_builder.dart' as custom;
 
@@ -31,14 +29,104 @@ class AppEditableText extends StatefulWidget {
   State<AppEditableText> createState() => _AppEditableTextState();
 }
 
+class MentionSpan extends TextSpan {
+  final String npub;
+  final Profile profile;
+  final BuildContext context;
+
+  MentionSpan({
+    required this.npub,
+    required this.profile,
+    required this.context,
+  }) : super(
+          text: 'nostr:$npub',
+          style: TextStyle(
+            color: AppTheme.of(context).colors.white.withOpacity(0),
+            fontSize: 0,
+            height: 0,
+            letterSpacing: 0,
+            wordSpacing: 0,
+          ),
+          children: [
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: AppProfileInline(
+                profileName: profile.profileName,
+                profilePicUrl: profile.profilePicUrl,
+                onTap: profile.onTap,
+              ),
+            ),
+          ],
+        );
+}
+
 class InlineSpanController extends TextEditingController {
   final Map<String, WidgetBuilder> triggerSpans;
   final Map<int, InlineSpan> _activeSpans = {};
+  final NostrMentionResolver onResolveMentions;
+  final BuildContext context;
+  bool _isDisposing = false;
+  bool _isUpdating = false;
+  bool _isNotifying = false;
 
   InlineSpanController({
     String? text,
     required this.triggerSpans,
+    required this.onResolveMentions,
+    required this.context,
   }) : super(text: text);
+
+  bool hasSpanAt(int offset) {
+    return _activeSpans.containsKey(offset);
+  }
+
+  @override
+  void dispose() {
+    _isDisposing = true;
+    _isNotifying = true;
+    _activeSpans.clear();
+    super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (!_isDisposing && !_isUpdating && !_isNotifying) {
+      _isNotifying = true;
+      try {
+        super.notifyListeners();
+      } finally {
+        _isNotifying = false;
+      }
+    }
+  }
+
+  void _updateSpans(String text, int offset) {
+    if (_isDisposing) return;
+
+    _isUpdating = true;
+
+    try {
+      // Remove all spans that are at or after the current offset
+      final spansToRemove = _activeSpans.keys
+          .where((spanOffset) => spanOffset >= offset)
+          .toList();
+
+      for (final spanOffset in spansToRemove) {
+        _activeSpans.remove(spanOffset);
+      }
+
+      // Remove any spans that are beyond the text length
+      final invalidSpans = _activeSpans.keys
+          .where((spanOffset) => spanOffset >= text.length)
+          .toList();
+
+      for (final spanOffset in invalidSpans) {
+        _activeSpans.remove(spanOffset);
+      }
+    } finally {
+      _isUpdating = false;
+    }
+  }
 
   @override
   TextSpan buildTextSpan({
@@ -59,16 +147,20 @@ class InlineSpanController extends TextEditingController {
     final sortedOffsets = _activeSpans.keys.toList()..sort();
 
     for (final offset in sortedOffsets) {
-      if (offset > lastOffset) {
+      // Add text before the span
+      if (offset > lastOffset && offset <= text.length) {
         children.add(TextSpan(
           style: style,
           text: text.substring(lastOffset, offset),
         ));
       }
+
+      // Add the span
       children.add(_activeSpans[offset]!);
       lastOffset = offset + 1;
     }
 
+    // Add remaining text after the last span
     if (lastOffset < text.length) {
       children.add(TextSpan(
         style: style,
@@ -93,9 +185,31 @@ class InlineSpanController extends TextEditingController {
     }
   }
 
-  void removeSpan(int offset) {
-    _activeSpans.remove(offset);
-    notifyListeners();
+  void insertNostrProfile(int offset, String npub) async {
+    print('Inserting nostr profile span at offset $offset for npub: $npub');
+
+    try {
+      final profiles = await onResolveMentions(npub);
+      if (profiles.isEmpty) {
+        print('No profile found for npub: $npub');
+        return;
+      }
+
+      final profile = profiles.first;
+      final theme = AppTheme.of(context);
+      _activeSpans[offset] = WidgetSpan(
+        alignment: PlaceholderAlignment.middle,
+        child: AppProfileInline(
+          profileName: profile.profileName,
+          profilePicUrl: profile.profilePicUrl,
+          onTap: profile.onTap,
+          isEditableText: true,
+        ),
+      );
+      notifyListeners();
+    } catch (e) {
+      print('Error inserting nostr profile: $e');
+    }
   }
 
   void clearSpans() {
@@ -136,11 +250,10 @@ class _AppEditableTextState extends State<AppEditableText>
   void initState() {
     super.initState();
     _controller = InlineSpanController(
-      text: widget.controller?.text ?? widget.text,
+      text: widget.text,
       triggerSpans: {
         '@': (context) {
           final theme = AppTheme.of(context);
-          print('Building mention span. Current text: $_currentMentionText');
           return Stack(
             clipBehavior: Clip.none,
             children: [
@@ -171,15 +284,13 @@ class _AppEditableTextState extends State<AppEditableText>
           );
         },
       },
+      onResolveMentions: widget.onResolveMentions,
+      context: context,
     );
     _focusNode = widget.focusNode ?? FocusNode();
-    _gestureDetectorBuilder =
-        custom.TextSelectionGestureDetectorBuilder(delegate: this);
-
-    // Set initial text state
-    _hasText = _controller.text.isNotEmpty;
-    _isEmpty.value = _controller.text.isEmpty;
-
+    _gestureDetectorBuilder = custom.TextSelectionGestureDetectorBuilder(
+      delegate: this,
+    );
     _controller.addListener(_handleTextChanged);
     if (widget.controller != null) {
       widget.controller!.addListener(_handleExternalControllerChange);
@@ -194,11 +305,32 @@ class _AppEditableTextState extends State<AppEditableText>
       widget.onChanged!(_controller.text);
     }
 
+    final text = _controller.text;
     final selection = _controller.selection;
     if (!selection.isValid) return;
 
-    final text = _controller.text;
     final offset = selection.baseOffset;
+    final previousLength = _controller.text.length;
+
+    print(
+        'Text changed: "$text" (length: ${text.length}, previous: $previousLength)');
+    print('Current offset: $offset');
+    print('Active spans: ${_controller._activeSpans.keys.toList()}');
+
+    // Clear all spans if text is empty
+    if (text.isEmpty) {
+      print('Text is empty, clearing all spans');
+      _controller.clearSpans();
+      _mentionStartOffset = null;
+      _currentMentionText = '';
+      _showPlaceholder.value = false;
+      _mentionOverlay?.remove();
+      _mentionOverlay = null;
+      return;
+    }
+
+    // Update spans based on text changes
+    _controller._updateSpans(text, offset);
 
     // Handle mention typing
     if (_mentionStartOffset != null) {
@@ -216,14 +348,13 @@ class _AppEditableTextState extends State<AppEditableText>
             _mentionOverlay?.remove();
             _mentionOverlay = null;
           }
-
-          _controller.notifyListeners();
         }
       }
     }
 
     // Check for new @ trigger
     if (offset > 0 && text[offset - 1] == '@' && _mentionStartOffset == null) {
+      print('New @ trigger detected at offset ${offset - 1}');
       _mentionStartOffset = offset - 1;
       _currentMentionText = '';
       _showPlaceholder.value = true;
@@ -234,6 +365,7 @@ class _AppEditableTextState extends State<AppEditableText>
     // Check if we've moved away from the mention
     if (_mentionStartOffset != null &&
         (offset <= _mentionStartOffset! || text[_mentionStartOffset!] != '@')) {
+      print('Moved away from mention');
       _mentionStartOffset = null;
       _currentMentionText = '';
       _showPlaceholder.value = false;
@@ -328,38 +460,40 @@ class _AppEditableTextState extends State<AppEditableText>
     print('Current text: "$text"');
     print('Replacing from offset ${_mentionStartOffset!} to $currentOffset');
 
-    // Replace the @mention text with the selected profile
-    final newText = text.replaceRange(
-      _mentionStartOffset!,
-      currentOffset,
-      '@${profile.profileName} ', // Add a space after the mention
-    );
+    // Insert the nostr profile span
+    _controller.insertNostrProfile(_mentionStartOffset!, profile.npub);
 
-    print('New text: "$newText"');
-
-    // Calculate new cursor position (after the space)
-    final newCursorPosition = _mentionStartOffset! +
-        profile.profileName.length +
-        2; // +2 for @ and space
-
-    // Update the text and cursor position
+    // Then update the cursor position
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.value = TextEditingValue(
-        text: newText,
-        selection: TextSelection.collapsed(offset: newCursorPosition),
-      );
+      try {
+        // Remove the text after @ up to current cursor and add a space
+        final newText = text.replaceRange(
+          _mentionStartOffset! + 1, // Start after the @
+          currentOffset,
+          ' ', // Replace with a space
+        );
 
-      // Clean up mention state
-      _mentionStartOffset = null;
-      _currentMentionText = '';
-      _showPlaceholder.value = false;
-      _mentionOverlay?.remove();
-      _mentionOverlay = null;
-      _controller.clearSpans();
+        // Calculate new cursor position (after the space)
+        final newCursorPosition = _mentionStartOffset! + 2;
 
-      // Ensure focus is maintained and cursor is visible
-      _focusNode.requestFocus();
-      editableTextKey.currentState?.showToolbar();
+        _controller.value = TextEditingValue(
+          text: newText,
+          selection: TextSelection.collapsed(offset: newCursorPosition),
+        );
+
+        // Clean up mention state
+        _mentionStartOffset = null;
+        _currentMentionText = '';
+        _showPlaceholder.value = false;
+        _mentionOverlay?.remove();
+        _mentionOverlay = null;
+
+        // Ensure focus is maintained and cursor is visible
+        _focusNode.requestFocus();
+        editableTextKey.currentState?.showToolbar();
+      } catch (e) {
+        print('Error in post frame callback: $e');
+      }
     });
 
     print('Mention insertion complete');
@@ -393,19 +527,25 @@ class _AppEditableTextState extends State<AppEditableText>
 
   @override
   void dispose() {
-    _mentionOverlay?.remove();
-    _showPlaceholder.dispose();
-    _isEmpty.dispose();
+    // First remove listeners to prevent any callbacks during disposal
     _controller.removeListener(_handleTextChanged);
     if (widget.controller != null) {
       widget.controller!.removeListener(_handleExternalControllerChange);
     }
+
+    // Then clean up overlays and other UI elements
+    _mentionOverlay?.remove();
+    _showPlaceholder.dispose();
+    _isEmpty.dispose();
+
+    // Finally dispose of the controller and focus node
     if (widget.controller == null) {
       _controller.dispose();
     }
     if (widget.focusNode == null) {
       _focusNode.dispose();
     }
+
     super.dispose();
   }
 

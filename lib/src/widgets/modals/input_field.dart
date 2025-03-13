@@ -90,19 +90,21 @@ class _AppInputFieldState extends State<AppInputField> {
               // For testing, return some dummy data
               return [
                 Profile(
-                  npub: '1234',
-                  profileName: 'Alice',
-                  profilePicUrl: '',
+                  npub: 'npub1hjghklk',
+                  profileName: 'Franzap',
+                  profilePicUrl:
+                      'https://primal.b-cdn.net/media-cache?s=m&a=1&u=https%3A%2F%2Fnostr.build%2Fi%2Fnostr.build_1732d9a6cd9614c6c4ac3b8f0ee4a8242e9da448e2aacb82e7681d9d0bc36568.jpg',
                 ),
                 Profile(
-                  npub: '5678',
-                  profileName: 'Bob',
-                  profilePicUrl: '',
+                  npub: 'npub1hjghklk',
+                  profileName: 'Pip',
+                  profilePicUrl: 'https://m.primal.net/IfSZ.jpg',
                 ),
                 Profile(
-                  npub: '91011',
-                  profileName: 'Charlie',
-                  profilePicUrl: '',
+                  npub: 'npub1hjghklk',
+                  profileName: 'Verbricha',
+                  profilePicUrl:
+                      'https://primal.b-cdn.net/media-cache?s=m&a=1&u=https%3A%2F%2Fnostr.download%2F1aba957814cac9c324c54d94e0ba6606dc50af17f7c08654e9b9f139a9720d6d.jpeg',
                 ),
               ];
             },

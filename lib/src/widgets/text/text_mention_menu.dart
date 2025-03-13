@@ -29,29 +29,6 @@ class AppTextMentionMenu extends StatefulWidget {
 
 class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
   final ScrollController _scrollController = ScrollController();
-  bool _showGradient = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScroll);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _onScroll() {
-    final isAtEnd =
-        _scrollController.offset >= _scrollController.position.maxScrollExtent;
-    if (isAtEnd != !_showGradient) {
-      setState(() {
-        _showGradient = !isAtEnd;
-      });
-    }
-  }
 
   double _calculateWidth(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -147,25 +124,6 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
                     ),
                   ),
                 ),
-                if (_showGradient)
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    height: 32,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            theme.colors.black33.withValues(alpha: 0),
-                            theme.colors.black33,
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
               ],
             ),
           ),

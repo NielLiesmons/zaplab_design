@@ -6,6 +6,7 @@ class AppProfileInline extends StatelessWidget {
   final String profilePicUrl;
   final void Function()? onTap;
   final bool? isArticle;
+  final bool? isEditableText;
 
   const AppProfileInline({
     super.key,
@@ -13,6 +14,7 @@ class AppProfileInline extends StatelessWidget {
     required this.profilePicUrl,
     this.onTap,
     this.isArticle = false,
+    this.isEditableText = false,
   });
 
   @override
@@ -43,12 +45,19 @@ class AppProfileInline extends StatelessWidget {
                     offset: const Offset(0, -0.2),
                     child: profileName.isNotEmpty
                         ? (isArticle == false)
-                            ? AppText.bold14(
-                                profileName,
-                                color: theme.colors.blurpleColor,
-                                maxLines: 1,
-                                textOverflow: TextOverflow.ellipsis,
-                              )
+                            ? isEditableText == true
+                                ? AppText.med16(
+                                    profileName,
+                                    color: theme.colors.blurpleColor,
+                                    maxLines: 1,
+                                    textOverflow: TextOverflow.ellipsis,
+                                  )
+                                : AppText.med14(
+                                    profileName,
+                                    color: theme.colors.blurpleColor,
+                                    maxLines: 1,
+                                    textOverflow: TextOverflow.ellipsis,
+                                  )
                             : AppText.boldArticle(
                                 profileName,
                                 color: theme.colors.blurpleColor,
@@ -56,12 +65,19 @@ class AppProfileInline extends StatelessWidget {
                                 textOverflow: TextOverflow.ellipsis,
                               )
                         : (isArticle == false)
-                            ? AppText.bold14(
-                                'ProfileName',
-                                color: theme.colors.blurpleColor66,
-                                maxLines: 1,
-                                textOverflow: TextOverflow.ellipsis,
-                              )
+                            ? isEditableText == true
+                                ? AppText.med16(
+                                    'ProfileName',
+                                    color: theme.colors.blurpleColor66,
+                                    maxLines: 1,
+                                    textOverflow: TextOverflow.ellipsis,
+                                  )
+                                : AppText.med14(
+                                    'ProfileName',
+                                    color: theme.colors.blurpleColor66,
+                                    maxLines: 1,
+                                    textOverflow: TextOverflow.ellipsis,
+                                  )
                             : AppText.boldArticle(
                                 'ProfileName',
                                 color: theme.colors.blurpleColor66,
