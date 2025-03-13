@@ -43,6 +43,7 @@ class AppIconCharactersData extends Equatable {
     required this.backup,
     required this.backspace,
     required this.bell,
+    required this.bold,
     required this.camera,
     required this.check,
     required this.chevronDown,
@@ -65,6 +66,7 @@ class AppIconCharactersData extends Equatable {
     required this.expand,
     required this.flip,
     required this.focus,
+    required this.footnote,
     required this.gif,
     required this.heart,
     required this.hidden,
@@ -74,14 +76,18 @@ class AppIconCharactersData extends Equatable {
     required this.incognito,
     required this.info,
     required this.invoice,
+    required this.italic,
     required this.label,
+    required this.latex,
     required this.link,
+    required this.list,
     required this.location,
     required this.magic,
     required this.mic,
     required this.mints,
     required this.music,
     required this.nostr,
+    required this.numberedList,
     required this.openBook,
     required this.openWith,
     required this.pause,
@@ -102,10 +108,15 @@ class AppIconCharactersData extends Equatable {
     required this.split,
     required this.star,
     required this.sticker,
+    required this.strikeThrough,
+    required this.subscript,
+    required this.superscript,
+    required this.table,
     required this.text,
     required this.tilda,
     required this.tools,
     required this.transfer,
+    required this.underline,
     required this.video,
     required this.voice,
     required this.zap,
@@ -120,6 +131,7 @@ class AppIconCharactersData extends Equatable {
         at: String.fromCharCodes([60468]),
         backspace: String.fromCharCodes([58635, 60645, 57472]),
         backup: String.fromCharCodes([57344, 58676, 61323, 57407]),
+        bold: String.fromCharCodes([58084, 60038]),
         bell: String.fromCharCodes([58082, 58628]),
         camera: String.fromCharCodes([57344, 58649, 58941, 57564]),
         check: String.fromCharCodes([58788, 61009, 57353]),
@@ -143,6 +155,7 @@ class AppIconCharactersData extends Equatable {
         emojiLine: String.fromCharCodes([58953, 57618, 57435]),
         flip: String.fromCharCodes([58113, 57454]),
         focus: String.fromCharCodes([58834, 58702, 57353]),
+        footnote: String.fromCharCodes([57721, 60374, 57441]),
         gif: String.fromCharCodes([57744, 57541]),
         heart: String.fromCharCodes([58857, 61189, 57351]),
         hidden: String.fromCharCodes([57344, 58506, 57699, 57431]),
@@ -152,14 +165,18 @@ class AppIconCharactersData extends Equatable {
         incognito: String.fromCharCodes([57344, 58702, 60236, 57429]),
         info: String.fromCharCodes([58135, 58543]),
         invoice: String.fromCharCodes([59214, 58948, 57390]),
+        italic: String.fromCharCodes([57344, 58469, 58054, 57553]),
         label: String.fromCharCodes([58912, 59376, 57349]),
+        latex: String.fromCharCodes([58912, 60458, 57347]),
         link: String.fromCharCodes([58155, 61435]),
+        list: String.fromCharCodes([58156, 57503]),
         location: String.fromCharCodes([59157, 61344, 57526]),
         magic: String.fromCharCodes([58926, 60059, 57358]),
         mic: String.fromCharCodes([57767, 57416]),
         mints: String.fromCharCodes([58930, 59014, 57346]),
         music: String.fromCharCodes([58935, 61155, 57350]),
         nostr: String.fromCharCodes([58947, 58574, 57345]),
+        numberedList: String.fromCharCodes([58827, 61003, 57447]),
         openBook: String.fromCharCodes([57344, 57826, 60512, 57518]),
         openWith: String.fromCharCodes([57344, 57826, 58090, 57553]),
         pause: String.fromCharCodes([58969, 57952, 57351]),
@@ -180,10 +197,15 @@ class AppIconCharactersData extends Equatable {
         split: String.fromCharCodes([59018, 57778, 57355]),
         star: String.fromCharCodes([58209, 58963]),
         sticker: String.fromCharCodes([57344, 59147, 60151, 57540]),
+        strikeThrough: String.fromCharCodes([58005, 57623, 57524]),
+        subscript: String.fromCharCodes([57835, 61408, 57356]),
+        superscript: String.fromCharCodes([57344, 58456, 61320, 57595]),
+        table: String.fromCharCodes([59025, 58301, 57359]),
         tilda: String.fromCharCodes([59029, 57398, 57349]),
         text: String.fromCharCodes([58213, 58670]),
         tools: String.fromCharCodes([59031, 60574, 57356]),
         transfer: String.fromCharCodes([58566, 59576, 57580]),
+        underline: String.fromCharCodes([57344, 58324, 58938, 57397]),
         video: String.fromCharCodes([59057, 57672, 57356]),
         voice: String.fromCharCodes([59059, 60948, 57347]),
         zap: String.fromCharCodes([57815, 57386]),
@@ -197,6 +219,7 @@ class AppIconCharactersData extends Equatable {
   final String backspace;
   final String backup;
   final String bell;
+  final String bold;
   final String camera;
   final String check;
   final String chevronDown;
@@ -219,6 +242,7 @@ class AppIconCharactersData extends Equatable {
   final String emojiLine;
   final String flip;
   final String focus;
+  final String footnote;
   final String gif;
   final String heart;
   final String hidden;
@@ -228,14 +252,18 @@ class AppIconCharactersData extends Equatable {
   final String incognito;
   final String info;
   final String invoice;
+  final String italic;
   final String label;
+  final String latex;
   final String link;
+  final String list;
   final String location;
   final String magic;
   final String mic;
   final String mints;
   final String music;
   final String nostr;
+  final String numberedList;
   final String openBook;
   final String openWith;
   final String pause;
@@ -256,10 +284,15 @@ class AppIconCharactersData extends Equatable {
   final String split;
   final String star;
   final String sticker;
+  final String strikeThrough;
+  final String subscript;
+  final String superscript;
+  final String table;
   final String text;
   final String tilda;
   final String tools;
   final String transfer;
+  final String underline;
   final String video;
   final String voice;
   final String zap;
@@ -273,6 +306,7 @@ class AppIconCharactersData extends Equatable {
         at.named('at'),
         backspace.named('backspace'),
         backup.named('backup'),
+        bold.named('bold'),
         bell.named('bell'),
         camera.named('camera'),
         check.named('check'),
@@ -296,6 +330,7 @@ class AppIconCharactersData extends Equatable {
         emojiLine.named('emojiLine'),
         flip.named('flip'),
         focus.named('focus'),
+        footnote.named('footnote'),
         gif.named('gif'),
         heart.named('heart'),
         hidden.named('hidden'),
@@ -305,14 +340,18 @@ class AppIconCharactersData extends Equatable {
         incognito.named('incognito'),
         info.named('info'),
         invoice.named('invoice'),
+        italic.named('italic'),
         label.named('label'),
+        latex.named('latex'),
         link.named('link'),
+        list.named('list'),
         location.named('location'),
         magic.named('magic'),
         mic.named('mic'),
         mints.named('mints'),
         music.named('music'),
         nostr.named('nostr'),
+        numberedList.named('numberedList'),
         openBook.named('openBook'),
         openWith.named('openWith'),
         pause.named('pause'),
@@ -333,10 +372,15 @@ class AppIconCharactersData extends Equatable {
         split.named('split'),
         star.named('star'),
         sticker.named('sticker'),
+        strikeThrough.named('strikeThrough'),
+        subscript.named('subscript'),
+        superscript.named('superscript'),
+        table.named('table'),
         text.named('text'),
         tilda.named('tilda'),
         tools.named('tools'),
         transfer.named('transfer'),
+        underline.named('underline'),
         video.named('video'),
         voice.named('voice'),
         zap.named('zap'),
