@@ -92,7 +92,6 @@ class AppResponsiveThemeState extends State<AppResponsiveTheme> {
 
   AppSystemScale get systemScale {
     final scale = _systemScale ?? widget.systemScale ?? AppSystemScale.normal;
-    print('Getting system scale: $scale'); // Debug print
     return scale;
   }
 
@@ -105,7 +104,6 @@ class AppResponsiveThemeState extends State<AppResponsiveTheme> {
   }
 
   void setSystemScale(AppSystemScale scale) {
-    print('Setting system scale to: $scale'); // Debug print
     setState(() => _systemScale = scale);
   }
 
@@ -119,7 +117,6 @@ class AppResponsiveThemeState extends State<AppResponsiveTheme> {
       AppSystemScale.large => AppSystemData.large(),
       AppSystemScale.normal => AppSystemData.normal(),
     };
-    print('System data scale: ${systemData.scale}'); // Debug print
 
     // Apply typography based on text scale
     switch (textScale) {

@@ -32,7 +32,7 @@ class AppShortTextParser {
       }
 
       // Handle code blocks
-      else if (line.startsWith('----')) {
+      if (line.startsWith('----')) {
         final StringBuffer codeContent = StringBuffer();
         i++; // Skip the opening delimiter
 
@@ -52,10 +52,11 @@ class AppShortTextParser {
           content: codeContent.toString().trimRight(),
           attributes: {'language': 'plain'},
         ));
+        continue;
       }
 
       // Handle block quotes
-      else if (line.startsWith('>')) {
+      if (line.startsWith('>')) {
         final String content = line.substring(1).trim();
         final children = _parseStyledText(content);
 
@@ -64,21 +65,23 @@ class AppShortTextParser {
           content: content,
           children: children,
         ));
+        continue;
       }
 
       // Handle paragraph with styled text
-      else if (!line.startsWith('=') &&
-          !line.startsWith('*') &&
-          !line.startsWith('.') &&
-          !line.startsWith('----')) {
-        final children = _parseStyledText(line);
+      final children = _parseStyledText(line);
 
-        elements.add(AppShortTextElement(
-          type: AppShortTextElementType.paragraph,
-          content: line,
-          children: children,
-        ));
-      }
+      elements.add(AppShortTextElement(
+        type: AppShortTextElementType.paragraph,
+        content: line,
+        children: children ??
+            [
+              AppShortTextElement(
+                type: AppShortTextElementType.styledText,
+                content: line,
+              ),
+            ],
+      ));
     }
 
     return elements;
