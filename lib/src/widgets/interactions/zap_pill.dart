@@ -65,7 +65,7 @@ class AppZapPill extends StatelessWidget {
                       theme.icons.characters.zap,
                       color: isOutgoing
                           ? AppColorsData.dark().black
-                          : theme.colors.black66,
+                          : theme.colors.white66,
                     ),
                     const AppGap.s4(),
                     AppAmount(
