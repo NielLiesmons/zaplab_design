@@ -1,5 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'text_selection_gesture_detector_builder.dart' as custom;
+import 'package:flutter/services.dart';
 
 bool isEditingText = false;
 
@@ -27,37 +28,6 @@ class AppEditableText extends StatefulWidget {
 
   @override
   State<AppEditableText> createState() => _AppEditableTextState();
-}
-
-class MentionSpan extends TextSpan {
-  final String npub;
-  final Profile profile;
-  final BuildContext context;
-
-  MentionSpan({
-    required this.npub,
-    required this.profile,
-    required this.context,
-  }) : super(
-          text: 'nostr:$npub',
-          style: TextStyle(
-            color: AppTheme.of(context).colors.white.withOpacity(0),
-            fontSize: 0,
-            height: 0,
-            letterSpacing: 0,
-            wordSpacing: 0,
-          ),
-          children: [
-            WidgetSpan(
-              alignment: PlaceholderAlignment.middle,
-              child: AppProfileInline(
-                profileName: profile.profileName,
-                profilePicUrl: profile.profilePicUrl,
-                onTap: profile.onTap,
-              ),
-            ),
-          ],
-        );
 }
 
 class InlineSpanController extends TextEditingController {
@@ -106,23 +76,41 @@ class InlineSpanController extends TextEditingController {
     _isUpdating = true;
 
     try {
-      // Remove all spans that are at or after the current offset
-      final spansToRemove = _activeSpans.keys
-          .where((spanOffset) => spanOffset >= offset)
+      // Create a new map to store updated span positions
+      final Map<int, InlineSpan> updatedSpans = {};
+
+      // Get all profile spans
+      final profileSpans = _activeSpans.entries
+          .where((entry) =>
+              entry.value is WidgetSpan &&
+              (entry.value as WidgetSpan).child is AppProfileInline)
           .toList();
 
-      for (final spanOffset in spansToRemove) {
-        _activeSpans.remove(spanOffset);
+      // Sort spans by offset to process them in order
+      profileSpans.sort((a, b) => a.key.compareTo(b.key));
+
+      // Update each span's position based on text changes
+      for (final span in profileSpans) {
+        final oldOffset = span.key;
+
+        // Calculate new offset based on text changes
+        int newOffset = oldOffset;
+
+        // If text was inserted before this span, move it forward
+        if (offset <= oldOffset) {
+          final textDiff = text.length - this.text.length;
+          newOffset += textDiff;
+        }
+
+        // Ensure the span is still within text bounds
+        if (newOffset >= 0 && newOffset < text.length) {
+          updatedSpans[newOffset] = span.value;
+        }
       }
 
-      // Remove any spans that are beyond the text length
-      final invalidSpans = _activeSpans.keys
-          .where((spanOffset) => spanOffset >= text.length)
-          .toList();
-
-      for (final spanOffset in invalidSpans) {
-        _activeSpans.remove(spanOffset);
-      }
+      // Clear old spans and add updated ones
+      _activeSpans.clear();
+      _activeSpans.addAll(updatedSpans);
     } finally {
       _isUpdating = false;
     }
@@ -185,17 +173,10 @@ class InlineSpanController extends TextEditingController {
     }
   }
 
-  void insertNostrProfile(int offset, String npub) async {
+  void insertNostrProfile(int offset, String npub, Profile profile) async {
     print('Inserting nostr profile span at offset $offset for npub: $npub');
 
     try {
-      final profiles = await onResolveMentions(npub);
-      if (profiles.isEmpty) {
-        print('No profile found for npub: $npub');
-        return;
-      }
-
-      final profile = profiles.first;
       final theme = AppTheme.of(context);
       _activeSpans[offset] = WidgetSpan(
         alignment: PlaceholderAlignment.middle,
@@ -329,8 +310,18 @@ class _AppEditableTextState extends State<AppEditableText>
       return;
     }
 
-    // Update spans based on text changes
-    _controller._updateSpans(text, offset);
+    // Check if cursor is trying to enter or is inside a profile span
+    for (final spanOffset in _controller._activeSpans.keys) {
+      if (offset == spanOffset || offset == spanOffset + 1) {
+        final span = _controller._activeSpans[spanOffset];
+        if (span is WidgetSpan && span.child is AppProfileInline) {
+          // Always move cursor after the span
+          _controller.selection =
+              TextSelection.collapsed(offset: spanOffset + 1);
+          return;
+        }
+      }
+    }
 
     // Handle mention typing
     if (_mentionStartOffset != null) {
@@ -352,26 +343,64 @@ class _AppEditableTextState extends State<AppEditableText>
       }
     }
 
-    // Check for new @ trigger
+    // Check for new @ trigger - only after a space
     if (offset > 0 && text[offset - 1] == '@' && _mentionStartOffset == null) {
-      print('New @ trigger detected at offset ${offset - 1}');
-      _mentionStartOffset = offset - 1;
-      _currentMentionText = '';
-      _showPlaceholder.value = true;
-      _controller.insertSpan(offset - 1, '@');
-      _resolveMentions(''); // Show menu with empty query to get all profiles
+      // Check if @ is after a space or at the start of text
+      if (offset == 1 || text[offset - 2] == ' ') {
+        print('New @ trigger detected at offset ${offset - 1}');
+        _mentionStartOffset = offset - 1;
+        _currentMentionText = '';
+        _showPlaceholder.value = true;
+        _controller.insertSpan(offset - 1, '@');
+        _resolveMentions(''); // Show menu with empty query to get all profiles
+      }
     }
 
     // Check if we've moved away from the mention
-    if (_mentionStartOffset != null &&
-        (offset <= _mentionStartOffset! || text[_mentionStartOffset!] != '@')) {
-      print('Moved away from mention');
-      _mentionStartOffset = null;
-      _currentMentionText = '';
-      _showPlaceholder.value = false;
-      _mentionOverlay?.remove();
-      _mentionOverlay = null;
-      _controller.clearSpans();
+    if (_mentionStartOffset != null) {
+      if (offset <= _mentionStartOffset! || text[_mentionStartOffset!] != '@') {
+        print('Moved away from mention');
+        // Remove the @ symbol if we're moving back
+        if (offset < _mentionStartOffset!) {
+          final newText = text.replaceRange(
+              _mentionStartOffset!, _mentionStartOffset! + 1, '');
+          _controller.value = TextEditingValue(
+            text: newText,
+            selection: TextSelection.collapsed(offset: offset),
+          );
+        }
+        _mentionStartOffset = null;
+        _currentMentionText = '';
+        _showPlaceholder.value = false;
+        _mentionOverlay?.remove();
+        _mentionOverlay = null;
+        _controller.clearSpans();
+      }
+    }
+
+    // Update spans based on text changes
+    if (text.length != previousLength) {
+      final textDiff = text.length - previousLength;
+      final Map<int, InlineSpan> updatedSpans = {};
+
+      for (final entry in _controller._activeSpans.entries) {
+        final oldOffset = entry.key;
+        final span = entry.value;
+
+        // If text was inserted before this span, move it forward
+        if (offset <= oldOffset) {
+          final newOffset = oldOffset + textDiff;
+          if (newOffset >= 0 && newOffset < text.length) {
+            updatedSpans[newOffset] = span;
+          }
+        } else {
+          // Keep span in place if text was inserted after it
+          updatedSpans[oldOffset] = span;
+        }
+      }
+
+      _controller._activeSpans.clear();
+      _controller._activeSpans.addAll(updatedSpans);
     }
   }
 
@@ -460,8 +489,8 @@ class _AppEditableTextState extends State<AppEditableText>
     print('Current text: "$text"');
     print('Replacing from offset ${_mentionStartOffset!} to $currentOffset');
 
-    // Insert the nostr profile span
-    _controller.insertNostrProfile(_mentionStartOffset!, profile.npub);
+    // Insert the nostr profile span with the specific profile
+    _controller.insertNostrProfile(_mentionStartOffset!, profile.npub, profile);
 
     // Then update the cursor position
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -589,45 +618,87 @@ class _AppEditableTextState extends State<AppEditableText>
               ),
             _gestureDetectorBuilder.buildGestureDetector(
               behavior: HitTestBehavior.deferToChild,
-              child: EditableText(
-                key: editableTextKey,
-                controller: _controller,
-                focusNode: _focusNode,
-                style: textStyle,
-                cursorColor: theme.colors.white,
-                backgroundCursorColor: theme.colors.white33,
-                onChanged: widget.onChanged,
-                onSelectionChanged: (selection, cause) {
-                  isEditingText = !selection.isCollapsed;
-                  _hasSelection = !selection.isCollapsed;
-                  if (!selection.isCollapsed && isEditingText) {
-                    editableTextKey.currentState?.showToolbar();
-                  } else {
-                    editableTextKey.currentState?.hideToolbar();
+              child: RawKeyboardListener(
+                focusNode: FocusNode(),
+                onKey: (event) {
+                  if (event is RawKeyDownEvent) {
+                    final selection = _controller.selection;
+                    if (!selection.isValid) return;
+
+                    final offset = selection.baseOffset;
+
+                    // Find the next span before and after the current offset
+                    int? nextSpanBefore = null;
+                    int? nextSpanAfter = null;
+
+                    for (final spanOffset in _controller._activeSpans.keys) {
+                      if (spanOffset < offset) {
+                        nextSpanBefore = spanOffset;
+                      } else if (spanOffset > offset) {
+                        nextSpanAfter = spanOffset;
+                        break;
+                      }
+                    }
+
+                    // Handle arrow keys
+                    if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+                      if (nextSpanBefore != null) {
+                        // Move cursor before the previous span
+                        _controller.selection =
+                            TextSelection.collapsed(offset: nextSpanBefore);
+                        return;
+                      }
+                    } else if (event.logicalKey ==
+                        LogicalKeyboardKey.arrowRight) {
+                      if (nextSpanAfter != null) {
+                        // Move cursor after the next span
+                        _controller.selection =
+                            TextSelection.collapsed(offset: nextSpanAfter + 1);
+                        return;
+                      }
+                    }
                   }
                 },
-                maxLines: null,
-                minLines: 1,
-                textAlign: TextAlign.left,
-                selectionControls: AppTextSelectionControls(),
-                enableInteractiveSelection: true,
-                showSelectionHandles: true,
-                showCursor: true,
-                rendererIgnoresPointer: false,
-                enableSuggestions: true,
-                readOnly: false,
-                selectionColor:
-                    theme.colors.blurpleColor.withValues(alpha: 0.33),
-                contextMenuBuilder: widget.contextMenuItems == null
-                    ? null
-                    : (context, editableTextState) {
-                        return AppTextSelectionMenu(
-                          position: editableTextState
-                              .contextMenuAnchors.primaryAnchor,
-                          editableTextState: editableTextState,
-                          menuItems: widget.contextMenuItems,
-                        );
-                      },
+                child: EditableText(
+                  key: editableTextKey,
+                  controller: _controller,
+                  focusNode: _focusNode,
+                  style: textStyle,
+                  cursorColor: theme.colors.white,
+                  backgroundCursorColor: theme.colors.white33,
+                  onChanged: widget.onChanged,
+                  onSelectionChanged: (selection, cause) {
+                    isEditingText = !selection.isCollapsed;
+                    _hasSelection = !selection.isCollapsed;
+                    if (!selection.isCollapsed && isEditingText) {
+                      editableTextKey.currentState?.showToolbar();
+                    } else {
+                      editableTextKey.currentState?.hideToolbar();
+                    }
+                  },
+                  maxLines: null,
+                  minLines: 1,
+                  textAlign: TextAlign.left,
+                  selectionControls: AppTextSelectionControls(),
+                  enableInteractiveSelection: true,
+                  showSelectionHandles: true,
+                  showCursor: true,
+                  rendererIgnoresPointer: false,
+                  enableSuggestions: true,
+                  readOnly: false,
+                  selectionColor:
+                      theme.colors.blurpleColor.withValues(alpha: 0.33),
+                  contextMenuBuilder: widget.contextMenuItems == null
+                      ? null
+                      : (context, editableTextState) {
+                          return AppTextSelectionMenu(
+                            position: editableTextState
+                                .contextMenuAnchors.primaryAnchor,
+                            editableTextState: editableTextState,
+                            menuItems: widget.contextMenuItems,
+                          );
+                        },
+                ),
               ),
             ),
           ],
