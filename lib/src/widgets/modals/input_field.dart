@@ -8,6 +8,7 @@ class AppInputField extends StatefulWidget {
   final TextStyle? style;
   final List<AppTextSelectionMenuItem>? contextMenuItems;
   final Color? backgroundColor;
+  final NostrMentionResolver onResolveMentions;
 
   const AppInputField({
     super.key,
@@ -18,6 +19,7 @@ class AppInputField extends StatefulWidget {
     this.style,
     this.contextMenuItems,
     this.backgroundColor,
+    required this.onResolveMentions,
   });
 
   AppInputField copyWith({
@@ -28,6 +30,7 @@ class AppInputField extends StatefulWidget {
     TextStyle? style,
     List<AppTextSelectionMenuItem>? contextMenuItems,
     Color? backgroundColor,
+    required NostrMentionResolver onResolveMentions,
   }) {
     return AppInputField(
       placeholder: placeholder ?? this.placeholder,
@@ -37,6 +40,7 @@ class AppInputField extends StatefulWidget {
       style: style ?? this.style,
       contextMenuItems: contextMenuItems ?? this.contextMenuItems,
       backgroundColor: backgroundColor ?? this.backgroundColor,
+      onResolveMentions: onResolveMentions,
     );
   }
 
@@ -85,29 +89,7 @@ class _AppInputFieldState extends State<AppInputField> {
             onChanged: widget.onChanged,
             contextMenuItems: widget.contextMenuItems,
             placeholder: widget.placeholder,
-            onResolveMentions: (query) async {
-              print('Querying mentions for: $query');
-              // For testing, return some dummy data
-              return [
-                Profile(
-                  npub: 'npub1hjghklk',
-                  profileName: 'Franzap',
-                  profilePicUrl:
-                      'https://primal.b-cdn.net/media-cache?s=m&a=1&u=https%3A%2F%2Fnostr.build%2Fi%2Fnostr.build_1732d9a6cd9614c6c4ac3b8f0ee4a8242e9da448e2aacb82e7681d9d0bc36568.jpg',
-                ),
-                Profile(
-                  npub: 'npub1hjghklk',
-                  profileName: 'Pip',
-                  profilePicUrl: 'https://m.primal.net/IfSZ.jpg',
-                ),
-                Profile(
-                  npub: 'npub1hjghklk',
-                  profileName: 'Verbricha',
-                  profilePicUrl:
-                      'https://primal.b-cdn.net/media-cache?s=m&a=1&u=https%3A%2F%2Fnostr.download%2F1aba957814cac9c324c54d94e0ba6606dc50af17f7c08654e9b9f139a9720d6d.jpeg',
-                ),
-              ];
-            },
+            onResolveMentions: widget.onResolveMentions,
           ),
           const AppGap.s8(),
           Row(

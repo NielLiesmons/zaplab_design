@@ -30,7 +30,10 @@ class AppInputModal extends StatelessWidget {
         pageBuilder: (_, __, ___) => AppInputModal(
           header: header,
           inputField: inputField is AppInputField
-              ? (inputField).copyWith(focusNode: focusNode)
+              ? (inputField).copyWith(
+                  focusNode: focusNode,
+                  onResolveMentions: inputField.onResolveMentions,
+                )
               : inputField,
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {

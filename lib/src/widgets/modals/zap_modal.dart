@@ -15,6 +15,7 @@ class AppZapModal extends StatefulWidget {
     required String profileImageUrl,
     List<({double amount, String profileImageUrl})> otherZaps = const [],
     List<double> recentAmounts = const [],
+    required NostrMentionResolver onResolveMentions,
   }) {
     double amount = recentAmounts.isNotEmpty ? recentAmounts.first : 100;
     String message = '';
@@ -38,6 +39,7 @@ class AppZapModal extends StatefulWidget {
                     onValueChanged: (value) {
                       setState(() => amount = value);
                     },
+                    onResolveMentions: onResolveMentions,
                   ),
                 ],
               ),

@@ -10,6 +10,7 @@ class AppZapSlider extends StatefulWidget {
   final ValueChanged<double>? onValueChanged;
   final List<double>? recentAmounts;
   final List<({double amount, String profileImageUrl})> otherZaps;
+  final NostrMentionResolver onResolveMentions;
 
   const AppZapSlider({
     super.key,
@@ -18,6 +19,7 @@ class AppZapSlider extends StatefulWidget {
     this.onValueChanged,
     this.recentAmounts,
     this.otherZaps = const [],
+    required this.onResolveMentions,
   });
 
   @override
@@ -309,6 +311,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
             color: theme.colors.white33,
           ),
         ],
+        onResolveMentions: widget.onResolveMentions,
       ),
     );
   }
