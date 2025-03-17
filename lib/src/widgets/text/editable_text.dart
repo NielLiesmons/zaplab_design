@@ -76,41 +76,43 @@ class InlineSpanController extends TextEditingController {
     _isUpdating = true;
 
     try {
+      print('=== _updateSpans Debug ===');
+      print('Current text: "$text"');
+      print('Current offset: $offset');
+      print('Previous text length: ${this.text.length}');
+      print('New text length: ${text.length}');
+      print('Current spans: ${_activeSpans.keys.toList()}');
+
       // Create a new map to store updated span positions
       final Map<int, InlineSpan> updatedSpans = {};
 
-      // Get all profile spans
-      final profileSpans = _activeSpans.entries
-          .where((entry) =>
-              entry.value is WidgetSpan &&
-              (entry.value as WidgetSpan).child is AppProfileInline)
-          .toList();
+      // Get all spans and sort them by offset
+      final spans = _activeSpans.entries.toList()
+        ..sort((a, b) => a.key.compareTo(b.key));
 
-      // Sort spans by offset to process them in order
-      profileSpans.sort((a, b) => a.key.compareTo(b.key));
+      // Find all @ characters in the text
+      int lastAtIndex = -1;
+      while (true) {
+        final atIndex = text.indexOf('@', lastAtIndex + 1);
+        if (atIndex == -1) break;
 
-      // Update each span's position based on text changes
-      for (final span in profileSpans) {
-        final oldOffset = span.key;
+        // Find the corresponding span for this @
+        final span = spans.firstWhere(
+          (s) => s.key == lastAtIndex + 1 || s.key == atIndex,
+          orElse: () => spans.first,
+        );
 
-        // Calculate new offset based on text changes
-        int newOffset = oldOffset;
-
-        // If text was inserted before this span, move it forward
-        if (offset <= oldOffset) {
-          final textDiff = text.length - this.text.length;
-          newOffset += textDiff;
-        }
-
-        // Ensure the span is still within text bounds
-        if (newOffset >= 0 && newOffset < text.length) {
-          updatedSpans[newOffset] = span.value;
-        }
+        print('Found @ at index: $atIndex, updating span from ${span.key}');
+        updatedSpans[atIndex] = span.value;
+        lastAtIndex = atIndex;
       }
+
+      print('Updated spans: ${updatedSpans.keys.toList()}');
 
       // Clear old spans and add updated ones
       _activeSpans.clear();
       _activeSpans.addAll(updatedSpans);
+      notifyListeners();
     } finally {
       _isUpdating = false;
     }
@@ -316,8 +318,10 @@ class _AppEditableTextState extends State<AppEditableText>
         final span = _controller._activeSpans[spanOffset];
         if (span is WidgetSpan && span.child is AppProfileInline) {
           // Always move cursor after the span
-          _controller.selection =
-              TextSelection.collapsed(offset: spanOffset + 1);
+          final newOffset = spanOffset + 1;
+          if (newOffset <= text.length) {
+            _controller.selection = TextSelection.collapsed(offset: newOffset);
+          }
           return;
         }
       }
@@ -364,9 +368,10 @@ class _AppEditableTextState extends State<AppEditableText>
         if (offset < _mentionStartOffset!) {
           final newText = text.replaceRange(
               _mentionStartOffset!, _mentionStartOffset! + 1, '');
+          final newOffset = offset;
           _controller.value = TextEditingValue(
             text: newText,
-            selection: TextSelection.collapsed(offset: offset),
+            selection: TextSelection.collapsed(offset: newOffset),
           );
         }
         _mentionStartOffset = null;
@@ -374,34 +379,13 @@ class _AppEditableTextState extends State<AppEditableText>
         _showPlaceholder.value = false;
         _mentionOverlay?.remove();
         _mentionOverlay = null;
-        _controller.clearSpans();
+        // Don't clear spans here anymore - we want to keep existing mentions
       }
     }
 
-    // Update spans based on text changes
-    if (text.length != previousLength) {
-      final textDiff = text.length - previousLength;
-      final Map<int, InlineSpan> updatedSpans = {};
-
-      for (final entry in _controller._activeSpans.entries) {
-        final oldOffset = entry.key;
-        final span = entry.value;
-
-        // If text was inserted before this span, move it forward
-        if (offset <= oldOffset) {
-          final newOffset = oldOffset + textDiff;
-          if (newOffset >= 0 && newOffset < text.length) {
-            updatedSpans[newOffset] = span;
-          }
-        } else {
-          // Keep span in place if text was inserted after it
-          updatedSpans[oldOffset] = span;
-        }
-      }
-
-      _controller._activeSpans.clear();
-      _controller._activeSpans.addAll(updatedSpans);
-    }
+    // Update spans on any text change
+    print('Calling _updateSpans with text: "$text" and offset: $offset');
+    _controller._updateSpans(text, offset);
   }
 
   void _handleExternalControllerChange() {
