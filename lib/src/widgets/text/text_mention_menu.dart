@@ -49,6 +49,24 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
     }
   }
 
+  Offset _calculatePosition(
+      BuildContext context, double menuWidth, double menuHeight) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final selectionX = widget.position.dx;
+    final thirdOfScreen = screenWidth / 3;
+    final selectionThird = (selectionX / thirdOfScreen).floor();
+
+    // Calculate x offset based on which third of the screen we're in
+    final double xOffset = switch (selectionThird) {
+      0 => 0, // Left third - align with cursor
+      1 => -(menuWidth / 2), // Middle third - center menu
+      2 => -menuWidth, // Right third - align right edge with cursor
+      _ => 0,
+    };
+
+    return Offset(xOffset, -menuHeight);
+  }
+
   Widget _buildMentionItem(AppTextMentionMenuItem item) {
     final theme = AppTheme.of(context);
     return MouseRegion(
@@ -59,8 +77,7 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
         child: AppContainer(
           height: theme.sizes.s38,
           padding: const AppEdgeInsets.symmetric(
-            horizontal: AppGapSize.s12,
-            vertical: AppGapSize.s8,
+            horizontal: AppGapSize.s10,
           ),
           child: Row(
             children: [
@@ -85,11 +102,12 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
     final theme = AppTheme.of(context);
     final items = widget.menuItems ?? [];
     final itemHeight = theme.sizes.s38;
-    final menuHeight = itemHeight * items.length;
+    final menuHeight = items.length <= 4 ? itemHeight * items.length : 168.0;
     final menuWidth = _calculateWidth(context);
+    final position = _calculatePosition(context, menuWidth, menuHeight);
 
     return Transform.translate(
-      offset: Offset(0, -menuHeight),
+      offset: position,
       child: Align(
         alignment: Alignment.bottomLeft,
         child: ClipRRect(
@@ -102,6 +120,7 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
                   height: menuHeight,
                   constraints: BoxConstraints(
                     maxWidth: menuWidth,
+                    maxHeight: 168.0,
                   ),
                   decoration: BoxDecoration(
                     color: theme.colors.white16,
@@ -111,17 +130,41 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
                       width: LineThicknessData.normal().thin,
                     ),
                   ),
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        for (final item in items) ...[
-                          _buildMentionItem(item),
-                          if (item != items.last) const AppDivider.horizontal(),
-                        ],
-                      ],
-                    ),
+                  child: Stack(
+                    children: [
+                      SingleChildScrollView(
+                        controller: _scrollController,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            for (final item in items) ...[
+                              _buildMentionItem(item),
+                              if (item != items.last)
+                                const AppDivider.horizontal(),
+                            ],
+                          ],
+                        ),
+                      ),
+                      if (items.length > 4)
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          height: 24,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  theme.colors.white16.withOpacity(0),
+                                  theme.colors.white16,
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ],
