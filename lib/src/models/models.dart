@@ -1,4 +1,6 @@
 // Community
+import 'package:zaplab_design/zaplab_design.dart';
+
 class Community {
   final String npub;
   final String profilePicUrl;
@@ -17,6 +19,7 @@ class Community {
 
 // Profile
 typedef NostrProfileResolver = Future<Profile> Function(String identifier);
+typedef NostrProfileSearch = Future<List<Profile>> Function(String query);
 
 class Profile {
   final String npub;
@@ -31,9 +34,6 @@ class Profile {
     this.onTap,
   });
 }
-
-// Mention
-typedef NostrMentionResolver = Future<List<Profile>> Function(String query);
 
 // Message
 class Message {
@@ -58,8 +58,18 @@ class Message {
   });
 }
 
-// Reaction
+// Emoji
 typedef NostrEmojiResolver = Future<String> Function(String identifier);
+typedef NostrEmojiSearch = Future<List<Emoji>> Function(String query);
+
+class Emoji {
+  final String emojiUrl;
+  final String emojiName;
+
+  const Emoji({required this.emojiUrl, required this.emojiName});
+}
+
+// Reaction
 
 class Reaction {
   final String npub;

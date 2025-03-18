@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 
 class AppSizesData extends Equatable {
   const AppSizesData({
+    required this.phi,
     required this.s2,
     required this.s4,
     required this.s6,
@@ -29,6 +30,7 @@ class AppSizesData extends Equatable {
   });
 
   factory AppSizesData.normal() => const AppSizesData(
+        phi: 1.618033988749895,
         s2: 2,
         s4: 4,
         s6: 6,
@@ -53,6 +55,7 @@ class AppSizesData extends Equatable {
         s104: 104,
       );
 
+  final double phi;
   final double s2;
   final double s4;
   final double s6;
@@ -80,6 +83,7 @@ class AppSizesData extends Equatable {
 
   @override
   List<Object?> get props => [
+        phi.named('phi'),
         s2.named('s2'),
         s4.named('s4'),
         s6.named('s6'),

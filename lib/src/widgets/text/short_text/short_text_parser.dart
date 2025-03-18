@@ -84,7 +84,102 @@ class AppShortTextParser {
       ));
     }
 
-    return elements;
+    return _combineConsecutiveImageElements(elements);
+  }
+
+  List<AppShortTextElement> _combineConsecutiveImageElements(
+      List<AppShortTextElement> elements) {
+    final List<AppShortTextElement> result = [];
+    List<String>? currentImageUrls;
+    List<AppShortTextElement>? textBeforeImages;
+
+    for (final element in elements) {
+      bool hasProcessedImages = false;
+
+      // Check if this is a paragraph that ends with an image
+      if (element.type == AppShortTextElementType.paragraph &&
+          element.children != null) {
+        // Find the last non-text element
+        var lastNonText = element.children!.lastWhere(
+          (child) => child.type != AppShortTextElementType.styledText,
+          orElse: () => element.children!.first,
+        );
+
+        // If it's an image, we'll process this paragraph specially
+        if (lastNonText.type == AppShortTextElementType.images) {
+          // Keep any text that comes before the image
+          var textElements = element.children!
+              .takeWhile((child) => child != lastNonText)
+              .toList();
+          if (textElements.isNotEmpty) {
+            if (currentImageUrls != null) {
+              // If we have pending images, add them before this text
+              print(
+                  'Adding ${currentImageUrls.length} pending images before text');
+              result.add(AppShortTextElement(
+                type: AppShortTextElementType.images,
+                content: currentImageUrls.join('\n'),
+              ));
+              currentImageUrls = null;
+            }
+            // Add the text as a new paragraph
+            result.add(AppShortTextElement(
+              type: AppShortTextElementType.paragraph,
+              content: element.content,
+              children: textElements,
+            ));
+          }
+
+          // Add this image's URLs to our collection
+          final urls = lastNonText.content.split('\n');
+          if (currentImageUrls == null) {
+            currentImageUrls = urls;
+          } else {
+            currentImageUrls.addAll(urls);
+          }
+          hasProcessedImages = true;
+        }
+      }
+
+      // Handle standalone image elements
+      if (!hasProcessedImages &&
+          element.type == AppShortTextElementType.images) {
+        final urls = element.content.split('\n');
+        if (currentImageUrls == null) {
+          currentImageUrls = urls;
+        } else {
+          currentImageUrls.addAll(urls);
+        }
+        hasProcessedImages = true;
+      }
+
+      // If this element wasn't an image and wasn't a paragraph ending with an image
+      if (!hasProcessedImages) {
+        // Add any pending images before this element
+        if (currentImageUrls != null) {
+          print(
+              'Combining ${currentImageUrls.length} image URLs into single stack');
+          result.add(AppShortTextElement(
+            type: AppShortTextElementType.images,
+            content: currentImageUrls.join('\n'),
+          ));
+          currentImageUrls = null;
+        }
+        result.add(element);
+      }
+    }
+
+    // Add any remaining image URLs
+    if (currentImageUrls != null) {
+      print(
+          'Combining ${currentImageUrls.length} image URLs into single stack');
+      result.add(AppShortTextElement(
+        type: AppShortTextElementType.images,
+        content: currentImageUrls.join('\n'),
+      ));
+    }
+
+    return result;
   }
 
   List<AppShortTextElement>? _parseStyledText(String text) {
@@ -252,17 +347,43 @@ class AppShortTextParser {
           content: firstMatch[0]!,
         ));
       } else if (firstMatch == imageUrlMatch) {
+        // Collect all consecutive image URLs
+        final List<String> imageUrls = [firstMatch[0]!.trim()];
+        print('Found first image URL: ${imageUrls[0]}');
+
+        // Look ahead through the entire remaining text for consecutive image URLs
+        String remainingText = text.substring(firstMatch.end);
+
+        // Skip any text until we find another image or non-whitespace
+        while (true) {
+          remainingText = remainingText.trimLeft();
+          if (remainingText.isEmpty) break;
+
+          // Try to match another image URL
+          final nextMatch = imageUrlPattern.matchAsPrefix(remainingText);
+          if (nextMatch != null) {
+            // Found another image URL
+            final nextUrl = nextMatch[0]!.trim();
+            print('Found additional image URL: $nextUrl');
+            imageUrls.add(nextUrl);
+            remainingText = remainingText.substring(nextMatch.end);
+            continue;
+          }
+
+          // If we find any non-whitespace that isn't an image URL, stop looking
+          if (remainingText.trimLeft().isNotEmpty) break;
+          break;
+        }
+
+        print(
+            'Creating imageStack element with ${imageUrls.length} URLs: ${imageUrls.join(", ")}');
         styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.image,
-          content: firstMatch[0]!.trim(),
+          type: AppShortTextElementType.images,
+          content: imageUrls.join('\n'),
         ));
 
-        // Skip any whitespace after the match before continuing
-        int nextPosition = firstMatch.end;
-        while (nextPosition < text.length && text[nextPosition] == ' ') {
-          nextPosition++;
-        }
-        currentPosition = nextPosition;
+        // Update current position to skip all processed URLs
+        currentPosition = text.length - remainingText.length;
         continue;
       } else if (firstMatch == urlMatch) {
         styledElements.add(AppShortTextElement(

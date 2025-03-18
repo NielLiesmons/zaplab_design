@@ -71,6 +71,20 @@ class AppShortTextRenderer extends StatelessWidget {
     final isInsideMessageBubble = MessageBubbleScope.of(context);
 
     switch (element.type) {
+      case AppShortTextElementType.images:
+        print(
+            'Renderer: Processing standalone images element with content: ${element.content}');
+        final urls = element.content.split('\n');
+        print('Renderer: Split into ${urls.length} URLs: ${urls.join(", ")}');
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const AppGap.s2(),
+            AppImageStack(imageUrls: urls),
+            const AppGap.s2(),
+          ],
+        );
+
       case AppShortTextElementType.codeBlock:
         return AppCodeBlock(
           code: element.content,
@@ -233,7 +247,12 @@ class AppShortTextRenderer extends StatelessWidget {
                   recognizer: TapGestureRecognizer()
                     ..onTap = () => onLinkTap(child.content),
                 ));
-              } else if (child.type == AppShortTextElementType.image) {
+              } else if (child.type == AppShortTextElementType.images) {
+                print(
+                    'Renderer: Processing images element with content: ${child.content}');
+                final urls = child.content.split('\n');
+                print(
+                    'Renderer: Split into ${urls.length} URLs: ${urls.join(", ")}');
                 if (currentSpans.isNotEmpty) {
                   paragraphPieces.add(
                     AppSelectableText.rich(
@@ -247,8 +266,8 @@ class AppShortTextRenderer extends StatelessWidget {
                 }
                 paragraphPieces.add(const AppGap.s2());
                 paragraphPieces.add(
-                  AppImageCard(
-                    url: child.content,
+                  AppImageStack(
+                    imageUrls: urls,
                   ),
                 );
                 paragraphPieces.add(const AppGap.s2());

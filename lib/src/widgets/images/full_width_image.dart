@@ -81,14 +81,22 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
                   final height = constraints.maxWidth / aspectRatio;
                   final useMaxHeight = height > maxHeight;
 
-                  return Container(
+                  return AppContainer(
                     width: constraints.maxWidth,
                     height: useMaxHeight ? maxHeight : height,
-                    color: theme.colors.grey66,
+                    decoration: BoxDecoration(
+                      color: theme.colors.grey66,
+                      border: Border.all(
+                        color: theme.colors.white16,
+                        width: LineThicknessData.normal().thin,
+                      ),
+                    ),
                     child: Center(
                       child: Image.network(
                         widget.url,
-                        fit: BoxFit.contain,
+                        fit: useMaxHeight ? BoxFit.contain : BoxFit.cover,
+                        width: constraints.maxWidth,
+                        height: useMaxHeight ? maxHeight : height,
                         errorBuilder: (context, error, stackTrace) {
                           return const AppSkeletonLoader();
                         },

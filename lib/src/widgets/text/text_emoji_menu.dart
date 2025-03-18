@@ -1,22 +1,24 @@
 import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppTextMentionMenuItem {
-  final Profile profile;
+class AppTextEmojiMenuItem {
+  final String emojiUrl;
+  final String emojiName;
   final void Function(EditableTextState) onTap;
 
-  const AppTextMentionMenuItem({
-    required this.profile,
+  const AppTextEmojiMenuItem({
+    required this.emojiUrl,
+    required this.emojiName,
     required this.onTap,
   });
 }
 
-class AppTextMentionMenu extends StatefulWidget {
+class AppTextEmojiMenu extends StatefulWidget {
   final Offset position;
   final EditableTextState editableTextState;
-  final List<AppTextMentionMenuItem>? menuItems;
+  final List<AppTextEmojiMenuItem>? menuItems;
 
-  const AppTextMentionMenu({
+  const AppTextEmojiMenu({
     super.key,
     required this.position,
     required this.editableTextState,
@@ -24,10 +26,10 @@ class AppTextMentionMenu extends StatefulWidget {
   });
 
   @override
-  State<AppTextMentionMenu> createState() => _AppTextMentionMenuState();
+  State<AppTextEmojiMenu> createState() => _AppTextEmojiMenuState();
 }
 
-class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
+class _AppTextEmojiMenuState extends State<AppTextEmojiMenu> {
   final ScrollController _scrollController = ScrollController();
 
   double _calculateWidth(BuildContext context) {
@@ -67,7 +69,7 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
     return Offset(xOffset, -menuHeight);
   }
 
-  Widget _buildMentionItem(AppTextMentionMenuItem item) {
+  Widget _buildEmojiItem(AppTextEmojiMenuItem item) {
     final theme = AppTheme.of(context);
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -81,12 +83,15 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
           ),
           child: Row(
             children: [
-              AppProfilePic(item.profile.profilePicUrl,
-                  size: AppProfilePicSize.s24),
+              AppEmojiImage(
+                emojiUrl: item.emojiUrl,
+                emojiName: item.emojiName,
+                size: 24,
+              ),
               const AppGap.s8(),
               Expanded(
                 child: AppText.med14(
-                  item.profile.profileName,
+                  item.emojiName,
                   color: theme.colors.white,
                 ),
               ),
@@ -138,7 +143,7 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             for (final item in items) ...[
-                              _buildMentionItem(item),
+                              _buildEmojiItem(item),
                               if (item != items.last)
                                 const AppDivider.horizontal(),
                             ],

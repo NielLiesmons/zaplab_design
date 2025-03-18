@@ -12,7 +12,8 @@ class AppEditableText extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final List<AppTextSelectionMenuItem>? contextMenuItems;
   final List<Widget>? placeholder;
-  final NostrMentionResolver onResolveMentions;
+  final NostrProfileSearch onSearchProfiles;
+  final NostrEmojiSearch onSearchEmojis;
 
   const AppEditableText({
     super.key,
@@ -23,7 +24,8 @@ class AppEditableText extends StatefulWidget {
     this.onChanged,
     this.contextMenuItems,
     this.placeholder,
-    required this.onResolveMentions,
+    required this.onSearchProfiles,
+    required this.onSearchEmojis,
   });
 
   @override
@@ -33,7 +35,8 @@ class AppEditableText extends StatefulWidget {
 class InlineSpanController extends TextEditingController {
   final Map<String, WidgetBuilder> triggerSpans;
   final Map<int, InlineSpan> _activeSpans = {};
-  final NostrMentionResolver onResolveMentions;
+  final NostrProfileSearch onSearchProfiles;
+  final NostrEmojiSearch onSearchEmojis;
   final BuildContext context;
   bool _isDisposing = false;
   bool _isUpdating = false;
@@ -42,7 +45,8 @@ class InlineSpanController extends TextEditingController {
   InlineSpanController({
     String? text,
     required this.triggerSpans,
-    required this.onResolveMentions,
+    required this.onSearchProfiles,
+    required this.onSearchEmojis,
     required this.context,
   }) : super(text: text);
 
@@ -90,21 +94,33 @@ class InlineSpanController extends TextEditingController {
       final spans = _activeSpans.entries.toList()
         ..sort((a, b) => a.key.compareTo(b.key));
 
-      // Find all @ characters in the text
-      int lastAtIndex = -1;
+      // Find all @ and : characters in the text
+      int lastTriggerIndex = -1;
       while (true) {
-        final atIndex = text.indexOf('@', lastAtIndex + 1);
-        if (atIndex == -1) break;
+        final atIndex = text.indexOf('@', lastTriggerIndex + 1);
+        final colonIndex = text.indexOf(':', lastTriggerIndex + 1);
 
-        // Find the corresponding span for this @
+        // Find the next trigger character
+        final nextTriggerIndex = atIndex == -1
+            ? colonIndex
+            : colonIndex == -1
+                ? atIndex
+                : atIndex < colonIndex
+                    ? atIndex
+                    : colonIndex;
+
+        if (nextTriggerIndex == -1) break;
+
+        // Find the corresponding span for this trigger
         final span = spans.firstWhere(
-          (s) => s.key == lastAtIndex + 1 || s.key == atIndex,
+          (s) => s.key == lastTriggerIndex + 1 || s.key == nextTriggerIndex,
           orElse: () => spans.first,
         );
 
-        print('Found @ at index: $atIndex, updating span from ${span.key}');
-        updatedSpans[atIndex] = span.value;
-        lastAtIndex = atIndex;
+        print(
+            'Found trigger at index: $nextTriggerIndex, updating span from ${span.key}');
+        updatedSpans[nextTriggerIndex] = span.value;
+        lastTriggerIndex = nextTriggerIndex;
       }
 
       print('Updated spans: ${updatedSpans.keys.toList()}');
@@ -195,6 +211,25 @@ class InlineSpanController extends TextEditingController {
     }
   }
 
+  void insertEmoji(int offset, String emojiUrl, String emojiName) {
+    print('Inserting emoji span at offset $offset for emoji: $emojiName');
+
+    try {
+      final theme = AppTheme.of(context);
+      _activeSpans[offset] = WidgetSpan(
+        alignment: PlaceholderAlignment.middle,
+        child: AppEmojiImage(
+          emojiUrl: emojiUrl,
+          emojiName: emojiName,
+          size: 24,
+        ),
+      );
+      notifyListeners();
+    } catch (e) {
+      print('Error inserting emoji: $e');
+    }
+  }
+
   void clearSpans() {
     _activeSpans.clear();
     notifyListeners();
@@ -219,6 +254,12 @@ class _AppEditableTextState extends State<AppEditableText>
   int? _mentionStartOffset;
   List<AppTextMentionMenuItem> _mentionItems = [];
   OverlayEntry? _mentionOverlay;
+
+  // Track emoji state
+  String _currentEmojiText = '';
+  int? _emojiStartOffset;
+  List<AppTextEmojiMenuItem> _emojiItems = [];
+  OverlayEntry? _emojiOverlay;
 
   @override
   bool get forcePressEnabled => false;
@@ -266,8 +307,48 @@ class _AppEditableTextState extends State<AppEditableText>
             ],
           );
         },
+        ':': (context) {
+          final theme = AppTheme.of(context);
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    children: [
+                      AppGap.s2(),
+                      AppIcon.s20(
+                        theme.icons.characters.emojiFill,
+                        gradient: theme.colors.greydient33,
+                      ),
+                    ],
+                  ),
+                  const AppGap.s4(),
+                ],
+              ),
+              ValueListenableBuilder<bool>(
+                valueListenable: _showPlaceholder,
+                builder: (context, show, child) => show
+                    ? Positioned(
+                        left: 32,
+                        top: 0,
+                        bottom: 0,
+                        child: Center(
+                          child: AppText.med16(
+                            'Emoji Name',
+                            color: theme.colors.white33,
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+              ),
+            ],
+          );
+        },
       },
-      onResolveMentions: widget.onResolveMentions,
+      onSearchProfiles: widget.onSearchProfiles,
+      onSearchEmojis: widget.onSearchEmojis,
       context: context,
     );
     _focusNode = widget.focusNode ?? FocusNode();
@@ -309,14 +390,19 @@ class _AppEditableTextState extends State<AppEditableText>
       _showPlaceholder.value = false;
       _mentionOverlay?.remove();
       _mentionOverlay = null;
+      _emojiStartOffset = null;
+      _currentEmojiText = '';
+      _emojiOverlay?.remove();
+      _emojiOverlay = null;
       return;
     }
 
-    // Check if cursor is trying to enter or is inside a profile span
+    // Check if cursor is trying to enter or is inside a profile or emoji span
     for (final spanOffset in _controller._activeSpans.keys) {
       if (offset == spanOffset || offset == spanOffset + 1) {
         final span = _controller._activeSpans[spanOffset];
-        if (span is WidgetSpan && span.child is AppProfileInline) {
+        if (span is WidgetSpan &&
+            (span.child is AppProfileInline || span.child is AppEmojiImage)) {
           // Always move cursor after the span
           final newOffset = spanOffset + 1;
           if (newOffset <= text.length) {
@@ -347,6 +433,26 @@ class _AppEditableTextState extends State<AppEditableText>
       }
     }
 
+    // Handle emoji typing
+    if (_emojiStartOffset != null) {
+      if (offset > _emojiStartOffset!) {
+        final newEmojiText = text.substring(_emojiStartOffset! + 1, offset);
+        if (newEmojiText != _currentEmojiText) {
+          print('Emoji text changed: $newEmojiText');
+          _currentEmojiText = newEmojiText;
+          _showPlaceholder.value = newEmojiText.isEmpty;
+
+          // Only resolve emojis if we're actively typing (not after selection)
+          if (newEmojiText.isNotEmpty && _emojiOverlay != null) {
+            _resolveEmojis(newEmojiText);
+          } else {
+            _emojiOverlay?.remove();
+            _emojiOverlay = null;
+          }
+        }
+      }
+    }
+
     // Check for new @ trigger - only after a space
     if (offset > 0 && text[offset - 1] == '@' && _mentionStartOffset == null) {
       // Check if @ is after a space or at the start of text
@@ -357,6 +463,19 @@ class _AppEditableTextState extends State<AppEditableText>
         _showPlaceholder.value = true;
         _controller.insertSpan(offset - 1, '@');
         _resolveMentions(''); // Show menu with empty query to get all profiles
+      }
+    }
+
+    // Check for new : trigger - only after a space
+    if (offset > 0 && text[offset - 1] == ':' && _emojiStartOffset == null) {
+      // Check if : is after a space or at the start of text
+      if (offset == 1 || text[offset - 2] == ' ') {
+        print('New : trigger detected at offset ${offset - 1}');
+        _emojiStartOffset = offset - 1;
+        _currentEmojiText = '';
+        _showPlaceholder.value = true;
+        _controller.insertSpan(offset - 1, ':');
+        _resolveEmojis(''); // Show menu with empty query to get all emojis
       }
     }
 
@@ -379,7 +498,28 @@ class _AppEditableTextState extends State<AppEditableText>
         _showPlaceholder.value = false;
         _mentionOverlay?.remove();
         _mentionOverlay = null;
-        // Don't clear spans here anymore - we want to keep existing mentions
+      }
+    }
+
+    // Check if we've moved away from the emoji
+    if (_emojiStartOffset != null) {
+      if (offset <= _emojiStartOffset! || text[_emojiStartOffset!] != ':') {
+        print('Moved away from emoji');
+        // Remove the : symbol if we're moving back
+        if (offset < _emojiStartOffset!) {
+          final newText =
+              text.replaceRange(_emojiStartOffset!, _emojiStartOffset! + 1, '');
+          final newOffset = offset;
+          _controller.value = TextEditingValue(
+            text: newText,
+            selection: TextSelection.collapsed(offset: newOffset),
+          );
+        }
+        _emojiStartOffset = null;
+        _currentEmojiText = '';
+        _showPlaceholder.value = false;
+        _emojiOverlay?.remove();
+        _emojiOverlay = null;
       }
     }
 
@@ -513,9 +653,9 @@ class _AppEditableTextState extends State<AppEditableText>
   }
 
   void _resolveMentions(String query) async {
-    print('Resolving mentions for query: $query');
-    final profiles = await widget.onResolveMentions(query);
-    print('Resolved profiles: $profiles');
+    print('Searching profiles for query: $query');
+    final profiles = await widget.onSearchProfiles(query);
+    print('Found profiles: $profiles');
 
     if (!mounted) return;
 
@@ -534,6 +674,151 @@ class _AppEditableTextState extends State<AppEditableText>
 
       if (_mentionItems.isNotEmpty) {
         _showMentionMenu();
+      }
+    });
+  }
+
+  void _showEmojiMenu() {
+    final overlay = Overlay.of(context);
+    final renderBox = context.findRenderObject() as RenderBox;
+
+    // Find the EditableText widget first
+    final editableTextState = editableTextKey.currentState;
+    if (editableTextState == null) {
+      print('EditableTextState is null');
+      return;
+    }
+
+    // Get the render object from the EditableText
+    final renderEditable = editableTextState.renderEditable;
+    if (renderEditable == null) {
+      print('RenderEditable is null');
+      return;
+    }
+
+    final spanOffset = _emojiStartOffset ?? 0;
+    final TextPosition position = TextPosition(offset: spanOffset);
+
+    // Get the offset of the : symbol
+    final Offset offset = renderEditable.getLocalRectForCaret(position).topLeft;
+    final Offset globalOffset = renderBox.localToGlobal(offset);
+
+    // Position the menu above and slightly to the left of the : symbol
+    final pos = Offset(
+      globalOffset.dx - 8, // Move 8 pixels to the left
+      globalOffset.dy - 64, // Move 64 pixels up
+    );
+
+    print('Showing emoji menu at position: $pos');
+
+    if (_emojiOverlay == null) {
+      _emojiOverlay = OverlayEntry(
+        builder: (context) => Stack(
+          children: [
+            Positioned.fill(
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  _emojiOverlay?.remove();
+                  _emojiOverlay = null;
+                },
+              ),
+            ),
+            Positioned(
+              left: pos.dx,
+              top: pos.dy,
+              child: AppTextEmojiMenu(
+                key: ValueKey(_currentEmojiText),
+                position: pos,
+                editableTextState: editableTextState,
+                menuItems: _emojiItems,
+              ),
+            ),
+          ],
+        ),
+      );
+
+      overlay.insert(_emojiOverlay!);
+    } else {
+      _emojiOverlay!.markNeedsBuild();
+    }
+  }
+
+  void _insertEmoji(String emojiUrl, String emojiName) {
+    print('Inserting emoji: $emojiName');
+    if (_emojiStartOffset == null) {
+      print('_emojiStartOffset is null, cannot insert emoji');
+      return;
+    }
+
+    final text = _controller.text;
+    final currentOffset = _controller.selection.baseOffset;
+
+    print('Current text: "$text"');
+    print('Replacing from offset ${_emojiStartOffset!} to $currentOffset');
+
+    // Insert the emoji span
+    _controller.insertEmoji(_emojiStartOffset!, emojiUrl, emojiName);
+
+    // Then update the cursor position
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      try {
+        // Remove the text after : up to current cursor and add a space
+        final newText = text.replaceRange(
+          _emojiStartOffset! + 1, // Start after the :
+          currentOffset,
+          ' ', // Replace with a space
+        );
+
+        // Calculate new cursor position (after the space)
+        final newCursorPosition = _emojiStartOffset! + 2;
+
+        _controller.value = TextEditingValue(
+          text: newText,
+          selection: TextSelection.collapsed(offset: newCursorPosition),
+        );
+
+        // Clean up emoji state
+        _emojiStartOffset = null;
+        _currentEmojiText = '';
+        _showPlaceholder.value = false;
+        _emojiOverlay?.remove();
+        _emojiOverlay = null;
+
+        // Ensure focus is maintained and cursor is visible
+        _focusNode.requestFocus();
+        editableTextKey.currentState?.showToolbar();
+      } catch (e) {
+        print('Error in post frame callback: $e');
+      }
+    });
+
+    print('Emoji insertion complete');
+  }
+
+  void _resolveEmojis(String query) async {
+    print('Searching emojis for query: $query');
+    final emojis = await widget.onSearchEmojis(query);
+    print('Found emojis: $emojis');
+
+    if (!mounted) return;
+
+    setState(() {
+      _emojiItems = emojis
+          .map((emoji) => AppTextEmojiMenuItem(
+                emojiUrl: emoji.emojiUrl,
+                emojiName: emoji.emojiName,
+                onTap: (state) {
+                  print('Emoji selected: ${emoji.emojiName}');
+                  _insertEmoji(emoji.emojiUrl, emoji.emojiName);
+                  _emojiOverlay?.remove();
+                  _emojiOverlay = null;
+                },
+              ))
+          .toList();
+
+      if (_emojiItems.isNotEmpty) {
+        _showEmojiMenu();
       }
     });
   }

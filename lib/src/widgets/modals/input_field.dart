@@ -8,7 +8,8 @@ class AppInputField extends StatefulWidget {
   final TextStyle? style;
   final List<AppTextSelectionMenuItem>? contextMenuItems;
   final Color? backgroundColor;
-  final NostrMentionResolver onResolveMentions;
+  final NostrProfileSearch onSearchProfiles;
+  final NostrEmojiSearch onSearchEmojis;
 
   const AppInputField({
     super.key,
@@ -19,7 +20,8 @@ class AppInputField extends StatefulWidget {
     this.style,
     this.contextMenuItems,
     this.backgroundColor,
-    required this.onResolveMentions,
+    required this.onSearchProfiles,
+    required this.onSearchEmojis,
   });
 
   AppInputField copyWith({
@@ -30,7 +32,8 @@ class AppInputField extends StatefulWidget {
     TextStyle? style,
     List<AppTextSelectionMenuItem>? contextMenuItems,
     Color? backgroundColor,
-    required NostrMentionResolver onResolveMentions,
+    NostrProfileSearch? onSearchProfiles,
+    NostrEmojiSearch? onSearchEmojis,
   }) {
     return AppInputField(
       placeholder: placeholder ?? this.placeholder,
@@ -40,7 +43,8 @@ class AppInputField extends StatefulWidget {
       style: style ?? this.style,
       contextMenuItems: contextMenuItems ?? this.contextMenuItems,
       backgroundColor: backgroundColor ?? this.backgroundColor,
-      onResolveMentions: onResolveMentions,
+      onSearchProfiles: onSearchProfiles ?? this.onSearchProfiles,
+      onSearchEmojis: onSearchEmojis ?? this.onSearchEmojis,
     );
   }
 
@@ -89,7 +93,8 @@ class _AppInputFieldState extends State<AppInputField> {
             onChanged: widget.onChanged,
             contextMenuItems: widget.contextMenuItems,
             placeholder: widget.placeholder,
-            onResolveMentions: widget.onResolveMentions,
+            onSearchProfiles: widget.onSearchProfiles,
+            onSearchEmojis: widget.onSearchEmojis,
           ),
           const AppGap.s8(),
           Row(

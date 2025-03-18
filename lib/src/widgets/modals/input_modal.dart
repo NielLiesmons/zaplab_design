@@ -32,7 +32,8 @@ class AppInputModal extends StatelessWidget {
           inputField: inputField is AppInputField
               ? (inputField).copyWith(
                   focusNode: focusNode,
-                  onResolveMentions: inputField.onResolveMentions,
+                  onSearchProfiles: inputField.onSearchProfiles,
+                  onSearchEmojis: inputField.onSearchEmojis,
                 )
               : inputField,
         ),

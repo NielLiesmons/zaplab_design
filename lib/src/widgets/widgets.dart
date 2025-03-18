@@ -46,7 +46,7 @@ export 'chat/quoted_message.dart';
 export 'images/emoji_image.dart';
 export 'images/full_width_image.dart';
 export 'images/image_card.dart';
-
+export 'images/image_stack.dart';
 // Interactions
 export 'interactions/interaction_pills.dart';
 export 'interactions/interaction_bar.dart';
@@ -112,6 +112,7 @@ export 'text/short_text/short_text_element.dart';
 export 'text/short_text/short_text_parser.dart';
 export 'text/short_text/short_text_renderer.dart';
 export 'text/text.dart';
+export 'text/text_emoji_menu.dart';
 export 'text/text_mention_menu.dart';
 export 'text/selectable_text.dart';
 export 'text/text_selection_controls.dart';

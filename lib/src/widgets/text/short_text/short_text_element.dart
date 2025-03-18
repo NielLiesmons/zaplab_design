@@ -6,7 +6,7 @@ enum AppShortTextElementType {
   link, // https://... or [text](url)
   horizontalRule, // --- or *** or '''
   styledText, //
-  image, // url.png or url.jpg or url.gif or url.svg
+  images, // url.png or url.jpg or url.gif or url.svg
   nostrProfile, // nostr:npub1... or nostr:nprofile1...
   nostrEvent, // nostr:nevent1...
   emoji, // :emoji:

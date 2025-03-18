@@ -35,6 +35,42 @@ class AppScreen extends StatefulWidget {
     this.customTopBar = false,
   });
 
+  static Future<T?> show<T>({
+    required BuildContext context,
+    required Widget child,
+    Widget? topBarContent,
+    Widget? bottomBarContent,
+    List<HistoryItem> history = const [],
+    bool alwaysShowTopBar = false,
+    bool customTopBar = false,
+  }) {
+    return Navigator.of(context).push<T>(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => AppScreen(
+          onHomeTap: () => Navigator.of(context).pop(),
+          child: child,
+          topBarContent: topBarContent,
+          bottomBarContent: bottomBarContent,
+          history: history,
+          alwaysShowTopBar: alwaysShowTopBar,
+          customTopBar: customTopBar,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 1),
+              end: Offset.zero,
+            ).animate(CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOut,
+            )),
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   State<AppScreen> createState() => _AppScreenState();
 }
