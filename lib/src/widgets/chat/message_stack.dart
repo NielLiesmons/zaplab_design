@@ -42,7 +42,10 @@ class AppMessageStack extends StatelessWidget {
           ),
           const AppGap.s4(),
         ] else ...[
-          const AppGap.s64(),
+          if (!isOutgoing &&
+              AppShortTextRenderer.analyzeContent(messages.first.message) !=
+                  ShortTextContentType.singleImageStack)
+            const AppGap.s64(),
           const AppGap.s4(),
         ],
         Expanded(
@@ -81,7 +84,10 @@ class AppMessageStack extends StatelessWidget {
             ),
           ),
         ),
-        if (!isOutgoing) const AppGap.s32(),
+        if (!isOutgoing &&
+            AppShortTextRenderer.analyzeContent(messages.first.message) !=
+                ShortTextContentType.singleImageStack)
+          const AppGap.s32(),
       ],
     );
   }

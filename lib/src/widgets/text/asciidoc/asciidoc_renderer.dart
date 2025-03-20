@@ -269,16 +269,19 @@ class AppAsciiDocRenderer extends StatelessWidget {
                   child: FutureBuilder<NostrEvent>(
                     future: onResolveEvent(child.content),
                     builder: (context, snapshot) {
-                      return AppEventCard(
-                        contentType: snapshot.data?.contentType ?? '',
-                        title: snapshot.data?.title ?? '',
-                        message: snapshot.data?.message ?? '',
-                        content: snapshot.data?.content ?? '',
-                        imageUrl: snapshot.data?.imageUrl ?? '',
-                        profileName: snapshot.data?.profileName ?? '',
-                        profilePicUrl: snapshot.data?.profilePicUrl ?? '',
-                        timestamp: snapshot.data?.timestamp ?? DateTime.now(),
-                        onTap: snapshot.data?.onTap,
+                      return ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 320),
+                        child: AppEventCard(
+                          contentType: snapshot.data?.contentType ?? '',
+                          title: snapshot.data?.title ?? '',
+                          message: snapshot.data?.message ?? '',
+                          content: snapshot.data?.content ?? '',
+                          imageUrl: snapshot.data?.imageUrl ?? '',
+                          profileName: snapshot.data?.profileName ?? '',
+                          profilePicUrl: snapshot.data?.profilePicUrl ?? '',
+                          timestamp: snapshot.data?.timestamp ?? DateTime.now(),
+                          onTap: snapshot.data?.onTap,
+                        ),
                       );
                     },
                   ),

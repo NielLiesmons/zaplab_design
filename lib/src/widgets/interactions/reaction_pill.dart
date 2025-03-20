@@ -23,7 +23,7 @@ class AppReactionPill extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final isInsideModal = ModalScope.of(context);
-    final isInsideMessageBubble = MessageBubbleScope.of(context);
+    final (isInsideMessageBubble, _) = MessageBubbleScope.of(context);
 
     return TapBuilder(
       onTap: onTap,

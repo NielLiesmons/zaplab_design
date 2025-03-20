@@ -1,3 +1,5 @@
+// Utils
+export 'duration_formatter.dart';
 export 'named.dart';
 export 'npub_utils.dart';
 export 'platform.dart';

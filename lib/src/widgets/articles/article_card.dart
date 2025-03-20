@@ -45,6 +45,10 @@ class AppArticleCard extends StatelessWidget {
                     ? Image.network(
                         imageUrl,
                         fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return const AppSkeletonLoader();
+                        },
                         errorBuilder: (context, error, stackTrace) {
                           print('Error loading asset: $error');
                           return const AppSkeletonLoader();

@@ -2,6 +2,44 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:flutter/gestures.dart';
 
+enum ShortTextContentType {
+  empty,
+  singleImageStack,
+  singleEmoji,
+  singleProfile,
+  singleEvent,
+  mixed;
+
+  bool get isSingleContent => switch (this) {
+        ShortTextContentType.singleImageStack ||
+        ShortTextContentType.singleEmoji ||
+        ShortTextContentType.singleProfile ||
+        ShortTextContentType.singleEvent =>
+          true,
+        _ => false,
+      };
+}
+
+class ShortTextContent extends InheritedWidget {
+  final ShortTextContentType contentType;
+
+  const ShortTextContent({
+    required this.contentType,
+    required super.child,
+  });
+
+  static ShortTextContentType of(BuildContext context) {
+    final widget =
+        context.dependOnInheritedWidgetOfExactType<ShortTextContent>();
+    return widget?.contentType ?? ShortTextContentType.mixed;
+  }
+
+  @override
+  bool updateShouldNotify(ShortTextContent oldWidget) {
+    return contentType != oldWidget.contentType;
+  }
+}
+
 class AppShortTextRenderer extends StatelessWidget {
   final String content;
   final NostrEventResolver onResolveEvent;
@@ -20,29 +58,92 @@ class AppShortTextRenderer extends StatelessWidget {
     required this.onLinkTap,
   });
 
+  static ShortTextContentType analyzeContent(String content) {
+    final parser = AppShortTextParser();
+    final elements = parser.parse(content);
+    return _analyzeElements(elements);
+  }
+
+  static ShortTextContentType _analyzeElements(
+      List<AppShortTextElement> elements) {
+    if (elements.isEmpty) {
+      return ShortTextContentType.empty;
+    }
+
+    // Single image stack
+    if (elements.length == 1 &&
+        elements[0].type == AppShortTextElementType.images) {
+      return ShortTextContentType.singleImageStack;
+    }
+
+    // Single paragraph with one child
+    if (elements.length == 1 &&
+        elements[0].type == AppShortTextElementType.paragraph &&
+        elements[0].children != null &&
+        elements[0].children!.length == 1) {
+      final child = elements[0].children![0];
+
+      // Single emoji
+      if (child.type == AppShortTextElementType.emoji) {
+        return ShortTextContentType.singleEmoji;
+      }
+
+      // Single profile
+      if (child.type == AppShortTextElementType.nostrProfile) {
+        return ShortTextContentType.singleProfile;
+      }
+
+      // Single event
+      if (child.type == AppShortTextElementType.nostrEvent) {
+        return ShortTextContentType.singleEvent;
+      }
+    }
+
+    // Check for paragraphs with only one type of content
+    if (elements.length == 1 &&
+        elements[0].type == AppShortTextElementType.paragraph &&
+        elements[0].children != null) {
+      final children = elements[0].children!;
+    }
+
+    // Mixed content
+    return ShortTextContentType.mixed;
+  }
+
   @override
   Widget build(BuildContext context) {
     final parser = AppShortTextParser();
     final elements = parser.parse(content);
+    final widgets = _buildElements(elements, context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        for (final element in elements)
-          _buildElementWithSpacing(element, context),
-      ],
+      children: widgets,
     );
+  }
+
+  List<Widget> _buildElements(
+      List<AppShortTextElement> elements, BuildContext context) {
+    return [
+      for (final element in elements)
+        _buildElementWithSpacing(element, context),
+    ];
   }
 
   Widget _buildElementWithSpacing(
       AppShortTextElement element, BuildContext context) {
+    final (isInsideMessageBubble, _) = MessageBubbleScope.of(context);
+    final contentType = ShortTextContent.of(context);
+
     final AppEdgeInsets spacing = switch (element.type) {
       AppShortTextElementType.listItem => const AppEdgeInsets.only(
           bottom: AppGapSize.s6,
         ),
-      _ => const AppEdgeInsets.only(
-          bottom: AppGapSize.s4,
-        ),
+      _ => isInsideMessageBubble && contentType.isSingleContent
+          ? const AppEdgeInsets.all(AppGapSize.none)
+          : const AppEdgeInsets.only(
+              bottom: AppGapSize.s4,
+            ),
     };
 
     // Determine if this element should be swipeable (paragraphs and certain other content)
@@ -68,19 +169,29 @@ class AppShortTextRenderer extends StatelessWidget {
 
   Widget _buildElement(BuildContext context, AppShortTextElement element) {
     final theme = AppTheme.of(context);
-    final isInsideMessageBubble = MessageBubbleScope.of(context);
+    final (isInsideMessageBubble, _) = MessageBubbleScope.of(context);
+
+    debugPrint(
+        'Building element of type: ${element.type} with content: ${element.content}');
 
     switch (element.type) {
       case AppShortTextElementType.images:
-        print(
-            'Renderer: Processing standalone images element with content: ${element.content}');
         final urls = element.content.split('\n');
-        print('Renderer: Split into ${urls.length} URLs: ${urls.join(", ")}');
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const AppGap.s2(),
             AppImageStack(imageUrls: urls),
+            const AppGap.s2(),
+          ],
+        );
+
+      case AppShortTextElementType.audio:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const AppGap.s2(),
+            AppAudioMessage(audioUrl: element.content),
             const AppGap.s2(),
           ],
         );
@@ -115,22 +226,53 @@ class AppShortTextRenderer extends StatelessWidget {
                 FutureBuilder<NostrEvent>(
                   future: onResolveEvent(child.content),
                   builder: (context, snapshot) {
-                    return AppEventCard(
-                      contentType: snapshot.data?.contentType ?? '',
-                      title: snapshot.data?.title ?? '',
-                      message: snapshot.data?.message ?? '',
-                      content: snapshot.data?.content ?? '',
-                      imageUrl: snapshot.data?.imageUrl ?? '',
-                      profileName: snapshot.data?.profileName ?? '',
-                      profilePicUrl: snapshot.data?.profilePicUrl ?? '',
-                      timestamp: snapshot.data?.timestamp ?? DateTime.now(),
-                      amount: snapshot.data?.amount ?? '',
-                      onTap: snapshot.data?.onTap,
+                    return ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 320),
+                      child: AppEventCard(
+                        contentType: snapshot.data?.contentType ?? '',
+                        title: snapshot.data?.title ?? '',
+                        message: snapshot.data?.message ?? '',
+                        content: snapshot.data?.content ?? '',
+                        imageUrl: snapshot.data?.imageUrl ?? '',
+                        profileName: snapshot.data?.profileName ?? '',
+                        profilePicUrl: snapshot.data?.profilePicUrl ?? '',
+                        timestamp: snapshot.data?.timestamp ?? DateTime.now(),
+                        amount: snapshot.data?.amount ?? '',
+                        onTap: snapshot.data?.onTap,
+                      ),
                     );
                   },
                 ),
               );
               paragraphPieces.add(const AppGap.s2());
+            } else if (child.type == AppShortTextElementType.emoji &&
+                ShortTextContent.of(context) ==
+                    ShortTextContentType.singleEmoji) {
+              if (currentSpans.isNotEmpty) {
+                paragraphPieces.add(
+                  AppSelectableText.rich(
+                    TextSpan(children: List.from(currentSpans)),
+                    style: theme.typography.reg14.copyWith(
+                      color: theme.colors.white,
+                    ),
+                  ),
+                );
+                currentSpans.clear();
+              }
+              paragraphPieces.add(
+                FutureBuilder<String>(
+                  future: onResolveEmoji(child.content),
+                  builder: (context, snapshot) {
+                    return AppContainer(
+                      child: AppEmojiImage(
+                        emojiUrl: snapshot.data ?? '',
+                        emojiName: snapshot.data ?? '',
+                        size: 96,
+                      ),
+                    );
+                  },
+                ),
+              );
             } else {
               // Handle all other elements exactly as before
               if (child.type == AppShortTextElementType.nostrProfile) {
@@ -155,38 +297,6 @@ class AppShortTextRenderer extends StatelessWidget {
                             profileName: snapshot.data?.profileName ?? '',
                             profilePicUrl: snapshot.data?.profilePicUrl ?? '',
                             onTap: snapshot.data?.onTap,
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ));
-              } else if (child.type == AppShortTextElementType.emoji) {
-                currentSpans.add(TextSpan(
-                  children: [
-                    TextSpan(
-                      text: ':${child.content}:',
-                      style: const TextStyle(
-                        color: Color(0xFF000000),
-                        fontSize: 0,
-                        height: 0,
-                        letterSpacing: 0,
-                        wordSpacing: 0,
-                      ),
-                    ),
-                    WidgetSpan(
-                      alignment: PlaceholderAlignment.middle,
-                      child: FutureBuilder<String>(
-                        future: onResolveEmoji(child.content),
-                        builder: (context, snapshot) {
-                          return AppContainer(
-                            padding: const AppEdgeInsets.symmetric(
-                                horizontal: AppGapSize.s2),
-                            child: AppEmojiImage(
-                              emojiUrl: snapshot.data ?? '',
-                              emojiName: snapshot.data ?? '',
-                              size: 16,
-                            ),
                           );
                         },
                       ),
@@ -248,11 +358,7 @@ class AppShortTextRenderer extends StatelessWidget {
                     ..onTap = () => onLinkTap(child.content),
                 ));
               } else if (child.type == AppShortTextElementType.images) {
-                print(
-                    'Renderer: Processing images element with content: ${child.content}');
                 final urls = child.content.split('\n');
-                print(
-                    'Renderer: Split into ${urls.length} URLs: ${urls.join(", ")}');
                 if (currentSpans.isNotEmpty) {
                   paragraphPieces.add(
                     AppSelectableText.rich(
@@ -455,7 +561,10 @@ class AppShortTextRenderer extends StatelessWidget {
                     child: AppEmojiImage(
                       emojiUrl: snapshot.data ?? '',
                       emojiName: snapshot.data ?? '',
-                      size: 16,
+                      size: ShortTextContent.of(context) ==
+                              ShortTextContentType.singleEmoji
+                          ? 96
+                          : 16,
                     ),
                   );
                 },

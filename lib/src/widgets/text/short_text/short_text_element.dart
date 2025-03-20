@@ -7,6 +7,7 @@ enum AppShortTextElementType {
   horizontalRule, // --- or *** or '''
   styledText, //
   images, // url.png or url.jpg or url.gif or url.svg
+  audio, // url.mp3 or url.wav or url.ogg or url.m4a
   nostrProfile, // nostr:npub1... or nostr:nprofile1...
   nostrEvent, // nostr:nevent1...
   emoji, // :emoji:

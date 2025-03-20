@@ -12,6 +12,7 @@ class AppSwipeContainer extends StatefulWidget {
   final AppEdgeInsets? margin;
   final AlignmentGeometry? alignment;
   final BoxConstraints? constraints;
+  final bool isTransparent;
 
   const AppSwipeContainer({
     super.key,
@@ -26,6 +27,7 @@ class AppSwipeContainer extends StatefulWidget {
     this.margin,
     this.alignment,
     this.constraints,
+    this.isTransparent = false,
   });
 
   @override
@@ -276,7 +278,7 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
       child: AppContainer(
         decoration: widget.decoration ?? const BoxDecoration(),
         margin: widget.margin,
-        clipBehavior: Clip.hardEdge,
+        clipBehavior: widget.isTransparent ? Clip.none : Clip.hardEdge,
         child: Stack(
           children: [
             // Main content
@@ -305,9 +307,11 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
                   builder: (context, child) => SizedBox(
                     width: _leftWidthAnimation.value,
                     child: AppContainer(
-                      decoration: BoxDecoration(
-                        color: theme.colors.white16,
-                      ),
+                      decoration: widget.isTransparent
+                          ? null
+                          : BoxDecoration(
+                              color: theme.colors.white16,
+                            ),
                       child: Center(
                         child: ScaleTransition(
                           scale: _leftScaleAnimation,
@@ -336,9 +340,11 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
                   builder: (context, child) => SizedBox(
                     width: _rightWidthAnimation.value,
                     child: AppContainer(
-                      decoration: BoxDecoration(
-                        color: theme.colors.white16,
-                      ),
+                      decoration: widget.isTransparent
+                          ? null
+                          : BoxDecoration(
+                              color: theme.colors.white16,
+                            ),
                       child: Center(
                         child: ScaleTransition(
                           scale: _rightScaleAnimation,

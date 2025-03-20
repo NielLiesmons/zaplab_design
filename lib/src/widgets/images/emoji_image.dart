@@ -12,6 +12,35 @@ class AppEmojiImage extends StatelessWidget {
     this.size = 18,
   });
 
+  // Find the closest available icon size that's not larger than the requested size
+  AppIconSize _getClosestIconSize(double targetSize) {
+    final availableSizes = [
+      AppIconSize.s4,
+      AppIconSize.s8,
+      AppIconSize.s10,
+      AppIconSize.s12,
+      AppIconSize.s14,
+      AppIconSize.s16,
+      AppIconSize.s18,
+      AppIconSize.s20,
+      AppIconSize.s24,
+      AppIconSize.s28,
+      AppIconSize.s32,
+      AppIconSize.s38,
+      AppIconSize.s40,
+    ];
+
+    // Find the largest size that's not bigger than the target
+    for (int i = availableSizes.length - 1; i >= 0; i--) {
+      if (double.parse(availableSizes[i].name.substring(1)) <= targetSize) {
+        return availableSizes[i];
+      }
+    }
+
+    // If all sizes are bigger than target, return smallest size
+    return AppIconSize.s4;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
@@ -26,8 +55,9 @@ class AppEmojiImage extends StatelessWidget {
         height: size,
         fit: BoxFit.contain,
         errorBuilder: (context, error, stackTrace) {
-          return AppIcon.s16(
+          return AppIcon(
             theme.icons.characters.emojiFill,
+            size: _getClosestIconSize(size),
             color: theme.colors.white33,
           );
         },
@@ -44,8 +74,9 @@ class AppEmojiImage extends StatelessWidget {
         return const AppSkeletonLoader();
       },
       errorBuilder: (context, error, stackTrace) {
-        return AppIcon.s16(
+        return AppIcon(
           theme.icons.characters.emojiFill,
+          size: _getClosestIconSize(size),
           color: theme.colors.white33,
         );
       },
@@ -58,6 +89,35 @@ class AppEmojiContentType extends StatelessWidget {
       {super.key, required this.contentType, this.size = 32});
   final String contentType;
   final double size;
+
+  // Find the closest available icon size that's not larger than the requested size
+  AppIconSize _getClosestIconSize(double targetSize) {
+    final availableSizes = [
+      AppIconSize.s4,
+      AppIconSize.s8,
+      AppIconSize.s10,
+      AppIconSize.s12,
+      AppIconSize.s14,
+      AppIconSize.s16,
+      AppIconSize.s18,
+      AppIconSize.s20,
+      AppIconSize.s24,
+      AppIconSize.s28,
+      AppIconSize.s32,
+      AppIconSize.s38,
+      AppIconSize.s40,
+    ];
+
+    // Find the largest size that's not bigger than the target
+    for (int i = availableSizes.length - 1; i >= 0; i--) {
+      if (double.parse(availableSizes[i].name.substring(1)) <= targetSize) {
+        return availableSizes[i];
+      }
+    }
+
+    // If all sizes are bigger than target, return smallest size
+    return AppIconSize.s4;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +132,9 @@ class AppEmojiContentType extends StatelessWidget {
       height: size,
       fit: BoxFit.contain,
       errorBuilder: (context, error, stackTrace) {
-        return AppIcon.s16(
+        return AppIcon(
           theme.icons.characters.emojiFill,
+          size: _getClosestIconSize(size),
           color: theme.colors.white33,
         );
       },

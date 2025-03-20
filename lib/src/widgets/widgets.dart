@@ -5,6 +5,10 @@ export 'apps/app_small_card.dart';
 // Articles
 export 'articles/article_card.dart';
 export 'articles/articles_feed.dart';
+
+// Audio
+export 'audio/audio_message.dart';
+
 // Base
 export 'base/base.dart';
 export 'base/checkbox.dart';

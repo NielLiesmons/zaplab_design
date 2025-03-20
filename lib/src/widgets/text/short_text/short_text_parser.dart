@@ -2,6 +2,9 @@ import 'package:zaplab_design/zaplab_design.dart';
 
 class AppShortTextParser {
   final _listCounter = _ListCounter();
+  final RegExp audioUrlPattern = RegExp(
+      r'https?:\/\/[^\s<>"]+?\/[^\s<>"]+?\.(mp3|wav|ogg|m4a)(\?[^"\s<>]*)?',
+      caseSensitive: false);
 
   List<AppShortTextElement> parse(String text) {
     final List<AppShortTextElement> elements = [];
@@ -68,6 +71,16 @@ class AppShortTextParser {
         continue;
       }
 
+      // Handle audio URLs
+      final audioUrlMatch = audioUrlPattern.matchAsPrefix(line);
+      if (audioUrlMatch != null) {
+        elements.add(AppShortTextElement(
+          type: AppShortTextElementType.audio,
+          content: audioUrlMatch[0]!.trim(),
+        ));
+        continue;
+      }
+
       // Handle paragraph with styled text
       final children = _parseStyledText(line);
 
@@ -114,8 +127,7 @@ class AppShortTextParser {
           if (textElements.isNotEmpty) {
             if (currentImageUrls != null) {
               // If we have pending images, add them before this text
-              print(
-                  'Adding ${currentImageUrls.length} pending images before text');
+
               result.add(AppShortTextElement(
                 type: AppShortTextElementType.images,
                 content: currentImageUrls.join('\n'),
@@ -157,8 +169,6 @@ class AppShortTextParser {
       if (!hasProcessedImages) {
         // Add any pending images before this element
         if (currentImageUrls != null) {
-          print(
-              'Combining ${currentImageUrls.length} image URLs into single stack');
           result.add(AppShortTextElement(
             type: AppShortTextElementType.images,
             content: currentImageUrls.join('\n'),
@@ -171,8 +181,6 @@ class AppShortTextParser {
 
     // Add any remaining image URLs
     if (currentImageUrls != null) {
-      print(
-          'Combining ${currentImageUrls.length} image URLs into single stack');
       result.add(AppShortTextElement(
         type: AppShortTextElementType.images,
         content: currentImageUrls.join('\n'),
@@ -226,6 +234,8 @@ class AppShortTextParser {
     while (currentPosition < text.length) {
       final Match? imageUrlMatch =
           imageUrlPattern.matchAsPrefix(text, currentPosition);
+      final Match? audioUrlMatch =
+          audioUrlPattern.matchAsPrefix(text, currentPosition);
       final Match? combined1Match =
           combinedPattern.matchAsPrefix(text, currentPosition);
       final Match? combined2Match =
@@ -249,6 +259,7 @@ class AppShortTextParser {
 
       final List<Match?> matches = [
         imageUrlMatch,
+        audioUrlMatch,
         combined1Match,
         combined2Match,
         boldMatch,
@@ -275,10 +286,12 @@ class AppShortTextParser {
       }
 
       final Match firstMatch = matches.reduce((a, b) {
-        // If starts are equal, prioritize image URLs over regular URLs
+        // If starts are equal, prioritize image URLs and audio URLs over regular URLs
         if (a!.start == b!.start) {
           if (a == imageUrlMatch) return a;
           if (b == imageUrlMatch) return b;
+          if (a == audioUrlMatch) return a;
+          if (b == audioUrlMatch) return b;
         }
         return a.start < b.start ? a : b;
       })!;
@@ -349,7 +362,6 @@ class AppShortTextParser {
       } else if (firstMatch == imageUrlMatch) {
         // Collect all consecutive image URLs
         final List<String> imageUrls = [firstMatch[0]!.trim()];
-        print('Found first image URL: ${imageUrls[0]}');
 
         // Look ahead through the entire remaining text for consecutive image URLs
         String remainingText = text.substring(firstMatch.end);
@@ -364,7 +376,7 @@ class AppShortTextParser {
           if (nextMatch != null) {
             // Found another image URL
             final nextUrl = nextMatch[0]!.trim();
-            print('Found additional image URL: $nextUrl');
+
             imageUrls.add(nextUrl);
             remainingText = remainingText.substring(nextMatch.end);
             continue;
@@ -375,8 +387,6 @@ class AppShortTextParser {
           break;
         }
 
-        print(
-            'Creating imageStack element with ${imageUrls.length} URLs: ${imageUrls.join(", ")}');
         styledElements.add(AppShortTextElement(
           type: AppShortTextElementType.images,
           content: imageUrls.join('\n'),
@@ -385,7 +395,22 @@ class AppShortTextParser {
         // Update current position to skip all processed URLs
         currentPosition = text.length - remainingText.length;
         continue;
+      } else if (firstMatch == audioUrlMatch) {
+        debugPrint('Found audio URL: ${firstMatch[0]}');
+        styledElements.add(AppShortTextElement(
+          type: AppShortTextElementType.audio,
+          content: firstMatch[0]!.trim(),
+        ));
+
+        // Skip any whitespace after the match before continuing
+        int nextPosition = firstMatch.end;
+        while (nextPosition < text.length && text[nextPosition] == ' ') {
+          nextPosition++;
+        }
+        currentPosition = nextPosition;
+        continue;
       } else if (firstMatch == urlMatch) {
+        debugPrint('Found regular URL: ${firstMatch[0]}');
         styledElements.add(AppShortTextElement(
           type: AppShortTextElementType.link,
           content: firstMatch[0]!,

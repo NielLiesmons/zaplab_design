@@ -20,7 +20,7 @@ class AppPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final isInsideModal = ModalScope.of(context);
-    final isInsideMessage = MessageBubbleScope.of(context);
+    final (isInsideMessage, _) = MessageBubbleScope.of(context);
 
     return AppContainer(
       padding: padding ?? const AppEdgeInsets.all(AppGapSize.s16),
