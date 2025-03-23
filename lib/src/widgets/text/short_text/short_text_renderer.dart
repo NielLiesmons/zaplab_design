@@ -1,3 +1,4 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:flutter/gestures.dart';
@@ -294,9 +295,10 @@ class AppShortTextRenderer extends StatelessWidget {
                         future: onResolveProfile(child.content),
                         builder: (context, snapshot) {
                           return AppProfileInline(
-                            profileName: snapshot.data?.profileName ?? '',
-                            profilePicUrl: snapshot.data?.profilePicUrl ?? '',
-                            onTap: snapshot.data?.onTap,
+                            profileName: snapshot.data?.nameOrNpub ?? '',
+                            profilePicUrl: snapshot.data?.pictureUrl ?? '',
+                            // TODO: onTap
+                            // onTap: snapshot.data?.onTap,
                           );
                         },
                       ),
@@ -526,9 +528,10 @@ class AppShortTextRenderer extends StatelessWidget {
                 future: onResolveProfile(element.content),
                 builder: (context, snapshot) {
                   return AppProfileInline(
-                    profileName: snapshot.data?.profileName ?? '',
-                    profilePicUrl: snapshot.data?.profilePicUrl ?? '',
-                    onTap: snapshot.data?.onTap,
+                    profileName: snapshot.data?.nameOrNpub ?? '',
+                    profilePicUrl: snapshot.data?.pictureUrl ?? '',
+                    // TODO: onTap
+                    // onTap: snapshot.data?.onTap,
                   );
                 },
               ),

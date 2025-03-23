@@ -1,3 +1,4 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 
@@ -20,7 +21,7 @@ class AppChatScreen extends StatefulWidget {
   final int? mainCount;
   final Map<String, int> contentCounts;
   final List<Message> messages;
-  final List<Post> posts;
+  final List<Note> posts;
   final List<Article> articles;
   // Other actions & settings
   final VoidCallback? onHomeTap;

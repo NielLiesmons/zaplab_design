@@ -1,7 +1,10 @@
+// feed of AppFeedPost
+
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppPostsFeed extends StatelessWidget {
-  final List<Post> posts;
+  final List<Note> posts;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -24,11 +27,11 @@ class AppPostsFeed extends StatelessWidget {
       children: [
         for (final post in posts)
           AppFeedPost(
-            nevent: post.nevent,
+            nevent: 'nevent1bla', //  TODO
             content: post.content,
-            profileName: post.profileName,
-            profilePicUrl: post.profilePicUrl,
-            timestamp: post.timestamp,
+            profileName: post.event.pubkey,
+            profilePicUrl: 'profile-pic!', // TODO
+            timestamp: post.event.createdAt,
             onReply: (_) {}, // TODO: Implement reply handling
             onResolveEvent: onResolveEvent,
             onResolveProfile: onResolveProfile,

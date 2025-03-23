@@ -1,5 +1,6 @@
 // Community
-import 'package:zaplab_design/zaplab_design.dart';
+
+import 'package:models/models.dart';
 
 class Community {
   final String npub;
@@ -20,20 +21,6 @@ class Community {
 // Profile
 typedef NostrProfileResolver = Future<Profile> Function(String identifier);
 typedef NostrProfileSearch = Future<List<Profile>> Function(String query);
-
-class Profile {
-  final String npub;
-  final String profileName;
-  final String profilePicUrl;
-  final void Function()? onTap;
-
-  const Profile({
-    required this.npub,
-    required this.profileName,
-    required this.profilePicUrl,
-    this.onTap,
-  });
-}
 
 // Message
 class Message {
@@ -172,29 +159,6 @@ typedef NostrHashtagResolver = Future<void Function()?> Function(
 
 // Links
 typedef LinkTapHandler = void Function(String url);
-
-// Post
-class Post {
-  final String npub;
-  final String nevent;
-  final String profileName;
-  final String profilePicUrl;
-  final String content;
-  final DateTime timestamp;
-  final List<Reaction> reactions;
-  final List<Zap> zaps;
-
-  const Post({
-    required this.npub,
-    required this.nevent,
-    required this.profileName,
-    required this.profilePicUrl,
-    required this.content,
-    required this.timestamp,
-    this.reactions = const [],
-    this.zaps = const [],
-  });
-}
 
 // Article
 class Article {

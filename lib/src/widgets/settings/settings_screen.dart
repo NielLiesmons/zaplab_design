@@ -1,3 +1,4 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppSettingsScreen extends StatefulWidget {
@@ -160,8 +161,8 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                   )),
                   child: AppCurrentProfileCard(
                     npub: currentProfile.npub,
-                    profileName: currentProfile.profileName,
-                    profilePicUrl: currentProfile.profilePicUrl,
+                    profileName: currentProfile.nameOrNpub,
+                    profilePicUrl: currentProfile.pictureUrl ?? '',
                     onView: () {
                       // TODO: Implement view profile
                     },
@@ -182,8 +183,8 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                           const AppGap.s16(),
                           AppOtherProfileCard(
                             npub: profile.npub,
-                            profileName: profile.profileName,
-                            profilePicUrl: profile.profilePicUrl,
+                            profileName: profile.nameOrNpub,
+                            profilePicUrl: profile.pictureUrl ?? '',
                             onSelect: () {
                               widget.onSelect(profile);
                               _animateProfileChange();
