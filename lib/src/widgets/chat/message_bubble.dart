@@ -1,3 +1,4 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class MessageBubbleScope extends InheritedWidget {

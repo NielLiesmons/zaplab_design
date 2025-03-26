@@ -1,3 +1,4 @@
+import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
@@ -57,7 +58,7 @@ class AppCommunityStack extends StatelessWidget {
                           child: Center(
                             child: AppText.reg12(
                               communities.length == 1
-                                  ? communities.first.communityName
+                                  ? communities.first.name
                                   : '${communities.length} Communities',
                               color: theme.colors.white66,
                             ),
@@ -89,7 +90,10 @@ class AppCommunityStack extends StatelessWidget {
                                     ],
                                   ),
                                   child: AppProfilePic.s20(
-                                    _visibleCommunities[i].profilePicUrl,
+                                    _visibleCommunities[i]
+                                        .author
+                                        .value
+                                        .pictureUrl,
                                     onTap: onTap,
                                   ),
                                 ),

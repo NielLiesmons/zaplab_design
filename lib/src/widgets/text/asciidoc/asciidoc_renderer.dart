@@ -267,22 +267,20 @@ class AppAsciiDocRenderer extends StatelessWidget {
               paragraphPieces.add(const SizedBox(height: 8));
               paragraphPieces.add(
                 AppContainer(
-                  child: FutureBuilder<NostrEvent>(
+                  child: FutureBuilder<Event>(
                     future: onResolveEvent(child.content),
                     builder: (context, snapshot) {
-                      return ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 320),
-                        child: AppEventCard(
-                          contentType: snapshot.data?.contentType ?? '',
-                          title: snapshot.data?.title ?? '',
-                          message: snapshot.data?.message ?? '',
-                          content: snapshot.data?.content ?? '',
-                          imageUrl: snapshot.data?.imageUrl ?? '',
-                          profileName: snapshot.data?.profileName ?? '',
-                          profilePicUrl: snapshot.data?.profilePicUrl ?? '',
-                          timestamp: snapshot.data?.timestamp ?? DateTime.now(),
-                          onTap: snapshot.data?.onTap,
-                        ),
+                      return AppEventCard(
+                        // TODO: Define content type; I don't understand the rest
+                        contentType: 'where should content type come from?',
+                        title: snapshot.data?.title ?? '',
+                        message: snapshot.data?.message ?? '',
+                        content: snapshot.data?.content ?? '',
+                        imageUrl: snapshot.data?.imageUrl ?? '',
+                        profileName: snapshot.data?.profileName ?? '',
+                        profilePicUrl: snapshot.data?.profilePicUrl ?? '',
+                        timestamp: snapshot.data?.timestamp ?? DateTime.now(),
+                        onTap: snapshot.data?.onTap,
                       );
                     },
                   ),

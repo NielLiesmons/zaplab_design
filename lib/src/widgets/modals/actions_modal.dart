@@ -1,3 +1,4 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'dart:ui';
@@ -8,6 +9,8 @@ class AppActionsModal extends StatelessWidget {
   final String contentType;
   final String profileName;
   final String profilePicUrl;
+  final List<PartialReaction> recentReactions;
+  final List<double> recentAmounts;
   final String? message;
   final String? title;
   final String? imageUrl;
@@ -54,7 +57,7 @@ class AppActionsModal extends StatelessWidget {
     required String contentType,
     required String profileName,
     required String profilePicUrl,
-    required List<Reaction> recentReactions,
+    required List<PartialReaction> recentReactions,
     required List<double> recentAmounts,
     String? message,
     String? title,
@@ -143,7 +146,7 @@ class AppActionsModal extends StatelessWidget {
     required String contentType,
     required String profileName,
     required String profilePicUrl,
-    required List<Reaction> recentReactions,
+    required List<PartialReaction> recentReactions,
     required List<double> recentAmounts,
     String? message,
     String? title,
@@ -355,6 +358,8 @@ class AppActionsModal extends StatelessWidget {
                                 scaleFactor = 1.20;
                               }
 
+                              final (emojiName, emojiUrl) = reaction.emojiTag!;
+
                               return AnimatedScale(
                                 scale: scaleFactor,
                                 duration: AppDurationsData.normal().fast,
@@ -364,8 +369,8 @@ class AppActionsModal extends StatelessWidget {
                                       right: AppGapSize.s14),
                                   child: Center(
                                     child: AppEmojiImage(
-                                      emojiUrl: reaction.emojiUrl,
-                                      emojiName: reaction.emojiName,
+                                      emojiUrl: emojiUrl,
+                                      emojiName: emojiName,
                                       size: 28,
                                     ),
                                   ),

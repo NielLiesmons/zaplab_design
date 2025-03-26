@@ -1,3 +1,4 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppArticlesFeed extends StatelessWidget {
@@ -22,8 +23,8 @@ class AppArticlesFeed extends StatelessWidget {
               children: [
                 AppArticleCard(
                   title: article.title,
-                  profileName: article.profileName,
-                  profilePicUrl: article.profilePicUrl,
+                  profileName: article.author.value,
+                  profilePicUrl: article.author.value.pictureUrl,
                   imageUrl: article.imageUrl,
                   onTap: () {
                     // TODO Handle article tap

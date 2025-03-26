@@ -1,7 +1,8 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppChatFeed extends StatelessWidget {
-  final List<Message> messages;
+  final List<ChatMessage> messages;
   final String currentNpub;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
@@ -28,25 +29,25 @@ class AppChatFeed extends StatelessWidget {
     required this.onLinkTap,
   });
 
-  List<List<Message>> _groupMessages() {
-    final groups = <List<Message>>[];
-    List<Message>? currentGroup;
+  List<List<ChatMessage>> _groupMessages() {
+    final groups = <List<ChatMessage>>[];
+    List<ChatMessage>? currentGroup;
     String? currentAuthor;
     DateTime? lastMessageTime;
 
     for (final message in messages) {
       final shouldStartNewGroup = currentGroup == null ||
-          currentAuthor != message.npub ||
-          lastMessageTime!.difference(message.timestamp).inMinutes.abs() > 21;
+          currentAuthor != message.author.value.npub ||
+          lastMessageTime!.difference(message.createdAt).inMinutes.abs() > 21;
 
       if (shouldStartNewGroup) {
         currentGroup = [message];
         groups.add(currentGroup);
-        currentAuthor = message.npub;
+        currentAuthor = message.author.value.npub;
       } else {
         currentGroup.add(message);
       }
-      lastMessageTime = message.timestamp;
+      lastMessageTime = message.createdAt;
     }
 
     return groups;

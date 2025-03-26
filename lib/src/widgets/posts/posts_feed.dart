@@ -27,11 +27,11 @@ class AppPostsFeed extends StatelessWidget {
       children: [
         for (final post in posts)
           AppFeedPost(
-            nevent: 'nevent1bla', //  TODO
+            nevent: post.internal.nevent,
             content: post.content,
-            profileName: post.event.pubkey,
-            profilePicUrl: 'profile-pic!', // TODO
-            timestamp: post.event.createdAt,
+            profileName: post.author.value.name,
+            profilePicUrl: post.author.value.profilePic,
+            timestamp: post.createdAt,
             onReply: (_) {}, // TODO: Implement reply handling
             onResolveEvent: onResolveEvent,
             onResolveProfile: onResolveProfile,

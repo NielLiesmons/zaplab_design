@@ -1,7 +1,8 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppMessageStack extends StatelessWidget {
-  final List<Message> messages;
+  final List<ChatMessage> messages;
   final bool isOutgoing;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
@@ -38,7 +39,7 @@ class AppMessageStack extends StatelessWidget {
       children: [
         if (!isOutgoing) ...[
           AppContainer(
-            child: AppProfilePic.s32(messages.first.profilePicUrl),
+            child: AppProfilePic.s32(messages.first.author.value.pictureUrl),
           ),
           const AppGap.s4(),
         ] else ...[
@@ -60,15 +61,15 @@ class AppMessageStack extends StatelessWidget {
                   if (i > 0) const AppGap.s2(),
                   AppMessageBubble(
                     message: messages[i].message,
-                    profileName: messages[i].profileName,
-                    timestamp: messages[i].timestamp,
+                    profileName: messages[i].author.value.name,
+                    timestamp: messages[i].createdAt,
                     showHeader:
                         i == 0 && !isOutgoing, // Only show header for incoming
                     isLastInStack: i == messages.length - 1,
                     isOutgoing: isOutgoing,
-                    nevent: messages[i].nevent,
-                    reactions: messages[i].reactions,
-                    zaps: messages[i].zaps,
+                    nevent: messages[i].internal.nevent,
+                    reactions: messages[i].reactions.toList(),
+                    zaps: messages[i].zaps.toList(),
                     onActions: onActions,
                     onReply: onReply,
                     onReactionTap: onReactionTap,

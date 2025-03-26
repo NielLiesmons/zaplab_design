@@ -224,24 +224,21 @@ class AppShortTextRenderer extends StatelessWidget {
               }
               paragraphPieces.add(const AppGap.s2());
               paragraphPieces.add(
-                FutureBuilder<NostrEvent>(
+                FutureBuilder<Event>(
                   future: onResolveEvent(child.content),
                   builder: (context, snapshot) {
-                    return ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 320),
-                      child: AppEventCard(
-                        contentType: snapshot.data?.contentType ?? '',
-                        title: snapshot.data?.title ?? '',
-                        message: snapshot.data?.message ?? '',
-                        content: snapshot.data?.content ?? '',
-                        imageUrl: snapshot.data?.imageUrl ?? '',
-                        profileName: snapshot.data?.profileName ?? '',
-                        profilePicUrl: snapshot.data?.profilePicUrl ?? '',
-                        timestamp: snapshot.data?.timestamp ?? DateTime.now(),
-                        amount: snapshot.data?.amount ?? '',
-                        onTap: snapshot.data?.onTap,
-                      ),
-                    );
+                    return AppEventCard(
+                        // contentType: snapshot.data?.contentType ?? '',
+                        // title: snapshot.data?.title ?? '',
+                        // message: snapshot.data?.message ?? '',
+                        // content: snapshot.data?.content ?? '',
+                        // imageUrl: snapshot.data?.imageUrl ?? '',
+                        // profileName: snapshot.data?.profileName ?? '',
+                        // profilePicUrl: snapshot.data?.profilePicUrl ?? '',
+                        // timestamp: snapshot.data?.timestamp ?? DateTime.now(),
+                        // amount: snapshot.data?.amount ?? '',
+                        // onTap: snapshot.data?.onTap,
+                        );
                   },
                 ),
               );

@@ -20,7 +20,7 @@ class AppChatScreen extends StatefulWidget {
   // Content related
   final int? mainCount;
   final Map<String, int> contentCounts;
-  final List<Message> messages;
+  final List<ChatMessage> messages;
   final List<Note> posts;
   final List<Article> articles;
   // Other actions & settings
