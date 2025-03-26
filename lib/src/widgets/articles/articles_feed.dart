@@ -23,9 +23,10 @@ class AppArticlesFeed extends StatelessWidget {
               children: [
                 AppArticleCard(
                   title: article.title,
-                  profileName: article.author.value,
-                  profilePicUrl: article.author.value.pictureUrl,
-                  imageUrl: article.imageUrl,
+                  profileName: article.author.value!.nameOrNpub,
+                  profilePicUrl: article.author.value!.pictureUrl!,
+                  // TODO: imageUrl - not part of NIP-23!
+                  imageUrl: 'article.imageUrl',
                   onTap: () {
                     // TODO Handle article tap
                   },

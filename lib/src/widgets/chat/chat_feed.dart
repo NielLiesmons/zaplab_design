@@ -37,13 +37,13 @@ class AppChatFeed extends StatelessWidget {
 
     for (final message in messages) {
       final shouldStartNewGroup = currentGroup == null ||
-          currentAuthor != message.author.value.npub ||
+          currentAuthor != message.author.value!.npub ||
           lastMessageTime!.difference(message.createdAt).inMinutes.abs() > 21;
 
       if (shouldStartNewGroup) {
         currentGroup = [message];
         groups.add(currentGroup);
-        currentAuthor = message.author.value.npub;
+        currentAuthor = message.author.value!.npub;
       } else {
         currentGroup.add(message);
       }
@@ -70,7 +70,7 @@ class AppChatFeed extends StatelessWidget {
                   onResolveProfile: onResolveProfile,
                   onResolveEmoji: onResolveEmoji,
                   onResolveHashtag: onResolveHashtag,
-                  isOutgoing: group.first.npub == currentNpub,
+                  isOutgoing: group.first.author.value?.npub == currentNpub,
                   onReply: onReply,
                   onActions: onActions,
                   onReactionTap: onReactionTap,

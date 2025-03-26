@@ -39,7 +39,7 @@ class AppMessageStack extends StatelessWidget {
       children: [
         if (!isOutgoing) ...[
           AppContainer(
-            child: AppProfilePic.s32(messages.first.author.value.pictureUrl),
+            child: AppProfilePic.s32(messages.first.author.value!.pictureUrl!),
           ),
           const AppGap.s4(),
         ] else ...[
@@ -61,7 +61,7 @@ class AppMessageStack extends StatelessWidget {
                   if (i > 0) const AppGap.s2(),
                   AppMessageBubble(
                     message: messages[i].message,
-                    profileName: messages[i].author.value.name,
+                    profileName: messages[i].author.value!.name,
                     timestamp: messages[i].createdAt,
                     showHeader:
                         i == 0 && !isOutgoing, // Only show header for incoming

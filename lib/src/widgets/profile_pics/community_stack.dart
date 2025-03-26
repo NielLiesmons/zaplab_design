@@ -92,8 +92,8 @@ class AppCommunityStack extends StatelessWidget {
                                   child: AppProfilePic.s20(
                                     _visibleCommunities[i]
                                         .author
-                                        .value
-                                        .pictureUrl,
+                                        .value!
+                                        .pictureUrl!,
                                     onTap: onTap,
                                   ),
                                 ),

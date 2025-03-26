@@ -270,18 +270,19 @@ class AppAsciiDocRenderer extends StatelessWidget {
                   child: FutureBuilder<Event>(
                     future: onResolveEvent(child.content),
                     builder: (context, snapshot) {
-                      return AppEventCard(
-                        // TODO: Define content type; I don't understand the rest
-                        contentType: 'where should content type come from?',
-                        title: snapshot.data?.title ?? '',
-                        message: snapshot.data?.message ?? '',
-                        content: snapshot.data?.content ?? '',
-                        imageUrl: snapshot.data?.imageUrl ?? '',
-                        profileName: snapshot.data?.profileName ?? '',
-                        profilePicUrl: snapshot.data?.profilePicUrl ?? '',
-                        timestamp: snapshot.data?.timestamp ?? DateTime.now(),
-                        onTap: snapshot.data?.onTap,
-                      );
+                      return Container();
+                      // TODO: What is this event? I'm confused
+                      // return AppEventCard(
+                      //   contentType: snapshot.data?.contentType ?? '',
+                      //   title: snapshot.data?.title ?? '',
+                      //   message: snapshot.data?.message ?? '',
+                      //   content: snapshot.data?.content ?? '',
+                      //   imageUrl: snapshot.data?.imageUrl ?? '',
+                      //   profileName: snapshot.data?.profileName ?? '',
+                      //   profilePicUrl: snapshot.data?.profilePicUrl ?? '',
+                      //   timestamp: snapshot.data?.timestamp ?? DateTime.now(),
+                      //   onTap: snapshot.data?.onTap,
+                      // );
                     },
                   ),
                 ),
