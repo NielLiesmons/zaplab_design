@@ -9,13 +9,11 @@ class AppActionsModal extends StatelessWidget {
   final String contentType;
   final String profileName;
   final String profilePicUrl;
-  final List<PartialReaction> recentReactions;
-  final List<double> recentAmounts;
   final String? message;
   final String? title;
   final String? imageUrl;
   // Reactions
-  final List<Reaction> recentReactions;
+  final List<PartialReaction> recentReactions;
   final Function(String) onReactionTap;
   final VoidCallback onMoreReactionsTap;
   // Zaps
