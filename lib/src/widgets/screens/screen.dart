@@ -193,7 +193,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   void _handleDrag(double delta) {
     setState(() {
       // Check for empty history pop condition first
-      if (widget.history.isEmpty && _currentDrag + delta > 32) {
+      if (widget.history.isEmpty && _currentDrag + delta > 4) {
         if (Navigator.canPop(context)) {
           Navigator.of(context).pop();
         }
@@ -583,81 +583,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                               ),
                             ),
 
-                            // Fixed top bar with blur effect
-                            Positioned(
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              child: ClipRRect(
-                                child: BackdropFilter(
-                                  filter: _showTopBarContent
-                                      ? ImageFilter.blur(
-                                          sigmaX: 24,
-                                          sigmaY: 24,
-                                        )
-                                      : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                                  child: AppContainer(
-                                    decoration: BoxDecoration(
-                                      gradient: _showTopBarContent
-                                          ? LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              colors: [
-                                                theme.colors.black,
-                                                theme.colors.black
-                                                    .withValues(alpha: 0.33),
-                                              ],
-                                            )
-                                          : null,
-                                      color: _showTopBarContent
-                                          ? null
-                                          : const Color(0x00000000),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        const AppGap.s8(),
-                                        const AppDragHandle(),
-                                        if (widget.topBarContent != null &&
-                                            _showTopBarContent) ...[
-                                          AnimatedOpacity(
-                                            duration: theme.durations.fast,
-                                            opacity:
-                                                _showTopBarContent ? 1.0 : 0.0,
-                                            child: Column(
-                                              children: [
-                                                widget.customTopBar
-                                                    ? widget.topBarContent!
-                                                    : Column(
-                                                        children: [
-                                                          AppContainer(
-                                                            padding:
-                                                                const AppEdgeInsets
-                                                                    .only(
-                                                              left: AppGapSize
-                                                                  .s12,
-                                                              right: AppGapSize
-                                                                  .s12,
-                                                              bottom: AppGapSize
-                                                                  .s12,
-                                                            ),
-                                                            child: widget
-                                                                .topBarContent!,
-                                                          ),
-                                                          const AppDivider(),
-                                                        ],
-                                                      ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            // Gesture detection zone
+                            // Top Bar + Gesture detection zone
                             Positioned(
                               top: 0,
                               left: 0,
@@ -691,13 +617,96 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                 onHorizontalDragEnd: (_) {},
                                 onTap: _currentDrag > 0 ? _closeMenu : null,
                                 child: AppContainer(
-                                  height: _currentDrag > 0
-                                      ? 2000
-                                      : _showTopBarContent
-                                          ? _topBarHeight
-                                          : 16,
+                                  height: _currentDrag > 0 ? 2000 : null,
                                   decoration: const BoxDecoration(
                                     color: Color(0x00000000),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      ClipRRect(
+                                        child: BackdropFilter(
+                                          filter: _showTopBarContent
+                                              ? ImageFilter.blur(
+                                                  sigmaX: 24,
+                                                  sigmaY: 24,
+                                                )
+                                              : ImageFilter.blur(
+                                                  sigmaX: 0, sigmaY: 0),
+                                          child: AppContainer(
+                                            decoration: BoxDecoration(
+                                              gradient: _showTopBarContent
+                                                  ? LinearGradient(
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter,
+                                                      colors: [
+                                                        theme.colors.black,
+                                                        theme.colors.black
+                                                            .withValues(
+                                                                alpha: 0.33),
+                                                      ],
+                                                    )
+                                                  : null,
+                                              color: _showTopBarContent
+                                                  ? null
+                                                  : const Color(0x00000000),
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                const AppGap.s8(),
+                                                const AppDragHandle(),
+                                                if (widget.topBarContent !=
+                                                        null &&
+                                                    _showTopBarContent) ...[
+                                                  AnimatedOpacity(
+                                                    duration:
+                                                        theme.durations.fast,
+                                                    opacity: _showTopBarContent
+                                                        ? 1.0
+                                                        : 0.0,
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        widget.customTopBar
+                                                            ? widget
+                                                                .topBarContent!
+                                                            : Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  AppContainer(
+                                                                    padding:
+                                                                        const AppEdgeInsets
+                                                                            .only(
+                                                                      left: AppGapSize
+                                                                          .s12,
+                                                                      right: AppGapSize
+                                                                          .s12,
+                                                                      bottom:
+                                                                          AppGapSize
+                                                                              .s12,
+                                                                    ),
+                                                                    child: widget
+                                                                        .topBarContent!,
+                                                                  ),
+                                                                  const AppDivider(),
+                                                                ],
+                                                              ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
