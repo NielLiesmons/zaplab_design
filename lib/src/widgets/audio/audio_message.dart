@@ -147,12 +147,22 @@ class _AppAudioMessageState extends State<AppAudioMessage>
     if (_hasError) {
       return AppContainer(
         constraints: const BoxConstraints(maxWidth: 264),
-        padding: const AppEdgeInsets.all(AppGapSize.s8),
+        padding: const AppEdgeInsets.all(AppGapSize.s4),
         child: Row(
           children: [
-            AppIcon.s16(
-              theme.icons.characters.alert,
-              color: theme.colors.white66,
+            AppContainer(
+              width: theme.sizes.s32,
+              height: theme.sizes.s32,
+              decoration: BoxDecoration(
+                color: theme.colors.white8,
+                borderRadius: BorderRadius.all(theme.radius.rad16),
+              ),
+              alignment: Alignment.center,
+              child: AppIcon.s16(
+                theme.icons.characters.info,
+                outlineColor: theme.colors.white66,
+                outlineThickness: LineThicknessData.normal().medium,
+              ),
             ),
             const AppGap.s8(),
             AppText.reg12(

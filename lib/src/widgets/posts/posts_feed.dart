@@ -30,6 +30,9 @@ class AppPostsFeed extends StatelessWidget {
             profilePicUrl: post.profilePicUrl,
             timestamp: post.timestamp,
             onReply: (_) {}, // TODO: Implement reply handling
+            onActions: (_) {}, // TODO: Implement actions handling
+            onReactionTap: (_) {}, // TODO: Implement reaction handling
+            onZapTap: (_) {}, // TODO: Implement zap handling
             onResolveEvent: onResolveEvent,
             onResolveProfile: onResolveProfile,
             onResolveEmoji: onResolveEmoji,

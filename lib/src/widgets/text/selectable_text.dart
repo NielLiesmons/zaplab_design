@@ -146,10 +146,7 @@ class _TextSpanEditingController extends TextEditingController {
     TextStyle? style,
     required bool withComposing,
   }) {
-    return TextSpan(
-      style: style,
-      children: <InlineSpan>[_textSpan],
-    );
+    return _textSpan;
   }
 
   @override

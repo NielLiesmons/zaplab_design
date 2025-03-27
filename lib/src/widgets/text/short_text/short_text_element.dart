@@ -1,17 +1,18 @@
 enum AppShortTextElementType {
   paragraph, // Regular text
-  blockQuote, // Add this
-  codeBlock, // [source,language]
+  blockQuote, // > quote
+  codeBlock, // ``` ``` or ```language```
   listItem, // * List items
-  link, // https://... or [text](url)
-  horizontalRule, // --- or *** or '''
+  link, // https://...
+  monospace, // `text`
   styledText, //
   images, // url.png or url.jpg or url.gif or url.svg
   audio, // url.mp3 or url.wav or url.ogg or url.m4a
   nostrProfile, // nostr:npub1... or nostr:nprofile1...
-  nostrEvent, // nostr:nevent1...
+  nostrEvent, // nostr:nevent1... or nostr:naddr....
   emoji, // :emoji:
-  hashtag, // Add this
+  utfEmoji, // Unicode emoji characters
+  hashtag, // #hashtag
 }
 
 class AppShortTextElement {

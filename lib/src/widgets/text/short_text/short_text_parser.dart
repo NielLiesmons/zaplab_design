@@ -2,9 +2,6 @@ import 'package:zaplab_design/zaplab_design.dart';
 
 class AppShortTextParser {
   final _listCounter = _ListCounter();
-  final RegExp audioUrlPattern = RegExp(
-      r'https?:\/\/[^\s<>"]+?\/[^\s<>"]+?\.(mp3|wav|ogg|m4a)(\?[^"\s<>]*)?',
-      caseSensitive: false);
 
   List<AppShortTextElement> parse(String text) {
     final List<AppShortTextElement> elements = [];
@@ -19,22 +16,13 @@ class AppShortTextParser {
         continue;
       }
 
-      // Handle horizontal rules
-      if (line == '---' || line == '- - -' || line == '***') {
-        elements.add(const AppShortTextElement(
-          type: AppShortTextElementType.horizontalRule,
-          content: '',
-        ));
-        continue;
-      }
-
       // Reset counters only when we hit a non-list item
       if (!line.startsWith('.')) {
         _listCounter.reset();
         lastListLevel = null;
       }
 
-      // Handle code blocks
+      // Handle code blocks (both AsciiDoc and Markdown)
       if (line.startsWith('----')) {
         final StringBuffer codeContent = StringBuffer();
         i++; // Skip the opening delimiter
@@ -58,6 +46,25 @@ class AppShortTextParser {
         continue;
       }
 
+      // Handle Markdown code blocks
+      if (line.startsWith('```')) {
+        final StringBuffer codeContent = StringBuffer();
+        final String language = line.substring(3).trim();
+        i++; // Skip the opening delimiter
+
+        while (i < lines.length && !lines[i].startsWith('```')) {
+          codeContent.writeln(lines[i]);
+          i++;
+        }
+
+        elements.add(AppShortTextElement(
+          type: AppShortTextElementType.codeBlock,
+          content: codeContent.toString().trimRight(),
+          attributes: {'language': language.isEmpty ? 'plain' : language},
+        ));
+        continue;
+      }
+
       // Handle block quotes
       if (line.startsWith('>')) {
         final String content = line.substring(1).trim();
@@ -71,18 +78,17 @@ class AppShortTextParser {
         continue;
       }
 
-      // Handle audio URLs
-      final audioUrlMatch = audioUrlPattern.matchAsPrefix(line);
-      if (audioUrlMatch != null) {
-        elements.add(AppShortTextElement(
-          type: AppShortTextElementType.audio,
-          content: audioUrlMatch[0]!.trim(),
-        ));
-        continue;
-      }
-
       // Handle paragraph with styled text
       final children = _parseStyledText(line);
+
+      // If this is a single emoji or utfEmoji, return it as a standalone element
+      if (children != null &&
+          children.length == 1 &&
+          (children[0].type == AppShortTextElementType.emoji ||
+              children[0].type == AppShortTextElementType.utfEmoji)) {
+        elements.add(children[0]);
+        continue;
+      }
 
       elements.add(AppShortTextElement(
         type: AppShortTextElementType.paragraph,
@@ -194,11 +200,15 @@ class AppShortTextParser {
     if (!text.contains('*') &&
         !text.contains('_') &&
         !text.contains('~') &&
+        !text.contains('`') &&
         !text.contains('nostr:') &&
         !text.contains(':') &&
         !text.contains('#') &&
         !text.contains('http') &&
-        !text.contains('https')) {
+        !text.contains('https') &&
+        !text.contains(RegExp(
+            r'[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F000}-\u{1F02F}]|[\u{1F0A0}-\u{1F0FF}]|[\u{1F100}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F1E6}-\u{1F1FF}]',
+            unicode: true))) {
       return null;
     }
 
@@ -217,12 +227,19 @@ class AppShortTextParser {
             );
     final RegExp underlinePattern = RegExp(r'__([^_]+)__');
     final RegExp lineThroughPattern = RegExp(r'~~([^~]+)~~');
+    final RegExp monospacePattern = RegExp(r'`([^`]+)`');
     final RegExp nostrEventPattern = RegExp(r'nostr:nevent1\w+');
     final RegExp nostrProfilePattern = RegExp(r'nostr:n(?:pub1|profile1)\w+');
     final RegExp emojiPattern = RegExp(r':([a-zA-Z0-9_-]+):');
+    final RegExp utfEmojiPattern = RegExp(
+        r'[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F000}-\u{1F02F}]|[\u{1F0A0}-\u{1F0FF}]|[\u{1F100}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F1E6}-\u{1F1FF}]',
+        unicode: true);
     final RegExp hashtagPattern = RegExp(r'(?<=^|\s)#([a-zA-Z0-9_]+)');
     final RegExp imageUrlPattern = RegExp(
         r'https?:\/\/[^\s<>"]+?\/[^\s<>"]+?\.(png|jpe?g|gif|webp|avif)(\?[^"\s<>]*)?',
+        caseSensitive: false);
+    final RegExp audioUrlPattern = RegExp(
+        r'https?:\/\/[^\s<>"]+?\/[^\s<>"]+?\.(mp3|wav|ogg|m4a)(\?[^"\s<>]*)?',
         caseSensitive: false);
     final RegExp urlPattern = RegExp(
       r'(?:https?:\/\/|www\.)([-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*))',
@@ -232,6 +249,26 @@ class AppShortTextParser {
     int currentPosition = 0;
 
     while (currentPosition < text.length) {
+      // First check for utfEmoji in the current text
+      final utfEmojiMatch =
+          utfEmojiPattern.matchAsPrefix(text, currentPosition);
+      if (utfEmojiMatch != null) {
+        // Add any text before the emoji
+        if (utfEmojiMatch.start > currentPosition) {
+          styledElements.add(AppShortTextElement(
+            type: AppShortTextElementType.styledText,
+            content: text.substring(currentPosition, utfEmojiMatch.start),
+          ));
+        }
+        // Add the emoji
+        styledElements.add(AppShortTextElement(
+          type: AppShortTextElementType.utfEmoji,
+          content: utfEmojiMatch[0]!,
+        ));
+        currentPosition = utfEmojiMatch.end;
+        continue;
+      }
+
       final Match? imageUrlMatch =
           imageUrlPattern.matchAsPrefix(text, currentPosition);
       final Match? audioUrlMatch =
@@ -247,6 +284,8 @@ class AppShortTextParser {
           underlinePattern.matchAsPrefix(text, currentPosition);
       final Match? lineThroughMatch =
           lineThroughPattern.matchAsPrefix(text, currentPosition);
+      final Match? monospaceMatch =
+          monospacePattern.matchAsPrefix(text, currentPosition);
       final Match? nostrEventMatch =
           nostrEventPattern.matchAsPrefix(text, currentPosition);
       final Match? nostrProfileMatch =
@@ -266,10 +305,10 @@ class AppShortTextParser {
         italicMatch,
         underlineMatch,
         lineThroughMatch,
+        monospaceMatch,
         nostrEventMatch,
         nostrProfileMatch,
         emojiMatch,
-        hashtagMatch,
         urlMatch,
       ].where((m) => m != null).toList();
 
@@ -330,6 +369,11 @@ class AppShortTextParser {
           type: AppShortTextElementType.styledText,
           content: content,
           attributes: {'style': style},
+        ));
+      } else if (firstMatch == monospaceMatch) {
+        styledElements.add(AppShortTextElement(
+          type: AppShortTextElementType.monospace,
+          content: firstMatch.group(1)!,
         ));
       } else if (firstMatch == emojiMatch) {
         styledElements.add(AppShortTextElement(
@@ -396,7 +440,6 @@ class AppShortTextParser {
         currentPosition = text.length - remainingText.length;
         continue;
       } else if (firstMatch == audioUrlMatch) {
-        debugPrint('Found audio URL: ${firstMatch[0]}');
         styledElements.add(AppShortTextElement(
           type: AppShortTextElementType.audio,
           content: firstMatch[0]!.trim(),
@@ -410,7 +453,6 @@ class AppShortTextParser {
         currentPosition = nextPosition;
         continue;
       } else if (firstMatch == urlMatch) {
-        debugPrint('Found regular URL: ${firstMatch[0]}');
         styledElements.add(AppShortTextElement(
           type: AppShortTextElementType.link,
           content: firstMatch[0]!,

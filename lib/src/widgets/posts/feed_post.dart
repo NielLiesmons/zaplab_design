@@ -20,7 +20,10 @@ class AppFeedPost extends StatelessWidget {
   final List<Zap> zaps;
   final List<ReplyUserData> topReplies;
   final int totalReplies;
+  final void Function(String) onActions;
   final void Function(String) onReply;
+  final void Function(String)? onReactionTap;
+  final void Function(String)? onZapTap;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -41,6 +44,9 @@ class AppFeedPost extends StatelessWidget {
     this.topReplies = const [],
     this.totalReplies = 0,
     required this.onReply,
+    required this.onActions,
+    required this.onReactionTap,
+    required this.onZapTap,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -69,16 +75,7 @@ class AppFeedPost extends StatelessWidget {
             outlineThickness: LineThicknessData.normal().medium,
           ),
           onSwipeLeft: () => onReply(nevent),
-          onSwipeRight: () => AppActionsModal.show(
-            context,
-            profileName: profileName,
-            nevent: nevent,
-            contentType: 'post',
-            title: content,
-            profilePicUrl: profilePicUrl,
-            recentAmounts: recentAmounts,
-            recentReactions: recentReactions,
-          ),
+          onSwipeRight: () => onActions(nevent),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -161,6 +158,8 @@ class AppFeedPost extends StatelessWidget {
                                             nevent: '',
                                             reactions: reactions,
                                             zaps: zaps,
+                                            onReactionTap: onReactionTap,
+                                            onZapTap: onZapTap,
                                           ),
                                         ),
                                       ),

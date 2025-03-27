@@ -293,7 +293,7 @@ class AsciiDocParser {
       r'(?:https?:\/\/|www\.)([-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*))',
       caseSensitive: false,
     );
-    final RegExp monospacePattern = RegExp(r"'([^']+)'");
+    final RegExp monospacePattern = RegExp(r'`([^`]+)`');
     int currentPosition = 0;
 
     while (currentPosition < text.length) {

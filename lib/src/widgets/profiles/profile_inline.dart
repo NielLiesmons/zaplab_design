@@ -7,6 +7,7 @@ class AppProfileInline extends StatelessWidget {
   final void Function()? onTap;
   final bool? isArticle;
   final bool? isEditableText;
+  final bool isCompact;
 
   const AppProfileInline({
     super.key,
@@ -15,6 +16,7 @@ class AppProfileInline extends StatelessWidget {
     this.onTap,
     this.isArticle = false,
     this.isEditableText = false,
+    this.isCompact = false,
   });
 
   @override
@@ -35,10 +37,14 @@ class AppProfileInline extends StatelessWidget {
                     offset: isArticle == false
                         ? const Offset(0, -0.1)
                         : const Offset(0, 0.2),
-                    child: AppProfilePic.s20(profilePicUrl),
+                    child: isCompact
+                        ? AppProfilePic.s16(profilePicUrl, onTap: onTap)
+                        : AppProfilePic.s20(profilePicUrl, onTap: onTap),
                   )
                 else
-                  AppProfilePic.s20('non-functional url'),
+                  isCompact
+                      ? AppProfilePic.s16('non-functional url', onTap: onTap)
+                      : AppProfilePic.s20('non-functional url', onTap: onTap),
                 const AppGap.s4(),
                 Flexible(
                   child: Transform.translate(
@@ -52,12 +58,19 @@ class AppProfileInline extends StatelessWidget {
                                     maxLines: 1,
                                     textOverflow: TextOverflow.ellipsis,
                                   )
-                                : AppText.med14(
-                                    profileName,
-                                    color: theme.colors.blurpleColor,
-                                    maxLines: 1,
-                                    textOverflow: TextOverflow.ellipsis,
-                                  )
+                                : isCompact
+                                    ? AppText.med12(
+                                        profileName,
+                                        color: theme.colors.blurpleColor66,
+                                        maxLines: 1,
+                                        textOverflow: TextOverflow.ellipsis,
+                                      )
+                                    : AppText.med14(
+                                        profileName,
+                                        color: theme.colors.blurpleColor,
+                                        maxLines: 1,
+                                        textOverflow: TextOverflow.ellipsis,
+                                      )
                             : AppText.boldArticle(
                                 profileName,
                                 color: theme.colors.blurpleColor,
@@ -72,12 +85,19 @@ class AppProfileInline extends StatelessWidget {
                                     maxLines: 1,
                                     textOverflow: TextOverflow.ellipsis,
                                   )
-                                : AppText.med14(
-                                    'ProfileName',
-                                    color: theme.colors.blurpleColor66,
-                                    maxLines: 1,
-                                    textOverflow: TextOverflow.ellipsis,
-                                  )
+                                : isCompact
+                                    ? AppText.med12(
+                                        'ProfileName',
+                                        color: theme.colors.blurpleColor66,
+                                        maxLines: 1,
+                                        textOverflow: TextOverflow.ellipsis,
+                                      )
+                                    : AppText.med14(
+                                        'ProfileName',
+                                        color: theme.colors.blurpleColor66,
+                                        maxLines: 1,
+                                        textOverflow: TextOverflow.ellipsis,
+                                      )
                             : AppText.boldArticle(
                                 'ProfileName',
                                 color: theme.colors.blurpleColor66,

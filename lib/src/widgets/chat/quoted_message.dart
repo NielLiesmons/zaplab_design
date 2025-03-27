@@ -1,5 +1,4 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:zaplab_design/src/utils/timestamp_formatter.dart';
 
 class AppQuotedMessage extends StatelessWidget {
   final String profileName;
@@ -7,6 +6,10 @@ class AppQuotedMessage extends StatelessWidget {
   final String message;
   final DateTime timestamp;
   final String? eventId;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
+  final NostrHashtagResolver onResolveHashtag;
 
   const AppQuotedMessage({
     super.key,
@@ -15,6 +18,10 @@ class AppQuotedMessage extends StatelessWidget {
     required this.message,
     required this.timestamp,
     this.eventId,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
+    required this.onResolveHashtag,
   });
 
   @override
@@ -63,16 +70,19 @@ class AppQuotedMessage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const AppGap.s4(),
+                    const SizedBox(height: 5),
                     AppContainer(
                       padding: const AppEdgeInsets.only(
                         left: AppGapSize.s2,
                       ),
-                      child: AppText.reg12(
-                        message,
-                        color: theme.colors.white66,
+                      child: AppCompactTextRenderer(
+                        content: message,
                         maxLines: 1,
-                        textOverflow: TextOverflow.ellipsis,
+                        shouldTruncate: true,
+                        onResolveEvent: onResolveEvent,
+                        onResolveProfile: onResolveProfile,
+                        onResolveEmoji: onResolveEmoji,
+                        onResolveHashtag: onResolveHashtag,
                       ),
                     ),
                   ],

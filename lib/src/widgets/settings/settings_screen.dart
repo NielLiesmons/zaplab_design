@@ -301,7 +301,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
           children: [
             if (widget.onAppearanceTap != null)
               AppSettingSection(
-                icon: AppIcon.s20(theme.icons.characters.appearance,
+                icon: AppIcon.s24(theme.icons.characters.appearance,
                     gradient: theme.colors.blurple),
                 title: 'Appearance',
                 description: widget.appearanceDescription ?? '',

@@ -10,6 +10,10 @@ class AppEventCard extends StatelessWidget {
   final String? amount;
   final String? message;
   final String? content;
+  final NostrEventResolver? onResolveEvent;
+  final NostrProfileResolver? onResolveProfile;
+  final NostrEmojiResolver? onResolveEmoji;
+  final NostrHashtagResolver? onResolveHashtag;
 
   final VoidCallback? onTap;
 
@@ -25,6 +29,10 @@ class AppEventCard extends StatelessWidget {
     this.message,
     this.content,
     this.onTap,
+    this.onResolveEvent,
+    this.onResolveProfile,
+    this.onResolveEmoji,
+    this.onResolveHashtag,
   });
 
   final double minWidth = 280;
@@ -86,6 +94,10 @@ class AppEventCard extends StatelessWidget {
           message: message ?? '',
           timestamp: timestamp,
           eventId: null,
+          onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
+          onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
+          onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
+          onResolveHashtag: onResolveHashtag ?? (_) => Future.value(null),
         ),
       );
     }

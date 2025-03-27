@@ -76,17 +76,18 @@ class AppShortTextRenderer extends StatelessWidget {
       return ShortTextContentType.singleImageStack;
     }
 
+    // Single emoji
+    if (elements.length == 1 &&
+        elements[0].type == AppShortTextElementType.emoji) {
+      return ShortTextContentType.singleEmoji;
+    }
+
     // Single paragraph with one child
     if (elements.length == 1 &&
         elements[0].type == AppShortTextElementType.paragraph &&
         elements[0].children != null &&
         elements[0].children!.length == 1) {
       final child = elements[0].children![0];
-
-      // Single emoji
-      if (child.type == AppShortTextElementType.emoji) {
-        return ShortTextContentType.singleEmoji;
-      }
 
       // Single profile
       if (child.type == AppShortTextElementType.nostrProfile) {
@@ -104,9 +105,30 @@ class AppShortTextRenderer extends StatelessWidget {
         elements[0].type == AppShortTextElementType.paragraph &&
         elements[0].children != null) {
       final children = elements[0].children!;
+      print('Analyzing paragraph with ${children.length} children');
+      // Filter out whitespace and check if all remaining children are either emoji or utfEmoji
+      final nonWhitespaceChildren = children.where((child) {
+        print('Child type: ${child.type}, content: ${child.content}');
+        return child.type != AppShortTextElementType.styledText ||
+            child.content.trim().isNotEmpty;
+      }).toList();
+      print('Non-whitespace children count: ${nonWhitespaceChildren.length}');
+
+      // Check if all non-whitespace children are either emoji or utfEmoji, and there are 1-2 of them
+      if (nonWhitespaceChildren.length <= 2 &&
+          nonWhitespaceChildren.every((child) =>
+              child.type == AppShortTextElementType.emoji ||
+              child.type == AppShortTextElementType.utfEmoji)) {
+        print('Detected singleEmoji content type');
+        return ShortTextContentType.singleEmoji;
+      } else {
+        print(
+            'Not singleEmoji: ${nonWhitespaceChildren.length} children, types: ${nonWhitespaceChildren.map((c) => c.type).join(', ')}');
+      }
     }
 
     // Mixed content
+    print('Falling back to mixed content type');
     return ShortTextContentType.mixed;
   }
 
@@ -171,9 +193,6 @@ class AppShortTextRenderer extends StatelessWidget {
     final theme = AppTheme.of(context);
     final (isInsideMessageBubble, _) = MessageBubbleScope.of(context);
 
-    debugPrint(
-        'Building element of type: ${element.type} with content: ${element.content}');
-
     switch (element.type) {
       case AppShortTextElementType.images:
         final urls = element.content.split('\n');
@@ -184,6 +203,36 @@ class AppShortTextRenderer extends StatelessWidget {
             AppImageStack(imageUrls: urls),
             const AppGap.s2(),
           ],
+        );
+
+      case AppShortTextElementType.emoji:
+        return FutureBuilder<String>(
+          future: onResolveEmoji(element.content),
+          builder: (context, snapshot) {
+            return AppContainer(
+              padding: const AppEdgeInsets.symmetric(horizontal: AppGapSize.s2),
+              child: AppEmojiImage(
+                emojiUrl: snapshot.data ?? '',
+                emojiName: snapshot.data ?? '',
+                size: ShortTextContent.of(context) ==
+                        ShortTextContentType.singleEmoji
+                    ? 80
+                    : 17,
+              ),
+            );
+          },
+        );
+
+      case AppShortTextElementType.utfEmoji:
+        return Text(
+          element.content,
+          style: theme.typography.reg14.copyWith(
+            color: theme.colors.white,
+            fontSize:
+                ShortTextContent.of(context) == ShortTextContentType.singleEmoji
+                    ? 72
+                    : 16,
+          ),
         );
 
       case AppShortTextElementType.audio:
@@ -208,14 +257,59 @@ class AppShortTextRenderer extends StatelessWidget {
           final List<Widget> paragraphPieces = [];
           final List<InlineSpan> currentSpans = [];
 
+          // Check if this is a singleEmoji case
+          if (ShortTextContent.of(context) ==
+              ShortTextContentType.singleEmoji) {
+            return AppContainer(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (var i = 0; i < element.children!.length; i++) ...[
+                    if (element.children![i].type ==
+                        AppShortTextElementType.emoji)
+                      FutureBuilder<String>(
+                        future: onResolveEmoji(element.children![i].content),
+                        builder: (context, snapshot) {
+                          return AppEmojiImage(
+                            emojiUrl: snapshot.data ?? '',
+                            emojiName: snapshot.data ?? '',
+                            size: 96,
+                            opacity: 1.0,
+                          );
+                        },
+                      )
+                    else if (element.children![i].type ==
+                        AppShortTextElementType.utfEmoji)
+                      Text(
+                        element.children![i].content,
+                        style: theme.typography.reg14.copyWith(
+                          color: theme.colors.white,
+                          fontSize: 72,
+                        ),
+                      ),
+                    if (i == 0 && element.children!.length == 2)
+                      const AppGap.s4(),
+                  ],
+                ],
+              ),
+            );
+          }
+
           for (var child in element.children!) {
             if (child.type == AppShortTextElementType.nostrEvent) {
               if (currentSpans.isNotEmpty) {
                 paragraphPieces.add(
-                  AppSelectableText.rich(
-                    TextSpan(children: List.from(currentSpans)),
-                    style: theme.typography.reg14.copyWith(
-                      color: theme.colors.white,
+                  AppContainer(
+                    padding: AppEdgeInsets.symmetric(
+                      horizontal: isInsideMessageBubble
+                          ? AppGapSize.s4
+                          : AppGapSize.none,
+                    ),
+                    child: AppSelectableText.rich(
+                      TextSpan(children: List.from(currentSpans)),
+                      style: theme.typography.reg14.copyWith(
+                        color: theme.colors.white,
+                      ),
                     ),
                   ),
                 );
@@ -245,34 +339,151 @@ class AppShortTextRenderer extends StatelessWidget {
                 ),
               );
               paragraphPieces.add(const AppGap.s2());
-            } else if (child.type == AppShortTextElementType.emoji &&
-                ShortTextContent.of(context) ==
-                    ShortTextContentType.singleEmoji) {
+            } else if (child.type == AppShortTextElementType.audio) {
               if (currentSpans.isNotEmpty) {
                 paragraphPieces.add(
-                  AppSelectableText.rich(
-                    TextSpan(children: List.from(currentSpans)),
-                    style: theme.typography.reg14.copyWith(
-                      color: theme.colors.white,
+                  AppContainer(
+                    padding: AppEdgeInsets.symmetric(
+                      horizontal: isInsideMessageBubble
+                          ? AppGapSize.s4
+                          : AppGapSize.none,
+                    ),
+                    child: AppSelectableText.rich(
+                      TextSpan(children: List.from(currentSpans)),
+                      style: theme.typography.reg14.copyWith(
+                        color: theme.colors.white,
+                      ),
                     ),
                   ),
                 );
                 currentSpans.clear();
               }
+              paragraphPieces.add(const AppGap.s2());
               paragraphPieces.add(
-                FutureBuilder<String>(
-                  future: onResolveEmoji(child.content),
-                  builder: (context, snapshot) {
-                    return AppContainer(
-                      child: AppEmojiImage(
-                        emojiUrl: snapshot.data ?? '',
-                        emojiName: snapshot.data ?? '',
-                        size: 96,
-                      ),
-                    );
-                  },
-                ),
+                AppAudioMessage(audioUrl: child.content),
               );
+              paragraphPieces.add(const AppGap.s2());
+            } else if (child.type == AppShortTextElementType.utfEmoji) {
+              final contentType = ShortTextContent.of(context);
+              if (contentType == ShortTextContentType.singleEmoji) {
+                // For singleEmoji, render as block
+                if (currentSpans.isNotEmpty) {
+                  paragraphPieces.add(
+                    AppContainer(
+                      padding: AppEdgeInsets.symmetric(
+                        horizontal: isInsideMessageBubble
+                            ? AppGapSize.s4
+                            : AppGapSize.none,
+                      ),
+                      child: AppSelectableText.rich(
+                        TextSpan(children: List.from(currentSpans)),
+                        style: theme.typography.reg14.copyWith(
+                          color: theme.colors.white,
+                        ),
+                      ),
+                    ),
+                  );
+                  currentSpans.clear();
+                }
+                paragraphPieces.add(const AppGap.s2());
+                paragraphPieces.add(
+                  AppContainer(
+                    padding: const AppEdgeInsets.symmetric(
+                        horizontal: AppGapSize.s2),
+                    child: Text(
+                      child.content,
+                      style: theme.typography.reg14.copyWith(
+                        color: theme.colors.white,
+                        fontSize: 80,
+                      ),
+                    ),
+                  ),
+                );
+                paragraphPieces.add(const AppGap.s2());
+              } else {
+                // For inline rendering
+                currentSpans.add(TextSpan(
+                  text: child.content,
+                  style: theme.typography.reg14.copyWith(
+                    color: theme.colors.white,
+                    fontSize: 16,
+                  ),
+                ));
+              }
+            } else if (child.type == AppShortTextElementType.emoji) {
+              final contentType = ShortTextContent.of(context);
+              if (contentType == ShortTextContentType.singleEmoji) {
+                // For singleEmoji, render as block
+                if (currentSpans.isNotEmpty) {
+                  paragraphPieces.add(
+                    AppContainer(
+                      padding: AppEdgeInsets.symmetric(
+                        horizontal: isInsideMessageBubble
+                            ? AppGapSize.s4
+                            : AppGapSize.none,
+                      ),
+                      child: AppSelectableText.rich(
+                        TextSpan(children: List.from(currentSpans)),
+                        style: theme.typography.reg14.copyWith(
+                          color: theme.colors.white,
+                        ),
+                      ),
+                    ),
+                  );
+                  currentSpans.clear();
+                }
+                paragraphPieces.add(const AppGap.s2());
+                paragraphPieces.add(
+                  FutureBuilder<String>(
+                    future: onResolveEmoji(child.content),
+                    builder: (context, snapshot) {
+                      return AppContainer(
+                        padding: const AppEdgeInsets.symmetric(
+                            horizontal: AppGapSize.s2),
+                        child: AppEmojiImage(
+                          emojiUrl: snapshot.data ?? '',
+                          emojiName: snapshot.data ?? '',
+                          size: 80,
+                        ),
+                      );
+                    },
+                  ),
+                );
+                paragraphPieces.add(const AppGap.s2());
+              } else {
+                // For inline rendering
+                currentSpans.add(TextSpan(
+                  children: [
+                    TextSpan(
+                      text: ':${child.content}:',
+                      style: const TextStyle(
+                        color: Color(0xFF000000),
+                        fontSize: 0,
+                        height: 0,
+                        letterSpacing: 0,
+                        wordSpacing: 0,
+                      ),
+                    ),
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: FutureBuilder<String>(
+                        future: onResolveEmoji(child.content),
+                        builder: (context, snapshot) {
+                          return AppContainer(
+                            padding: const AppEdgeInsets.symmetric(
+                                horizontal: AppGapSize.s2),
+                            child: AppEmojiImage(
+                              emojiUrl: snapshot.data ?? '',
+                              emojiName: snapshot.data ?? '',
+                              size: 17,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ));
+              }
             } else {
               // Handle all other elements exactly as before
               if (child.type == AppShortTextElementType.nostrProfile) {
@@ -357,14 +568,61 @@ class AppShortTextRenderer extends StatelessWidget {
                   recognizer: TapGestureRecognizer()
                     ..onTap = () => onLinkTap(child.content),
                 ));
+              } else if (child.type == AppShortTextElementType.monospace) {
+                currentSpans.add(TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '`${child.content}`',
+                      style: const TextStyle(
+                        color: Color(0xFF000000),
+                        fontSize: 0,
+                        height: 0,
+                        letterSpacing: 0,
+                        wordSpacing: 0,
+                      ),
+                    ),
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const AppGap.s2(),
+                          AppContainer(
+                            height: 20,
+                            padding: const AppEdgeInsets.only(
+                              left: AppGapSize.s4,
+                              right: AppGapSize.s4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: theme.colors.white16,
+                              borderRadius: theme.radius.asBorderRadius().rad4,
+                            ),
+                            child: AppText.code(
+                              child.content,
+                              color: theme.colors.white66,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ));
               } else if (child.type == AppShortTextElementType.images) {
                 final urls = child.content.split('\n');
                 if (currentSpans.isNotEmpty) {
                   paragraphPieces.add(
-                    AppSelectableText.rich(
-                      TextSpan(children: List.from(currentSpans)),
-                      style: theme.typography.reg14.copyWith(
-                        color: theme.colors.white,
+                    AppContainer(
+                      padding: AppEdgeInsets.symmetric(
+                        horizontal: isInsideMessageBubble
+                            ? AppGapSize.s4
+                            : AppGapSize.none,
+                      ),
+                      child: AppSelectableText.rich(
+                        TextSpan(children: List.from(currentSpans)),
+                        style: theme.typography.reg14.copyWith(
+                          color: theme.colors.white,
+                        ),
                       ),
                     ),
                   );
@@ -410,7 +668,12 @@ class AppShortTextRenderer extends StatelessWidget {
                       isInsideMessageBubble ? AppGapSize.s4 : AppGapSize.none,
                 ),
                 child: AppSelectableText.rich(
-                  TextSpan(children: List.from(currentSpans)),
+                  TextSpan(
+                    children: currentSpans,
+                    style: theme.typography.reg14.copyWith(
+                      color: theme.colors.white,
+                    ),
+                  ),
                   style: theme.typography.reg14.copyWith(
                     color: theme.colors.white,
                   ),
@@ -563,11 +826,51 @@ class AppShortTextRenderer extends StatelessWidget {
                       emojiName: snapshot.data ?? '',
                       size: ShortTextContent.of(context) ==
                               ShortTextContentType.singleEmoji
-                          ? 96
-                          : 16,
+                          ? 80
+                          : 17,
                     ),
                   );
                 },
+              ),
+            ),
+          ],
+        );
+      } else if (element.type == AppShortTextElementType.monospace) {
+        return TextSpan(
+          children: [
+            TextSpan(
+              text: '`${element.content}`',
+              style: const TextStyle(
+                color: Color(0xFF000000),
+                fontSize: 0,
+                height: 0,
+                letterSpacing: 0,
+                wordSpacing: 0,
+              ),
+            ),
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const AppGap.s2(),
+                  AppContainer(
+                    height: 20,
+                    padding: const AppEdgeInsets.only(
+                      left: AppGapSize.s4,
+                      right: AppGapSize.s4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: theme.colors.white16,
+                      borderRadius: theme.radius.asBorderRadius().rad4,
+                    ),
+                    child: AppText.code(
+                      element.content,
+                      color: theme.colors.white66,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

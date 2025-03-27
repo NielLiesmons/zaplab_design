@@ -112,6 +112,7 @@ export 'text/code_block.dart';
 export 'text/event_card.dart';
 export 'text/editable_text.dart';
 export 'text/section_title.dart';
+export 'text/short_text/compact_text_renderer.dart';
 export 'text/short_text/short_text_element.dart';
 export 'text/short_text/short_text_parser.dart';
 export 'text/short_text/short_text_renderer.dart';

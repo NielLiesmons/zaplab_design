@@ -25,6 +25,11 @@ class AppActionsModal extends StatelessWidget {
   final Function() onOpenWithTap;
   final Function() onLabelTap;
   final Function() onShareTap;
+  // Compact text rendering
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
+  final NostrHashtagResolver onResolveHashtag;
 
   const AppActionsModal({
     super.key,
@@ -46,6 +51,10 @@ class AppActionsModal extends StatelessWidget {
     required this.onOpenWithTap,
     required this.onLabelTap,
     required this.onShareTap,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
+    required this.onResolveHashtag,
   });
 
   static Future<void> show(
@@ -59,12 +68,40 @@ class AppActionsModal extends StatelessWidget {
     String? message,
     String? title,
     String? imageUrl,
+    required NostrEventResolver onResolveEvent,
+    required NostrProfileResolver onResolveProfile,
+    required NostrEmojiResolver onResolveEmoji,
+    required NostrHashtagResolver onResolveHashtag,
+    required LinkTapHandler onLinkTap,
   }) {
     return AppModal.show(
       context,
       topBar: _buildTopBar(context),
       children: [
-        _buildContent(
+        AppActionsModal(
+          nevent: nevent,
+          contentType: contentType,
+          profileName: profileName,
+          profilePicUrl: profilePicUrl,
+          recentReactions: recentReactions,
+          recentAmounts: recentAmounts,
+          message: message,
+          title: title,
+          imageUrl: imageUrl,
+          onReactionTap: (_) {},
+          onMoreReactionsTap: () {},
+          onZapTap: (_) {},
+          onMoreZapsTap: () {},
+          onReportTap: () {},
+          onAddProfileTap: () {},
+          onOpenWithTap: () {},
+          onLabelTap: () {},
+          onShareTap: () {},
+          onResolveEvent: onResolveEvent,
+          onResolveProfile: onResolveProfile,
+          onResolveEmoji: onResolveEmoji,
+          onResolveHashtag: onResolveHashtag,
+        )._buildContent(
           context,
           nevent: nevent,
           contentType: contentType,
@@ -137,7 +174,7 @@ class AppActionsModal extends StatelessWidget {
     );
   }
 
-  static Widget _buildContent(
+  Widget _buildContent(
     BuildContext context, {
     required String nevent,
     required String contentType,
@@ -189,6 +226,10 @@ class AppActionsModal extends StatelessWidget {
                             profileName: profileName,
                             profilePicUrl: profilePicUrl,
                             timestamp: DateTime.now(),
+                            onResolveEvent: onResolveEvent,
+                            onResolveProfile: onResolveProfile,
+                            onResolveEmoji: onResolveEmoji,
+                            onResolveHashtag: onResolveHashtag,
                           ),
                           AppContainer(
                             padding: const AppEdgeInsets.only(
