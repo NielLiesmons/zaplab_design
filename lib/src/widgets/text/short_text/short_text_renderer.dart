@@ -25,6 +25,7 @@ class ShortTextContent extends InheritedWidget {
   final ShortTextContentType contentType;
 
   const ShortTextContent({
+    super.key,
     required this.contentType,
     required super.child,
   });

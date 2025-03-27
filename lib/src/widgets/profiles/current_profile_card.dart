@@ -1,5 +1,4 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:zaplab_design/src/utils/npub_utils.dart';
 
 class AppCurrentProfileCard extends StatelessWidget {
   final String npub;
