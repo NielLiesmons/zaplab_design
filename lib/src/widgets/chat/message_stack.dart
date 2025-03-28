@@ -44,7 +44,7 @@ class AppMessageStack extends StatelessWidget {
           const AppGap.s4(),
         ] else ...[
           if (!isOutgoing &&
-              AppShortTextRenderer.analyzeContent(messages.first.message) !=
+              AppShortTextRenderer.analyzeContent(messages.first.content) !=
                   ShortTextContentType.singleImageStack)
             const AppGap.s64(),
           const AppGap.s4(),
@@ -60,14 +60,14 @@ class AppMessageStack extends StatelessWidget {
                 for (int i = 0; i < messages.length; i++) ...[
                   if (i > 0) const AppGap.s2(),
                   AppMessageBubble(
-                    message: messages[i].message,
+                    message: messages[i].content,
                     profileName: messages[i].author.value!.name,
                     timestamp: messages[i].createdAt,
                     showHeader:
                         i == 0 && !isOutgoing, // Only show header for incoming
                     isLastInStack: i == messages.length - 1,
                     isOutgoing: isOutgoing,
-                    nevent: messages[i].internal.nevent,
+                    nevent: messages[i].internal.shareableId,
                     reactions: messages[i].reactions.toList(),
                     zaps: messages[i].zaps.toList(),
                     onActions: onActions,
@@ -86,7 +86,7 @@ class AppMessageStack extends StatelessWidget {
           ),
         ),
         if (!isOutgoing &&
-            AppShortTextRenderer.analyzeContent(messages.first.message) !=
+            AppShortTextRenderer.analyzeContent(messages.first.content) !=
                 ShortTextContentType.singleImageStack)
           const AppGap.s32(),
       ],

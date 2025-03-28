@@ -27,7 +27,7 @@ class AppPostsFeed extends StatelessWidget {
       children: [
         for (final post in posts)
           AppFeedPost(
-            nevent: post.internal.nevent,
+            nevent: post.internal.shareableId,
             content: post.content,
             profileName: post.author.value!.nameOrNpub,
             profilePicUrl: post.author.value!.pictureUrl!,
