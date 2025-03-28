@@ -54,6 +54,8 @@ class _AppImageStackState extends State<AppImageStack> {
   Size? _firstImageSize;
   double? _aspectRatio;
   bool _isHovered = false;
+  ImageStreamListener? _imageStreamListener;
+  ImageStream? _imageStream;
 
   @override
   void initState() {
@@ -61,20 +63,27 @@ class _AppImageStackState extends State<AppImageStack> {
     _resolveImage();
   }
 
+  @override
+  void dispose() {
+    if (_imageStreamListener != null && _imageStream != null) {
+      _imageStream!.removeListener(_imageStreamListener!);
+    }
+    super.dispose();
+  }
+
   void _resolveImage() {
     final ImageProvider imageProvider = NetworkImage(widget.imageUrls[0]);
-    final ImageStream stream =
-        imageProvider.resolve(const ImageConfiguration());
-    stream.addListener(
-      ImageStreamListener((ImageInfo info, bool _) {
-        final Size size =
-            Size(info.image.width.toDouble(), info.image.height.toDouble());
-        setState(() {
-          _firstImageSize = size;
-          _aspectRatio = size.width / size.height;
-        });
-      }),
-    );
+    _imageStream = imageProvider.resolve(const ImageConfiguration());
+    _imageStreamListener = ImageStreamListener((ImageInfo info, bool _) {
+      if (!mounted) return;
+      final Size size =
+          Size(info.image.width.toDouble(), info.image.height.toDouble());
+      setState(() {
+        _firstImageSize = size;
+        _aspectRatio = size.width / size.height;
+      });
+    });
+    _imageStream!.addListener(_imageStreamListener!);
   }
 
   Size _calculateContainerSize() {
