@@ -1,3 +1,4 @@
+import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
@@ -89,7 +90,7 @@ class AppProfileStack extends StatelessWidget {
                                     ],
                                   ),
                                   child: AppProfilePic.s32(
-                                    _visibleProfiles[i].profilePicUrl,
+                                    _visibleProfiles[i].pictureUrl ?? '',
                                     onTap: onTap,
                                   ),
                                 ),

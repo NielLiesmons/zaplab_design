@@ -1,3 +1,4 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppArticlesFeed extends StatelessWidget {
@@ -22,9 +23,10 @@ class AppArticlesFeed extends StatelessWidget {
               children: [
                 AppArticleCard(
                   title: article.title,
-                  profileName: article.profileName,
-                  profilePicUrl: article.profilePicUrl,
-                  imageUrl: article.imageUrl,
+                  profileName: article.author.value!.nameOrNpub,
+                  profilePicUrl: article.author.value!.pictureUrl!,
+                  // TODO: imageUrl - not part of NIP-23!
+                  imageUrl: 'article.imageUrl',
                   onTap: () {
                     // TODO Handle article tap
                   },

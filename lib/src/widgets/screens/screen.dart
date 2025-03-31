@@ -48,12 +48,12 @@ class AppScreen extends StatefulWidget {
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => AppScreen(
           onHomeTap: () => Navigator.of(context).pop(),
-          child: child,
           topBarContent: topBarContent,
           bottomBarContent: bottomBarContent,
           history: history,
           alwaysShowTopBar: alwaysShowTopBar,
           customTopBar: customTopBar,
+          child: child,
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return SlideTransition(

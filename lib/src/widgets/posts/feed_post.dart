@@ -1,3 +1,4 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class ReplyUserData {
@@ -30,9 +31,9 @@ class AppFeedPost extends StatelessWidget {
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
   final List<double> recentAmounts;
-  final List<Reaction> recentReactions;
+  late final List<PartialReaction> recentReactions;
 
-  const AppFeedPost({
+  AppFeedPost({
     super.key,
     required this.nevent,
     required this.content,
@@ -45,16 +46,18 @@ class AppFeedPost extends StatelessWidget {
     this.totalReplies = 0,
     required this.onReply,
     required this.onActions,
-    required this.onReactionTap,
-    required this.onZapTap,
+    this.onReactionTap,
+    this.onZapTap,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
     this.recentAmounts = DefaultData.defaultAmounts,
-    this.recentReactions = DefaultData.defaultReactions,
-  });
+    List<PartialReaction>? recentReactions,
+  }) {
+    this.recentReactions = recentReactions ?? DefaultData.defaultReactions;
+  }
 
   @override
   Widget build(BuildContext context) {

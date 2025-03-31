@@ -1,3 +1,4 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'text_selection_gesture_detector_builder.dart' as custom;
 import 'package:flutter/services.dart';
@@ -43,12 +44,12 @@ class InlineSpanController extends TextEditingController {
   bool _isNotifying = false;
 
   InlineSpanController({
-    String? text,
+    super.text,
     required this.triggerSpans,
     required this.onSearchProfiles,
     required this.onSearchEmojis,
     required this.context,
-  }) : super(text: text);
+  });
 
   bool hasSpanAt(int offset) {
     return _activeSpans.containsKey(offset);
@@ -195,13 +196,13 @@ class InlineSpanController extends TextEditingController {
     print('Inserting nostr profile span at offset $offset for npub: $npub');
 
     try {
-      final theme = AppTheme.of(context);
       _activeSpans[offset] = WidgetSpan(
         alignment: PlaceholderAlignment.middle,
         child: AppProfileInline(
-          profileName: profile.profileName,
-          profilePicUrl: profile.profilePicUrl,
-          onTap: profile.onTap,
+          profileName: profile.nameOrNpub,
+          profilePicUrl: profile.pictureUrl!,
+          // TODO: Models do not contain callbacks
+          // onTap: profile.onTap,
           isEditableText: true,
         ),
       );
@@ -215,7 +216,6 @@ class InlineSpanController extends TextEditingController {
     print('Inserting emoji span at offset $offset for emoji: $emojiName');
 
     try {
-      final theme = AppTheme.of(context);
       _activeSpans[offset] = WidgetSpan(
         alignment: PlaceholderAlignment.middle,
         child: AppEmojiImage(
@@ -601,7 +601,7 @@ class _AppEditableTextState extends State<AppEditableText>
   }
 
   void _insertMention(Profile profile) {
-    print('Inserting mention for profile: ${profile.profileName}');
+    print('Inserting mention for profile: ${profile.nameOrNpub}');
     if (_mentionStartOffset == null) {
       print('_mentionStartOffset is null, cannot insert mention');
       return;
@@ -664,7 +664,7 @@ class _AppEditableTextState extends State<AppEditableText>
           .map((profile) => AppTextMentionMenuItem(
                 profile: profile,
                 onTap: (state) {
-                  print('Profile selected: ${profile.profileName}');
+                  print('Profile selected: ${profile.name}');
                   _insertMention(profile);
                   _mentionOverlay?.remove();
                   _mentionOverlay = null;
@@ -897,8 +897,8 @@ class _AppEditableTextState extends State<AppEditableText>
                     final offset = selection.baseOffset;
 
                     // Find the next span before and after the current offset
-                    int? nextSpanBefore = null;
-                    int? nextSpanAfter = null;
+                    int? nextSpanBefore;
+                    int? nextSpanAfter;
 
                     for (final spanOffset in _controller._activeSpans.keys) {
                       if (spanOffset < offset) {
