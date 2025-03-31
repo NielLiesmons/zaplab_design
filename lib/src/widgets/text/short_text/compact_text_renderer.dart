@@ -1,3 +1,4 @@
+import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 
@@ -124,36 +125,37 @@ class AppCompactTextRenderer extends StatelessWidget {
                 ),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
-                  child: FutureBuilder<NostrEvent>(
+                  child: FutureBuilder<Event>(
                     future: onResolveEvent(child.content),
                     builder: (context, snapshot) {
-                      final contentType = snapshot.data?.contentType ?? '';
-                      return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          AppEmojiContentType(
-                            contentType: contentType,
-                            size: emojiSize,
-                            opacity: 0.66,
-                          ),
-                          isMedium ? const AppGap.s8() : const AppGap.s6(),
-                          isMedium
-                              ? AppText.reg14(
-                                  contentType.isNotEmpty
-                                      ? contentType[0].toUpperCase() +
-                                          contentType.substring(1)
-                                      : 'Nostr Publication',
-                                  color: textColor,
-                                )
-                              : AppText.reg12(
-                                  contentType.isNotEmpty
-                                      ? contentType[0].toUpperCase() +
-                                          contentType.substring(1)
-                                      : 'Nostr Publication',
-                                  color: textColor,
-                                ),
-                        ],
-                      );
+                      return Container();
+                      // final contentType = snapshot.data?.contentType ?? '';
+                      // return Row(
+                      //   mainAxisSize: MainAxisSize.min,
+                      //   children: [
+                      //     AppEmojiContentType(
+                      //       contentType: contentType,
+                      //       size: emojiSize,
+                      //       opacity: 0.66,
+                      //     ),
+                      //     isMedium ? const AppGap.s8() : const AppGap.s6(),
+                      //     isMedium
+                      //         ? AppText.reg14(
+                      //             contentType.isNotEmpty
+                      //                 ? contentType[0].toUpperCase() +
+                      //                     contentType.substring(1)
+                      //                 : 'Nostr Publication',
+                      //             color: textColor,
+                      //           )
+                      //         : AppText.reg12(
+                      //             contentType.isNotEmpty
+                      //                 ? contentType[0].toUpperCase() +
+                      //                     contentType.substring(1)
+                      //                 : 'Nostr Publication',
+                      //             color: textColor,
+                      //           ),
+                      //   ],
+                      // );
                     },
                   ),
                 ),
@@ -263,9 +265,10 @@ class AppCompactTextRenderer extends StatelessWidget {
                     future: onResolveProfile(child.content),
                     builder: (context, snapshot) {
                       return AppProfileInline(
-                        profileName: snapshot.data?.profileName ?? '',
-                        profilePicUrl: snapshot.data?.profilePicUrl ?? '',
-                        onTap: snapshot.data?.onTap,
+                        profileName: snapshot.data?.nameOrNpub ?? '',
+                        profilePicUrl: snapshot.data?.pictureUrl ?? '',
+                        // TODO: onTap
+                        // onTap: snapshot.data?.onTap,
                       );
                     },
                   ),
