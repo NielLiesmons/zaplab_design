@@ -229,7 +229,6 @@ class AppActionsModal extends StatelessWidget {
                             onResolveEvent: onResolveEvent,
                             onResolveProfile: onResolveProfile,
                             onResolveEmoji: onResolveEmoji,
-                            onResolveHashtag: onResolveHashtag,
                           ),
                           AppContainer(
                             padding: const AppEdgeInsets.only(
@@ -637,7 +636,7 @@ class AppActionsModal extends StatelessWidget {
             print('test'); // TODO: Handle report tap
           },
           inactiveColor: theme.colors.black33,
-          content: [
+          children: [
             AppText.med14('Report', gradient: theme.colors.rouge),
           ],
         ),
@@ -646,7 +645,7 @@ class AppActionsModal extends StatelessWidget {
           onTap: () {
             print('test'); // TODO: Handle add tap
           },
-          content: [
+          children: [
             AppIcon.s16(
               theme.icons.characters.plus,
               outlineThickness: LineThicknessData.normal().thick,

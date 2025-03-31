@@ -60,7 +60,7 @@ class AppTabButton extends StatelessWidget {
                       ? AppColorsData.dark().white
                       : theme.colors.white,
                 ),
-                if (count != null) ...[
+                if (count != null && count! > 0) ...[
                   const AppGap.s8(),
                   AppText.med14(
                     count.toString(),

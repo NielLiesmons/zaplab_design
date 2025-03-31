@@ -21,7 +21,7 @@ class AppBottomBarChat extends StatelessWidget {
         children: [
           AppButton(
             square: true,
-            content: [
+            children: [
               AppIcon.s12(theme.icons.characters.plus,
                   outlineThickness: LineThicknessData.normal().thick,
                   outlineColor: theme.colors.white66),
@@ -61,7 +61,7 @@ class AppBottomBarChat extends StatelessWidget {
           const AppGap.s12(),
           AppButton(
             square: true,
-            content: [
+            children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

@@ -4,7 +4,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
-    required this.content,
+    required this.children,
     this.onTap,
     this.onLongPress,
     this.inactiveGradient,
@@ -16,7 +16,7 @@ class AppButton extends StatelessWidget {
     this.square = false,
   });
 
-  final List<Widget> content;
+  final List<Widget> children;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
   final Gradient? inactiveGradient;
@@ -64,7 +64,7 @@ class AppButton extends StatelessWidget {
             enabled: true,
             selected: true,
             child: AppButtonLayout(
-              content: content,
+              content: children,
               square: square,
               gradient: state == TapState.hover
                   ? effectiveHoveredGradient

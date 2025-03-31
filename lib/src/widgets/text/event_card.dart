@@ -97,7 +97,6 @@ class AppEventCard extends StatelessWidget {
           onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
           onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
-          onResolveHashtag: onResolveHashtag ?? (_) => Future.value(null),
         ),
       );
     }

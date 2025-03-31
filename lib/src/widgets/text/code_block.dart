@@ -99,7 +99,7 @@ class _AppCodeBlockState extends State<AppCodeBlock>
                   inactiveColor: theme.colors.white16,
                   square: true,
                   onTap: _handleCopy,
-                  content: [
+                  children: [
                     _showCheckmark
                         ? ScaleTransition(
                             scale: _scaleAnimation,

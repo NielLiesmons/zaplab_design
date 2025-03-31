@@ -196,6 +196,7 @@ class _AppChatScreenState extends State<AppChatScreen> {
                 label: contentType.formatTabLabel(),
                 icon: AppEmojiContentType(contentType: contentType),
                 content: const SizedBox(),
+                count: widget.contentCounts[contentType] ?? 0,
               ),
           ],
         ),

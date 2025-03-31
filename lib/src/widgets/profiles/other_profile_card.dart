@@ -95,7 +95,7 @@ class AppOtherProfileCard extends StatelessWidget {
                 onTap: onSelect,
                 rounded: true,
                 inactiveColor: theme.colors.white8,
-                content: [
+                children: [
                   const AppGap.s4(),
                   AppText.med12(
                     'Select',
@@ -110,7 +110,7 @@ class AppOtherProfileCard extends StatelessWidget {
                 rounded: true,
                 square: true,
                 inactiveColor: theme.colors.white8,
-                content: [
+                children: [
                   AppIcon.s16(
                     theme.icons.characters.share,
                     color: theme.colors.white33,

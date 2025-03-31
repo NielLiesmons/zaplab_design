@@ -54,7 +54,7 @@ class AppPanelButton extends StatelessWidget {
             );
           },
         ),
-        if (count != null)
+        if (count != null && count! > 0)
           Positioned(
             top: -theme.sizes.s6,
             right: -theme.sizes.s6,

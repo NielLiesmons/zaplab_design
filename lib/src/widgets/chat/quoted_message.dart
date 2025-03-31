@@ -9,7 +9,6 @@ class AppQuotedMessage extends StatelessWidget {
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
-  final NostrHashtagResolver onResolveHashtag;
 
   const AppQuotedMessage({
     super.key,
@@ -21,7 +20,6 @@ class AppQuotedMessage extends StatelessWidget {
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
-    required this.onResolveHashtag,
   });
 
   @override
@@ -82,7 +80,6 @@ class AppQuotedMessage extends StatelessWidget {
                         onResolveEvent: onResolveEvent,
                         onResolveProfile: onResolveProfile,
                         onResolveEmoji: onResolveEmoji,
-                        onResolveHashtag: onResolveHashtag,
                       ),
                     ),
                   ],

@@ -183,7 +183,7 @@ class _AppAudioMessageState extends State<AppAudioMessage>
             children: [
               // Play/Pause button
               AppSmallButton(
-                content: [
+                children: [
                   _player.playing
                       ? const SizedBox(width: 0)
                       : const SizedBox(width: 1),

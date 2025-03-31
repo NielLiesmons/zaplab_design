@@ -78,7 +78,8 @@ class AppShortTextRenderer extends StatelessWidget {
 
     // Single emoji
     if (elements.length == 1 &&
-        elements[0].type == AppShortTextElementType.emoji) {
+        (elements[0].type == AppShortTextElementType.emoji ||
+            elements[0].type == AppShortTextElementType.utfEmoji)) {
       return ShortTextContentType.singleEmoji;
     }
 
@@ -230,7 +231,7 @@ class AppShortTextRenderer extends StatelessWidget {
             color: theme.colors.white,
             fontSize:
                 ShortTextContent.of(context) == ShortTextContentType.singleEmoji
-                    ? 72
+                    ? 64
                     : 16,
           ),
         );
@@ -284,7 +285,7 @@ class AppShortTextRenderer extends StatelessWidget {
                         element.children![i].content,
                         style: theme.typography.reg14.copyWith(
                           color: theme.colors.white,
-                          fontSize: 72,
+                          fontSize: 64,
                         ),
                       ),
                     if (i == 0 && element.children!.length == 2)
@@ -394,7 +395,7 @@ class AppShortTextRenderer extends StatelessWidget {
                       child.content,
                       style: theme.typography.reg14.copyWith(
                         color: theme.colors.white,
-                        fontSize: 80,
+                        fontSize: 64,
                       ),
                     ),
                   ),

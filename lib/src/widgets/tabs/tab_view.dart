@@ -75,7 +75,7 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
         description: tab.settingsDescription,
         children: [tab.settingsContent!],
         bottomBar: AppButton(
-          content: [
+          children: [
             AppText.med16(
               'Done',
               color: AppColorsData.dark().white,
@@ -93,7 +93,7 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
         description: tab.settingsDescription,
         children: [tab.settingsContent!],
         bottomBar: AppButton(
-          content: [
+          children: [
             AppText.med16(
               'Done',
               color: AppColorsData.dark().white,

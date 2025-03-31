@@ -299,7 +299,7 @@ class _AppAmountModalState extends State<AppAmountModal> {
                                   margin: const AppEdgeInsets.only(
                                       right: AppGapSize.s8),
                                   child: AppSmallButton(
-                                    content: [
+                                    children: [
                                       AppIcon.s12(
                                         theme.icons.characters.zap,
                                         color: theme.colors.white66,

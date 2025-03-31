@@ -197,7 +197,7 @@ class AppAppReleaseCard extends StatelessWidget {
 
           // Install button
           AppButton(
-            content: [
+            children: [
               AppText.med16(
                 'Install Update',
                 color: AppColorsData.dark().white,

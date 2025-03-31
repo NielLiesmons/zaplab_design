@@ -4,7 +4,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 class AppSmallButton extends StatelessWidget {
   const AppSmallButton({
     super.key,
-    required this.content,
+    required this.children,
     this.onTap,
     this.onLongPress,
     this.onChevronTap,
@@ -18,7 +18,7 @@ class AppSmallButton extends StatelessWidget {
     this.rounded = false,
   });
 
-  final List<Widget> content;
+  final List<Widget> children;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
   final VoidCallback? onChevronTap;
@@ -68,7 +68,7 @@ class AppSmallButton extends StatelessWidget {
             enabled: true,
             selected: true,
             child: AppSmallButtonLayout(
-              content: content,
+              content: children,
               square: square,
               rounded: rounded,
               onChevronTap: onChevronTap,

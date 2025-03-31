@@ -73,6 +73,9 @@ export 'modals/input_modal.dart';
 export 'modals/zap_modal.dart';
 export 'modals/zap_slider.dart';
 
+// Notifications
+export 'notifications/notification_card.dart';
+
 // Posts
 export 'posts/feed_post.dart';
 export 'posts/posts_feed.dart';

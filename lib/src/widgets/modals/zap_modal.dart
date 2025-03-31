@@ -50,7 +50,7 @@ class AppZapModal extends StatefulWidget {
         ),
       ],
       bottomBar: AppButton(
-        content: [
+        children: [
           AppText.med16(
             'Zap',
             color: AppColorsData.dark().white,

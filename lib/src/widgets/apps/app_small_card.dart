@@ -44,7 +44,7 @@ class AppAppSmallCard extends StatelessWidget {
           const AppGap.s16(),
           AppSmallButton(
             rounded: true,
-            content: [
+            children: [
               AppText.med14(
                 'Update',
                 color: AppColorsData.dark().white,

@@ -193,7 +193,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   void _handleDrag(double delta) {
     setState(() {
       // Check for empty history pop condition first
-      if (widget.history.isEmpty && _currentDrag + delta > 4) {
+      if (widget.history.isEmpty && _currentDrag + delta > 0) {
         if (Navigator.canPop(context)) {
           Navigator.of(context).pop();
         }

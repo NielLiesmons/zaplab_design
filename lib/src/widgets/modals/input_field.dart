@@ -104,7 +104,7 @@ class _AppInputFieldState extends State<AppInputField> {
                 children: [
                   AppSmallButton(
                     square: true,
-                    content: [
+                    children: [
                       AppIcon.s16(
                         theme.icons.characters.camera,
                         color: theme.colors.white33,
@@ -117,7 +117,7 @@ class _AppInputFieldState extends State<AppInputField> {
                   const AppGap.s8(),
                   AppSmallButton(
                     square: true,
-                    content: [
+                    children: [
                       AppIcon.s12(
                         theme.icons.characters.gif,
                         color: theme.colors.white33,
@@ -130,7 +130,7 @@ class _AppInputFieldState extends State<AppInputField> {
                   const AppGap.s8(),
                   AppSmallButton(
                     square: true,
-                    content: [
+                    children: [
                       AppIcon.s16(
                         theme.icons.characters.plus,
                         outlineColor: theme.colors.white33,
@@ -145,7 +145,7 @@ class _AppInputFieldState extends State<AppInputField> {
               ),
               const Spacer(),
               AppSmallButton(
-                content: [
+                children: [
                   // AppIcon.s16(
                   //   theme.icons.characters.send,
                   //   color: AppColorsData.dark().white,

@@ -1,5 +1,4 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:zaplab_design/src/utils/npub_utils.dart';
 
 class AppCurrentProfileCard extends StatelessWidget {
   final String npub;
@@ -92,7 +91,7 @@ class AppCurrentProfileCard extends StatelessWidget {
                 onTap: onView,
                 rounded: true,
                 inactiveColor: theme.colors.white8,
-                content: [
+                children: [
                   const AppGap.s4(),
                   AppText.med12(
                     'View',
@@ -106,7 +105,7 @@ class AppCurrentProfileCard extends StatelessWidget {
                 onTap: onEdit,
                 rounded: true,
                 inactiveColor: theme.colors.white8,
-                content: [
+                children: [
                   const AppGap.s4(),
                   AppText.med12(
                     'Edit',
@@ -121,7 +120,7 @@ class AppCurrentProfileCard extends StatelessWidget {
                 rounded: true,
                 square: true,
                 inactiveColor: theme.colors.white8,
-                content: [
+                children: [
                   AppIcon.s16(
                     theme.icons.characters.share,
                     color: theme.colors.white33,

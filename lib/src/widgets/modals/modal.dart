@@ -132,9 +132,10 @@ class AppModal extends StatelessWidget {
       if (description != null) {
         headerWidgets.addAll([
           const AppGap.s4(),
-          AppText.med16(
+          AppText.reg16(
             description!,
             color: theme.colors.white66,
+            textAlign: TextAlign.center,
           ),
         ]);
       }

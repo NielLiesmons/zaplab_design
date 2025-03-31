@@ -23,7 +23,7 @@ class AppBottomBarHome extends StatelessWidget {
         children: [
           AppButton(
             square: true,
-            content: [
+            children: [
               AppIcon.s20(theme.icons.characters.zap,
                   color: AppColorsData.dark().white),
             ],
@@ -32,7 +32,7 @@ class AppBottomBarHome extends StatelessWidget {
           const AppGap.s12(),
           AppButton(
             square: true,
-            content: [
+            children: [
               AppIcon.s12(theme.icons.characters.plus,
                   outlineThickness: LineThicknessData.normal().thick,
                   outlineColor: theme.colors.white66),
@@ -73,7 +73,7 @@ class AppBottomBarHome extends StatelessWidget {
           const AppGap.s12(),
           AppButton(
             square: true,
-            content: [
+            children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
