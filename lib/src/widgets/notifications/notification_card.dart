@@ -49,7 +49,7 @@ class AppNotificationCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const AppGap.s2(),
-                      AppProfilePic.s20("dummy"),
+                      AppProfilePic.s20("dummy"), //TODO: Implement
                       Expanded(
                         child: AppDivider.vertical(
                           color: theme.colors.white33,
@@ -111,7 +111,7 @@ class AppNotificationCard extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AppText.bold14("Name"),
+                          AppText.bold14("Name"), //TODO: Implement
                           const Spacer(),
                           AppText.reg12(
                             TimestampFormatter.format(DateTime.now(),
@@ -122,20 +122,21 @@ class AppNotificationCard extends StatelessWidget {
                       ),
                       AppCompactTextRenderer(
                         content:
-                            "This is a a reply on an Article your current profile published ",
+                            "This is a reply on an Article your current profile published ",
                         isMedium: true,
                         isWhite: true,
+                        maxLines: 6,
                         onResolveEvent: (event) {
                           print(event);
-                          return Future.value(null);
+                          return Future.value(null); //TODO: Implement
                         },
                         onResolveProfile: (profile) {
                           print(profile);
-                          return Future.value(null);
+                          return Future.value(null); //TODO: Implement
                         },
                         onResolveEmoji: (emoji) {
                           print(emoji);
-                          return Future.value(null);
+                          return Future.value(null); //TODO: Implement
                         },
                       ),
                     ],

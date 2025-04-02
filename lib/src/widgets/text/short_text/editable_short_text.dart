@@ -1,10 +1,10 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'text_selection_gesture_detector_builder.dart' as custom;
+import '../text_selection_gesture_detector_builder.dart' as custom;
 import 'package:flutter/services.dart';
 
 bool isEditingText = false;
 
-class AppEditableText extends StatefulWidget {
+class AppEditableShortText extends StatefulWidget {
   final String text;
   final TextStyle? style;
   final TextEditingController? controller;
@@ -15,7 +15,7 @@ class AppEditableText extends StatefulWidget {
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
 
-  const AppEditableText({
+  const AppEditableShortText({
     super.key,
     required this.text,
     this.style,
@@ -29,7 +29,7 @@ class AppEditableText extends StatefulWidget {
   });
 
   @override
-  State<AppEditableText> createState() => _AppEditableTextState();
+  State<AppEditableShortText> createState() => _AppEditableShortTextState();
 }
 
 class InlineSpanController extends TextEditingController {
@@ -43,12 +43,12 @@ class InlineSpanController extends TextEditingController {
   bool _isNotifying = false;
 
   InlineSpanController({
-    String? text,
+    super.text,
     required this.triggerSpans,
     required this.onSearchProfiles,
     required this.onSearchEmojis,
     required this.context,
-  }) : super(text: text);
+  });
 
   bool hasSpanAt(int offset) {
     return _activeSpans.containsKey(offset);
@@ -236,7 +236,7 @@ class InlineSpanController extends TextEditingController {
   }
 }
 
-class _AppEditableTextState extends State<AppEditableText>
+class _AppEditableShortTextState extends State<AppEditableShortText>
     implements custom.TextSelectionGestureDetectorBuilderDelegate {
   @override
   GlobalKey<EditableTextState> get editableTextKey => _editableTextKey;
@@ -317,7 +317,7 @@ class _AppEditableTextState extends State<AppEditableText>
                 children: [
                   Column(
                     children: [
-                      AppGap.s2(),
+                      const AppGap.s2(),
                       AppIcon.s20(
                         theme.icons.characters.emojiFill,
                         gradient: theme.colors.greydient33,
@@ -887,18 +887,18 @@ class _AppEditableTextState extends State<AppEditableText>
               ),
             _gestureDetectorBuilder.buildGestureDetector(
               behavior: HitTestBehavior.deferToChild,
-              child: RawKeyboardListener(
+              child: KeyboardListener(
                 focusNode: FocusNode(),
-                onKey: (event) {
-                  if (event is RawKeyDownEvent) {
+                onKeyEvent: (event) {
+                  if (event is KeyDownEvent) {
                     final selection = _controller.selection;
                     if (!selection.isValid) return;
 
                     final offset = selection.baseOffset;
 
                     // Find the next span before and after the current offset
-                    int? nextSpanBefore = null;
-                    int? nextSpanAfter = null;
+                    int? nextSpanBefore;
+                    int? nextSpanAfter;
 
                     for (final spanOffset in _controller._activeSpans.keys) {
                       if (spanOffset < offset) {

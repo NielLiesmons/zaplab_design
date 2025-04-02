@@ -62,10 +62,10 @@ class AppChatHomePanel extends StatelessWidget {
               outlineThickness: LineThicknessData.normal().medium,
             ),
             onSwipeLeft: () {
-              print('swiped left');
+              print('swiped left'); // TODO: Implement
             },
             onSwipeRight: () {
-              print('swiped right');
+              print('swiped right'); // TODO: Implement
             },
             padding: const AppEdgeInsets.symmetric(
               horizontal: AppGapSize.s12,
@@ -190,15 +190,44 @@ class AppChatHomePanel extends StatelessWidget {
                                                                   .shrink(),
                                                           Flexible(
                                                             child:
-                                                                AppText.reg12(
-                                                              lastMessage,
-                                                              color: theme
-                                                                  .colors
-                                                                  .white66,
+                                                                AppCompactTextRenderer(
+                                                              content:
+                                                                  lastMessage,
+                                                              onResolveEvent:
+                                                                  (id) async =>
+                                                                      NostrEvent(
+                                                                nevent: id,
+                                                                npub:
+                                                                    'npub1test',
+                                                                contentType:
+                                                                    'article',
+                                                                title:
+                                                                    'Communi-keys',
+                                                                imageUrl:
+                                                                    'https://cdn.satellite.earth/7273fad49b4c3a17a446781a330553e1bb8de7a238d6c6b6cee30b8f5caf21f4.png',
+                                                                profileName:
+                                                                    'Niel Liesmons',
+                                                                profilePicUrl:
+                                                                    'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
+                                                                timestamp:
+                                                                    DateTime
+                                                                        .now(),
+                                                                onTap: () {},
+                                                              ),
+                                                              onResolveProfile:
+                                                                  (id) async =>
+                                                                      Profile(
+                                                                npub: id,
+                                                                profileName:
+                                                                    'Pip',
+                                                                profilePicUrl:
+                                                                    'https://m.primal.net/IfSZ.jpg',
+                                                                onTap: () {},
+                                                              ),
+                                                              onResolveEmoji:
+                                                                  (id) async =>
+                                                                      'https://image.nostr.build/f1ac401d3f222908d2f80df7cfadc1d73f4e0afa3a3ff6e8421bf9f0b37372a6.gif',
                                                               maxLines: 1,
-                                                              textOverflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
                                                             ),
                                                           ),
                                                         ],

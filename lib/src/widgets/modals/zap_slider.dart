@@ -12,6 +12,9 @@ class AppZapSlider extends StatefulWidget {
   final List<({double amount, String profileImageUrl})> otherZaps;
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
+  final VoidCallback onCameraTap;
+  final VoidCallback onGifTap;
+  final VoidCallback onAddTap;
 
   const AppZapSlider({
     super.key,
@@ -22,6 +25,9 @@ class AppZapSlider extends StatefulWidget {
     this.otherZaps = const [],
     required this.onSearchProfiles,
     required this.onSearchEmojis,
+    required this.onCameraTap,
+    required this.onGifTap,
+    required this.onAddTap,
   });
 
   @override
@@ -285,22 +291,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
 
     await AppInputModal.show(
       context,
-      header: Row(
-        children: [
-          const AppGap.s12(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppText.med14(
-                'Your Message',
-                color: theme.colors.white66,
-              ),
-              const AppGap.s8(),
-            ],
-          ),
-        ],
-      ),
-      inputField: AppInputField(
+      inputField: AppShortTextField(
         controller: controller,
         onChanged: (value) {
           setState(() {
@@ -309,12 +300,21 @@ class _AppZapSliderState extends State<AppZapSlider> {
         },
         placeholder: [
           AppText.reg14(
-            'Write a message to PROFILE NAME',
+            'Your Message',
             color: theme.colors.white33,
           ),
         ],
         onSearchProfiles: widget.onSearchProfiles,
         onSearchEmojis: widget.onSearchEmojis,
+        onCameraTap: widget.onCameraTap,
+        onGifTap: widget.onGifTap,
+        onAddTap: widget.onAddTap,
+        onDoneTap: () {
+          setState(() {
+            _message = controller.text;
+          });
+          Navigator.pop(context);
+        },
       ),
     );
   }

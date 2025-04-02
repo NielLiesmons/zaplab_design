@@ -39,22 +39,24 @@ class Profile {
 class Message {
   final String nevent;
   final String npub;
-  final String message;
+  final String? message;
   final String profileName;
   final String profilePicUrl;
   final DateTime timestamp;
   final List<Reaction> reactions;
   final List<Zap> zaps;
+  final bool? isTyping;
 
   const Message({
     required this.nevent,
     required this.npub,
-    required this.message,
+    this.message,
     required this.profileName,
     required this.profilePicUrl,
     required this.timestamp,
     this.reactions = const [],
     this.zaps = const [],
+    this.isTyping,
   });
 }
 

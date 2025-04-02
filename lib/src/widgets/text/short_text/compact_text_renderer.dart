@@ -1,5 +1,4 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:tap_builder/tap_builder.dart';
 
 class AppCompactTextRenderer extends StatelessWidget {
   final String content;
@@ -18,7 +17,7 @@ class AppCompactTextRenderer extends StatelessWidget {
     required this.onResolveProfile,
     required this.onResolveEmoji,
     this.maxLines,
-    this.shouldTruncate = false,
+    this.shouldTruncate = true,
     this.isMedium = false,
     this.isWhite = false,
   });
@@ -68,11 +67,11 @@ class AppCompactTextRenderer extends StatelessWidget {
                 isMedium ? const AppGap.s8() : const AppGap.s6(),
                 isMedium
                     ? AppText.reg14(
-                        urls.length > 1 ? '${urls.length} Images' : 'Image',
+                        urls.length > 1 ? '${urls.length} Images  ' : 'Image  ',
                         color: textColor,
                       )
                     : AppText.reg12(
-                        urls.length > 1 ? '${urls.length} Images' : 'Image',
+                        urls.length > 1 ? '${urls.length} Images  ' : 'Image  ',
                         color: textColor,
                       ),
               ],
@@ -141,15 +140,17 @@ class AppCompactTextRenderer extends StatelessWidget {
                               ? AppText.reg14(
                                   contentType.isNotEmpty
                                       ? contentType[0].toUpperCase() +
-                                          contentType.substring(1)
-                                      : 'Nostr Publication',
+                                          contentType.substring(1) +
+                                          ("  ")
+                                      : 'Nostr Publication  ',
                                   color: textColor,
                                 )
                               : AppText.reg12(
                                   contentType.isNotEmpty
                                       ? contentType[0].toUpperCase() +
-                                          contentType.substring(1)
-                                      : 'Nostr Publication',
+                                          contentType.substring(1) +
+                                          ("  ")
+                                      : 'Nostr Publication  ',
                                   color: textColor,
                                 ),
                         ],
@@ -189,11 +190,11 @@ class AppCompactTextRenderer extends StatelessWidget {
                       isMedium ? const AppGap.s8() : const AppGap.s6(),
                       isMedium
                           ? AppText.reg14(
-                              'Audio Message',
+                              'Audio Message  ',
                               color: textColor,
                             )
                           : AppText.reg12(
-                              'Audio Message',
+                              'Audio Message  ',
                               color: textColor,
                             ),
                     ],
@@ -233,11 +234,15 @@ class AppCompactTextRenderer extends StatelessWidget {
                     isMedium ? const AppGap.s8() : const AppGap.s6(),
                     isMedium
                         ? AppText.reg14(
-                            urls.length > 1 ? '${urls.length} Images' : 'Image',
+                            urls.length > 1
+                                ? '${urls.length} Images  '
+                                : 'Image  ',
                             color: textColor,
                           )
                         : AppText.reg12(
-                            urls.length > 1 ? '${urls.length} Images' : 'Image',
+                            urls.length > 1
+                                ? '${urls.length} Images  '
+                                : 'Image  ',
                             color: textColor,
                           ),
                   ],
@@ -411,6 +416,20 @@ class AppCompactTextRenderer extends StatelessWidget {
       maxLines: maxLines,
       overflow: shouldTruncate ? TextOverflow.ellipsis : TextOverflow.visible,
       text: TextSpan(children: spans),
+      textDirection: TextDirection.ltr,
+      softWrap: true,
+      textAlign: TextAlign.left,
+      locale: const Locale('en'),
+      strutStyle: StrutStyle(
+        fontSize: textStyle.fontSize,
+        fontWeight: textStyle.fontWeight,
+        fontFamily: textStyle.fontFamily,
+      ),
+      textWidthBasis: TextWidthBasis.parent,
+      textHeightBehavior: const TextHeightBehavior(
+        applyHeightToFirstAscent: true,
+        applyHeightToLastDescent: true,
+      ),
     );
   }
 }

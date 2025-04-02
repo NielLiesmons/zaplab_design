@@ -39,6 +39,7 @@ class AppMessageBubble extends StatefulWidget {
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
+  final bool isTyping;
 
   const AppMessageBubble({
     super.key,
@@ -60,6 +61,7 @@ class AppMessageBubble extends StatefulWidget {
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
+    this.isTyping = false,
   });
 
   @override
@@ -117,8 +119,10 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
               outlineColor: theme.colors.white66,
               outlineThickness: LineThicknessData.normal().medium,
             ),
-            onSwipeLeft: () => widget.onReply(widget.nevent),
-            onSwipeRight: () => widget.onActions(widget.nevent),
+            onSwipeLeft:
+                widget.isTyping ? null : () => widget.onReply(widget.nevent),
+            onSwipeRight:
+                widget.isTyping ? null : () => widget.onActions(widget.nevent),
             child: MessageBubbleScope(
               isOutgoing: widget.isOutgoing,
               child: LayoutBuilder(
@@ -127,7 +131,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
                         maxWidth: bubbleConstraints.maxWidth,
-                        minWidth: 104,
+                        minWidth: theme.sizes.s80,
                       ),
                       child: AppContainer(
                         padding: contentType.isSingleContent
@@ -148,7 +152,8 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 if (widget.showHeader &&
-                                    !widget.isOutgoing) ...[
+                                    !widget.isOutgoing &&
+                                    !widget.isTyping) ...[
                                   AppContainer(
                                     padding: const AppEdgeInsets.only(
                                       left: AppGapSize.s4,
@@ -189,14 +194,25 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                 if (!widget.showHeader) const AppGap.s2(),
                                 if (contentType.isSingleContent)
                                   const AppGap.s4(),
-                                AppShortTextRenderer(
-                                  content: widget.message,
-                                  onResolveEvent: widget.onResolveEvent,
-                                  onResolveProfile: widget.onResolveProfile,
-                                  onResolveEmoji: widget.onResolveEmoji,
-                                  onResolveHashtag: widget.onResolveHashtag,
-                                  onLinkTap: widget.onLinkTap,
-                                ),
+                                widget.isTyping
+                                    ? AppContainer(
+                                        height: theme.sizes.s38,
+                                        child: AppLoadingDots(
+                                          color: widget.isOutgoing
+                                              ? theme.colors.white
+                                              : theme.colors.white66,
+                                        ),
+                                      )
+                                    : AppShortTextRenderer(
+                                        content: widget.message,
+                                        onResolveEvent: widget.onResolveEvent,
+                                        onResolveProfile:
+                                            widget.onResolveProfile,
+                                        onResolveEmoji: widget.onResolveEmoji,
+                                        onResolveHashtag:
+                                            widget.onResolveHashtag,
+                                        onLinkTap: widget.onLinkTap,
+                                      ),
                               ],
                             ),
                             if (widget.zaps.isNotEmpty ||

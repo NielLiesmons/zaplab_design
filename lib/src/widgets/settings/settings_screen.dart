@@ -1,9 +1,11 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:tap_builder/tap_builder.dart';
 
 class AppSettingsScreen extends StatefulWidget {
   // Profiles in use
   final List<Profile> profiles;
   final Function(Profile) onSelect;
+  final VoidCallback? onAddProfile;
 
   // Current profile
   final String currentNpub;
@@ -36,6 +38,7 @@ class AppSettingsScreen extends StatefulWidget {
     super.key,
     required this.profiles,
     required this.onSelect,
+    this.onAddProfile,
     required this.currentNpub,
     this.settingSections,
     this.onHistoryTap,
@@ -197,40 +200,57 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                     ),
                 // Add profile button
                 const AppGap.s16(),
-                AppContainer(
-                  width: 256,
-                  height: 144,
-                  padding: const AppEdgeInsets.all(AppGapSize.s16),
-                  decoration: BoxDecoration(
-                    color: theme.colors.grey33,
-                    borderRadius: theme.radius.asBorderRadius().rad16,
-                    border: Border.all(
-                      color: theme.colors.grey,
-                      width: LineThicknessData.normal().medium,
-                    ),
-                  ),
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    children: [
-                      AppContainer(
-                        width: theme.sizes.s38,
-                        height: theme.sizes.s38,
+                TapBuilder(
+                  onTap: widget.onAddProfile ?? () {},
+                  builder: (context, state, hasFocus) {
+                    double scaleFactor = 1.0;
+                    if (state == TapState.pressed) {
+                      scaleFactor = 0.98;
+                    } else if (state == TapState.hover) {
+                      scaleFactor = 1.02;
+                    }
+
+                    return Transform.scale(
+                      scale: scaleFactor,
+                      child: AppContainer(
+                        width: 256,
+                        height: 144,
+                        padding: const AppEdgeInsets.all(AppGapSize.s16),
                         decoration: BoxDecoration(
-                          color: theme.colors.white8,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: AppIcon.s16(
-                            theme.icons.characters.plus,
-                            outlineThickness: LineThicknessData.normal().thick,
-                            outlineColor: theme.colors.white33,
+                          color: theme.colors.grey33,
+                          borderRadius: theme.radius.asBorderRadius().rad16,
+                          border: Border.all(
+                            color: theme.colors.grey,
+                            width: LineThicknessData.normal().medium,
                           ),
                         ),
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          children: [
+                            AppContainer(
+                              width: theme.sizes.s38,
+                              height: theme.sizes.s38,
+                              decoration: BoxDecoration(
+                                color: theme.colors.white8,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: AppIcon.s16(
+                                  theme.icons.characters.plus,
+                                  outlineThickness:
+                                      LineThicknessData.normal().thick,
+                                  outlineColor: theme.colors.white33,
+                                ),
+                              ),
+                            ),
+                            const AppGap.s12(),
+                            AppText.med14('Add Profile',
+                                color: theme.colors.white33),
+                          ],
+                        ),
                       ),
-                      const AppGap.s12(),
-                      AppText.med14('Add Profile', color: theme.colors.white33),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ],
             ),

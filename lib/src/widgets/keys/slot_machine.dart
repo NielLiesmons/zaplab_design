@@ -330,8 +330,22 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    theme.colors.black,
-                    const Color(0x00000000),
+                    if (theme.colors.white ==
+                        const Color(0xFF000000)) // Light theme
+                      const Color(0xFF888888)
+                    else if (theme.colors.white ==
+                        const Color(0xFFFFFFFF)) // Dark theme
+                      const Color(0xFF111111)
+                    else // Grey theme
+                      const Color(0xFF1A1A1A),
+                    if (theme.colors.white ==
+                        const Color(0xFF000000)) // Light theme
+                      const Color(0x00E0E0E0)
+                    else if (theme.colors.white ==
+                        const Color(0xFFFFFFFF)) // Dark theme
+                      const Color(0x00111111)
+                    else // Grey theme
+                      const Color(0x001A1A1A),
                   ],
                 ),
               ),
@@ -349,8 +363,22 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    theme.colors.black,
-                    const Color(0x00000000),
+                    if (theme.colors.white ==
+                        const Color(0xFF000000)) // Light theme
+                      const Color(0xFF888888)
+                    else if (theme.colors.white ==
+                        const Color(0xFFFFFFFF)) // Dark theme
+                      const Color(0xFF111111)
+                    else // Grey theme
+                      const Color(0xFF232323),
+                    if (theme.colors.white ==
+                        const Color(0xFF000000)) // Light theme
+                      const Color(0x00E0E0E0)
+                    else if (theme.colors.white ==
+                        const Color(0xFFFFFFFF)) // Dark theme
+                      const Color(0x00111111)
+                    else // Grey theme
+                      const Color(0x00232323),
                   ],
                 ),
               ),
@@ -453,8 +481,8 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                           end: Alignment.centerRight,
                           colors: [
                             const Color(0x00000000),
-                            theme.colors.black16,
-                            theme.colors.black8,
+                            AppColorsData.dark().black16,
+                            AppColorsData.dark().black8,
                           ],
                           stops: const [0.33, 0.80, 1],
                         ),
@@ -482,7 +510,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: theme.colors.black33,
+                      color: AppColorsData.dark().black33,
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -494,10 +522,16 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                     gradient: RadialGradient(
                       center: const Alignment(-0.6, -0.6),
                       radius: 1.2,
-                      colors: [
-                        const Color(0x00000000),
-                        theme.colors.black33,
-                      ],
+                      colors: theme.colors.white ==
+                              const Color(0xFF000000) // Light theme
+                          ? [
+                              theme.colors.black33,
+                              const Color(0x00000000),
+                            ]
+                          : [
+                              const Color(0x00000000),
+                              theme.colors.black33,
+                            ],
                     ),
                   ),
                 ),
@@ -515,6 +549,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
     const totalHeight = 296.0;
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Column(
           children: [

@@ -68,7 +68,7 @@ export 'loading/loading_bar.dart';
 export 'modals/actions_modal.dart';
 export 'modals/modal.dart';
 export 'modals/amount_modal.dart';
-export 'modals/input_field.dart';
+
 export 'modals/input_modal.dart';
 export 'modals/zap_modal.dart';
 export 'modals/zap_slider.dart';
@@ -109,16 +109,22 @@ export 'settings/setting_section.dart';
 export 'text/asciidoc/asciidoc_renderer.dart';
 export 'text/asciidoc/asciidoc_parser.dart';
 export 'text/asciidoc/asciidoc_element.dart';
+
 export 'text/admonition.dart';
 export 'text/amount.dart';
 export 'text/code_block.dart';
+export 'text/editable_input_text.dart';
 export 'text/event_card.dart';
-export 'text/editable_text.dart';
+export 'text/input_text_field.dart';
 export 'text/section_title.dart';
+
 export 'text/short_text/compact_text_renderer.dart';
+export 'text/short_text/editable_short_text.dart';
 export 'text/short_text/short_text_element.dart';
+export 'text/short_text/short_text_field.dart';
 export 'text/short_text/short_text_parser.dart';
 export 'text/short_text/short_text_renderer.dart';
+
 export 'text/text.dart';
 export 'text/text_emoji_menu.dart';
 export 'text/text_mention_menu.dart';

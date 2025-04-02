@@ -79,6 +79,28 @@ class AppChatFeed extends StatelessWidget {
                 const AppGap.s8(),
               ],
             ),
+          const AppGap.s8(),
+          AppMessageStack(
+            messages: [
+              Message(
+                npub: currentNpub,
+                timestamp: DateTime.now(),
+                nevent: '',
+                profileName: '',
+                profilePicUrl: '',
+                isTyping: true,
+              ),
+            ],
+            onActions: onActions,
+            onReply: onReply,
+            onReactionTap: onReactionTap,
+            onZapTap: onZapTap,
+            onResolveEvent: onResolveEvent,
+            onResolveProfile: onResolveProfile,
+            onResolveEmoji: onResolveEmoji,
+            onResolveHashtag: onResolveHashtag,
+            onLinkTap: onLinkTap,
+          ),
         ],
       ),
     );

@@ -24,9 +24,8 @@ class AppBottomBar extends StatelessWidget {
             : null,
         boxShadow: [
           BoxShadow(
-            color: theme.colors.black33,
-            blurRadius: 32,
-            offset: const Offset(0, -12),
+            color: theme.colors.black66.withValues(alpha: 24),
+            blurRadius: 24,
           ),
         ],
         border: Border(

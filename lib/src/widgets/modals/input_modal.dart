@@ -29,7 +29,7 @@ class AppInputModal extends StatelessWidget {
         reverseTransitionDuration: theme.durations.fast,
         pageBuilder: (_, __, ___) => AppInputModal(
           header: header,
-          inputField: inputField is AppInputField
+          inputField: inputField is AppShortTextField
               ? (inputField).copyWith(
                   focusNode: focusNode,
                   onSearchProfiles: inputField.onSearchProfiles,
@@ -130,7 +130,7 @@ class AppInputModal extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.colors.black33,
+                          color: theme.colors.black66.withValues(alpha: 84),
                           blurRadius: 32,
                           offset: const Offset(0, -12),
                         ),

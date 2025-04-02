@@ -310,7 +310,7 @@ class AppModal extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: theme.colors.black33,
+                      color: theme.colors.black.withValues(alpha: 84),
                       blurRadius: 32,
                       offset: const Offset(0, -12),
                     ),
@@ -335,11 +335,13 @@ class AppModal extends StatelessWidget {
                         children: [
                           if (includePadding)
                             AppContainer(
-                              padding: const AppEdgeInsets.only(
+                              padding: AppEdgeInsets.only(
                                 left: AppGapSize.s16,
                                 right: AppGapSize.s16,
                                 top: AppGapSize.s16,
-                                bottom: AppGapSize.s12,
+                                bottom: PlatformUtils.isMobile
+                                    ? AppGapSize.s12
+                                    : AppGapSize.s16,
                               ),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -533,32 +535,45 @@ class AppModal extends StatelessWidget {
                               modalOffset.value = 0;
                             }
                           },
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.vertical(
-                              top: offset > 0
-                                  ? const AppRadiusData.normal().rad32
-                                  : Radius.zero,
+                          child: AppContainer(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: theme.colors.black66
+                                      .withValues(alpha: 16),
+                                  blurRadius: 24,
+                                ),
+                              ],
                             ),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                              child: AppContainer(
-                                decoration: BoxDecoration(
-                                  color: theme.colors.grey66,
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: theme.colors.white16,
-                                      width: LineThicknessData.normal().thin,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.vertical(
+                                top: offset > 0
+                                    ? const AppRadiusData.normal().rad32
+                                    : Radius.zero,
+                              ),
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                                child: AppContainer(
+                                  decoration: BoxDecoration(
+                                    color: theme.colors.grey66,
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: theme.colors.white16,
+                                        width: LineThicknessData.normal().thin,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const AppTopSafeArea(),
-                                    const AppGap.s4(),
-                                    const AppDragHandle(),
-                                    if (resolvedTopBar != null) resolvedTopBar,
-                                  ],
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const AppTopSafeArea(),
+                                      const AppGap.s4(),
+                                      const AppDragHandle(),
+                                      if (resolvedTopBar != null)
+                                        resolvedTopBar,
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -584,33 +599,43 @@ class AppModal extends StatelessWidget {
       bottom: 0,
       left: 0,
       right: 0,
-      child: ClipRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-          child: AppContainer(
-            padding: bottomBar != null
-                ? AppEdgeInsets.only(
-                    left: AppGapSize.s16,
-                    right: AppGapSize.s16,
-                    top: AppGapSize.s16,
-                    bottom: bottomPadding,
-                  )
-                : const AppEdgeInsets.all(AppGapSize.none),
-            decoration: BoxDecoration(
-              color: theme.colors.grey66,
-              border: Border(
-                top: BorderSide(
-                  color: theme.colors.white16,
-                  width: LineThicknessData.normal().thin,
+      child: AppContainer(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: theme.colors.black66.withValues(alpha: 16),
+              blurRadius: 24,
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+            child: AppContainer(
+              padding: bottomBar != null
+                  ? AppEdgeInsets.only(
+                      left: AppGapSize.s16,
+                      right: AppGapSize.s16,
+                      top: AppGapSize.s16,
+                      bottom: bottomPadding,
+                    )
+                  : const AppEdgeInsets.all(AppGapSize.none),
+              decoration: BoxDecoration(
+                color: theme.colors.grey66,
+                border: Border(
+                  top: BorderSide(
+                    color: theme.colors.white16,
+                    width: LineThicknessData.normal().thin,
+                  ),
                 ),
               ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (bottomBar != null) bottomBar!,
-                if (PlatformUtils.isMobile) const AppBottomSafeArea(),
-              ],
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (bottomBar != null) bottomBar!,
+                  if (PlatformUtils.isMobile) const AppBottomSafeArea(),
+                ],
+              ),
             ),
           ),
         ),
