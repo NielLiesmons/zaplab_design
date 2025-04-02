@@ -68,14 +68,17 @@ export 'loading/loading_bar.dart';
 export 'modals/actions_modal.dart';
 export 'modals/modal.dart';
 export 'modals/amount_modal.dart';
-
 export 'modals/input_modal.dart';
+export 'modals/reply_modal.dart';
 export 'modals/zap_modal.dart';
 export 'modals/zap_slider.dart';
 
 // Notifications
 export 'notifications/notification_card.dart';
 
+// Onboarding
+export 'onboarding/welcome_modal.dart';
+export 'onboarding/slot_machine_modal.dart';
 // Posts
 export 'posts/feed_post.dart';
 export 'posts/posts_feed.dart';
@@ -83,6 +86,7 @@ export 'posts/post.dart';
 export 'posts/post_card.dart';
 
 // Profiles
+export 'profiles/add_profile_modal.dart';
 export 'profiles/current_profile_card.dart';
 export 'profiles/other_profile_card.dart';
 export 'profiles/profile_inline.dart';
@@ -142,7 +146,6 @@ export 'tabs/tab_view.dart';
 // Transitions
 export 'transitions/slide_in_screen.dart';
 export 'transitions/slide_in_modal.dart';
-
 // Toasts
 export 'toasts/toast.dart';
 export 'toasts/toast_alert.dart';

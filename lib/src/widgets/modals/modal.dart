@@ -536,15 +536,6 @@ class AppModal extends StatelessWidget {
                             }
                           },
                           child: AppContainer(
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: theme.colors.black66
-                                      .withValues(alpha: 16),
-                                  blurRadius: 24,
-                                ),
-                              ],
-                            ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.vertical(
                                 top: offset > 0
@@ -600,14 +591,6 @@ class AppModal extends StatelessWidget {
       left: 0,
       right: 0,
       child: AppContainer(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: theme.colors.black66.withValues(alpha: 16),
-              blurRadius: 24,
-            ),
-          ],
-        ),
         child: ClipRRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),

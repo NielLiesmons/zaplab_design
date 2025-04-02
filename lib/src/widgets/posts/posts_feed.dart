@@ -7,6 +7,8 @@ class AppPostsFeed extends StatelessWidget {
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
+  final void Function(String nevent)? onReply;
+  final void Function(String nevent)? onActions;
 
   const AppPostsFeed({
     super.key,
@@ -16,6 +18,8 @@ class AppPostsFeed extends StatelessWidget {
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
+    this.onReply,
+    this.onActions,
   });
 
   @override
@@ -29,8 +33,8 @@ class AppPostsFeed extends StatelessWidget {
             profileName: post.profileName,
             profilePicUrl: post.profilePicUrl,
             timestamp: post.timestamp,
-            onReply: (_) {}, // TODO: Implement reply handling
-            onActions: (_) {}, // TODO: Implement actions handling
+            onReply: onReply ?? (_) {},
+            onActions: onActions ?? (_) {},
             onReactionTap: (_) {}, // TODO: Implement reaction handling
             onZapTap: (_) {}, // TODO: Implement zap handling
             onResolveEvent: onResolveEvent,

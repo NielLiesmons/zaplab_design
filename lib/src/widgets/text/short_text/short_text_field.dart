@@ -8,6 +8,7 @@ class AppShortTextField extends StatefulWidget {
   final TextStyle? style;
   final List<AppTextSelectionMenuItem>? contextMenuItems;
   final Color? backgroundColor;
+  final Message? quotedMessage;
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
   final VoidCallback onCameraTap;
@@ -26,6 +27,7 @@ class AppShortTextField extends StatefulWidget {
     this.style,
     this.contextMenuItems,
     this.backgroundColor,
+    this.quotedMessage,
     required this.onSearchProfiles,
     required this.onSearchEmojis,
     required this.onCameraTap,
@@ -102,6 +104,42 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (widget.quotedMessage != null)
+            AppContainer(
+              padding: const AppEdgeInsets.only(
+                left: AppGapSize.s8,
+                right: AppGapSize.s8,
+                top: AppGapSize.s8,
+                bottom: AppGapSize.s2,
+              ),
+              child: AppQuotedMessage(
+                profileName: widget.quotedMessage!.profileName,
+                profilePicUrl: widget.quotedMessage!.profilePicUrl,
+                message: widget.quotedMessage!.message ?? '',
+                timestamp: widget.quotedMessage!.timestamp,
+                onResolveEvent: (id) async => NostrEvent(
+                  nevent: id,
+                  npub: 'npub1test',
+                  contentType: 'article',
+                  title: 'Communi-keys',
+                  imageUrl:
+                      'https://cdn.satellite.earth/7273fad49b4c3a17a446781a330553e1bb8de7a238d6c6b6cee30b8f5caf21f4.png',
+                  profileName: 'Niel Liesmons',
+                  profilePicUrl:
+                      'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
+                  timestamp: DateTime.now(),
+                  onTap: () {},
+                ),
+                onResolveProfile: (id) async => Profile(
+                  npub: id,
+                  profileName: 'Pip',
+                  profilePicUrl: 'https://m.primal.net/IfSZ.jpg',
+                  onTap: () {},
+                ),
+                onResolveEmoji: (id) async =>
+                    'https://image.nostr.build/f1ac401d3f222908d2f80df7cfadc1d73f4e0afa3a3ff6e8421bf9f0b37372a6.gif',
+              ),
+            ),
           ShaderMask(
             shaderCallback: (bounds) => LinearGradient(
               begin: Alignment.topCenter,

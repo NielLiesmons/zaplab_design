@@ -231,6 +231,8 @@ class _AppChatScreenState extends State<AppChatScreen> {
           onResolveEmoji: widget.onResolveEmoji,
           onResolveHashtag: widget.onResolveHashtag,
           onLinkTap: widget.onLinkTap,
+          onReply: widget.onReply,
+          onActions: widget.onActions,
         );
       case 'article':
         return AppArticlesFeed(

@@ -1,0 +1,10 @@
+identifier: zaplab_design
+maintainers:
+- npub149p5act9a5qm9p47elp8w8h3wpwn2d7s2xecw2ygnrxqp4wgsklq9g722q
+relays:
+- wss://nostr.wine/
+- wss://relay.nostr.band/
+- wss://relay.damus.io/
+- wss://theforest.nostr1.com/
+- wss://niel.nostr1.com/
+- wss://zaplab.nostr1.com/

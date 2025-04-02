@@ -2,23 +2,18 @@ import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppInputModal extends StatelessWidget {
-  final Widget? header;
-  final Widget inputField;
+  final List<Widget> children;
 
   const AppInputModal({
     super.key,
-    this.header,
-    required this.inputField,
+    required this.children,
   });
 
   static Future<void> show(
     BuildContext context, {
-    Widget? header,
-    required Widget inputField,
+    required List<Widget> children,
   }) {
     final theme = AppTheme.of(context);
-    // Create a FocusNode that we'll pass to the input field
-    final focusNode = FocusNode()..requestFocus();
 
     return Navigator.of(context).push(
       PageRouteBuilder(
@@ -28,14 +23,7 @@ class AppInputModal extends StatelessWidget {
         transitionDuration: theme.durations.fast,
         reverseTransitionDuration: theme.durations.fast,
         pageBuilder: (_, __, ___) => AppInputModal(
-          header: header,
-          inputField: inputField is AppShortTextField
-              ? (inputField).copyWith(
-                  focusNode: focusNode,
-                  onSearchProfiles: inputField.onSearchProfiles,
-                  onSearchEmojis: inputField.onSearchEmojis,
-                )
-              : inputField,
+          children: children,
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           final curvedAnimation = CurvedAnimation(
@@ -101,8 +89,7 @@ class AppInputModal extends StatelessWidget {
             valueListenable: modalOffset,
             builder: (context, offset, child) {
               return Transform.translate(
-                offset: Offset(0,
-                    offset - keyboardHeight), // Only keyboard adjustment here
+                offset: Offset(0, offset - keyboardHeight),
                 child: GestureDetector(
                   onVerticalDragUpdate: PlatformUtils.isMobile
                       ? (details) {
@@ -160,11 +147,8 @@ class AppInputModal extends StatelessWidget {
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (header != null) header!,
-                              inputField,
-                            ],
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: children,
                           ),
                         ),
                       ),

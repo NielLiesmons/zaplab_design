@@ -291,31 +291,33 @@ class _AppZapSliderState extends State<AppZapSlider> {
 
     await AppInputModal.show(
       context,
-      inputField: AppShortTextField(
-        controller: controller,
-        onChanged: (value) {
-          setState(() {
-            _message = value;
-          });
-        },
-        placeholder: [
-          AppText.reg14(
-            'Your Message',
-            color: theme.colors.white33,
-          ),
-        ],
-        onSearchProfiles: widget.onSearchProfiles,
-        onSearchEmojis: widget.onSearchEmojis,
-        onCameraTap: widget.onCameraTap,
-        onGifTap: widget.onGifTap,
-        onAddTap: widget.onAddTap,
-        onDoneTap: () {
-          setState(() {
-            _message = controller.text;
-          });
-          Navigator.pop(context);
-        },
-      ),
+      children: [
+        AppShortTextField(
+          controller: controller,
+          onChanged: (value) {
+            setState(() {
+              _message = value;
+            });
+          },
+          placeholder: [
+            AppText.reg14(
+              'Your Message',
+              color: theme.colors.white33,
+            ),
+          ],
+          onSearchProfiles: widget.onSearchProfiles,
+          onSearchEmojis: widget.onSearchEmojis,
+          onCameraTap: widget.onCameraTap,
+          onGifTap: widget.onGifTap,
+          onAddTap: widget.onAddTap,
+          onDoneTap: () {
+            setState(() {
+              _message = controller.text;
+            });
+            Navigator.pop(context);
+          },
+        ),
+      ],
     );
   }
 
