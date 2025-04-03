@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
 class AppPostsFeed extends StatelessWidget {
-  final List<Note> notes;
+  final List<Note> posts;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -13,7 +13,7 @@ class AppPostsFeed extends StatelessWidget {
 
   const AppPostsFeed({
     super.key,
-    required this.notes,
+    required this.posts,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -27,7 +27,7 @@ class AppPostsFeed extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        for (final note in notes)
+        for (final note in posts)
           AppFeedPost(
             note: note,
             onReply: onReply ?? (_) {},

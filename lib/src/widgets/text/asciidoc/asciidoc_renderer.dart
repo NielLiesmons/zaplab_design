@@ -1,6 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:flutter/gestures.dart';
+import 'package:models/models.dart';
 
 class AppAsciiDocRenderer extends StatelessWidget {
   final String content;

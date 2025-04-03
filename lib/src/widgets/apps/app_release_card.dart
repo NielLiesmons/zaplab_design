@@ -3,9 +3,9 @@ import 'package:models/models.dart';
 
 class AppAppReleaseCard extends StatelessWidget {
   final App app;
-  final String releaseNumber;
-  final String size;
-  final String date;
+  final String releaseNumber; // TODO: get data from app via models package
+  final String size; // TODO: get data from app via models package
+  final String date; // TODO: get data from app via models package
   final VoidCallback onViewMore;
   final VoidCallback onInstall;
   final bool isInstalled;

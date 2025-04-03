@@ -94,6 +94,7 @@ class AppArticleCard extends StatelessWidget {
                         article.author.value?.name ??
                             formatNpub(article.author.value?.pubkey ?? ''),
                         color: theme.colors.white66,
+                        textOverflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),

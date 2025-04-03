@@ -1,13 +1,8 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppReplyModal extends StatefulWidget {
-  final String nevent;
-  final String contentType;
-  final String profileName;
-  final String profilePicUrl;
-  final String? message;
-  final String? title;
-  final String? imageUrl;
+  final Event event;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -21,13 +16,7 @@ class AppReplyModal extends StatefulWidget {
 
   const AppReplyModal({
     super.key,
-    required this.nevent,
-    required this.contentType,
-    required this.profileName,
-    required this.profilePicUrl,
-    this.message,
-    this.title,
-    this.imageUrl,
+    required this.event,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,

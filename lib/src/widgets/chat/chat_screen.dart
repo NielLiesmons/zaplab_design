@@ -21,7 +21,7 @@ class AppChatScreen extends StatefulWidget {
   final int? mainCount;
   final Map<String, int> contentCounts;
   final List<ChatMessage> chatMessages;
-  final List<ReplacePost> posts;
+  final List<Note> posts;
   final List<Article> articles;
   // Other actions & settings
   final VoidCallback? onHomeTap;
