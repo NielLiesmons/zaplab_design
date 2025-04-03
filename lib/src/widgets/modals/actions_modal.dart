@@ -275,10 +275,13 @@ class AppActionsModal extends StatelessWidget {
                                       ),
                                       const AppGap.s10(),
                                       Expanded(
-                                        child: AppText.reg14(
-                                          title ?? '',
-                                          maxLines: 1,
-                                          textOverflow: TextOverflow.ellipsis,
+                                        child: AppCompactTextRenderer(
+                                          content: title ?? '',
+                                          onResolveEvent: onResolveEvent,
+                                          onResolveProfile: onResolveProfile,
+                                          onResolveEmoji: onResolveEmoji,
+                                          isWhite: true,
+                                          isMedium: true,
                                         ),
                                       ),
                                     ],

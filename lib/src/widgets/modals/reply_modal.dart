@@ -8,6 +8,9 @@ class AppReplyModal extends StatefulWidget {
   final String? message;
   final String? title;
   final String? imageUrl;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
   final VoidCallback onCameraTap;
@@ -25,6 +28,9 @@ class AppReplyModal extends StatefulWidget {
     this.message,
     this.title,
     this.imageUrl,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
     required this.onSearchProfiles,
     required this.onSearchEmojis,
     required this.onCameraTap,
@@ -89,10 +95,13 @@ class _AppReplyModalState extends State<AppReplyModal> {
                               ),
                               const AppGap.s10(),
                               Expanded(
-                                child: AppText.reg14(
-                                  widget.title ?? widget.message ?? '',
-                                  maxLines: 1,
-                                  textOverflow: TextOverflow.ellipsis,
+                                child: AppCompactTextRenderer(
+                                  content: widget.title ?? widget.message ?? '',
+                                  onResolveEvent: widget.onResolveEvent,
+                                  onResolveProfile: widget.onResolveProfile,
+                                  onResolveEmoji: widget.onResolveEmoji,
+                                  isWhite: true,
+                                  isMedium: true,
                                 ),
                               ),
                             ],

@@ -24,7 +24,7 @@ class AppArticlesFeed extends StatelessWidget {
                   title: article.title,
                   profileName: article.profileName,
                   profilePicUrl: article.profilePicUrl,
-                  imageUrl: article.imageUrl,
+                  imageUrl: article.imageUrl ?? '',
                   onTap: () {
                     // TODO Handle article tap
                   },

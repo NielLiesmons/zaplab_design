@@ -4,7 +4,7 @@ class AppArticleCard extends StatelessWidget {
   final String title;
   final String profileName;
   final String profilePicUrl;
-  final String imageUrl;
+  final String? imageUrl;
   final VoidCallback? onTap;
 
   const AppArticleCard({
@@ -12,7 +12,7 @@ class AppArticleCard extends StatelessWidget {
     required this.title,
     required this.profileName,
     required this.profilePicUrl,
-    required this.imageUrl,
+    this.imageUrl,
     this.onTap,
   });
 
@@ -27,37 +27,36 @@ class AppArticleCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Image container with 16:9 aspect ratio
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: AppContainer(
-              width: double.infinity,
-              padding: const AppEdgeInsets.all(AppGapSize.s2),
+          if (imageUrl != null && imageUrl!.isNotEmpty)
+            AspectRatio(
+              aspectRatio: 16 / 9,
               child: AppContainer(
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  color: theme.colors.grey33,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(14.6),
-                    topRight: Radius.circular(14.6),
+                width: double.infinity,
+                padding: const AppEdgeInsets.all(AppGapSize.s2),
+                child: AppContainer(
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    color: theme.colors.grey33,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(14.6),
+                      topRight: Radius.circular(14.6),
+                    ),
+                  ),
+                  child: Image.network(
+                    imageUrl!,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const AppSkeletonLoader();
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      print('Error loading asset: $error');
+                      return const AppSkeletonLoader();
+                    },
                   ),
                 ),
-                child: imageUrl.isNotEmpty
-                    ? Image.network(
-                        imageUrl,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return const AppSkeletonLoader();
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          print('Error loading asset: $error');
-                          return const AppSkeletonLoader();
-                        },
-                      )
-                    : const AppSkeletonLoader(),
               ),
             ),
-          ),
 
           // Event info section
           AppContainer(

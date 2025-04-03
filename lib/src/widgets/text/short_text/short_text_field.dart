@@ -9,6 +9,7 @@ class AppShortTextField extends StatefulWidget {
   final List<AppTextSelectionMenuItem>? contextMenuItems;
   final Color? backgroundColor;
   final Message? quotedMessage;
+  final Zap? quotedZap;
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
   final VoidCallback onCameraTap;
@@ -28,6 +29,7 @@ class AppShortTextField extends StatefulWidget {
     this.contextMenuItems,
     this.backgroundColor,
     this.quotedMessage,
+    this.quotedZap,
     required this.onSearchProfiles,
     required this.onSearchEmojis,
     required this.onCameraTap,
@@ -104,6 +106,20 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (widget.quotedZap != null)
+            AppContainer(
+              padding: const AppEdgeInsets.only(
+                left: AppGapSize.s8,
+                right: AppGapSize.s8,
+                top: AppGapSize.s8,
+                bottom: AppGapSize.s2,
+              ),
+              child: AppZapCard(
+                profileName: widget.quotedZap!.profileName,
+                profilePicUrl: widget.quotedZap!.profilePicUrl,
+                amount: widget.quotedZap!.amount.toString(),
+              ),
+            ),
           if (widget.quotedMessage != null)
             AppContainer(
               padding: const AppEdgeInsets.only(

@@ -205,7 +205,7 @@ class Article {
   final String profileName;
   final String profilePicUrl;
   final String title;
-  final String imageUrl;
+  final String? imageUrl;
   final String? content;
   final DateTime? timestamp;
   final List<Reaction>? reactions;
@@ -222,7 +222,7 @@ class Article {
     required this.profileName,
     required this.profilePicUrl,
     required this.title,
-    required this.imageUrl,
+    this.imageUrl,
     this.content,
     this.timestamp,
     this.reactions,

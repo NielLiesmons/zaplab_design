@@ -22,12 +22,6 @@ class AppBottomBar extends StatelessWidget {
         borderRadius: roundedTop
             ? BorderRadius.vertical(top: const AppRadiusData.normal().rad32)
             : null,
-        boxShadow: [
-          BoxShadow(
-            color: theme.colors.black66.withValues(alpha: 24),
-            blurRadius: 24,
-          ),
-        ],
         border: Border(
           top: BorderSide(
             color: theme.colors.white16,
