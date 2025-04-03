@@ -3,8 +3,8 @@ import 'package:tap_builder/tap_builder.dart';
 
 class AppSettingsScreen extends StatefulWidget {
   // Profiles in use
-  final List<Profile> profiles;
-  final Function(Profile) onSelect;
+  final List<ReplaceProfile> profiles;
+  final Function(ReplaceProfile) onSelect;
   final VoidCallback? onAddProfile;
 
   // Current profile

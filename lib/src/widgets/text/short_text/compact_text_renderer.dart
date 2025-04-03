@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppCompactTextRenderer extends StatelessWidget {
   final String content;
@@ -123,10 +124,16 @@ class AppCompactTextRenderer extends StatelessWidget {
                 ),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
-                  child: FutureBuilder<NostrEvent>(
+                  child: FutureBuilder<({Event event, VoidCallback? onTap})>(
                     future: onResolveEvent(child.content),
                     builder: (context, snapshot) {
-                      final contentType = snapshot.data?.contentType ?? '';
+                      final contentType = switch (snapshot.data?.event) {
+                        Event<Article>() => 'Article',
+                        Event<ChatMessage>() => 'Chat Message',
+                        Event<Note>() => 'Note',
+                        Event<App>() => 'App',
+                        _ => 'Nostr Publication',
+                      };
                       return Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -264,7 +271,7 @@ class AppCompactTextRenderer extends StatelessWidget {
                 ),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
-                  child: FutureBuilder<Profile>(
+                  child: FutureBuilder<ReplaceProfile>(
                     future: onResolveProfile(child.content),
                     builder: (context, snapshot) {
                       return AppProfileInline(

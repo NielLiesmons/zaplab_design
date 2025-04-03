@@ -191,7 +191,8 @@ class InlineSpanController extends TextEditingController {
     }
   }
 
-  void insertNostrProfile(int offset, String npub, Profile profile) async {
+  void insertNostrProfile(
+      int offset, String npub, ReplaceProfile profile) async {
     print('Inserting nostr profile span at offset $offset for npub: $npub');
 
     try {
@@ -600,7 +601,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
     }
   }
 
-  void _insertMention(Profile profile) {
+  void _insertMention(ReplaceProfile profile) {
     print('Inserting mention for profile: ${profile.profileName}');
     if (_mentionStartOffset == null) {
       print('_mentionStartOffset is null, cannot insert mention');

@@ -1,7 +1,8 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppMessageStack extends StatelessWidget {
-  final List<Message> messages;
+  final List<ChatMessage> messages;
   final bool isOutgoing;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
@@ -12,6 +13,7 @@ class AppMessageStack extends StatelessWidget {
   final void Function(String) onReply;
   final void Function(String) onReactionTap;
   final void Function(String) onZapTap;
+  final bool isTyping;
 
   const AppMessageStack({
     super.key,
@@ -26,6 +28,7 @@ class AppMessageStack extends StatelessWidget {
     required this.onReply,
     required this.onReactionTap,
     required this.onZapTap,
+    this.isTyping = false,
   });
 
   @override
@@ -38,13 +41,13 @@ class AppMessageStack extends StatelessWidget {
       children: [
         if (!isOutgoing) ...[
           AppContainer(
-            child: AppProfilePic.s32(messages.first.profilePicUrl),
+            child: AppProfilePic.s32(
+                messages.first.author.value?.pictureUrl ?? ''),
           ),
           const AppGap.s4(),
         ] else ...[
           if (!isOutgoing &&
-              AppShortTextRenderer.analyzeContent(
-                      messages.first.message ?? '') !=
+              AppShortTextRenderer.analyzeContent(messages.first.content) !=
                   ShortTextContentType.singleImageStack)
             const AppGap.s64(),
           const AppGap.s4(),
@@ -60,17 +63,12 @@ class AppMessageStack extends StatelessWidget {
                 for (int i = 0; i < messages.length; i++) ...[
                   if (i > 0) const AppGap.s2(),
                   AppMessageBubble(
-                    message: messages[i].message ?? '',
-                    profileName: messages[i].profileName,
-                    timestamp: messages[i].timestamp,
+                    message: messages[i],
                     showHeader:
                         i == 0 && !isOutgoing, // Only show header for incoming
                     isLastInStack: i == messages.length - 1,
                     isOutgoing: isOutgoing,
-                    isTyping: messages[i].isTyping ?? false,
-                    nevent: messages[i].nevent,
-                    reactions: messages[i].reactions,
-                    zaps: messages[i].zaps,
+                    isTyping: isTyping && i == messages.length - 1,
                     onActions: onActions,
                     onReply: onReply,
                     onReactionTap: onReactionTap,
@@ -87,7 +85,7 @@ class AppMessageStack extends StatelessWidget {
           ),
         ),
         if (!isOutgoing &&
-            AppShortTextRenderer.analyzeContent(messages.first.message ?? '') !=
+            AppShortTextRenderer.analyzeContent(messages.first.content) !=
                 ShortTextContentType.singleImageStack)
           const AppGap.s32(),
       ],

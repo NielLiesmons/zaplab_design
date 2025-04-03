@@ -8,10 +8,11 @@ class AppCommunityStack extends StatelessWidget {
     VoidCallback? onTap,
   }) : onTap = onTap ?? (() {});
 
-  final List<Community> communities;
+  final List<ReplaceCommunity> communities;
   final VoidCallback onTap;
 
-  List<Community> get _visibleCommunities => communities.take(5).toList();
+  List<ReplaceCommunity> get _visibleCommunities =>
+      communities.take(5).toList();
 
   @override
   Widget build(BuildContext context) {

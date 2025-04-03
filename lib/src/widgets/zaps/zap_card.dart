@@ -1,18 +1,19 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppZapCard extends StatelessWidget {
-  final String profileName;
-  final String profilePicUrl;
-  final String amount;
-  final String? message;
+  final CashuZap zap;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
   final VoidCallback? onTap;
 
   const AppZapCard({
     super.key,
-    required this.profileName,
-    required this.profilePicUrl,
-    required this.amount,
-    this.message,
+    required this.zap,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
     this.onTap,
   });
 
@@ -34,10 +35,13 @@ class AppZapCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppProfilePic.s18(profilePicUrl),
+                AppProfilePic.s18(zap.author.value?.pictureUrl ?? ''),
                 const AppGap.s10(),
                 Expanded(
-                  child: AppText.bold14(profileName),
+                  child: AppText.bold14(
+                    zap.author.value?.name ??
+                        formatNpub(zap.author.value?.pubkey ?? ''),
+                  ),
                 ),
                 Row(
                   children: [
@@ -46,24 +50,26 @@ class AppZapCard extends StatelessWidget {
                       gradient: theme.colors.gold,
                     ),
                     const AppGap.s4(),
-                    AppText.bold14(amount),
+                    AppText.bold14(
+                      zap.amount.toString(),
+                    ),
                   ],
                 ),
               ],
             ),
           ),
-          if (message != null) ...[
-            const AppDivider(),
+          if (zap.content.isNotEmpty) ...[
+            const AppDivider.horizontal(),
             AppContainer(
               padding: const AppEdgeInsets.symmetric(
                 horizontal: AppGapSize.s12,
                 vertical: AppGapSize.s8,
               ),
-              child: AppText.reg14(
-                message!,
-                color: theme.colors.white66,
-                maxLines: 3,
-                textOverflow: TextOverflow.ellipsis,
+              child: AppCompactTextRenderer(
+                content: zap.content,
+                onResolveEvent: onResolveEvent,
+                onResolveProfile: onResolveProfile,
+                onResolveEmoji: onResolveEmoji,
               ),
             ),
           ],

@@ -1,6 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:flutter/gestures.dart';
+import 'package:models/models.dart';
 
 enum ShortTextContentType {
   empty,
@@ -318,22 +319,18 @@ class AppShortTextRenderer extends StatelessWidget {
               }
               paragraphPieces.add(const AppGap.s2());
               paragraphPieces.add(
-                FutureBuilder<NostrEvent>(
+                FutureBuilder<({Event event, VoidCallback? onTap})>(
                   future: onResolveEvent(child.content),
                   builder: (context, snapshot) {
                     return ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 320),
                       child: AppEventCard(
-                        contentType: snapshot.data?.contentType ?? '',
-                        title: snapshot.data?.title ?? '',
-                        message: snapshot.data?.message ?? '',
-                        content: snapshot.data?.content ?? '',
-                        imageUrl: snapshot.data?.imageUrl ?? '',
-                        profileName: snapshot.data?.profileName ?? '',
-                        profilePicUrl: snapshot.data?.profilePicUrl ?? '',
-                        timestamp: snapshot.data?.timestamp ?? DateTime.now(),
-                        amount: snapshot.data?.amount ?? '',
+                        event: snapshot.data?.event,
                         onTap: snapshot.data?.onTap,
+                        onResolveEvent: onResolveEvent,
+                        onResolveProfile: onResolveProfile,
+                        onResolveEmoji: onResolveEmoji,
+                        onResolveHashtag: onResolveHashtag,
                       ),
                     );
                   },
@@ -502,7 +499,7 @@ class AppShortTextRenderer extends StatelessWidget {
                     ),
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
-                      child: FutureBuilder<Profile>(
+                      child: FutureBuilder<ReplaceProfile>(
                         future: onResolveProfile(child.content),
                         builder: (context, snapshot) {
                           return AppProfileInline(
@@ -786,7 +783,7 @@ class AppShortTextRenderer extends StatelessWidget {
             ),
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
-              child: FutureBuilder<Profile>(
+              child: FutureBuilder<ReplaceProfile>(
                 future: onResolveProfile(element.content),
                 builder: (context, snapshot) {
                   return AppProfileInline(

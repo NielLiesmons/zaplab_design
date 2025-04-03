@@ -12,7 +12,7 @@ class AppActionsModal extends StatelessWidget {
   final String? title;
   final String? imageUrl;
   // Reactions
-  final List<Reaction> recentReactions;
+  final List<ReplaceReaction> recentReactions;
   final Function(String) onReactionTap;
   final VoidCallback onMoreReactionsTap;
   // Zaps
@@ -63,7 +63,7 @@ class AppActionsModal extends StatelessWidget {
     required String contentType,
     required String profileName,
     required String profilePicUrl,
-    required List<Reaction> recentReactions,
+    required List<ReplaceReaction> recentReactions,
     required List<double> recentAmounts,
     String? message,
     String? title,
@@ -180,7 +180,7 @@ class AppActionsModal extends StatelessWidget {
     required String contentType,
     required String profileName,
     required String profilePicUrl,
-    required List<Reaction> recentReactions,
+    required List<ReplaceReaction> recentReactions,
     required List<double> recentAmounts,
     String? message,
     String? title,

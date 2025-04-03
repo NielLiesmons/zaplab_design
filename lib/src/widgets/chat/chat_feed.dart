@@ -1,8 +1,9 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppChatFeed extends StatelessWidget {
-  final List<Message> messages;
-  final String currentNpub;
+  final List<ChatMessage> messages;
+  final String currentPubkey;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -16,7 +17,7 @@ class AppChatFeed extends StatelessWidget {
   const AppChatFeed({
     super.key,
     required this.messages,
-    required this.currentNpub,
+    required this.currentPubkey,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -28,25 +29,25 @@ class AppChatFeed extends StatelessWidget {
     required this.onLinkTap,
   });
 
-  List<List<Message>> _groupMessages() {
-    final groups = <List<Message>>[];
-    List<Message>? currentGroup;
-    String? currentAuthor;
+  List<List<ChatMessage>> _groupMessages() {
+    final groups = <List<ChatMessage>>[];
+    List<ChatMessage>? currentGroup;
+    String? currentPubkey;
     DateTime? lastMessageTime;
 
     for (final message in messages) {
       final shouldStartNewGroup = currentGroup == null ||
-          currentAuthor != message.npub ||
-          lastMessageTime!.difference(message.timestamp).inMinutes.abs() > 21;
+          currentPubkey != message.author.value?.pubkey ||
+          lastMessageTime!.difference(message.createdAt).inMinutes.abs() > 21;
 
       if (shouldStartNewGroup) {
         currentGroup = [message];
         groups.add(currentGroup);
-        currentAuthor = message.npub;
+        currentPubkey = message.author.value?.pubkey;
       } else {
         currentGroup.add(message);
       }
-      lastMessageTime = message.timestamp;
+      lastMessageTime = message.createdAt;
     }
 
     return groups;
@@ -69,7 +70,7 @@ class AppChatFeed extends StatelessWidget {
                   onResolveProfile: onResolveProfile,
                   onResolveEmoji: onResolveEmoji,
                   onResolveHashtag: onResolveHashtag,
-                  isOutgoing: group.first.npub == currentNpub,
+                  isOutgoing: group.first.author.value?.pubkey == currentPubkey,
                   onReply: onReply,
                   onActions: onActions,
                   onReactionTap: onReactionTap,
@@ -80,27 +81,6 @@ class AppChatFeed extends StatelessWidget {
               ],
             ),
           const AppGap.s8(),
-          AppMessageStack(
-            messages: [
-              Message(
-                npub: currentNpub,
-                timestamp: DateTime.now(),
-                nevent: '',
-                profileName: '',
-                profilePicUrl: '',
-                isTyping: true,
-              ),
-            ],
-            onActions: onActions,
-            onReply: onReply,
-            onReactionTap: onReactionTap,
-            onZapTap: onZapTap,
-            onResolveEvent: onResolveEvent,
-            onResolveProfile: onResolveProfile,
-            onResolveEmoji: onResolveEmoji,
-            onResolveHashtag: onResolveHashtag,
-            onLinkTap: onLinkTap,
-          ),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class ReplyUserData {
   final String profileName;
@@ -11,13 +12,7 @@ class ReplyUserData {
 }
 
 class AppFeedPost extends StatelessWidget {
-  final String nevent;
-  final String content;
-  final String profileName;
-  final String profilePicUrl;
-  final DateTime timestamp;
-  final List<Reaction> reactions;
-  final List<Zap> zaps;
+  final Note note;
   final List<ReplyUserData> topReplies;
   final int totalReplies;
   final void Function(String) onActions;
@@ -30,17 +25,11 @@ class AppFeedPost extends StatelessWidget {
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
   final List<double> recentAmounts;
-  final List<Reaction> recentReactions;
+  final List<ReplaceReaction> recentReactions;
 
   const AppFeedPost({
     super.key,
-    required this.nevent,
-    required this.content,
-    required this.profileName,
-    required this.profilePicUrl,
-    required this.timestamp,
-    this.reactions = const [],
-    this.zaps = const [],
+    required this.note,
     this.topReplies = const [],
     this.totalReplies = 0,
     required this.onReply,
@@ -74,8 +63,8 @@ class AppFeedPost extends StatelessWidget {
             outlineColor: theme.colors.white66,
             outlineThickness: LineThicknessData.normal().medium,
           ),
-          onSwipeLeft: () => onReply(nevent),
-          onSwipeRight: () => onActions(nevent),
+          onSwipeLeft: () => onReply(note.id),
+          onSwipeRight: () => onActions(note.id),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -85,7 +74,7 @@ class AppFeedPost extends StatelessWidget {
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        AppProfilePic.s38(profilePicUrl),
+                        AppProfilePic.s38(note.author.value?.pictureUrl ?? ''),
                         if (topReplies.isNotEmpty)
                           Expanded(
                             child: AppDivider.vertical(
@@ -104,9 +93,10 @@ class AppFeedPost extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              AppText.bold14(profileName),
+                              AppText.bold14(note.author.value?.name ??
+                                  formatNpub(note.author.value?.pubkey ?? '')),
                               AppText.reg12(
-                                TimestampFormatter.format(timestamp,
+                                TimestampFormatter.format(note.createdAt,
                                     format: TimestampFormat.relative),
                                 color: theme.colors.white33,
                               ),
@@ -114,14 +104,17 @@ class AppFeedPost extends StatelessWidget {
                           ),
                           const AppGap.s2(),
                           AppShortTextRenderer(
-                            content: content,
+                            content: note.content,
                             onResolveEvent: onResolveEvent,
                             onResolveProfile: onResolveProfile,
                             onResolveEmoji: onResolveEmoji,
                             onResolveHashtag: onResolveHashtag,
                             onLinkTap: onLinkTap,
                           ),
-                          if (reactions.isNotEmpty || zaps.isNotEmpty) ...[
+                          // TODO: Uncomment and implement once HasMany is available
+                          /*
+                          if (note.reactions.length > 0 ||
+                              note.zaps.length > 0) ...[
                             const AppGap.s4(),
                             AppContainer(
                               height: 30,
@@ -155,9 +148,62 @@ class AppFeedPost extends StatelessWidget {
                                           padding:
                                               const EdgeInsets.only(left: 62),
                                           child: AppInteractionPills(
-                                            nevent: '',
-                                            reactions: reactions,
-                                            zaps: zaps,
+                                            nevent: note.id,
+                                            reactions: note.reactions
+                                                .map((r) => ReplaceReaction(
+                                                      npub: r.author.value
+                                                              ?.pubkey ??
+                                                          '',
+                                                      nevent: note.id,
+                                                      profileName: r.author
+                                                              .value?.name ??
+                                                          formatNpub(r
+                                                                  .author
+                                                                  .value
+                                                                  ?.pubkey ??
+                                                              ''),
+                                                      profilePicUrl: r
+                                                              .author
+                                                              .value
+                                                              ?.pictureUrl ??
+                                                          '',
+                                                      emojiUrl: r.content,
+                                                      emojiName: r.content,
+                                                      timestamp: r.createdAt,
+                                                      isOutgoing: r.author.value
+                                                              ?.pubkey ==
+                                                          note.author.value
+                                                              ?.pubkey,
+                                                    ))
+                                                .toList(),
+                                            zaps: note.zaps
+                                                .map((z) => ReplaceZap(
+                                                      npub: z.author.value
+                                                              ?.pubkey ??
+                                                          '',
+                                                      nevent: note.id,
+                                                      amount: int.tryParse(
+                                                              z.content) ??
+                                                          0,
+                                                      profileName: z.author
+                                                              .value?.name ??
+                                                          formatNpub(z
+                                                                  .author
+                                                                  .value
+                                                                  ?.pubkey ??
+                                                              ''),
+                                                      profilePicUrl: z
+                                                              .author
+                                                              .value
+                                                              ?.pictureUrl ??
+                                                          '',
+                                                      timestamp: z.createdAt,
+                                                      isOutgoing: z.author.value
+                                                              ?.pubkey ==
+                                                          note.author.value
+                                                              ?.pubkey,
+                                                    ))
+                                                .toList(),
                                             onReactionTap: onReactionTap,
                                             onZapTap: onZapTap,
                                           ),
@@ -169,6 +215,7 @@ class AppFeedPost extends StatelessWidget {
                               ),
                             ),
                           ],
+                          */
                         ],
                       ),
                     ),

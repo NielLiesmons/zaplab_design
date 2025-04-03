@@ -1,14 +1,24 @@
-// Community
-import 'package:zaplab_design/zaplab_design.dart';
+import 'package:flutter/foundation.dart';
+import 'package:models/models.dart';
 
-class Community {
+// Cashu Zap
+class CashuZap extends RegularEvent<CashuZap> {
+  CashuZap.fromMap(super.map, super.ref) : super.fromMap();
+
+  String get content => internal.content;
+  int get amount =>
+      int.tryParse(internal.getFirstTagValue('amount') ?? '0') ?? 0;
+}
+
+// Community
+class ReplaceCommunity {
   final String npub;
   final String profilePicUrl;
   final String communityName;
   final String? description;
-  final List<Profile>? inYourNetwork;
+  final List<ReplaceProfile>? inYourNetwork;
 
-  const Community({
+  const ReplaceCommunity({
     required this.npub,
     required this.profilePicUrl,
     required this.communityName,
@@ -18,16 +28,18 @@ class Community {
 }
 
 // Profile
-typedef NostrProfileResolver = Future<Profile> Function(String identifier);
-typedef NostrProfileSearch = Future<List<Profile>> Function(String query);
+typedef NostrProfileResolver = Future<ReplaceProfile> Function(
+    String identifier);
+typedef NostrProfileSearch = Future<List<ReplaceProfile>> Function(
+    String query);
 
-class Profile {
+class ReplaceProfile {
   final String npub;
   final String profileName;
   final String profilePicUrl;
   final void Function()? onTap;
 
-  const Profile({
+  const ReplaceProfile({
     required this.npub,
     required this.profileName,
     required this.profilePicUrl,
@@ -36,18 +48,18 @@ class Profile {
 }
 
 // Message
-class Message {
+class ReplaceMessage {
   final String nevent;
   final String npub;
   final String? message;
   final String profileName;
   final String profilePicUrl;
   final DateTime timestamp;
-  final List<Reaction> reactions;
-  final List<Zap> zaps;
+  final List<ReplaceReaction> reactions;
+  final List<ReplaceZap> zaps;
   final bool? isTyping;
 
-  const Message({
+  const ReplaceMessage({
     required this.nevent,
     required this.npub,
     this.message,
@@ -62,18 +74,18 @@ class Message {
 
 // Emoji
 typedef NostrEmojiResolver = Future<String> Function(String identifier);
-typedef NostrEmojiSearch = Future<List<Emoji>> Function(String query);
+typedef NostrEmojiSearch = Future<List<ReplaceEmoji>> Function(String query);
 
-class Emoji {
+class ReplaceEmoji {
   final String emojiUrl;
   final String emojiName;
 
-  const Emoji({required this.emojiUrl, required this.emojiName});
+  const ReplaceEmoji({required this.emojiUrl, required this.emojiName});
 }
 
 // Reaction
 
-class Reaction {
+class ReplaceReaction {
   final String npub;
   final String nevent;
   final String profileName;
@@ -83,7 +95,7 @@ class Reaction {
   final DateTime? timestamp;
   final bool isOutgoing;
 
-  const Reaction({
+  const ReplaceReaction({
     required this.npub,
     required this.nevent,
     required this.profileName,
@@ -96,7 +108,7 @@ class Reaction {
 }
 
 // Zap
-class Zap {
+class ReplaceZap {
   final String npub;
   final String nevent;
   final int amount;
@@ -106,7 +118,7 @@ class Zap {
   final DateTime timestamp;
   final bool isOutgoing;
 
-  const Zap({
+  const ReplaceZap({
     required this.npub,
     required this.nevent,
     required this.amount,
@@ -119,14 +131,14 @@ class Zap {
 }
 
 // Quoted Message
-class QuotedMessage {
+class ReplaceQuotedMessage {
   final String nevent;
   final String content;
   final String profileName;
   final String profilePicUrl;
   final DateTime timestamp;
 
-  const QuotedMessage({
+  const ReplaceQuotedMessage({
     required this.nevent,
     required this.content,
     required this.profileName,
@@ -136,9 +148,10 @@ class QuotedMessage {
 }
 
 // Event
-typedef NostrEventResolver = Future<NostrEvent> Function(String identifier);
+typedef NostrEventResolver = Future<({Event event, VoidCallback? onTap})>
+    Function(String nevent);
 
-class NostrEvent {
+class ReplaceNostrEvent {
   final String npub;
   final String nevent;
   final String contentType;
@@ -152,7 +165,7 @@ class NostrEvent {
   final String? amount;
   final void Function()? onTap;
 
-  const NostrEvent({
+  const ReplaceNostrEvent({
     required this.npub,
     required this.nevent,
     required this.contentType,
@@ -176,17 +189,17 @@ typedef NostrHashtagResolver = Future<void Function()?> Function(
 typedef LinkTapHandler = void Function(String url);
 
 // Post
-class Post {
+class ReplacePost {
   final String npub;
   final String nevent;
   final String profileName;
   final String profilePicUrl;
   final String content;
   final DateTime timestamp;
-  final List<Reaction> reactions;
-  final List<Zap> zaps;
+  final List<ReplaceReaction> reactions;
+  final List<ReplaceZap> zaps;
 
-  const Post({
+  const ReplacePost({
     required this.npub,
     required this.nevent,
     required this.profileName,
@@ -199,7 +212,7 @@ class Post {
 }
 
 // Article
-class Article {
+class ReplaceArticle {
   final String npub;
   final String nevent;
   final String profileName;
@@ -208,15 +221,15 @@ class Article {
   final String? imageUrl;
   final String? content;
   final DateTime? timestamp;
-  final List<Reaction>? reactions;
-  final List<Zap>? zaps;
+  final List<ReplaceReaction>? reactions;
+  final List<ReplaceZap>? zaps;
   final NostrEmojiResolver? onResolveEmoji;
   final NostrEventResolver? onResolveEvent;
   final NostrProfileResolver? onResolveProfile;
   final NostrHashtagResolver? onResolveHashtag;
   final LinkTapHandler? onLinkTap;
 
-  const Article({
+  const ReplaceArticle({
     required this.npub,
     required this.nevent,
     required this.profileName,

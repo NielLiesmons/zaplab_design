@@ -1,56 +1,52 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppAppSmallCard extends StatelessWidget {
-  final String appName;
-  final String version;
-  final String profilePicUrl;
-  final VoidCallback onUpdate;
+  final App app;
+  final String releaseNumber; // TODO: get data from app via models package
+  final VoidCallback onTap;
 
   const AppAppSmallCard({
     super.key,
-    required this.appName,
-    required this.version,
-    required this.profilePicUrl,
-    required this.onUpdate,
+    required this.app,
+    required this.releaseNumber,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    return AppPanel(
-      isLight: true,
-      padding: const AppEdgeInsets.symmetric(
-        horizontal: AppGapSize.s12,
-        vertical: AppGapSize.s12,
-      ),
+    return AppContainer(
+      padding: const AppEdgeInsets.all(AppGapSize.s12),
       child: Row(
         children: [
-          AppProfilePicSquare.s56(profilePicUrl),
-          const AppGap.s16(),
+          AppProfilePic.s38(app.icons.first),
+          const AppGap.s12(),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText.med16(appName),
-                const AppGap.s4(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    AppText.bold14(app.name ?? ''),
+                    AppText.reg12(
+                      releaseNumber,
+                      color: theme.colors.white33,
+                    ),
+                  ],
+                ),
+                const AppGap.s2(),
                 AppText.reg12(
-                  version,
-                  color: theme.colors.white66,
+                  app.description,
+                  color: theme.colors.white33,
+                  maxLines: 2,
+                  textOverflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
-          ),
-          const AppGap.s16(),
-          AppSmallButton(
-            rounded: true,
-            children: [
-              AppText.med14(
-                'Update',
-                color: AppColorsData.dark().white,
-              ),
-            ],
-            onTap: onUpdate,
           ),
         ],
       ),

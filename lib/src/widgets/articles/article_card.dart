@@ -1,24 +1,21 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppArticleCard extends StatelessWidget {
-  final String title;
-  final String profileName;
-  final String profilePicUrl;
-  final String? imageUrl;
+  final Article article;
   final VoidCallback? onTap;
 
   const AppArticleCard({
     super.key,
-    required this.title,
-    required this.profileName,
-    required this.profilePicUrl,
-    this.imageUrl,
+    required this.article,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+    // TODO: Get image URL from article model once implemented
+    final imageUrl = null;
 
     return AppPanelButton(
       padding: const AppEdgeInsets.all(AppGapSize.none),
@@ -27,7 +24,7 @@ class AppArticleCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Image container with 16:9 aspect ratio
-          if (imageUrl != null && imageUrl!.isNotEmpty)
+          if (imageUrl != null && imageUrl.isNotEmpty)
             AspectRatio(
               aspectRatio: 16 / 9,
               child: AppContainer(
@@ -43,7 +40,7 @@ class AppArticleCard extends StatelessWidget {
                     ),
                   ),
                   child: Image.network(
-                    imageUrl!,
+                    imageUrl,
                     fit: BoxFit.cover,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;
@@ -69,7 +66,7 @@ class AppArticleCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppProfilePic.s40(profilePicUrl),
+                AppProfilePic.s40(article.author.value?.pictureUrl ?? ''),
                 const AppGap.s12(),
                 Expanded(
                   child: Column(
@@ -85,7 +82,7 @@ class AppArticleCard extends StatelessWidget {
                           const AppGap.s10(),
                           Expanded(
                             child: AppText.reg14(
-                              title,
+                              article.title,
                               maxLines: 1,
                               textOverflow: TextOverflow.ellipsis,
                             ),
@@ -94,7 +91,8 @@ class AppArticleCard extends StatelessWidget {
                       ),
                       const AppGap.s2(),
                       AppText.reg12(
-                        profileName,
+                        article.author.value?.name ??
+                            formatNpub(article.author.value?.pubkey ?? ''),
                         color: theme.colors.white66,
                       ),
                     ],

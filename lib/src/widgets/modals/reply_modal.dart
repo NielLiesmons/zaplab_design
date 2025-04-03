@@ -139,8 +139,8 @@ class _AppReplyModalState extends State<AppReplyModal> {
                     color: theme.colors.white33,
                   ),
                 ],
-                quotedMessage: widget.contentType == 'message'
-                    ? Message(
+                quotedChatMessage: widget.contentType == 'message'
+                    ? ReplaceMessage(
                         nevent: widget.nevent,
                         npub: 'npub1test', // TODO: connect this
                         timestamp: DateTime.now(), // TODO: connect this

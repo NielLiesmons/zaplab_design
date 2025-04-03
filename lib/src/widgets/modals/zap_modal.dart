@@ -8,6 +8,9 @@ class AppZapModal extends StatefulWidget {
   final String profileImageUrl;
   final List<({double amount, String profileImageUrl})> otherZaps;
   final List<double> recentAmounts;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
   final VoidCallback onCameraTap;
@@ -21,6 +24,9 @@ class AppZapModal extends StatefulWidget {
     required this.profileImageUrl,
     this.otherZaps = const [],
     this.recentAmounts = const [],
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
     required this.onSearchProfiles,
     required this.onSearchEmojis,
     required this.onCameraTap,
@@ -35,6 +41,9 @@ class AppZapModal extends StatefulWidget {
     required String profileImageUrl,
     List<({double amount, String profileImageUrl})> otherZaps = const [],
     List<double> recentAmounts = const [],
+    required NostrEventResolver onResolveEvent,
+    required NostrProfileResolver onResolveProfile,
+    required NostrEmojiResolver onResolveEmoji,
     required NostrProfileSearch onSearchProfiles,
     required NostrEmojiSearch onSearchEmojis,
     required VoidCallback onCameraTap,
@@ -63,6 +72,9 @@ class AppZapModal extends StatefulWidget {
                     onValueChanged: (value) {
                       setState(() => amount = value);
                     },
+                    onResolveEvent: onResolveEvent,
+                    onResolveProfile: onResolveProfile,
+                    onResolveEmoji: onResolveEmoji,
                     onSearchProfiles: onSearchProfiles,
                     onSearchEmojis: onSearchEmojis,
                     onCameraTap: onCameraTap,
@@ -122,6 +134,9 @@ class _AppZapModalState extends State<AppZapModal> {
             onValueChanged: (value) {
               setState(() => amount = value);
             },
+            onResolveEvent: widget.onResolveEvent,
+            onResolveProfile: widget.onResolveProfile,
+            onResolveEmoji: widget.onResolveEmoji,
             onSearchProfiles: widget.onSearchProfiles,
             onSearchEmojis: widget.onSearchEmojis,
             onCameraTap: widget.onCameraTap,

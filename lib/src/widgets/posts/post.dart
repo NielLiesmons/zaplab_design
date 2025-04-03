@@ -1,15 +1,12 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppPost extends StatelessWidget {
-  final String content;
-  final String profileName;
-  final String profilePicUrl;
-  final DateTime timestamp;
-  final List<Reaction> reactions;
-  final List<Zap> zaps;
-  final List<Community> communities;
-  final void Function(String)? onReactionTap;
-  final void Function(String)? onZapTap;
+  final Note note;
+  // TODO: Implement reactions, zaps, and communities once HasMany is available
+  // final List<ReplaceReaction> reactions;
+  // final List<ReplaceZap> zaps;
+  // final List<ReplaceCommunity> communities;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -18,15 +15,11 @@ class AppPost extends StatelessWidget {
 
   const AppPost({
     super.key,
-    required this.content,
-    required this.profileName,
-    required this.profilePicUrl,
-    required this.timestamp,
-    this.reactions = const [],
-    this.zaps = const [],
-    this.communities = const [],
-    this.onReactionTap,
-    this.onZapTap,
+    required this.note,
+    // TODO: Implement reactions, zaps, and communities once HasMany is available
+    // this.reactions = const [],
+    // this.zaps = const [],
+    // this.communities = const [],
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -44,9 +37,8 @@ class AppPost extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppProfilePic.s48(profilePicUrl),
+              AppProfilePic.s48(note.author.value?.pictureUrl ?? ''),
               const AppGap.s12(),
               Expanded(
                 child: Column(
@@ -56,38 +48,71 @@ class AppPost extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        AppText.bold14(profileName),
+                        AppText.bold14(note.author.value?.name ??
+                            formatNpub(note.author.value?.pubkey ?? '')),
                         AppText.reg12(
-                          TimestampFormatter.format(timestamp,
+                          TimestampFormatter.format(note.createdAt,
                               format: TimestampFormat.relative),
                           color: theme.colors.white33,
                         ),
                       ],
                     ),
                     const AppGap.s6(),
-                    AppCommunityStack(
-                      onTap:
-                          () {}, // TODO: Add AppModal.show -> Community cards in the modal
-                      communities: communities,
+                    AppShortTextRenderer(
+                      content: note.content,
+                      onResolveEvent: onResolveEvent,
+                      onResolveProfile: onResolveProfile,
+                      onResolveEmoji: onResolveEmoji,
+                      onResolveHashtag: onResolveHashtag,
+                      onLinkTap: onLinkTap,
                     ),
+                    // TODO: Implement reactions, zaps, and communities once HasMany is available
+                    /*
+                    if (note.reactions.length > 0 ||
+                        note.zaps.length > 0) ...[
+                      const AppGap.s8(),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: AppInteractionPills(
+                          nevent: note.id,
+                          reactions: note.reactions
+                              .map((r) => ReplaceReaction(
+                                    npub: r.author.value?.pubkey ?? '',
+                                    nevent: note.id,
+                                    profileName: r.author.value?.name ??
+                                        formatNpub(r.author.value?.pubkey ?? ''),
+                                    profilePicUrl: r.author.value?.pictureUrl ?? '',
+                                    emojiUrl: r.content,
+                                    emojiName: r.content,
+                                    timestamp: r.createdAt,
+                                    isOutgoing: r.author.value?.pubkey ==
+                                        note.author.value?.pubkey,
+                                  ))
+                              .toList(),
+                          zaps: note.zaps
+                              .map((z) => ReplaceZap(
+                                    npub: z.author.value?.pubkey ?? '',
+                                    nevent: note.id,
+                                    amount: int.tryParse(z.content) ?? 0,
+                                    profileName: z.author.value?.name ??
+                                        formatNpub(z.author.value?.pubkey ?? ''),
+                                    profilePicUrl: z.author.value?.pictureUrl ?? '',
+                                    timestamp: z.createdAt,
+                                    isOutgoing: z.author.value?.pubkey ==
+                                        note.author.value?.pubkey,
+                                  ))
+                              .toList(),
+                          onReactionTap: onReactionTap,
+                          onZapTap: onZapTap,
+                        ),
+                      ),
+                    ],
+                    */
                   ],
                 ),
               ),
             ],
           ),
-          const AppGap.s8(),
-          AppText.reg14(content),
-          if (reactions.isNotEmpty || zaps.isNotEmpty) ...[
-            const AppGap.s8(),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: AppInteractionPills(
-                nevent: '',
-                reactions: reactions,
-                zaps: zaps,
-              ),
-            ),
-          ],
         ],
       ),
     );

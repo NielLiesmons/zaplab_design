@@ -1,8 +1,8 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppArticlesFeed extends StatelessWidget {
   final List<Article> articles;
-
   final Future<void> Function(String url)? onTap;
 
   const AppArticlesFeed({
@@ -21,10 +21,7 @@ class AppArticlesFeed extends StatelessWidget {
             Column(
               children: [
                 AppArticleCard(
-                  title: article.title,
-                  profileName: article.profileName,
-                  profilePicUrl: article.profilePicUrl,
-                  imageUrl: article.imageUrl ?? '',
+                  article: article,
                   onTap: () {
                     // TODO Handle article tap
                   },

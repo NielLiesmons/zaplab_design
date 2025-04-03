@@ -8,10 +8,10 @@ class AppProfileStack extends StatelessWidget {
     VoidCallback? onTap,
   }) : onTap = onTap ?? (() {});
 
-  final List<Profile> profiles;
+  final List<ReplaceProfile> profiles;
   final VoidCallback onTap;
 
-  List<Profile> get _visibleProfiles => profiles.take(3).toList();
+  List<ReplaceProfile> get _visibleProfiles => profiles.take(3).toList();
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppShortTextField extends StatefulWidget {
   final List<Widget>? placeholder;
@@ -8,10 +9,13 @@ class AppShortTextField extends StatefulWidget {
   final TextStyle? style;
   final List<AppTextSelectionMenuItem>? contextMenuItems;
   final Color? backgroundColor;
-  final Message? quotedMessage;
-  final Zap? quotedZap;
+  final ChatMessage? quotedChatMessage;
+  final CashuZap? quotedZap;
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
   final VoidCallback onCameraTap;
   final VoidCallback onGifTap;
   final VoidCallback onAddTap;
@@ -28,8 +32,11 @@ class AppShortTextField extends StatefulWidget {
     this.style,
     this.contextMenuItems,
     this.backgroundColor,
-    this.quotedMessage,
+    this.quotedChatMessage,
     this.quotedZap,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
     required this.onSearchProfiles,
     required this.onSearchEmojis,
     required this.onCameraTap,
@@ -48,6 +55,11 @@ class AppShortTextField extends StatefulWidget {
     TextStyle? style,
     List<AppTextSelectionMenuItem>? contextMenuItems,
     Color? backgroundColor,
+    ChatMessage? quotedChatMessage,
+    CashuZap? quotedZap,
+    NostrEventResolver? onResolveEvent,
+    NostrProfileResolver? onResolveProfile,
+    NostrEmojiResolver? onResolveEmoji,
     NostrProfileSearch? onSearchProfiles,
     NostrEmojiSearch? onSearchEmojis,
     VoidCallback? onCameraTap,
@@ -65,6 +77,11 @@ class AppShortTextField extends StatefulWidget {
       style: style ?? this.style,
       contextMenuItems: contextMenuItems ?? this.contextMenuItems,
       backgroundColor: backgroundColor ?? this.backgroundColor,
+      quotedChatMessage: quotedChatMessage ?? this.quotedChatMessage,
+      quotedZap: quotedZap ?? this.quotedZap,
+      onResolveEvent: onResolveEvent ?? this.onResolveEvent,
+      onResolveProfile: onResolveProfile ?? this.onResolveProfile,
+      onResolveEmoji: onResolveEmoji ?? this.onResolveEmoji,
       onSearchProfiles: onSearchProfiles ?? this.onSearchProfiles,
       onSearchEmojis: onSearchEmojis ?? this.onSearchEmojis,
       onCameraTap: onCameraTap ?? this.onCameraTap,
@@ -115,12 +132,13 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
                 bottom: AppGapSize.s2,
               ),
               child: AppZapCard(
-                profileName: widget.quotedZap!.profileName,
-                profilePicUrl: widget.quotedZap!.profilePicUrl,
-                amount: widget.quotedZap!.amount.toString(),
+                zap: widget.quotedZap!,
+                onResolveEvent: widget.onResolveEvent,
+                onResolveProfile: widget.onResolveProfile,
+                onResolveEmoji: widget.onResolveEmoji,
               ),
             ),
-          if (widget.quotedMessage != null)
+          if (widget.quotedChatMessage != null)
             AppContainer(
               padding: const AppEdgeInsets.only(
                 left: AppGapSize.s8,
@@ -129,31 +147,10 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
                 bottom: AppGapSize.s2,
               ),
               child: AppQuotedMessage(
-                profileName: widget.quotedMessage!.profileName,
-                profilePicUrl: widget.quotedMessage!.profilePicUrl,
-                message: widget.quotedMessage!.message ?? '',
-                timestamp: widget.quotedMessage!.timestamp,
-                onResolveEvent: (id) async => NostrEvent(
-                  nevent: id,
-                  npub: 'npub1test',
-                  contentType: 'article',
-                  title: 'Communi-keys',
-                  imageUrl:
-                      'https://cdn.satellite.earth/7273fad49b4c3a17a446781a330553e1bb8de7a238d6c6b6cee30b8f5caf21f4.png',
-                  profileName: 'Niel Liesmons',
-                  profilePicUrl:
-                      'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
-                  timestamp: DateTime.now(),
-                  onTap: () {},
-                ),
-                onResolveProfile: (id) async => Profile(
-                  npub: id,
-                  profileName: 'Pip',
-                  profilePicUrl: 'https://m.primal.net/IfSZ.jpg',
-                  onTap: () {},
-                ),
-                onResolveEmoji: (id) async =>
-                    'https://image.nostr.build/f1ac401d3f222908d2f80df7cfadc1d73f4e0afa3a3ff6e8421bf9f0b37372a6.gif',
+                chatMessage: widget.quotedChatMessage!,
+                onResolveEvent: widget.onResolveEvent,
+                onResolveProfile: widget.onResolveProfile,
+                onResolveEmoji: widget.onResolveEmoji,
               ),
             ),
           ShaderMask(

@@ -1,33 +1,24 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppAppReleaseCard extends StatelessWidget {
-  final String appName;
+  final App app;
   final String releaseNumber;
-  final String description;
-  final String profilePicUrl;
-  final String publisherName;
-  final String publisherPicUrl;
-  final String source;
   final String size;
   final String date;
-  final String license;
   final VoidCallback onViewMore;
   final VoidCallback onInstall;
+  final bool isInstalled;
 
   const AppAppReleaseCard({
     super.key,
-    required this.appName,
+    required this.app,
     required this.releaseNumber,
-    required this.description,
-    required this.profilePicUrl,
-    required this.publisherName,
-    required this.publisherPicUrl,
-    required this.source,
     required this.size,
     required this.date,
-    required this.license,
     required this.onViewMore,
     required this.onInstall,
+    this.isInstalled = false,
   });
 
   @override
@@ -42,14 +33,14 @@ class AppAppReleaseCard extends StatelessWidget {
           // App info header
           Row(
             children: [
-              AppProfilePicSquare.s56(profilePicUrl),
+              AppProfilePicSquare.s56(app.icons.first),
               const AppGap.s16(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      AppText.h2(appName),
+                      AppText.h2(app.name ?? ''),
                       const AppGap.s12(),
                       AppIcon.s14(theme.icons.characters.chevronRight,
                           outlineColor: theme.colors.white33,
@@ -72,7 +63,7 @@ class AppAppReleaseCard extends StatelessWidget {
             onTap: onViewMore,
             child: AppContainer(
               child: AppText.reg14(
-                description,
+                app.description,
                 color: theme.colors.white66,
                 maxLines: 3,
                 textOverflow: TextOverflow.ellipsis,
@@ -113,7 +104,7 @@ class AppAppReleaseCard extends StatelessWidget {
                                       const AppGap.s8(),
                                       Flexible(
                                         child: AppText.med14(
-                                          source,
+                                          app.repository ?? '',
                                           textOverflow: TextOverflow.ellipsis,
                                           color: theme.colors.blurpleColor,
                                         ),
@@ -156,7 +147,7 @@ class AppAppReleaseCard extends StatelessWidget {
                                     color: theme.colors.white66),
                                 const AppGap.s12(),
                                 Flexible(
-                                  child: AppText.reg14(license,
+                                  child: AppText.reg14(app.license ?? '',
                                       textOverflow: TextOverflow.ellipsis),
                                 ),
                               ],
@@ -186,9 +177,10 @@ class AppAppReleaseCard extends StatelessWidget {
                   color: theme.colors.white66,
                 ),
                 const Spacer(),
-                AppProfilePic.s24(publisherPicUrl),
+                AppProfilePic.s24(app.author.value?.pictureUrl ?? ''),
                 const AppGap.s8(),
-                AppText.bold14(publisherName),
+                AppText.bold14(app.author.value?.name ??
+                    formatNpub(app.author.value?.pubkey ?? '')),
               ],
             ),
           ),
@@ -197,13 +189,13 @@ class AppAppReleaseCard extends StatelessWidget {
 
           // Install button
           AppButton(
+            onTap: onInstall,
             children: [
               AppText.med16(
-                'Install Update',
+                isInstalled ? 'Update' : 'Install',
                 color: AppColorsData.dark().white,
               ),
             ],
-            onTap: onInstall,
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:models/models.dart';
 
 extension StringExtension on String {
   String formatTabLabel() {
@@ -15,12 +16,12 @@ class AppChatScreen extends StatefulWidget {
   final String profilePicUrl;
   final VoidCallback? onProfileTap;
   // Current profile
-  final String currentNpub;
+  final String currentPubkey;
   // Content related
   final int? mainCount;
   final Map<String, int> contentCounts;
-  final List<Message> messages;
-  final List<Post> posts;
+  final List<ChatMessage> chatMessages;
+  final List<ReplacePost> posts;
   final List<Article> articles;
   // Other actions & settings
   final VoidCallback? onHomeTap;
@@ -46,12 +47,12 @@ class AppChatScreen extends StatefulWidget {
     required this.profilePicUrl,
     this.onProfileTap,
     // Current user
-    required this.currentNpub,
+    required this.currentPubkey,
     // Content related
     this.mainCount,
     required this.contentCounts,
     this.focusedMessageNevent,
-    this.messages = const [],
+    this.chatMessages = const [],
     this.posts = const [],
     this.articles = const [],
     // Other actions & settings
@@ -211,8 +212,8 @@ class _AppChatScreenState extends State<AppChatScreen> {
     switch (selectedType) {
       case 'chat':
         return AppChatFeed(
-          messages: widget.messages,
-          currentNpub: widget.currentNpub,
+          messages: widget.chatMessages,
+          currentPubkey: widget.currentPubkey,
           onResolveEvent: widget.onResolveEvent,
           onResolveProfile: widget.onResolveProfile,
           onResolveEmoji: widget.onResolveEmoji,

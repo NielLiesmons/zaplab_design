@@ -1,22 +1,15 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppQuotedMessage extends StatelessWidget {
-  final String profileName;
-  final String profilePicUrl;
-  final String message;
-  final DateTime timestamp;
-  final String? eventId;
+  final ChatMessage chatMessage;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
 
   const AppQuotedMessage({
     super.key,
-    required this.profileName,
-    required this.profilePicUrl,
-    required this.message,
-    required this.timestamp,
-    this.eventId,
+    required this.chatMessage,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -54,15 +47,18 @@ class AppQuotedMessage extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        AppProfilePic.s18(profilePicUrl),
+                        AppProfilePic.s18(
+                            chatMessage.author.value?.pictureUrl ?? ''),
                         const AppGap.s6(),
                         AppText.bold12(
-                          profileName,
+                          chatMessage.author.value?.name ??
+                              formatNpub(
+                                  chatMessage.author.value?.pubkey ?? ''),
                           color: theme.colors.white66,
                         ),
                         const Spacer(),
                         AppText.reg12(
-                          TimestampFormatter.format(timestamp,
+                          TimestampFormatter.format(chatMessage.createdAt,
                               format: TimestampFormat.relative),
                           color: theme.colors.white33,
                         ),
@@ -74,7 +70,7 @@ class AppQuotedMessage extends StatelessWidget {
                         left: AppGapSize.s2,
                       ),
                       child: AppCompactTextRenderer(
-                        content: message,
+                        content: chatMessage.content,
                         maxLines: 1,
                         shouldTruncate: true,
                         onResolveEvent: onResolveEvent,

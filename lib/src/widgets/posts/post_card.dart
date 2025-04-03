@@ -1,19 +1,20 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppPostCard extends StatelessWidget {
-  final String content;
-  final String profileName;
-  final String profilePicUrl;
-  final DateTime timestamp;
+  final Note post;
   final VoidCallback? onTap;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
 
   const AppPostCard({
     super.key,
-    required this.profileName,
-    required this.profilePicUrl,
-    required this.timestamp,
-    required this.content,
+    required this.post,
     this.onTap,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
   });
 
   @override
@@ -34,13 +35,13 @@ class AppPostCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppProfilePic.s18(profilePicUrl),
+                AppProfilePic.s18(post.author.value?.pictureUrl ?? ''),
                 const AppGap.s8(),
                 Expanded(
-                  child: AppText.bold12(profileName),
+                  child: AppText.bold12(post.author.value?.name ?? ''),
                 ),
                 AppText.reg12(
-                  TimestampFormatter.format(timestamp,
+                  TimestampFormatter.format(post.createdAt,
                       format: TimestampFormat.relative),
                   color: theme.colors.white33,
                 ),
@@ -49,11 +50,11 @@ class AppPostCard extends StatelessWidget {
           ),
           const AppGap.s6(),
           AppContainer(
-            child: AppText.reg12(
-              content,
-              color: theme.colors.white66,
-              maxLines: 3,
-              textOverflow: TextOverflow.ellipsis,
+            child: AppCompactTextRenderer(
+              content: post.content,
+              onResolveEvent: onResolveEvent,
+              onResolveProfile: onResolveProfile,
+              onResolveEmoji: onResolveEmoji,
             ),
           ),
         ],

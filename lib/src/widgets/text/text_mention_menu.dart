@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppTextMentionMenuItem {
-  final Profile profile;
+  final ReplaceProfile profile;
   final void Function(EditableTextState) onTap;
 
   const AppTextMentionMenuItem({

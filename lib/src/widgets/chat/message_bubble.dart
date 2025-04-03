@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class MessageBubbleScope extends InheritedWidget {
   final bool isOutgoing;
@@ -21,15 +22,10 @@ class MessageBubbleScope extends InheritedWidget {
 }
 
 class AppMessageBubble extends StatefulWidget {
-  final String message;
-  final String? profileName;
-  final DateTime? timestamp;
+  final ChatMessage message;
   final bool showHeader;
   final bool isLastInStack;
   final bool isOutgoing;
-  final String nevent;
-  final List<Reaction> reactions;
-  final List<Zap> zaps;
   final void Function(String) onActions;
   final void Function(String) onReply;
   final void Function(String)? onReactionTap;
@@ -44,14 +40,9 @@ class AppMessageBubble extends StatefulWidget {
   const AppMessageBubble({
     super.key,
     required this.message,
-    required this.nevent,
-    this.profileName,
-    this.timestamp,
     this.showHeader = false,
     this.isLastInStack = false,
     this.isOutgoing = false,
-    this.reactions = const [],
-    this.zaps = const [],
     required this.onActions,
     required this.onReply,
     this.onReactionTap,
@@ -75,7 +66,8 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
     final isInsideModal = ModalScope.of(context);
 
     // Analyze content type
-    final contentType = AppShortTextRenderer.analyzeContent(widget.message);
+    final contentType =
+        AppShortTextRenderer.analyzeContent(widget.message.content);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -119,10 +111,12 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
               outlineColor: theme.colors.white66,
               outlineThickness: LineThicknessData.normal().medium,
             ),
-            onSwipeLeft:
-                widget.isTyping ? null : () => widget.onReply(widget.nevent),
-            onSwipeRight:
-                widget.isTyping ? null : () => widget.onActions(widget.nevent),
+            onSwipeLeft: widget.isTyping
+                ? null
+                : () => widget.onReply(widget.message.id),
+            onSwipeRight: widget.isTyping
+                ? null
+                : () => widget.onActions(widget.message.id),
             child: MessageBubbleScope(
               isOutgoing: widget.isOutgoing,
               child: LayoutBuilder(
@@ -167,26 +161,24 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        if (widget.profileName != null)
+                                        if (widget.message.author.value != null)
                                           AppText.bold12(
-                                            widget.profileName!,
+                                            widget.message.author.value!.name ??
+                                                formatNpub(widget.message.author
+                                                    .value!.pubkey),
                                             color: theme.colors.white66,
                                             textOverflow: TextOverflow.ellipsis,
                                           ),
-                                        if (widget.timestamp != null) ...[
-                                          const AppGap.s8(),
-                                          AppText.reg12(
-                                            TimestampFormatter.format(
-                                                widget.timestamp!,
-                                                format:
-                                                    TimestampFormat.relative),
-                                            color: theme.colors.white33,
-                                          ),
-                                          if (ShortTextContent.of(context) ==
-                                              ShortTextContentType
-                                                  .singleImageStack)
-                                            const AppGap.s56(),
-                                        ],
+                                        AppText.reg12(
+                                          TimestampFormatter.format(
+                                              widget.message.createdAt,
+                                              format: TimestampFormat.relative),
+                                          color: theme.colors.white33,
+                                        ),
+                                        if (ShortTextContent.of(context) ==
+                                            ShortTextContentType
+                                                .singleImageStack)
+                                          const AppGap.s56(),
                                       ],
                                     ),
                                   ),
@@ -204,7 +196,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                         ),
                                       )
                                     : AppShortTextRenderer(
-                                        content: widget.message,
+                                        content: widget.message.content,
                                         onResolveEvent: widget.onResolveEvent,
                                         onResolveProfile:
                                             widget.onResolveProfile,
@@ -215,8 +207,10 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                       ),
                               ],
                             ),
-                            if (widget.zaps.isNotEmpty ||
-                                widget.reactions.isNotEmpty) ...[
+                            // TODO: Uncomment and implement once HasMany is available
+                            /*
+                            if (widget.message.zaps.isNotEmpty ||
+                                widget.message.reactions.isNotEmpty) ...[
                               const AppGap.s2(),
                               AppContainer(
                                 padding: contentType.isSingleContent
@@ -250,9 +244,9 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                       )
                                     : null,
                                 child: AppInteractionPills(
-                                  nevent: widget.nevent,
-                                  zaps: widget.zaps,
-                                  reactions: widget.reactions,
+                                  nevent: widget.message.id,
+                                  zaps: const [],
+                                  reactions: const [],
                                   onZapTap: widget.onZapTap,
                                   onReactionTap: widget.onReactionTap,
                                 ),
@@ -261,6 +255,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                   ? const AppGap.s6()
                                   : const SizedBox.shrink(),
                             ],
+                            */
                           ],
                         ),
                       ),

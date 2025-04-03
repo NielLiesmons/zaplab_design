@@ -1,5 +1,4 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:zaplab_design/src/utils/timestamp_formatter.dart';
 import 'package:tap_builder/tap_builder.dart';
 
 class AppChatHomePanel extends StatelessWidget {
@@ -195,7 +194,7 @@ class AppChatHomePanel extends StatelessWidget {
                                                                   lastMessage,
                                                               onResolveEvent:
                                                                   (id) async =>
-                                                                      NostrEvent(
+                                                                      ReplaceNostrEvent(
                                                                 nevent: id,
                                                                 npub:
                                                                     'npub1test',
@@ -216,7 +215,7 @@ class AppChatHomePanel extends StatelessWidget {
                                                               ),
                                                               onResolveProfile:
                                                                   (id) async =>
-                                                                      Profile(
+                                                                      ReplaceProfile(
                                                                 npub: id,
                                                                 profileName:
                                                                     'Pip',

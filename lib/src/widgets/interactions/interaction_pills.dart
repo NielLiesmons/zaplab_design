@@ -2,8 +2,8 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:collection/collection.dart';
 
 class AppInteractionPills extends StatelessWidget {
-  final List<Zap> zaps;
-  final List<Reaction> reactions;
+  final List<ReplaceZap> zaps;
+  final List<ReplaceReaction> reactions;
   final String nevent;
   final void Function(String)? onZapTap;
   final void Function(String)? onReactionTap;

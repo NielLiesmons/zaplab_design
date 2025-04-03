@@ -1,33 +1,17 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppEventCard extends StatelessWidget {
-  final String contentType;
-  final String title;
-  final String? imageUrl;
-  final String profileName;
-  final String profilePicUrl;
-  final DateTime timestamp;
-  final String? amount;
-  final String? message;
-  final String? content;
+  final Event? event;
   final NostrEventResolver? onResolveEvent;
   final NostrProfileResolver? onResolveProfile;
   final NostrEmojiResolver? onResolveEmoji;
   final NostrHashtagResolver? onResolveHashtag;
-
   final VoidCallback? onTap;
 
   const AppEventCard({
     super.key,
-    required this.contentType,
-    required this.title,
-    this.imageUrl,
-    required this.profileName,
-    required this.profilePicUrl,
-    required this.timestamp,
-    this.amount,
-    this.message,
-    this.content,
+    required this.event,
     this.onTap,
     this.onResolveEvent,
     this.onResolveProfile,
@@ -41,7 +25,7 @@ class AppEventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    if (contentType.isEmpty) {
+    if (event == null) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
         child: AppPanelButton(
@@ -72,28 +56,21 @@ class AppEventCard extends StatelessWidget {
       );
     }
 
-    if (contentType == 'article') {
+    if (event is Article) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
         child: AppArticleCard(
-          title: title,
-          profileName: profileName,
-          profilePicUrl: profilePicUrl,
-          imageUrl: imageUrl ?? '',
+          article: event as Article,
           onTap: onTap,
         ),
       );
     }
 
-    if (contentType == 'message') {
+    if (event is ChatMessage) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
         child: AppQuotedMessage(
-          profileName: profileName,
-          profilePicUrl: profilePicUrl,
-          message: message ?? '',
-          timestamp: timestamp,
-          eventId: null,
+          chatMessage: event as ChatMessage,
           onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
           onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
@@ -101,28 +78,28 @@ class AppEventCard extends StatelessWidget {
       );
     }
 
-    if (contentType == 'zap') {
+    if (event is Zap) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
         child: AppZapCard(
-          profileName: profileName,
-          profilePicUrl: profilePicUrl,
-          amount: amount ?? '',
-          message: message ?? '',
+          zap: event as CashuZap,
+          onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
+          onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
+          onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
           onTap: onTap,
         ),
       );
     }
 
-    if (contentType == 'post') {
+    if (event is Note) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
         child: AppPostCard(
-          profileName: profileName,
-          profilePicUrl: profilePicUrl,
-          timestamp: timestamp,
-          content: content ?? '',
+          post: event as Note,
           onTap: onTap,
+          onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
+          onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
+          onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
         ),
       );
     }
@@ -138,32 +115,33 @@ class AppEventCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AppProfilePic.s40(profilePicUrl),
+            AppProfilePic.s40(event!.author.value?.pictureUrl ?? ''),
             const AppGap.s12(),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      AppEmojiImage(
-                        emojiUrl: 'assets/emoji/$contentType.png',
-                        emojiName: contentType,
-                        size: 16,
-                      ),
-                      const AppGap.s10(),
-                      Expanded(
-                        child: AppText.reg14(
-                          title,
-                          maxLines: 1,
-                          textOverflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
+                  // TODO: Add abilty to detct content type to then display the correct icon and title / content
+                  // Row(
+                  //   children: [
+                  //     AppEmojiImage(
+                  //       emojiUrl: 'assets/emoji/$contentType.png',
+                  //       emojiName: contentType,
+                  //       size: 16,
+                  //     ),
+                  //     const AppGap.s10(),
+                  //     Expanded(
+                  //       child: AppText.reg14(
+                  //         event.title,
+                  //         maxLines: 1,
+                  //         textOverflow: TextOverflow.ellipsis,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   const AppGap.s2(),
                   AppText.reg12(
-                    profileName,
+                    event!.author.value?.name ?? '',
                     color: theme.colors.white66,
                   ),
                 ],
