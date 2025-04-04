@@ -8,8 +8,8 @@ class AppPostsFeed extends StatelessWidget {
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
-  final void Function(String nevent)? onReply;
-  final void Function(String nevent)? onActions;
+  final Function(Event) onReply;
+  final Function(Event) onActions;
 
   const AppPostsFeed({
     super.key,
@@ -19,8 +19,8 @@ class AppPostsFeed extends StatelessWidget {
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
-    this.onReply,
-    this.onActions,
+    required this.onReply,
+    required this.onActions,
   });
 
   @override

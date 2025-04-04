@@ -1,11 +1,12 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppInteractionBar extends StatefulWidget {
-  final List<ReplaceZap> zaps;
-  final List<ReplaceReaction> reactions;
+  final List<CashuZap> zaps;
+  final List<Reaction> reactions;
   final String nevent;
-  final void Function(String)? onZapTap;
-  final void Function(String)? onReactionTap;
+  final void Function(CashuZap)? onZapTap;
+  final void Function(Reaction)? onReactionTap;
   final VoidCallback? onExpand;
 
   const AppInteractionBar({

@@ -26,10 +26,10 @@ class AppMessageBubble extends StatefulWidget {
   final bool showHeader;
   final bool isLastInStack;
   final bool isOutgoing;
-  final void Function(String) onActions;
-  final void Function(String) onReply;
-  final void Function(String)? onReactionTap;
-  final void Function(String)? onZapTap;
+  final Function(Event) onActions;
+  final Function(Event) onReply;
+  final Function(Reaction)? onReactionTap;
+  final Function(CashuZap)? onZapTap;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -111,12 +111,10 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
               outlineColor: theme.colors.white66,
               outlineThickness: LineThicknessData.normal().medium,
             ),
-            onSwipeLeft: widget.isTyping
-                ? null
-                : () => widget.onReply(widget.message.id),
-            onSwipeRight: widget.isTyping
-                ? null
-                : () => widget.onActions(widget.message.id),
+            onSwipeLeft:
+                widget.isTyping ? null : () => widget.onReply(widget.message),
+            onSwipeRight:
+                widget.isTyping ? null : () => widget.onActions(widget.message),
             child: MessageBubbleScope(
               isOutgoing: widget.isOutgoing,
               child: LayoutBuilder(

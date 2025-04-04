@@ -1,31 +1,33 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:models/models.dart';
 
 class AppChatHomePanel extends StatelessWidget {
-  final String npub;
-  final String profileName;
-  final String profilePicUrl;
-  final String lastMessage;
-  final String? lastMessageProfileName;
-  final DateTime lastMessageTimeStamp;
+  final Communikey communikey;
+  final ChatMessage lastChatMessage;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
   final Map<String, int> contentCounts;
   final int? mainCount;
-  final void Function(BuildContext context, String npub)? onNavigateToChat;
-  final void Function(BuildContext context, String npub, String contentType)?
-      onNavigateToContent;
+  final Function(Communikey) onNavigateToChat;
+  final Function(Communikey, String contentType)? onNavigateToContent;
+  final Function(Communikey)? onCreateNewPublication;
+  final Function(Communikey)? onActions;
 
   const AppChatHomePanel({
     super.key,
-    required this.npub,
-    required this.profileName,
-    required this.profilePicUrl,
-    required this.lastMessage,
-    this.lastMessageProfileName,
-    required this.lastMessageTimeStamp,
+    required this.communikey,
+    required this.lastChatMessage,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
     this.contentCounts = const {},
     this.mainCount,
-    this.onNavigateToChat,
+    required this.onNavigateToChat,
     this.onNavigateToContent,
+    this.onCreateNewPublication,
+    this.onActions,
   });
 
   (String, double) _getCountDisplay(int count) {
@@ -41,12 +43,7 @@ class AppChatHomePanel extends StatelessWidget {
     final (displayCount, containerWidth) = _getCountDisplay(mainCount!);
 
     return TapBuilder(
-      onTap: onNavigateToChat == null
-          ? null
-          : () => onNavigateToChat!(
-                context,
-                npub,
-              ),
+      onTap: onNavigateToChat(communikey),
       builder: (context, state, hasFocus) {
         return Column(children: [
           AppSwipeContainer(
@@ -60,12 +57,8 @@ class AppChatHomePanel extends StatelessWidget {
               outlineColor: theme.colors.white66,
               outlineThickness: LineThicknessData.normal().medium,
             ),
-            onSwipeLeft: () {
-              print('swiped left'); // TODO: Implement
-            },
-            onSwipeRight: () {
-              print('swiped right'); // TODO: Implement
-            },
+            onSwipeLeft: onCreateNewPublication!(communikey),
+            onSwipeRight: onActions!(communikey),
             padding: const AppEdgeInsets.symmetric(
               horizontal: AppGapSize.s12,
               vertical: AppGapSize.s12,
@@ -76,13 +69,8 @@ class AppChatHomePanel extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     AppProfilePic.s48(
-                      profilePicUrl,
-                      onTap: onNavigateToChat == null
-                          ? null
-                          : () => onNavigateToChat!(
-                                context,
-                                npub,
-                              ),
+                      communikey.author.value?.pictureUrl ?? '',
+                      onTap: onNavigateToChat(communikey),
                     ),
                     Expanded(
                       child: Column(
@@ -96,13 +84,16 @@ class AppChatHomePanel extends StatelessWidget {
                                 const AppGap.s12(),
                                 Expanded(
                                   child: AppText.bold14(
-                                    profileName,
+                                    communikey.author.value?.name ??
+                                        formatNpub(
+                                            communikey.author.value?.npub ??
+                                                ''),
                                     color: theme.colors.white,
                                   ),
                                 ),
                                 AppText.reg12(
                                   TimestampFormatter.format(
-                                    lastMessageTimeStamp,
+                                    lastChatMessage.createdAt,
                                     format: TimestampFormat.relative,
                                   ),
                                   color: theme.colors.white33,
@@ -174,58 +165,31 @@ class AppChatHomePanel extends StatelessWidget {
                                                       child: Row(
                                                         children: [
                                                           AppText.bold12(
-                                                            lastMessageProfileName !=
-                                                                    null
-                                                                ? '$lastMessageProfileName:'
-                                                                : '',
+                                                            lastChatMessage
+                                                                    .author
+                                                                    .value
+                                                                    ?.name ??
+                                                                formatNpub(lastChatMessage
+                                                                        .author
+                                                                        .value
+                                                                        ?.npub ??
+                                                                    ''),
                                                             color: theme
                                                                 .colors.white66,
                                                           ),
-                                                          lastMessageProfileName !=
-                                                                  null
-                                                              ? const AppGap
-                                                                  .s4()
-                                                              : const SizedBox
-                                                                  .shrink(),
+                                                          const AppGap.s4(),
                                                           Flexible(
                                                             child:
                                                                 AppCompactTextRenderer(
                                                               content:
-                                                                  lastMessage,
+                                                                  lastChatMessage
+                                                                      .content,
                                                               onResolveEvent:
-                                                                  (id) async =>
-                                                                      ReplaceNostrEvent(
-                                                                nevent: id,
-                                                                npub:
-                                                                    'npub1test',
-                                                                contentType:
-                                                                    'article',
-                                                                title:
-                                                                    'Communi-keys',
-                                                                imageUrl:
-                                                                    'https://cdn.satellite.earth/7273fad49b4c3a17a446781a330553e1bb8de7a238d6c6b6cee30b8f5caf21f4.png',
-                                                                profileName:
-                                                                    'Niel Liesmons',
-                                                                profilePicUrl:
-                                                                    'https://cdn.satellite.earth/946822b1ea72fd3710806c07420d6f7e7d4a7646b2002e6cc969bcf1feaa1009.png',
-                                                                timestamp:
-                                                                    DateTime
-                                                                        .now(),
-                                                                onTap: () {},
-                                                              ),
+                                                                  onResolveEvent,
                                                               onResolveProfile:
-                                                                  (id) async =>
-                                                                      ReplaceProfile(
-                                                                npub: id,
-                                                                profileName:
-                                                                    'Pip',
-                                                                profilePicUrl:
-                                                                    'https://m.primal.net/IfSZ.jpg',
-                                                                onTap: () {},
-                                                              ),
+                                                                  onResolveProfile,
                                                               onResolveEmoji:
-                                                                  (id) async =>
-                                                                      'https://image.nostr.build/f1ac401d3f222908d2f80df7cfadc1d73f4e0afa3a3ff6e8421bf9f0b37372a6.gif',
+                                                                  onResolveEmoji,
                                                               maxLines: 1,
                                                             ),
                                                           ),

@@ -1,6 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import '../text_selection_gesture_detector_builder.dart' as custom;
 import 'package:flutter/services.dart';
+import 'package:models/models.dart';
 
 bool isEditingText = false;
 
@@ -14,6 +15,9 @@ class AppEditableShortText extends StatefulWidget {
   final List<Widget>? placeholder;
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
 
   const AppEditableShortText({
     super.key,
@@ -26,6 +30,9 @@ class AppEditableShortText extends StatefulWidget {
     this.placeholder,
     required this.onSearchProfiles,
     required this.onSearchEmojis,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
   });
 
   @override
@@ -191,17 +198,15 @@ class InlineSpanController extends TextEditingController {
     }
   }
 
-  void insertNostrProfile(
-      int offset, String npub, ReplaceProfile profile) async {
+  void insertNostrProfile(int offset, String npub,
+      ({Profile profile, VoidCallback? onTap}) profile) async {
     print('Inserting nostr profile span at offset $offset for npub: $npub');
 
     try {
-      final theme = AppTheme.of(context);
       _activeSpans[offset] = WidgetSpan(
         alignment: PlaceholderAlignment.middle,
         child: AppProfileInline(
-          profileName: profile.profileName,
-          profilePicUrl: profile.profilePicUrl,
+          profile: profile.profile,
           onTap: profile.onTap,
           isEditableText: true,
         ),
@@ -216,7 +221,6 @@ class InlineSpanController extends TextEditingController {
     print('Inserting emoji span at offset $offset for emoji: $emojiName');
 
     try {
-      final theme = AppTheme.of(context);
       _activeSpans[offset] = WidgetSpan(
         alignment: PlaceholderAlignment.middle,
         child: AppEmojiImage(
@@ -601,8 +605,8 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
     }
   }
 
-  void _insertMention(ReplaceProfile profile) {
-    print('Inserting mention for profile: ${profile.profileName}');
+  void _insertMention(({Profile profile, VoidCallback? onTap}) profile) {
+    print('Inserting mention for profile: ${profile.profile.name}');
     if (_mentionStartOffset == null) {
       print('_mentionStartOffset is null, cannot insert mention');
       return;
@@ -615,7 +619,8 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
     print('Replacing from offset ${_mentionStartOffset!} to $currentOffset');
 
     // Insert the nostr profile span with the specific profile
-    _controller.insertNostrProfile(_mentionStartOffset!, profile.npub, profile);
+    _controller.insertNostrProfile(
+        _mentionStartOffset!, profile.profile.npub, profile);
 
     // Then update the cursor position
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -665,8 +670,9 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
           .map((profile) => AppTextMentionMenuItem(
                 profile: profile,
                 onTap: (state) {
-                  print('Profile selected: ${profile.profileName}');
-                  _insertMention(profile);
+                  print('Profile selected: ${profile.name}');
+                  _insertMention(
+                      (profile: profile, onTap: () {})); // TODO: Add onTap
                   _mentionOverlay?.remove();
                   _mentionOverlay = null;
                 },

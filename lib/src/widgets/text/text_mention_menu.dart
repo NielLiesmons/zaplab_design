@@ -1,8 +1,9 @@
 import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppTextMentionMenuItem {
-  final ReplaceProfile profile;
+  final Profile profile;
   final void Function(EditableTextState) onTap;
 
   const AppTextMentionMenuItem({
@@ -81,12 +82,12 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
           ),
           child: Row(
             children: [
-              AppProfilePic(item.profile.profilePicUrl,
+              AppProfilePic(item.profile.pictureUrl ?? '',
                   size: AppProfilePicSize.s24),
               const AppGap.s8(),
               Expanded(
                 child: AppText.med14(
-                  item.profile.profileName,
+                  item.profile.name ?? formatNpub(item.profile.npub),
                   color: theme.colors.white,
                 ),
               ),

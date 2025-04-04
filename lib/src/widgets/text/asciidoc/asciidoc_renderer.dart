@@ -299,12 +299,12 @@ class AppAsciiDocRenderer extends StatelessWidget {
                     ),
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
-                      child: FutureBuilder<ReplaceProfile>(
+                      child: FutureBuilder<
+                          ({Profile profile, VoidCallback? onTap})>(
                         future: onResolveProfile(child.content),
                         builder: (context, snapshot) {
                           return AppProfileInline(
-                            profileName: snapshot.data?.profileName ?? '',
-                            profilePicUrl: snapshot.data?.profilePicUrl ?? '',
+                            profile: snapshot.data!.profile,
                             onTap: snapshot.data?.onTap,
                             isArticle: true,
                           );

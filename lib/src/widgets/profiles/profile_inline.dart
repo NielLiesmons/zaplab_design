@@ -1,9 +1,9 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:models/models.dart';
 
 class AppProfileInline extends StatelessWidget {
-  final String profileName;
-  final String profilePicUrl;
+  final Profile profile;
   final void Function()? onTap;
   final bool? isArticle;
   final bool? isEditableText;
@@ -11,8 +11,7 @@ class AppProfileInline extends StatelessWidget {
 
   const AppProfileInline({
     super.key,
-    required this.profileName,
-    required this.profilePicUrl,
+    required this.profile,
     this.onTap,
     this.isArticle = false,
     this.isEditableText = false,
@@ -32,14 +31,17 @@ class AppProfileInline extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (profilePicUrl.isNotEmpty)
+                if (profile.pictureUrl != null &&
+                    profile.pictureUrl!.isNotEmpty)
                   Transform.translate(
                     offset: isArticle == false
                         ? const Offset(0, -0.1)
                         : const Offset(0, 0.2),
                     child: isCompact
-                        ? AppProfilePic.s16(profilePicUrl, onTap: onTap)
-                        : AppProfilePic.s20(profilePicUrl, onTap: onTap),
+                        ? AppProfilePic.s16(profile.pictureUrl ?? '',
+                            onTap: onTap)
+                        : AppProfilePic.s20(profile.pictureUrl ?? '',
+                            onTap: onTap),
                   )
                 else
                   isCompact
@@ -49,30 +51,30 @@ class AppProfileInline extends StatelessWidget {
                 Flexible(
                   child: Transform.translate(
                     offset: const Offset(0, -0.2),
-                    child: profileName.isNotEmpty
+                    child: profile.name!.isNotEmpty
                         ? (isArticle == false)
                             ? isEditableText == true
                                 ? AppText.med16(
-                                    profileName,
+                                    profile.name!,
                                     color: theme.colors.blurpleColor,
                                     maxLines: 1,
                                     textOverflow: TextOverflow.ellipsis,
                                   )
                                 : isCompact
                                     ? AppText.med12(
-                                        profileName,
+                                        profile.name!,
                                         color: theme.colors.blurpleColor66,
                                         maxLines: 1,
                                         textOverflow: TextOverflow.ellipsis,
                                       )
                                     : AppText.med14(
-                                        profileName,
+                                        profile.name!,
                                         color: theme.colors.blurpleColor,
                                         maxLines: 1,
                                         textOverflow: TextOverflow.ellipsis,
                                       )
                             : AppText.boldArticle(
-                                profileName,
+                                profile.name!,
                                 color: theme.colors.blurpleColor,
                                 maxLines: 1,
                                 textOverflow: TextOverflow.ellipsis,

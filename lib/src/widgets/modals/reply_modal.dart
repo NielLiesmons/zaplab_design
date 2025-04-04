@@ -64,11 +64,13 @@ class _AppReplyModalState extends State<AppReplyModal> {
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: [
-              if (widget.contentType != 'message')
+              if (widget.event is ChatMessage)
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    AppProfilePic.s40(widget.profilePicUrl),
+                    AppProfilePic.s40(
+                      widget.event.author.value?.pictureUrl ?? '',
+                    ),
                     const AppGap.s12(),
                     Expanded(
                       child: Column(
@@ -78,14 +80,14 @@ class _AppReplyModalState extends State<AppReplyModal> {
                             children: [
                               AppEmojiImage(
                                 emojiUrl:
-                                    'assets/emoji/${widget.contentType}.png',
-                                emojiName: widget.contentType,
+                                    'assets/emoji/${getEventContentType(widget.event)}.png',
+                                emojiName: getEventContentType(widget.event),
                                 size: 16,
                               ),
                               const AppGap.s10(),
                               Expanded(
                                 child: AppCompactTextRenderer(
-                                  content: widget.title ?? widget.message ?? '',
+                                  content: getEventDisplayText(widget.event),
                                   onResolveEvent: widget.onResolveEvent,
                                   onResolveProfile: widget.onResolveProfile,
                                   onResolveEmoji: widget.onResolveEmoji,
@@ -97,7 +99,9 @@ class _AppReplyModalState extends State<AppReplyModal> {
                           ),
                           const AppGap.s2(),
                           AppText.reg12(
-                            widget.profileName,
+                            widget.event.author.value?.name ??
+                                formatNpub(
+                                    widget.event.author.value?.pubkey ?? ''),
                             color: theme.colors.white66,
                           ),
                         ],
@@ -106,7 +110,7 @@ class _AppReplyModalState extends State<AppReplyModal> {
                     const AppGap.s8(),
                   ],
                 ),
-              if (widget.contentType != 'message')
+              if (widget.event is ChatMessage)
                 Row(children: [
                   AppContainer(
                     width: theme.sizes.s38,
@@ -128,18 +132,14 @@ class _AppReplyModalState extends State<AppReplyModal> {
                     color: theme.colors.white33,
                   ),
                 ],
-                quotedChatMessage: widget.contentType == 'message'
-                    ? ReplaceMessage(
-                        nevent: widget.nevent,
-                        npub: 'npub1test', // TODO: connect this
-                        timestamp: DateTime.now(), // TODO: connect this
-                        profileName: widget.profileName,
-                        profilePicUrl: widget.profilePicUrl,
-                        message: widget.message!,
-                      )
+                quotedChatMessage: widget.event is ChatMessage
+                    ? (widget.event as ChatMessage)
                     : null,
                 onSearchProfiles: widget.onSearchProfiles,
                 onSearchEmojis: widget.onSearchEmojis,
+                onResolveEvent: widget.onResolveEvent,
+                onResolveProfile: widget.onResolveProfile,
+                onResolveEmoji: widget.onResolveEmoji,
                 onCameraTap: widget.onCameraTap,
                 onGifTap: widget.onGifTap,
                 onAddTap: widget.onAddTap,

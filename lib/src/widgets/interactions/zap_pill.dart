@@ -2,17 +2,13 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 
 class AppZapPill extends StatelessWidget {
-  final int amount;
-  final String profilePicUrl;
-  final String npub;
+  final CashuZap zap;
   final VoidCallback onTap;
   final bool isOutgoing;
 
   const AppZapPill({
     super.key,
-    required this.amount,
-    required this.profilePicUrl,
-    required this.npub,
+    required this.zap,
     required this.onTap,
     this.isOutgoing = false,
   });
@@ -69,7 +65,7 @@ class AppZapPill extends StatelessWidget {
                     ),
                     const AppGap.s4(),
                     AppAmount(
-                      amount.toDouble(),
+                      zap.amount.toDouble(),
                       level: AppTextLevel.med12,
                       color: isOutgoing
                           ? AppColorsData.dark().black
@@ -78,7 +74,7 @@ class AppZapPill extends StatelessWidget {
                   ],
                 ),
                 const AppGap.s6(),
-                AppProfilePic.s18(profilePicUrl),
+                AppProfilePic.s18(zap.author.value?.pictureUrl ?? ''),
               ],
             ),
           ),

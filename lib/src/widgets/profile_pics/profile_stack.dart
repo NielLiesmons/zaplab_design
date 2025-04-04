@@ -1,5 +1,6 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppProfileStack extends StatelessWidget {
   AppProfileStack({
@@ -8,10 +9,10 @@ class AppProfileStack extends StatelessWidget {
     VoidCallback? onTap,
   }) : onTap = onTap ?? (() {});
 
-  final List<ReplaceProfile> profiles;
+  final List<Profile> profiles;
   final VoidCallback onTap;
 
-  List<ReplaceProfile> get _visibleProfiles => profiles.take(3).toList();
+  List<Profile> get _visibleProfiles => profiles.take(3).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +90,7 @@ class AppProfileStack extends StatelessWidget {
                                     ],
                                   ),
                                   child: AppProfilePic.s32(
-                                    _visibleProfiles[i].profilePicUrl,
+                                    _visibleProfiles[i].pictureUrl ?? '',
                                     onTap: onTap,
                                   ),
                                 ),

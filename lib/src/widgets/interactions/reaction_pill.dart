@@ -1,20 +1,15 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:models/models.dart';
 
 class AppReactionPill extends StatelessWidget {
-  final String emojiUrl;
-  final String emojiName;
-  final String profilePicUrl;
-  final String npub;
+  final Reaction reaction;
   final VoidCallback onTap;
   final bool isOutgoing;
 
   const AppReactionPill({
     super.key,
-    required this.emojiUrl,
-    required this.emojiName,
-    required this.profilePicUrl,
-    required this.npub,
+    required this.reaction,
     required this.onTap,
     this.isOutgoing = false,
   });
@@ -60,9 +55,17 @@ class AppReactionPill extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                AppEmojiImage(emojiUrl: emojiUrl, emojiName: emojiName),
+                if (reaction.emojiTag != null)
+                  AppEmojiImage(
+                    emojiUrl: reaction.emojiTag?.$2 ?? '',
+                    emojiName: reaction.emojiTag?.$1 ?? '',
+                  )
+                else
+                  AppText.med16(
+                    reaction.internal.content,
+                  ),
                 const AppGap.s6(),
-                AppProfilePic.s18(profilePicUrl),
+                AppProfilePic.s18(reaction.author.value?.pictureUrl ?? ''),
               ],
             ),
           ),

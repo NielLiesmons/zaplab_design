@@ -183,18 +183,6 @@ class _AppAudioMessageState extends State<AppAudioMessage>
             children: [
               // Play/Pause button
               AppSmallButton(
-                children: [
-                  _player.playing
-                      ? const SizedBox(width: 0)
-                      : const SizedBox(width: 1),
-                  AppIcon.s12(
-                    _player.playing
-                        ? theme.icons.characters.pause
-                        : theme.icons.characters.play,
-                    color:
-                        _isLoading ? theme.colors.white33 : theme.colors.white,
-                  ),
-                ],
                 square: true,
                 rounded: true,
                 inactiveColor:
@@ -208,6 +196,19 @@ class _AppAudioMessageState extends State<AppAudioMessage>
                           _player.play();
                         }
                       },
+                children: [
+                  _player.playing
+                      ? const SizedBox(width: 0)
+                      : const SizedBox(width: 1),
+                  AppIcon.s12(
+                    _player.playing
+                        ? theme.icons.characters.pause
+                        : theme.icons.characters.play,
+                    color: (_isLoading || _waveformData == null)
+                        ? theme.colors.white33
+                        : theme.colors.white,
+                  ),
+                ],
               ),
               const AppGap.s8(),
               // Progress bar with waveform
@@ -223,7 +224,7 @@ class _AppAudioMessageState extends State<AppAudioMessage>
                               size: const Size(160, 24),
                               painter: LoadingWaveformPainter(
                                 amplitudes: _loadingAmplitudes,
-                                color: theme.colors.white16,
+                                color: theme.colors.white8,
                                 animation: _loadingController.value,
                               ),
                             );

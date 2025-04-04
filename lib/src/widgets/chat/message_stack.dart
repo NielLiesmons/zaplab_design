@@ -9,10 +9,10 @@ class AppMessageStack extends StatelessWidget {
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
-  final void Function(String) onActions;
-  final void Function(String) onReply;
-  final void Function(String) onReactionTap;
-  final void Function(String) onZapTap;
+  final Function(Event) onActions;
+  final Function(Event) onReply;
+  final Function(Reaction) onReactionTap;
+  final Function(CashuZap) onZapTap;
   final bool isTyping;
 
   const AppMessageStack({

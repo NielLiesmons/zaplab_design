@@ -3,21 +3,21 @@ import 'package:models/models.dart';
 
 class AppChatFeed extends StatelessWidget {
   final List<ChatMessage> messages;
-  final String currentPubkey;
+  final Profile currentProfile;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
-  final void Function(String) onActions;
-  final void Function(String) onReply;
-  final void Function(String) onReactionTap;
-  final void Function(String) onZapTap;
+  final Function(Event) onActions;
+  final Function(Event) onReply;
+  final Function(Reaction) onReactionTap;
+  final Function(CashuZap) onZapTap;
   final LinkTapHandler onLinkTap;
 
   const AppChatFeed({
     super.key,
     required this.messages,
-    required this.currentPubkey,
+    required this.currentProfile,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -70,7 +70,8 @@ class AppChatFeed extends StatelessWidget {
                   onResolveProfile: onResolveProfile,
                   onResolveEmoji: onResolveEmoji,
                   onResolveHashtag: onResolveHashtag,
-                  isOutgoing: group.first.author.value?.pubkey == currentPubkey,
+                  isOutgoing:
+                      group.first.author.value?.pubkey == currentProfile.pubkey,
                   onReply: onReply,
                   onActions: onActions,
                   onReactionTap: onReactionTap,

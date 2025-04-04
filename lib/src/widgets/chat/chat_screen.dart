@@ -16,7 +16,7 @@ class AppChatScreen extends StatefulWidget {
   final String profilePicUrl;
   final VoidCallback? onProfileTap;
   // Current profile
-  final String currentPubkey;
+  final Profile currentProfile;
   // Content related
   final int? mainCount;
   final Map<String, int> contentCounts;
@@ -34,10 +34,10 @@ class AppChatScreen extends StatefulWidget {
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
   // Actions on individual events
-  final void Function(String) onActions;
-  final void Function(String) onReply;
-  final void Function(String) onReactionTap;
-  final void Function(String) onZapTap;
+  final Function(Event) onActions;
+  final Function(Event) onReply;
+  final Function(Reaction) onReactionTap;
+  final Function(CashuZap) onZapTap;
 
   const AppChatScreen({
     super.key,
@@ -47,7 +47,7 @@ class AppChatScreen extends StatefulWidget {
     required this.profilePicUrl,
     this.onProfileTap,
     // Current user
-    required this.currentPubkey,
+    required this.currentProfile,
     // Content related
     this.mainCount,
     required this.contentCounts,
@@ -213,7 +213,7 @@ class _AppChatScreenState extends State<AppChatScreen> {
       case 'chat':
         return AppChatFeed(
           messages: widget.chatMessages,
-          currentPubkey: widget.currentPubkey,
+          currentProfile: widget.currentProfile,
           onResolveEvent: widget.onResolveEvent,
           onResolveProfile: widget.onResolveProfile,
           onResolveEmoji: widget.onResolveEmoji,

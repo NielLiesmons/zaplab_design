@@ -25,7 +25,7 @@ class AppEventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    if (event == null) {
+    if (event == null || getEventContentType(event) == 'nostr') {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
         child: AppPanelButton(
@@ -121,27 +121,32 @@ class AppEventCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // TODO: Add abilty to detct content type to then display the correct icon and title / content
-                  // Row(
-                  //   children: [
-                  //     AppEmojiImage(
-                  //       emojiUrl: 'assets/emoji/$contentType.png',
-                  //       emojiName: contentType,
-                  //       size: 16,
-                  //     ),
-                  //     const AppGap.s10(),
-                  //     Expanded(
-                  //       child: AppText.reg14(
-                  //         event.title,
-                  //         maxLines: 1,
-                  //         textOverflow: TextOverflow.ellipsis,
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
+                  Row(
+                    children: [
+                      AppEmojiImage(
+                        emojiUrl:
+                            'assets/emoji/${getEventContentType(event)}.png',
+                        emojiName: getEventContentType(event),
+                        size: 16,
+                      ),
+                      const AppGap.s10(),
+                      Expanded(
+                        child: AppCompactTextRenderer(
+                          content: getEventDisplayText(event),
+                          onResolveEvent:
+                              onResolveEvent ?? (_) => Future.value(null),
+                          onResolveProfile:
+                              onResolveProfile ?? (_) => Future.value(null),
+                          onResolveEmoji:
+                              onResolveEmoji ?? (_) => Future.value(null),
+                        ),
+                      ),
+                    ],
+                  ),
                   const AppGap.s2(),
                   AppText.reg12(
-                    event!.author.value?.name ?? '',
+                    event!.author.value?.name ??
+                        formatNpub(event!.author.value?.pubkey ?? ''),
                     color: theme.colors.white66,
                   ),
                 ],

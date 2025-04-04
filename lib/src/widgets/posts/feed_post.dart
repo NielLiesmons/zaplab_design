@@ -15,17 +15,15 @@ class AppFeedPost extends StatelessWidget {
   final Note note;
   final List<ReplyUserData> topReplies;
   final int totalReplies;
-  final void Function(String) onActions;
-  final void Function(String) onReply;
-  final void Function(String)? onReactionTap;
-  final void Function(String)? onZapTap;
+  final Function(Event) onActions;
+  final Function(Event) onReply;
+  final Function(Reaction)? onReactionTap;
+  final Function(CashuZap)? onZapTap;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
-  final List<double> recentAmounts;
-  final List<ReplaceReaction> recentReactions;
 
   const AppFeedPost({
     super.key,
@@ -41,8 +39,6 @@ class AppFeedPost extends StatelessWidget {
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
-    this.recentAmounts = DefaultData.defaultAmounts,
-    this.recentReactions = DefaultData.defaultReactions,
   });
 
   @override
@@ -63,8 +59,8 @@ class AppFeedPost extends StatelessWidget {
             outlineColor: theme.colors.white66,
             outlineThickness: LineThicknessData.normal().medium,
           ),
-          onSwipeLeft: () => onReply(note.id),
-          onSwipeRight: () => onActions(note.id),
+          onSwipeLeft: () => onReply(note),
+          onSwipeRight: () => onActions(note),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

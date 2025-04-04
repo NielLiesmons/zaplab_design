@@ -127,37 +127,41 @@ class AppCompactTextRenderer extends StatelessWidget {
                   child: FutureBuilder<({Event event, VoidCallback? onTap})>(
                     future: onResolveEvent(child.content),
                     builder: (context, snapshot) {
-                      final contentType = switch (snapshot.data?.event) {
-                        Event<Article>() => 'Article',
-                        Event<ChatMessage>() => 'Chat Message',
-                        Event<Note>() => 'Note',
-                        Event<App>() => 'App',
-                        _ => 'Nostr Publication',
-                      };
                       return Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           AppEmojiContentType(
-                            contentType: contentType,
+                            contentType:
+                                getEventContentType(snapshot.data?.event),
                             size: emojiSize,
                             opacity: 0.66,
                           ),
                           isMedium ? const AppGap.s8() : const AppGap.s6(),
                           isMedium
                               ? AppText.reg14(
-                                  contentType.isNotEmpty
-                                      ? contentType[0].toUpperCase() +
-                                          contentType.substring(1) +
-                                          ("  ")
-                                      : 'Nostr Publication  ',
+                                  getEventContentType(snapshot.data?.event) ==
+                                          'nostr'
+                                      ? 'Nostr Publication  '
+                                      : getEventContentType(
+                                                  snapshot.data?.event)[0]
+                                              .toUpperCase() +
+                                          getEventContentType(
+                                                  snapshot.data?.event)
+                                              .substring(1) +
+                                          ("  "),
                                   color: textColor,
                                 )
                               : AppText.reg12(
-                                  contentType.isNotEmpty
-                                      ? contentType[0].toUpperCase() +
-                                          contentType.substring(1) +
-                                          ("  ")
-                                      : 'Nostr Publication  ',
+                                  getEventContentType(snapshot.data?.event) ==
+                                          'nostr'
+                                      ? 'Nostr Publication  '
+                                      : getEventContentType(
+                                                  snapshot.data?.event)[0]
+                                              .toUpperCase() +
+                                          getEventContentType(
+                                                  snapshot.data?.event)
+                                              .substring(1) +
+                                          ("  "),
                                   color: textColor,
                                 ),
                         ],
@@ -271,12 +275,12 @@ class AppCompactTextRenderer extends StatelessWidget {
                 ),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
-                  child: FutureBuilder<ReplaceProfile>(
+                  child:
+                      FutureBuilder<({Profile profile, VoidCallback? onTap})>(
                     future: onResolveProfile(child.content),
                     builder: (context, snapshot) {
                       return AppProfileInline(
-                        profileName: snapshot.data?.profileName ?? '',
-                        profilePicUrl: snapshot.data?.profilePicUrl ?? '',
+                        profile: snapshot.data!.profile,
                         onTap: snapshot.data?.onTap,
                       );
                     },
