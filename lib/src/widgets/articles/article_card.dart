@@ -82,7 +82,7 @@ class AppArticleCard extends StatelessWidget {
                           const AppGap.s10(),
                           Expanded(
                             child: AppText.reg14(
-                              article.title,
+                              article.title ?? '',
                               maxLines: 1,
                               textOverflow: TextOverflow.ellipsis,
                             ),

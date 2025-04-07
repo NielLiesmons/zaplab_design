@@ -40,11 +40,13 @@ export 'buttons/small_button.dart';
 
 // Chat
 export 'chat/chat_feed.dart';
-export 'chat/chat_home_panel.dart';
-export 'chat/chat_screen.dart';
 export 'chat/message_bubble.dart';
 export 'chat/message_stack.dart';
 export 'chat/quoted_message.dart';
+
+// Communities
+export 'communities/community_home_panel.dart';
+export 'communities/community_screen.dart';
 
 // Images
 export 'images/emoji_image.dart';

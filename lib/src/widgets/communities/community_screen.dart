@@ -9,20 +9,15 @@ extension StringExtension on String {
   }
 }
 
-class AppChatScreen extends StatefulWidget {
+class AppCommunityScreen extends StatefulWidget {
   // Profile related
-  final String npub;
-  final String profileName;
-  final String profilePicUrl;
+  final Community community;
   final VoidCallback? onProfileTap;
   // Current profile
   final Profile currentProfile;
   // Content related
   final int? mainCount;
-  final Map<String, int> contentCounts;
-  final List<ChatMessage> chatMessages;
-  final List<Note> posts;
-  final List<Article> articles;
+  final Map<String, ({int count, Widget feed})> contentTypes;
   // Other actions & settings
   final VoidCallback? onHomeTap;
   final VoidCallback? onNotificationsTap;
@@ -39,27 +34,21 @@ class AppChatScreen extends StatefulWidget {
   final Function(Reaction) onReactionTap;
   final Function(CashuZap) onZapTap;
 
-  const AppChatScreen({
+  const AppCommunityScreen({
     super.key,
     // Profile related
-    required this.npub,
-    required this.profileName,
-    required this.profilePicUrl,
+    required this.community,
     this.onProfileTap,
     // Current user
     required this.currentProfile,
     // Content related
     this.mainCount,
-    required this.contentCounts,
+    required this.contentTypes,
     this.focusedMessageNevent,
-    this.chatMessages = const [],
-    this.posts = const [],
-    this.articles = const [],
     // Other actions & settings
     this.onHomeTap,
     this.onNotificationsTap,
-
-    // Actions on individual events
+    // Resolvers
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -73,16 +62,16 @@ class AppChatScreen extends StatefulWidget {
   });
 
   @override
-  State<AppChatScreen> createState() => _AppChatScreenState();
+  State<AppCommunityScreen> createState() => _AppCommunityScreenState();
 }
 
-class _AppChatScreenState extends State<AppChatScreen> {
+class _AppCommunityScreenState extends State<AppCommunityScreen> {
   late final AppTabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = AppTabController(length: widget.contentCounts.length + 1);
+    _tabController = AppTabController(length: widget.contentTypes.length + 1);
     _tabController.addListener(() {
       setState(() {});
     });
@@ -101,7 +90,7 @@ class _AppChatScreenState extends State<AppChatScreen> {
     int mainCount,
   ) {
     final theme = AppTheme.of(context);
-    final contentTypes = widget.contentCounts.keys.toList();
+    final contentTypes = widget.contentTypes.keys.toList();
 
     return Column(
       children: [
@@ -197,7 +186,7 @@ class _AppChatScreenState extends State<AppChatScreen> {
                 label: contentType.formatTabLabel(),
                 icon: AppEmojiContentType(contentType: contentType),
                 content: const SizedBox(),
-                count: widget.contentCounts[contentType] ?? 0,
+                count: widget.contentTypes[contentType]?.count ?? 0,
               ),
           ],
         ),
@@ -206,45 +195,9 @@ class _AppChatScreenState extends State<AppChatScreen> {
   }
 
   Widget _buildContent() {
-    final contentTypes = widget.contentCounts.keys.toList();
+    final contentTypes = widget.contentTypes.keys.toList();
     final selectedType = contentTypes[_tabController.index];
-
-    switch (selectedType) {
-      case 'chat':
-        return AppChatFeed(
-          messages: widget.chatMessages,
-          currentProfile: widget.currentProfile,
-          onResolveEvent: widget.onResolveEvent,
-          onResolveProfile: widget.onResolveProfile,
-          onResolveEmoji: widget.onResolveEmoji,
-          onResolveHashtag: widget.onResolveHashtag,
-          onActions: widget.onActions,
-          onReply: widget.onReply,
-          onReactionTap: widget.onReactionTap,
-          onZapTap: widget.onZapTap,
-          onLinkTap: widget.onLinkTap,
-        );
-      case 'post':
-        return AppPostsFeed(
-          posts: widget.posts,
-          onResolveEvent: widget.onResolveEvent,
-          onResolveProfile: widget.onResolveProfile,
-          onResolveEmoji: widget.onResolveEmoji,
-          onResolveHashtag: widget.onResolveHashtag,
-          onLinkTap: widget.onLinkTap,
-          onReply: widget.onReply,
-          onActions: widget.onActions,
-        );
-      case 'article':
-        return AppArticlesFeed(
-          articles: widget.articles,
-          onTap: (url) async => throw UnimplementedError(),
-        );
-      default:
-        return Center(
-          child: AppText.h1(selectedType.formatTabLabel()),
-        );
-    }
+    return widget.contentTypes[selectedType]?.feed ?? const SizedBox.shrink();
   }
 
   @override
@@ -255,8 +208,8 @@ class _AppChatScreenState extends State<AppChatScreen> {
       bottomBarContent: const AppBottomBarChat(),
       topBarContent: _buildTopBar(
         context,
-        widget.profileName,
-        widget.profilePicUrl,
+        widget.community.author.value?.name ?? '',
+        widget.community.author.value?.pictureUrl ?? '',
         widget.mainCount ?? 0,
       ),
       onHomeTap: widget.onHomeTap ?? () {},

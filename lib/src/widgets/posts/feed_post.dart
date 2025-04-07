@@ -12,7 +12,7 @@ class ReplyUserData {
 }
 
 class AppFeedPost extends StatelessWidget {
-  final Note note;
+  final Note post;
   final List<ReplyUserData> topReplies;
   final int totalReplies;
   final Function(Event) onActions;
@@ -27,7 +27,7 @@ class AppFeedPost extends StatelessWidget {
 
   const AppFeedPost({
     super.key,
-    required this.note,
+    required this.post,
     this.topReplies = const [],
     this.totalReplies = 0,
     required this.onReply,
@@ -59,8 +59,8 @@ class AppFeedPost extends StatelessWidget {
             outlineColor: theme.colors.white66,
             outlineThickness: LineThicknessData.normal().medium,
           ),
-          onSwipeLeft: () => onReply(note),
-          onSwipeRight: () => onActions(note),
+          onSwipeLeft: () => onReply(post),
+          onSwipeRight: () => onActions(post),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -70,7 +70,7 @@ class AppFeedPost extends StatelessWidget {
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        AppProfilePic.s38(note.author.value?.pictureUrl ?? ''),
+                        AppProfilePic.s38(post.author.value?.pictureUrl ?? ''),
                         if (topReplies.isNotEmpty)
                           Expanded(
                             child: AppDivider.vertical(
@@ -89,10 +89,10 @@ class AppFeedPost extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              AppText.bold14(note.author.value?.name ??
-                                  formatNpub(note.author.value?.pubkey ?? '')),
+                              AppText.bold14(post.author.value?.name ??
+                                  formatNpub(post.author.value?.pubkey ?? '')),
                               AppText.reg12(
-                                TimestampFormatter.format(note.createdAt,
+                                TimestampFormatter.format(post.createdAt,
                                     format: TimestampFormat.relative),
                                 color: theme.colors.white33,
                               ),
@@ -100,7 +100,7 @@ class AppFeedPost extends StatelessWidget {
                           ),
                           const AppGap.s2(),
                           AppShortTextRenderer(
-                            content: note.content,
+                            content: post.content,
                             onResolveEvent: onResolveEvent,
                             onResolveProfile: onResolveProfile,
                             onResolveEmoji: onResolveEmoji,

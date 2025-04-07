@@ -38,7 +38,10 @@ class AppPostCard extends StatelessWidget {
                 AppProfilePic.s18(post.author.value?.pictureUrl ?? ''),
                 const AppGap.s8(),
                 Expanded(
-                  child: AppText.bold12(post.author.value?.name ?? ''),
+                  child: AppText.bold12(
+                    post.author.value?.name ??
+                        formatNpub(post.author.value?.pubkey ?? ''),
+                  ),
                 ),
                 AppText.reg12(
                   TimestampFormatter.format(post.createdAt,
@@ -55,6 +58,7 @@ class AppPostCard extends StatelessWidget {
               onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,
               onResolveEmoji: onResolveEmoji,
+              maxLines: 3,
             ),
           ),
         ],

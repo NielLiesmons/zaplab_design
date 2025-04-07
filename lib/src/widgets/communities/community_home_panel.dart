@@ -2,22 +2,22 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
-class AppChatHomePanel extends StatelessWidget {
-  final Communikey communikey;
+class AppCommunityHomePanel extends StatelessWidget {
+  final Community community;
   final ChatMessage lastChatMessage;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final Map<String, int> contentCounts;
   final int? mainCount;
-  final Function(Communikey) onNavigateToChat;
-  final Function(Communikey, String contentType)? onNavigateToContent;
-  final Function(Communikey)? onCreateNewPublication;
-  final Function(Communikey)? onActions;
+  final Function(Community) onNavigateToChat;
+  final Function(Community, String contentType)? onNavigateToContent;
+  final Function(Community)? onCreateNewPublication;
+  final Function(Community)? onActions;
 
-  const AppChatHomePanel({
+  const AppCommunityHomePanel({
     super.key,
-    required this.communikey,
+    required this.community,
     required this.lastChatMessage,
     required this.onResolveEvent,
     required this.onResolveProfile,
@@ -43,7 +43,7 @@ class AppChatHomePanel extends StatelessWidget {
     final (displayCount, containerWidth) = _getCountDisplay(mainCount!);
 
     return TapBuilder(
-      onTap: onNavigateToChat(communikey),
+      onTap: onNavigateToChat(community),
       builder: (context, state, hasFocus) {
         return Column(children: [
           AppSwipeContainer(
@@ -57,8 +57,8 @@ class AppChatHomePanel extends StatelessWidget {
               outlineColor: theme.colors.white66,
               outlineThickness: LineThicknessData.normal().medium,
             ),
-            onSwipeLeft: onCreateNewPublication!(communikey),
-            onSwipeRight: onActions!(communikey),
+            onSwipeLeft: onCreateNewPublication!(community),
+            onSwipeRight: onActions!(community),
             padding: const AppEdgeInsets.symmetric(
               horizontal: AppGapSize.s12,
               vertical: AppGapSize.s12,
@@ -69,8 +69,8 @@ class AppChatHomePanel extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     AppProfilePic.s48(
-                      communikey.author.value?.pictureUrl ?? '',
-                      onTap: onNavigateToChat(communikey),
+                      community.author.value?.pictureUrl ?? '',
+                      onTap: onNavigateToChat(community),
                     ),
                     Expanded(
                       child: Column(
@@ -84,10 +84,9 @@ class AppChatHomePanel extends StatelessWidget {
                                 const AppGap.s12(),
                                 Expanded(
                                   child: AppText.bold14(
-                                    communikey.author.value?.name ??
+                                    community.author.value?.name ??
                                         formatNpub(
-                                            communikey.author.value?.npub ??
-                                                ''),
+                                            community.author.value?.npub ?? ''),
                                     color: theme.colors.white,
                                   ),
                                 ),

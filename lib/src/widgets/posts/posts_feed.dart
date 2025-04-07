@@ -29,7 +29,7 @@ class AppPostsFeed extends StatelessWidget {
       children: [
         for (final note in posts)
           AppFeedPost(
-            note: note,
+            post: note,
             onReply: onReply ?? (_) {},
             onActions: onActions ?? (_) {},
             onReactionTap: (_) {}, // TODO: Implement reaction handling

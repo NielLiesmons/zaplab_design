@@ -1,17 +1,18 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppCommunityStack extends StatelessWidget {
   AppCommunityStack({
     super.key,
-    required this.communikeys,
+    required this.communities,
     VoidCallback? onTap,
   }) : onTap = onTap ?? (() {});
 
-  final List<Communikey> communikeys;
+  final List<Community> communities;
   final VoidCallback onTap;
 
-  List<Communikey> get _visibleCommunikeys => communikeys.take(5).toList();
+  List<Community> get _visibleCommunities => communities.take(5).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class AppCommunityStack extends StatelessWidget {
                       Transform.translate(
                         offset: Offset(
                             theme.sizes.s6 +
-                                (_visibleCommunikeys.length - 1) * 16,
+                                (_visibleCommunities.length - 1) * 16,
                             0),
                         child: AppContainer(
                           height: theme.sizes.s20,
@@ -56,27 +57,27 @@ class AppCommunityStack extends StatelessWidget {
                           ),
                           child: Center(
                             child: AppText.reg12(
-                              communikeys.length == 1
-                                  ? communikeys.first.author.value?.name ??
-                                      formatNpub(communikeys
+                              communities.length == 1
+                                  ? communities.first.author.value?.name ??
+                                      formatNpub(communities
                                               .first.author.value?.npub ??
                                           '')
-                                  : '${communikeys.length} Communities',
+                                  : '${communities.length} Communities',
                               color: theme.colors.white66,
                             ),
                           ),
                         ),
                       ),
                       SizedBox(
-                        width: _visibleCommunikeys.isEmpty
+                        width: _visibleCommunities.isEmpty
                             ? 0
                             : theme.sizes.s20 +
-                                (_visibleCommunikeys.length - 1) * 16,
+                                (_visibleCommunities.length - 1) * 16,
                         height: theme.sizes.s20,
                         child: Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            for (int i = 0; i < _visibleCommunikeys.length; i++)
+                            for (int i = 0; i < _visibleCommunities.length; i++)
                               Positioned(
                                 left: i * 16.0,
                                 child: AppContainer(
@@ -92,7 +93,7 @@ class AppCommunityStack extends StatelessWidget {
                                     ],
                                   ),
                                   child: AppProfilePic.s20(
-                                    _visibleCommunikeys[i]
+                                    _visibleCommunities[i]
                                             .author
                                             .value
                                             ?.pictureUrl ??
