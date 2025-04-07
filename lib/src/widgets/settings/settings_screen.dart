@@ -357,7 +357,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                   widget.onSecurityTap != null)
                 const AppGap.s12(),
               AppSettingSection(
-                icon: AppIcon.s20(theme.icons.characters.security,
+                icon: AppIcon.s20(theme.icons.characters.devices,
                     gradient: theme.colors.blurple),
                 title: 'Other Devices',
                 description: widget.otherDevicesDescription ?? '',
