@@ -725,7 +725,19 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
           bottom: 0,
           left: 0,
           right: 0,
-          child: widget.bottomBarContent ?? const SizedBox.shrink(),
+          child: widget.bottomBarContent != null
+              ? widget.bottomBarContent!
+              : ClipRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                    child: AppContainer(
+                      decoration: BoxDecoration(
+                        color: theme.colors.black33,
+                      ),
+                      child: const AppBottomSafeArea(),
+                    ),
+                  ),
+                ),
         ),
       ],
     );

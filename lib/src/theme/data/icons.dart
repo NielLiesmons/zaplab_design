@@ -35,6 +35,7 @@ class AppIconsData extends Equatable {
 /// Contains icon character mappings.
 class AppIconCharactersData extends Equatable {
   const AppIconCharactersData({
+    required this.adjust,
     required this.alert,
     required this.appearance,
     required this.arrowDown,
@@ -57,6 +58,7 @@ class AppIconCharactersData extends Equatable {
     required this.crown,
     required this.cross,
     required this.details,
+    required this.devices,
     required this.drag,
     required this.download,
     required this.draft,
@@ -124,6 +126,7 @@ class AppIconCharactersData extends Equatable {
 
   /// Factory constructor with alphabetically sorted icons.
   factory AppIconCharactersData.normal() => AppIconCharactersData(
+        adjust: String.fromCharCodes([57344, 58701, 59081, 57458]),
         alert: String.fromCharCodes([58762, 59542, 57357]),
         appearance: String.fromCharCodes([59058, 59325, 57445]),
         arrowDown: String.fromCharCodes([57344, 58323, 60960, 57526]),
@@ -146,6 +149,7 @@ class AppIconCharactersData extends Equatable {
         cross: String.fromCharCodes([58793, 59781, 57345]),
         crown: String.fromCharCodes([58793, 59788, 57352]),
         details: String.fromCharCodes([58830, 59635, 57411]),
+        devices: String.fromCharCodes([58832, 59565, 57566]),
         download: String.fromCharCodes([58706, 60105, 57481]),
         draft: String.fromCharCodes([58807, 59291, 57346]),
         drag: String.fromCharCodes([58099, 60725]),
@@ -211,6 +215,7 @@ class AppIconCharactersData extends Equatable {
         zap: String.fromCharCodes([57815, 57386]),
       );
 
+  final String adjust;
   final String alert;
   final String appearance;
   final String arrowDown;
@@ -233,6 +238,7 @@ class AppIconCharactersData extends Equatable {
   final String crown;
   final String cross;
   final String details;
+  final String devices;
   final String drag;
   final String download;
   final String draft;
@@ -299,6 +305,7 @@ class AppIconCharactersData extends Equatable {
 
   @override
   List<Object?> get props => [
+        adjust.named('adjust'),
         alert.named('alert'),
         appearance.named('appearance'),
         arrowDown.named('arrowDown'),
@@ -321,6 +328,7 @@ class AppIconCharactersData extends Equatable {
         crown.named('crown'),
         cross.named('cross'),
         details.named('details'),
+        devices.named('devices'),
         drag.named('drag'),
         download.named('download'),
         draft.named('draft'),

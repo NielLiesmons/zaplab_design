@@ -1,12 +1,13 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:collection/collection.dart';
+import 'package:models/models.dart';
 
 class AppInteractionPills extends StatelessWidget {
-  final List<ReplaceZap> zaps;
-  final List<ReplaceReaction> reactions;
+  final List<CashuZap> zaps;
+  final List<Reaction> reactions;
   final String nevent;
-  final void Function(String)? onZapTap;
-  final void Function(String)? onReactionTap;
+  final void Function(CashuZap)? onZapTap;
+  final void Function(Reaction)? onReactionTap;
 
   const AppInteractionPills({
     super.key,
@@ -52,11 +53,9 @@ class AppInteractionPills extends StatelessWidget {
                   ? const AppEdgeInsets.all(AppGapSize.none)
                   : const AppEdgeInsets.only(right: AppGapSize.s8),
               child: AppZapPill(
-                amount: zap.amount,
-                profilePicUrl: zap.profilePicUrl,
-                npub: zap.npub,
+                zap: zap,
                 isOutgoing: true,
-                onTap: () => onZapTap?.call(nevent),
+                onTap: () => onZapTap?.call(zap),
               ),
             );
           }),
@@ -69,12 +68,9 @@ class AppInteractionPills extends StatelessWidget {
                   ? const AppEdgeInsets.all(AppGapSize.none)
                   : const AppEdgeInsets.only(right: AppGapSize.s8),
               child: AppReactionPill(
-                emojiUrl: reaction.emojiUrl,
-                emojiName: reaction.emojiName,
-                profilePicUrl: reaction.profilePicUrl,
-                npub: reaction.npub,
+                reaction: reaction,
                 isOutgoing: true,
-                onTap: () => onReactionTap?.call(nevent),
+                onTap: () => onReactionTap?.call(reaction),
               ),
             );
           }),
@@ -86,11 +82,9 @@ class AppInteractionPills extends StatelessWidget {
                   ? const AppEdgeInsets.all(AppGapSize.none)
                   : const AppEdgeInsets.only(right: AppGapSize.s8),
               child: AppZapPill(
-                amount: zap.amount,
-                profilePicUrl: zap.profilePicUrl,
-                npub: zap.npub,
+                zap: zap,
                 isOutgoing: false,
-                onTap: () => onZapTap?.call(nevent),
+                onTap: () => onZapTap?.call(zap),
               ),
             );
           }),
@@ -101,12 +95,9 @@ class AppInteractionPills extends StatelessWidget {
                   ? const AppEdgeInsets.all(AppGapSize.none)
                   : const AppEdgeInsets.only(right: AppGapSize.s8),
               child: AppReactionPill(
-                emojiUrl: reaction.emojiUrl,
-                emojiName: reaction.emojiName,
-                profilePicUrl: reaction.profilePicUrl,
-                npub: reaction.npub,
+                reaction: reaction,
                 isOutgoing: false,
-                onTap: () => onReactionTap?.call(nevent),
+                onTap: () => onReactionTap?.call(reaction),
               ),
             );
           }),

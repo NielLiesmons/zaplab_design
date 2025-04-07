@@ -106,86 +106,86 @@ class _AppChatScreenState extends State<AppChatScreen> {
     return Column(
       children: [
         // Header
-        TapBuilder(
-          onTap: widget.onProfileTap,
-          builder: (context, state, hasFocus) {
-            return AppContainer(
-              padding: const AppEdgeInsets.only(
-                left: AppGapSize.s12,
-                right: AppGapSize.s12,
-                top: AppGapSize.s4,
-                bottom: AppGapSize.s12,
-              ),
-              child: Row(
-                children: [
-                  AppProfilePic.s32(profilePicUrl, onTap: widget.onProfileTap),
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const AppGap.s12(),
-                        Expanded(
+        AppContainer(
+          padding: const AppEdgeInsets.only(
+            left: AppGapSize.s12,
+            right: AppGapSize.s12,
+            top: AppGapSize.s4,
+            bottom: AppGapSize.s12,
+          ),
+          child: Row(
+            children: [
+              AppProfilePic.s32(profilePicUrl, onTap: widget.onProfileTap),
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const AppGap.s12(),
+                    TapBuilder(
+                      onTap: widget.onProfileTap,
+                      builder: (context, state, hasFocus) {
+                        return Expanded(
                           child: AppText.bold14(
                             profileName,
                           ),
-                        ),
-                        TapBuilder(
-                          onTap: widget.onNotificationsTap,
-                          builder: (context, state, hasFocus) {
-                            return Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                AppContainer(
-                                  height: 32,
-                                  width: 32,
-                                  decoration: BoxDecoration(
-                                    color: theme.colors.grey66,
-                                    shape: BoxShape.circle,
+                        );
+                      },
+                    ),
+                    TapBuilder(
+                      onTap: widget.onNotificationsTap,
+                      builder: (context, state, hasFocus) {
+                        return Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            AppContainer(
+                              height: 32,
+                              width: 32,
+                              decoration: BoxDecoration(
+                                color: theme.colors.grey66,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: AppIcon(
+                                  theme.icons.characters.bell,
+                                  color: theme.colors.white33,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              top: -4,
+                              right: -10,
+                              child: AppContainer(
+                                height: theme.sizes.s20,
+                                padding: const AppEdgeInsets.symmetric(
+                                  horizontal: AppGapSize.s6,
+                                ),
+                                decoration: BoxDecoration(
+                                  gradient: theme.colors.blurple,
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                child: ConstrainedBox(
+                                  constraints: const BoxConstraints(
+                                    minWidth: 8,
                                   ),
                                   child: Center(
-                                    child: AppIcon(
-                                      theme.icons.characters.bell,
-                                      color: theme.colors.white33,
+                                    child: AppText.med10(
+                                      '$mainCount',
+                                      color: AppColorsData.dark().white,
                                     ),
                                   ),
                                 ),
-                                Positioned(
-                                  top: -4,
-                                  right: -10,
-                                  child: AppContainer(
-                                    height: theme.sizes.s20,
-                                    padding: const AppEdgeInsets.symmetric(
-                                      horizontal: AppGapSize.s6,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      gradient: theme.colors.blurple,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: ConstrainedBox(
-                                      constraints: const BoxConstraints(
-                                        minWidth: 8,
-                                      ),
-                                      child: Center(
-                                        child: AppText.med10(
-                                          '$mainCount',
-                                          color: AppColorsData.dark().white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                        const AppGap.s10(),
-                      ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                  ),
-                ],
+                    const AppGap.s10(),
+                  ],
+                ),
               ),
-            );
-          },
+            ],
+          ),
         ),
 
         // Tab view, used as a Tab Bar only. The actual Tab content is rendered in _buildContent()
