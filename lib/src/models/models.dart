@@ -35,30 +35,30 @@ class CashuZap extends RegularEvent<CashuZap> {
 }
 
 // Communikey
-// class Communikey extends ParameterizableReplaceableEvent<Communikey> {
-//   Communikey.fromMap(super.map, super.ref) : super.fromMap();
+class Communikey extends ParameterizableReplaceableEvent<Communikey> {
+  Communikey.fromMap(super.map, super.ref) : super.fromMap();
 
-//   String get content => internal.content;
-//   Set<String> get contentTypes => internal.getTagSetValues('content-type');
-//   String? get location => internal.getFirstTagValue('location');
-// }
+  String get content => internal.content;
+  Set<String> get contentTypes => internal.getTagSetValues('content-type');
+  String? get location => internal.getFirstTagValue('location');
+}
 
-// class PartialCommunikey
-//     extends ParameterizableReplaceablePartialEvent<Communikey> {
-//   PartialCommunikey({
-//     required String content,
-//     required Set<String> contentTypes,
-//     String? location,
-//   }) {
-//     internal.content = content;
-//     for (final type in contentTypes) {
-//       internal.addTagValue('content-type', type);
-//     }
-//     if (location != null) {
-//       internal.addTagValue('location', location);
-//     }
-//   }
-// }
+class PartialCommunikey
+    extends ParameterizableReplaceablePartialEvent<Communikey> {
+  PartialCommunikey({
+    required String content,
+    required Set<String> contentTypes,
+    String? location,
+  }) {
+    internal.content = content;
+    for (final type in contentTypes) {
+      internal.addTagValue('content-type', type);
+    }
+    if (location != null) {
+      internal.addTagValue('location', location);
+    }
+  }
+}
 
 // Profile
 typedef NostrProfileResolver = Future<({Profile profile, VoidCallback? onTap})>
