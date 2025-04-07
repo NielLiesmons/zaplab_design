@@ -10,7 +10,7 @@ class AppActionsModal extends StatelessWidget {
   // Emoji
   final List<Emoji> recentEmoji;
   final Function(Emoji) onEmojiTap;
-  final VoidCallback onMoreEmojiap;
+  final VoidCallback onMoreEmojiTap;
   // Zaps
   final List<double> recentAmounts;
   final Function(double) onZapTap;
@@ -33,7 +33,7 @@ class AppActionsModal extends StatelessWidget {
     required this.onEventTap,
     required this.recentEmoji,
     required this.onEmojiTap,
-    required this.onMoreEmojiap,
+    required this.onMoreEmojiTap,
     required this.recentAmounts,
     required this.onZapTap,
     required this.onMoreZapsTap,
@@ -55,7 +55,7 @@ class AppActionsModal extends StatelessWidget {
     required List<Emoji> recentEmoji,
     required List<double> recentAmounts,
     required Function(Emoji) onEmojiTap,
-    required VoidCallback onMoreEmojiap,
+    required VoidCallback onMoreEmojiTap,
     required Function(double) onZapTap,
     required Function(Event) onMoreZapsTap,
     required Function(Event) onReportTap,
@@ -78,7 +78,7 @@ class AppActionsModal extends StatelessWidget {
           onEventTap: onEventTap,
           recentEmoji: recentEmoji,
           onEmojiTap: onEmojiTap,
-          onMoreEmojiap: onMoreEmojiap,
+          onMoreEmojiTap: onMoreEmojiTap,
           recentAmounts: recentAmounts,
           onZapTap: onZapTap,
           onMoreZapsTap: onMoreZapsTap,
@@ -98,7 +98,7 @@ class AppActionsModal extends StatelessWidget {
           recentEmoji: recentEmoji,
           recentAmounts: recentAmounts,
           onEmojiTap: onEmojiTap,
-          onMoreEmojiap: onMoreEmojiap,
+          onMoreEmojiTap: onMoreEmojiTap,
           onZapTap: onZapTap,
           onMoreZapsTap: onMoreZapsTap,
           onReportTap: onReportTap,
@@ -127,7 +127,7 @@ class AppActionsModal extends StatelessWidget {
           recentEmoji: recentEmoji,
           recentAmounts: recentAmounts,
           onEmojiTap: onEmojiTap,
-          onMoreEmojiap: onMoreEmojiap,
+          onMoreEmojiTap: onMoreEmojiTap,
           onZapTap: onZapTap,
           onMoreZapsTap: onMoreZapsTap,
           onReportTap: onReportTap,
@@ -187,7 +187,7 @@ class AppActionsModal extends StatelessWidget {
     required List<Emoji> recentEmoji,
     required List<double> recentAmounts,
     required Function(Emoji) onEmojiTap,
-    required VoidCallback onMoreEmojiap,
+    required VoidCallback onMoreEmojiTap,
     required Function(double) onZapTap,
     required Function(Event) onMoreZapsTap,
     required Function(Event) onReportTap,
@@ -453,7 +453,7 @@ class AppActionsModal extends StatelessWidget {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                     child: TapBuilder(
-                      onTap: onMoreEmojiap,
+                      onTap: onMoreEmojiTap,
                       builder: (context, state, isFocused) {
                         return AppContainer(
                           height: double.infinity,
