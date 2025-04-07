@@ -11,7 +11,7 @@ class DefaultData {
     21000
   ];
 
-  static const List<Emoji> defaultReactions = [
+  static const List<Emoji> defaultEmoji = [
     Emoji(
       emojiUrl:
           'https://www.pinclipart.com/picdir/big/357-3571823_free-png-download-ios-10-crying-laughing-emoji.png',
