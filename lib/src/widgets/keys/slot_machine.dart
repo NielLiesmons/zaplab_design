@@ -4,11 +4,13 @@ import 'dart:math';
 class AppSlotMachine extends StatefulWidget {
   final List<int>? targetIndices; // Optional predetermined final positions
   final int minRandomEmojis; // Minimum number of emojis to show before settling
+  final String? initialNsec; // Optional initial nsec to display
 
   const AppSlotMachine({
     super.key,
     this.targetIndices,
     this.minRandomEmojis = 50,
+    this.initialNsec,
   });
 
   @override
@@ -39,40 +41,12 @@ class SlotMachineCurve extends Curve {
 
 class _AppSlotMachineState extends State<AppSlotMachine>
     with TickerProviderStateMixin {
-  static const List<String> _emojis = [
-    // Animals
-    '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮',
-    '🐷', '🐸',
-    '🐵', '🐔', '🐧', '🐦', '🦆', '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄',
-    '🐝', '🐛',
-    '🦋', '🐌', '🐞', '🐜', '🦗', '🕷', '🦂', '🦀', '🦑', '🐙', '🦐', '🐠',
-    '🐟', '🐡',
-    '🐬', '🦈', '🐳', '🐋', '🦒', '🦏', '🦍', '🐘', '🦛', '🦘', '🦬', '🦙',
-    '🦥', '🦨',
-    // Plants
-    '🌸', '🌺', '🌹', '🌷', '🌼', '🌻', '🌞', '🌝', '🌵', '🌴', '🌳', '🌲',
-    '🎄', '🌿',
-    '☘️', '🍀', '🎍', '🎋', '🍃', '🍂', '🍁', '🌾', '🌱', '🌿', '🍄', '🌰',
-    '🥜', '🌸',
-    '🏵️', '🌹', '🥀', '🌺', '🌻', '🌼', '🌷', '💐', '🌾', '🌱', '🌿', '🍀',
-    '🎍', '🎋',
-    // Smileys
-    '😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '🥲', '☺️', '😊', '😇',
-    '🙂', '🙃',
-    '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜',
-    '🤪', '🤨',
-    '🧐', '🤓', '😎', '🥸', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕',
-    '🙁', '☹️',
-    '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯',
-    '😳', '🥵',
-    // More fun ones
-    '🌈', '⭐', '✨', '💫', '🌟', '☄️', '🌙', '🌎', '🌍', '🌏', '🪐', '💥', '🔥',
-    '⚡',
-    '🌪', '🌈', '🌤', '⛅', '🌥', '☁️', '🌦', '🌧', '⛈', '🌩', '🌨', '❄️', '☃️',
-    '⛄',
-    '🌬', '💨', '💧', '💦', '☔', '🌊', '🎪', '🎭', '🎨', '🎰', '🎲', '🎯', '🎳',
-    '🎮',
-  ];
+  List<String> targetEmojis = [];
+  String targetNsec = '';
+  String targetNpub = '';
+  String targetMnemonic = '';
+  final List<String> _currentEmojis = List.filled(12, '-');
+  String _currentMode = 'Emoji';
 
   late final List<AnimationController> _controllers;
   late final List<Animation<double>> _animations;
@@ -83,26 +57,15 @@ class _AppSlotMachineState extends State<AppSlotMachine>
   late final AnimationController _handleController;
   late Animation<double> _handleAnimation;
 
+  List<String> _nsecParts = [];
+
   @override
   void initState() {
     super.initState();
-    _controllers = List.generate(
-      12,
-      (index) => AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 2000),
-      ),
-    );
-
-    _animations = _controllers.map((controller) {
-      return Tween<double>(
-        begin: 0,
-        end: _emojis.length.toDouble(),
-      ).animate(CurvedAnimation(
-        parent: controller,
-        curve: Curves.easeInOut,
-      ));
-    }).toList();
+    _initializeEmojis();
+    _initializeAnimations();
+    _initializeTargetIndices();
+    _initializeNsecParts();
 
     _handleController = AnimationController(
       vsync: this,
@@ -119,6 +82,108 @@ class _AppSlotMachineState extends State<AppSlotMachine>
     });
   }
 
+  void _initializeEmojis() {
+    if (widget.initialNsec != null) {
+      // Initialize with provided nsec
+      setState(() {
+        targetNsec = widget.initialNsec!;
+        // Verify the checksum
+        final isValid = KeyGenerator.verifyNsecChecksum(widget.initialNsec!);
+        print('Initial nsec checksum valid: $isValid');
+        targetMnemonic = KeyGenerator.nsecToMnemonic(widget.initialNsec!) ?? '';
+        final emojiIndices =
+            KeyGenerator.nsecToEmojiIndices(widget.initialNsec!);
+        targetEmojis = emojiIndices.map((i) => emojis[i]).toList();
+      });
+    } else {
+      // Generate a new key with valid mnemonic
+      _generateNewKey();
+    }
+  }
+
+  void _initializeAnimations() {
+    // Initialize controllers and animations
+    _controllers = List.generate(
+      12,
+      (index) => AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 2000),
+      ),
+    );
+
+    _animations = _controllers.map((controller) {
+      return Tween<double>(
+        begin: 0,
+        end: emojis.length.toDouble(),
+      ).animate(CurvedAnimation(
+        parent: controller,
+        curve: Curves.easeInOut,
+      ));
+    }).toList();
+  }
+
+  void _initializeTargetIndices() {
+    if (widget.targetIndices != null) {
+      _currentIndices.clear();
+      _currentIndices.addAll(widget.targetIndices!);
+    }
+  }
+
+  void _initializeNsecParts() {
+    if (widget.initialNsec != null) {
+      _nsecParts = _splitNsecIntoParts(widget.initialNsec!);
+    } else if (targetNsec.isNotEmpty) {
+      _nsecParts = _splitNsecIntoParts(targetNsec);
+    }
+  }
+
+  void _generateNewKey() {
+    // Generate a new mnemonic
+    final mnemonic = KeyGenerator.generateMnemonic();
+    print('Generated mnemonic: $mnemonic');
+
+    // Convert mnemonic to nsec
+    final nsec = KeyGenerator.mnemonicToNsec(mnemonic);
+    print('Generated nsec: $nsec');
+
+    // Verify the checksum
+    final isValid = KeyGenerator.verifyNsecChecksum(nsec);
+    print('Nsec checksum valid: $isValid');
+
+    // Convert nsec to emojis
+    final emojiIndices = KeyGenerator.nsecToEmojiIndices(nsec);
+    print('Emoji indices: $emojiIndices');
+
+    setState(() {
+      targetMnemonic = mnemonic;
+      targetNsec = nsec;
+      targetEmojis = emojiIndices.map((i) => emojis[i]).toList();
+      _nsecParts = _splitNsecIntoParts(nsec);
+    });
+  }
+
+  List<String> _splitNsecIntoParts(String nsec) {
+    // First slot shows 'nsec1'
+    final parts = ['nsec1'];
+
+    // Get the hex part (after 'nsec1')
+    final hex = nsec.substring(5);
+
+    // Split remaining hex into 6-character chunks
+    for (var i = 0; i < 10; i++) {
+      final start = i * 6;
+      final end = start + 6;
+      if (end <= hex.length) {
+        parts.add(hex.substring(start, end));
+      }
+    }
+
+    // Add empty string for the last slot
+    parts.add('');
+
+    return parts;
+  }
+
   @override
   void dispose() {
     for (final controller in _controllers) {
@@ -133,10 +198,9 @@ class _AppSlotMachineState extends State<AppSlotMachine>
       final staggerDelay = i * 100; // Stagger start times
 
       Future.delayed(Duration(milliseconds: staggerDelay), () {
-        // Calculate final position
-        final targetIndex = widget.targetIndices != null
-            ? widget.targetIndices![i % widget.targetIndices!.length]
-            : Random().nextInt(_emojis.length);
+        // Calculate final position based on target emojis
+        final targetIndex =
+            emojis.indexOf(targetEmojis[i % targetEmojis.length]);
 
         // Show exactly 50 random emojis before the target
         final endValue = 50 + targetIndex.toDouble();
@@ -152,9 +216,15 @@ class _AppSlotMachineState extends State<AppSlotMachine>
           curve: SlotSpinCurve(),
         ));
 
+        // Start with a random emoji instead of '-'
+        setState(() {
+          _currentEmojis[i] = emojis[Random().nextInt(emojis.length)];
+        });
+
         _controllers[i].forward().then((_) {
           setState(() {
             _currentIndices[i] = targetIndex;
+            _currentEmojis[i] = targetEmojis[i % targetEmojis.length];
           });
         });
       });
@@ -181,7 +251,12 @@ class _AppSlotMachineState extends State<AppSlotMachine>
       _isDragging = false;
     });
 
-    // Trigger spin when letting go
+    // Only generate new key if we don't have an initial nsec
+    if (widget.initialNsec == null) {
+      _generateNewKey();
+    }
+
+    // Trigger spin with new emojis
     _spin();
 
     // Handle animation back
@@ -211,9 +286,20 @@ class _AppSlotMachineState extends State<AppSlotMachine>
         animation: _animations[controllerIndex],
         builder: (context, child) {
           final value = _animations[controllerIndex].value;
-          final currentIndex = value.floor() % _emojis.length;
-          final offset = -(value % 1.0) * 56.0 +
-              16; // Add 16px offset to center vertically (88 - 56)/2
+          final currentIndex = value.floor() % emojis.length;
+          final offset = -(value % 1.0) * 56.0 + 16;
+
+          String getDisplayText(String emoji) {
+            if (_currentMode == 'Words') {
+              if (targetMnemonic.isEmpty) return '-';
+              final words = targetMnemonic.split(' ');
+              return words[controllerIndex % words.length];
+            } else if (_currentMode == 'Nsec') {
+              if (_nsecParts.isEmpty) return '-';
+              return _nsecParts[controllerIndex];
+            }
+            return emoji;
+          }
 
           return Stack(
             children: [
@@ -233,8 +319,13 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                   ),
                   child: Center(
                     child: AppText(
-                      _emojis[(currentIndex - 1) % _emojis.length],
-                      fontSize: 30,
+                      getDisplayText(
+                          emojis[(currentIndex - 1) % emojis.length]),
+                      fontSize: _currentMode == 'Words'
+                          ? 11
+                          : _currentMode == 'Nsec'
+                              ? 12
+                              : 30,
                     ),
                   ),
                 ),
@@ -254,10 +345,23 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                     ),
                   ),
                   child: Center(
-                    child: AppText(
-                      _emojis[currentIndex],
-                      fontSize: 30,
-                    ),
+                    child: _currentEmojis[controllerIndex] == '-'
+                        ? AppContainer(
+                            width: 24,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              color: theme.colors.white33,
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                          )
+                        : AppText(
+                            getDisplayText(emojis[currentIndex]),
+                            fontSize: _currentMode == 'Words'
+                                ? 11
+                                : _currentMode == 'Nsec'
+                                    ? 12
+                                    : 30,
+                          ),
                   ),
                 ),
               ),
@@ -277,8 +381,13 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                   ),
                   child: Center(
                     child: AppText(
-                      _emojis[(currentIndex + 1) % _emojis.length],
-                      fontSize: 30,
+                      getDisplayText(
+                          emojis[(currentIndex + 1) % emojis.length]),
+                      fontSize: _currentMode == 'Words'
+                          ? 11
+                          : _currentMode == 'Nsec'
+                              ? 12
+                              : 30,
                     ),
                   ),
                 ),
@@ -548,20 +657,86 @@ class _AppSlotMachineState extends State<AppSlotMachine>
     final theme = AppTheme.of(context);
     const totalHeight = 296.0;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    print('Current mode: $_currentMode'); // Debug print
+
+    return Column(
       children: [
-        Column(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildDiskRow(theme, 0),
+            Column(
+              children: [
+                _buildDiskRow(theme, 0),
+                const AppGap.s16(),
+                _buildDiskRow(theme, 1),
+                const AppGap.s16(),
+                _buildDiskRow(theme, 2),
+              ],
+            ),
             const AppGap.s16(),
-            _buildDiskRow(theme, 1),
-            const AppGap.s16(),
-            _buildDiskRow(theme, 2),
+            _buildHandle(theme, totalHeight),
           ],
         ),
-        const AppGap.s16(),
-        _buildHandle(theme, totalHeight),
+        const AppGap.s32(),
+        AppContainer(
+          width: 344,
+          child: AppSelector(
+            children: [
+              AppSelectorButton(
+                selectedContent: [
+                  AppText.reg14("Emoji"),
+                ],
+                unselectedContent: [
+                  AppText.reg14("Emoji", color: theme.colors.white66),
+                ],
+                isSelected: _currentMode == 'Emoji',
+              ),
+              AppSelectorButton(
+                selectedContent: [
+                  AppText.reg14("Words"),
+                ],
+                unselectedContent: [
+                  AppText.reg14("Words", color: theme.colors.white66),
+                ],
+                isSelected: _currentMode == 'Words',
+              ),
+              AppSelectorButton(
+                selectedContent: [
+                  AppText.reg14("Nsec"),
+                ],
+                unselectedContent: [
+                  AppText.reg14("Nsec", color: theme.colors.white66),
+                ],
+                isSelected: _currentMode == 'Nsec',
+              ),
+            ],
+            onChanged: (index) {
+              print('Selector changed to index: $index');
+              setState(() {
+                switch (index) {
+                  case 0:
+                    _currentMode = 'Emoji';
+                    break;
+                  case 1:
+                    _currentMode = 'Words';
+                    // If we have a nsec but no mnemonic, generate the mnemonic
+                    if (targetNsec.isNotEmpty && targetMnemonic.isEmpty) {
+                      targetMnemonic =
+                          KeyGenerator.nsecToMnemonic(targetNsec) ?? '';
+                    }
+                    break;
+                  case 2:
+                    _currentMode = 'Nsec';
+                    break;
+                }
+                // Only reset current emojis if we don't have a valid nsec
+                if (targetNsec.isEmpty) {
+                  _currentEmojis.fillRange(0, _currentEmojis.length, '-');
+                }
+              });
+            },
+          ),
+        ),
       ],
     );
   }
