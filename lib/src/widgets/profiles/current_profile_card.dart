@@ -1,18 +1,15 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppCurrentProfileCard extends StatelessWidget {
-  final String npub;
-  final String profileName;
-  final String profilePicUrl;
+  final Profile profile;
   final VoidCallback? onEdit;
   final VoidCallback? onView;
   final VoidCallback? onShare;
 
   const AppCurrentProfileCard({
     super.key,
-    required this.npub,
-    required this.profileName,
-    required this.profilePicUrl,
+    required this.profile,
     this.onEdit,
     this.onView,
     this.onShare,
@@ -38,7 +35,8 @@ class AppCurrentProfileCard extends StatelessWidget {
                   width: theme.sizes.s56,
                   height: theme.sizes.s56,
                   child: Center(
-                    child: AppProfilePic.s48(profilePicUrl),
+                    child: AppProfilePic.s48(
+                        profile.author.value?.pictureUrl ?? ''),
                   ),
                 ),
                 const AppGap.s12(),
@@ -46,7 +44,8 @@ class AppCurrentProfileCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppText.bold16(
-                      profileName,
+                      profile.author.value?.name ??
+                          formatNpub(profile.author.value?.npub ?? ''),
                       color: theme.colors.white,
                     ),
                     Row(
@@ -57,7 +56,7 @@ class AppCurrentProfileCard extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Color(
                               int.parse(
-                                    npubToColor(npub).substring(1),
+                                    profileToColor(profile).substring(1),
                                     radix: 16,
                                   ) +
                                   0xFF000000,
@@ -72,7 +71,7 @@ class AppCurrentProfileCard extends StatelessWidget {
                         const AppGap.s8(),
                         AppContainer(
                           child: AppText.med12(
-                            formatNpub(npub),
+                            formatNpub(profile.author.value?.npub ?? ''),
                             textOverflow: TextOverflow.ellipsis,
                             color: theme.colors.white66,
                           ),

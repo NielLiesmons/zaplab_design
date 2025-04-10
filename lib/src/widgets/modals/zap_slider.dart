@@ -16,6 +16,7 @@ class AppZapSlider extends StatefulWidget {
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
   final VoidCallback onCameraTap;
+  final VoidCallback onEmojiTap;
   final VoidCallback onGifTap;
   final VoidCallback onAddTap;
 
@@ -32,6 +33,7 @@ class AppZapSlider extends StatefulWidget {
     required this.onSearchProfiles,
     required this.onSearchEmojis,
     required this.onCameraTap,
+    required this.onEmojiTap,
     required this.onGifTap,
     required this.onAddTap,
   });
@@ -317,6 +319,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
           onSearchProfiles: widget.onSearchProfiles,
           onSearchEmojis: widget.onSearchEmojis,
           onCameraTap: widget.onCameraTap,
+          onEmojiTap: widget.onEmojiTap,
           onGifTap: widget.onGifTap,
           onAddTap: widget.onAddTap,
           onDoneTap: () {

@@ -59,6 +59,7 @@ class AppProfileStack extends StatelessWidget {
                             child: AppText.med12(
                               '${profiles.length}',
                               color: theme.colors.white66,
+                              textOverflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),

@@ -23,11 +23,15 @@ dependencies:
     git:
       url: https://github.com/purplebase/models.git
       ref: main
+  crypto: ^3.0.3
+  hex: ^0.2.0
+  bip39: ^1.0.6
 
 dev_dependencies:
   flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
+  test: ^1.24.9
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -48,3 +52,4 @@ flutter:
     - family: Zaplab-Icons
       fonts:
         - asset: assets/fonts/Zaplab-Icons.ttf
+  uses-material-design: true

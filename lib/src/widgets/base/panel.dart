@@ -29,11 +29,13 @@ class AppPanel extends StatelessWidget {
       decoration: BoxDecoration(
         color: gradient == null
             ? (color ??
-                (isInsideMessage
+                (isLight
                     ? theme.colors.white8
-                    : (isInsideModal
-                        ? (isLight ? theme.colors.white8 : theme.colors.black33)
-                        : theme.colors.grey66)))
+                    : (isInsideMessage
+                        ? theme.colors.white8
+                        : (isInsideModal
+                            ? theme.colors.black33
+                            : theme.colors.grey66))))
             : null,
         gradient: gradient,
         borderRadius: theme.radius.asBorderRadius().rad16,

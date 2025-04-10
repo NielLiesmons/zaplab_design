@@ -14,6 +14,7 @@ class AppZapModal extends StatefulWidget {
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
   final VoidCallback onCameraTap;
+  final VoidCallback onEmojiTap;
   final VoidCallback onGifTap;
   final VoidCallback onAddTap;
 
@@ -30,6 +31,7 @@ class AppZapModal extends StatefulWidget {
     required this.onSearchProfiles,
     required this.onSearchEmojis,
     required this.onCameraTap,
+    required this.onEmojiTap,
     required this.onGifTap,
     required this.onAddTap,
   });
@@ -47,6 +49,7 @@ class AppZapModal extends StatefulWidget {
     required NostrProfileSearch onSearchProfiles,
     required NostrEmojiSearch onSearchEmojis,
     required VoidCallback onCameraTap,
+    required VoidCallback onEmojiTap,
     required VoidCallback onGifTap,
     required VoidCallback onAddTap,
   }) {
@@ -78,6 +81,7 @@ class AppZapModal extends StatefulWidget {
                     onSearchProfiles: onSearchProfiles,
                     onSearchEmojis: onSearchEmojis,
                     onCameraTap: onCameraTap,
+                    onEmojiTap: onEmojiTap,
                     onGifTap: onGifTap,
                     onAddTap: onAddTap,
                   ),
@@ -140,6 +144,7 @@ class _AppZapModalState extends State<AppZapModal> {
             onSearchProfiles: widget.onSearchProfiles,
             onSearchEmojis: widget.onSearchEmojis,
             onCameraTap: widget.onCameraTap,
+            onEmojiTap: widget.onEmojiTap,
             onGifTap: widget.onGifTap,
             onAddTap: widget.onAddTap,
           ),

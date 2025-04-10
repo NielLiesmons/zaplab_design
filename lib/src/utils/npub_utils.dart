@@ -1,9 +1,9 @@
 import 'package:models/models.dart';
 
-String npubToColor(String npub) {
-  final hex = Profile.hexFromNpub(npub);
+String profileToColor(Profile profile) {
+  final hex = profile.pubkey;
   final color = '#${hex.substring(0, 6)}';
-  print('NPub: $npub -> Hex: $hex -> Color: $color'); // Debug print
+  print('NPub: $profile -> Hex: $hex -> Color: $color'); // Debug print
   return color;
 }
 

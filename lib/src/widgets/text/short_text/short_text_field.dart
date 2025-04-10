@@ -17,6 +17,7 @@ class AppShortTextField extends StatefulWidget {
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final VoidCallback onCameraTap;
+  final VoidCallback onEmojiTap;
   final VoidCallback onGifTap;
   final VoidCallback onAddTap;
   final VoidCallback? onSendTap;
@@ -40,6 +41,7 @@ class AppShortTextField extends StatefulWidget {
     required this.onSearchProfiles,
     required this.onSearchEmojis,
     required this.onCameraTap,
+    required this.onEmojiTap,
     required this.onGifTap,
     required this.onAddTap,
     this.onSendTap,
@@ -63,6 +65,7 @@ class AppShortTextField extends StatefulWidget {
     NostrProfileSearch? onSearchProfiles,
     NostrEmojiSearch? onSearchEmojis,
     VoidCallback? onCameraTap,
+    VoidCallback? onEmojiTap,
     VoidCallback? onGifTap,
     VoidCallback? onAddTap,
     VoidCallback? onSendTap,
@@ -85,6 +88,7 @@ class AppShortTextField extends StatefulWidget {
       onSearchProfiles: onSearchProfiles ?? this.onSearchProfiles,
       onSearchEmojis: onSearchEmojis ?? this.onSearchEmojis,
       onCameraTap: onCameraTap ?? this.onCameraTap,
+      onEmojiTap: onEmojiTap ?? this.onEmojiTap,
       onGifTap: onGifTap ?? this.onGifTap,
       onAddTap: onAddTap ?? this.onAddTap,
       onSendTap: onSendTap ?? this.onSendTap,
@@ -213,6 +217,19 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
                       children: [
                         AppIcon.s16(
                           theme.icons.characters.camera,
+                          color: theme.colors.white33,
+                        ),
+                      ],
+                    ),
+                    const AppGap.s8(),
+                    AppSmallButton(
+                      square: true,
+                      onTap: widget.onEmojiTap,
+                      inactiveColor: theme.colors.white8,
+                      pressedColor: theme.colors.white8,
+                      children: [
+                        AppIcon.s18(
+                          theme.icons.characters.emojiFill,
                           color: theme.colors.white33,
                         ),
                       ],

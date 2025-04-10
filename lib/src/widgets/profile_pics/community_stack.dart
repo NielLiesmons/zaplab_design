@@ -64,6 +64,7 @@ class AppCommunityStack extends StatelessWidget {
                                           '')
                                   : '${communities.length} Communities',
                               color: theme.colors.white66,
+                              textOverflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),

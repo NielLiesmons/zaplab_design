@@ -9,6 +9,7 @@ class AppReplyModal extends StatefulWidget {
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
   final VoidCallback onCameraTap;
+  final VoidCallback onEmojiTap;
   final VoidCallback onGifTap;
   final VoidCallback onAddTap;
   final VoidCallback onSendTap;
@@ -23,6 +24,7 @@ class AppReplyModal extends StatefulWidget {
     required this.onSearchProfiles,
     required this.onSearchEmojis,
     required this.onCameraTap,
+    required this.onEmojiTap,
     required this.onGifTap,
     required this.onAddTap,
     required this.onSendTap,
@@ -141,6 +143,7 @@ class _AppReplyModalState extends State<AppReplyModal> {
                 onResolveProfile: widget.onResolveProfile,
                 onResolveEmoji: widget.onResolveEmoji,
                 onCameraTap: widget.onCameraTap,
+                onEmojiTap: widget.onEmojiTap,
                 onGifTap: widget.onGifTap,
                 onAddTap: widget.onAddTap,
                 onSendTap: widget.onSendTap,

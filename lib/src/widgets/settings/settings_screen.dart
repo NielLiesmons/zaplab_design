@@ -9,7 +9,7 @@ class AppSettingsScreen extends StatefulWidget {
   final VoidCallback? onAddProfile;
 
   // Current profile
-  final String currentNpub;
+  final Profile currentProfile;
 
   // Settings sections
   // IF: you want to specify custom sections and/or widgets THEN: use this list
@@ -40,7 +40,7 @@ class AppSettingsScreen extends StatefulWidget {
     required this.profiles,
     required this.onSelect,
     this.onAddProfile,
-    required this.currentNpub,
+    required this.currentProfile,
     this.settingSections,
     this.onHistoryTap,
     this.historyDescription,
@@ -133,7 +133,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
   Widget _buildContent(BuildContext context) {
     final theme = AppTheme.of(context);
     final currentProfile = widget.profiles.firstWhere(
-      (p) => p.npub == widget.currentNpub,
+      (p) => p == widget.currentProfile,
       orElse: () =>
           widget.profiles.first, // Fallback to first profile if not found
     );
@@ -163,10 +163,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                     curve: Curves.easeOut,
                   )),
                   child: AppCurrentProfileCard(
-                    npub: currentProfile.npub,
-                    profileName:
-                        currentProfile.name ?? formatNpub(currentProfile.npub),
-                    profilePicUrl: currentProfile.pictureUrl ?? '',
+                    profile: currentProfile,
                     onView: () {
                       // TODO: Implement view profile
                     },
@@ -186,10 +183,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                         children: [
                           const AppGap.s16(),
                           AppOtherProfileCard(
-                            npub: profile.npub,
-                            profileName:
-                                profile.name ?? formatNpub(profile.npub),
-                            profilePicUrl: profile.pictureUrl ?? '',
+                            profile: profile,
                             onSelect: () {
                               widget.onSelect(profile);
                               _animateProfileChange();
