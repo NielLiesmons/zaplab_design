@@ -50,8 +50,10 @@ class AppZapCard extends StatelessWidget {
                       gradient: theme.colors.gold,
                     ),
                     const AppGap.s4(),
-                    AppText.bold14(
-                      zap.amount.toString(),
+                    AppAmount(
+                      zap.amount.toDouble(),
+                      level: AppTextLevel.bold14,
+                      color: theme.colors.white,
                     ),
                   ],
                 ),
