@@ -17,7 +17,7 @@ class AppCommunityScreen extends StatefulWidget {
   final Profile currentProfile;
   // Content related
   final int? mainCount;
-  final Map<String, ({int count, Widget feed})> contentTypes;
+  final Map<String, ({int count, Widget feed, Widget bottomBar})> contentTypes;
   // Other actions & settings
   final VoidCallback? onHomeTap;
   final VoidCallback? onNotificationsTap;
@@ -200,12 +200,19 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
     return widget.contentTypes[selectedType]?.feed ?? const SizedBox.shrink();
   }
 
+  Widget _buildBottomBar() {
+    final contentTypes = widget.contentTypes.keys.toList();
+    final selectedType = contentTypes[_tabController.index];
+    return widget.contentTypes[selectedType]?.bottomBar ??
+        const SizedBox.shrink();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppScreen(
       alwaysShowTopBar: true,
       customTopBar: true,
-      bottomBarContent: const AppBottomBarChat(),
+      bottomBarContent: _buildBottomBar(),
       topBarContent: _buildTopBar(
         context,
         widget.community.author.value?.name ?? '',

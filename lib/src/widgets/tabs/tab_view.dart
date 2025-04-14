@@ -130,7 +130,7 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
                 onExpansionChanged: (expanded) async {
                   setState(() => _isExpanded = expanded);
                   if (expanded) {
-                    await Future.delayed(const Duration(milliseconds: 200));
+                    await Future.delayed(const Duration(milliseconds: 123));
                     _slideController.forward();
                   } else {
                     _slideController.reverse();
@@ -166,8 +166,8 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
                         tabs: widget.tabs,
                         selectedIndex: _selectedIndex,
                         onTabSelected: (index) {
+                          widget.controller.animateTo(index);
                           setState(() {
-                            _selectedIndex = index;
                             _isExpanded = false;
                           });
                           _slideController.reverse();

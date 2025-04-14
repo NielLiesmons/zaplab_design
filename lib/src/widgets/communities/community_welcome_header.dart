@@ -1,17 +1,16 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:math' as math;
+import 'package:models/models.dart';
 
 class AppCommunityWelcomeHeader extends StatefulWidget {
-  final String? communityImageUrl;
-  final String communityName;
+  final Community community;
   final VoidCallback? onTap;
   final List<String>? profileImageUrls;
   final List<String>? emojiImageUrls;
 
   const AppCommunityWelcomeHeader({
     super.key,
-    this.communityImageUrl,
-    required this.communityName,
+    required this.community,
     this.onTap,
     this.profileImageUrls,
     this.emojiImageUrls,
@@ -108,7 +107,8 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
                   },
                 ),
                 // Community image
-                AppProfilePic.s104(widget.communityImageUrl ?? '',
+                AppProfilePic.s104(
+                    widget.community.author.value?.pictureUrl ?? '',
                     onTap: widget.onTap),
               ],
             ),
@@ -116,7 +116,8 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
           const AppGap.s4(),
           // Community name
           AppText.h2(
-            widget.communityName,
+            widget.community.author.value?.name ??
+                formatNpub(widget.community.author.value?.npub ?? ''),
             textAlign: TextAlign.center,
             color: theme.colors.white,
           ),

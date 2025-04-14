@@ -60,8 +60,9 @@ export 'interactions/zap_pill.dart';
 export 'keys/slot_machine.dart';
 
 // Loading
-export 'loading/loading_dots.dart';
 export 'loading/loading_bar.dart';
+export 'loading/loading_dots.dart';
+export 'loading/loading_feed.dart';
 
 // Modals
 export 'modals/actions_modal.dart';
@@ -70,7 +71,6 @@ export 'modals/amount_modal.dart';
 export 'modals/input_modal.dart';
 export 'modals/reply_modal.dart';
 export 'modals/zap_modal.dart';
-export 'modals/zap_slider.dart';
 
 // Notifications
 export 'notifications/notification_card.dart';
@@ -152,3 +152,4 @@ export 'toasts/toast_message.dart';
 
 // Zaps
 export 'zaps/zap_card.dart';
+export 'zaps/zap_slider.dart';

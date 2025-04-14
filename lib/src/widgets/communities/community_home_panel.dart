@@ -4,7 +4,7 @@ import 'package:models/models.dart';
 
 class AppCommunityHomePanel extends StatelessWidget {
   final Community community;
-  final ChatMessage lastChatMessage;
+  final Event? lastEvent;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -18,7 +18,7 @@ class AppCommunityHomePanel extends StatelessWidget {
   const AppCommunityHomePanel({
     super.key,
     required this.community,
-    required this.lastChatMessage,
+    this.lastEvent,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -43,7 +43,7 @@ class AppCommunityHomePanel extends StatelessWidget {
     final (displayCount, containerWidth) = _getCountDisplay(mainCount!);
 
     return TapBuilder(
-      onTap: onNavigateToChat(community),
+      onTap: () => onNavigateToChat(community),
       builder: (context, state, hasFocus) {
         return Column(children: [
           AppSwipeContainer(
@@ -57,8 +57,8 @@ class AppCommunityHomePanel extends StatelessWidget {
               outlineColor: theme.colors.white66,
               outlineThickness: LineThicknessData.normal().medium,
             ),
-            onSwipeLeft: onCreateNewPublication!(community),
-            onSwipeRight: onActions!(community),
+            onSwipeLeft: () => onCreateNewPublication!(community),
+            onSwipeRight: () => onActions!(community),
             padding: const AppEdgeInsets.symmetric(
               horizontal: AppGapSize.s12,
               vertical: AppGapSize.s12,
@@ -70,7 +70,7 @@ class AppCommunityHomePanel extends StatelessWidget {
                   children: [
                     AppProfilePic.s48(
                       community.author.value?.pictureUrl ?? '',
-                      onTap: onNavigateToChat(community),
+                      onTap: () => onNavigateToChat(community),
                     ),
                     Expanded(
                       child: Column(
@@ -86,15 +86,18 @@ class AppCommunityHomePanel extends StatelessWidget {
                                   child: AppText.bold14(
                                     community.author.value?.name ??
                                         formatNpub(
-                                            community.author.value?.npub ?? ''),
+                                            community.author.value?.pubkey ??
+                                                ''),
                                     color: theme.colors.white,
                                   ),
                                 ),
                                 AppText.reg12(
-                                  TimestampFormatter.format(
-                                    lastChatMessage.createdAt,
-                                    format: TimestampFormat.relative,
-                                  ),
+                                  lastEvent != null
+                                      ? TimestampFormatter.format(
+                                          lastEvent!.createdAt,
+                                          format: TimestampFormat.relative,
+                                        )
+                                      : ' ',
                                   color: theme.colors.white33,
                                 ),
                               ],
@@ -164,12 +167,12 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                       child: Row(
                                                         children: [
                                                           AppText.bold12(
-                                                            lastChatMessage
-                                                                    .author
+                                                            lastEvent
+                                                                    ?.author
                                                                     .value
                                                                     ?.name ??
-                                                                formatNpub(lastChatMessage
-                                                                        .author
+                                                                formatNpub(lastEvent
+                                                                        ?.author
                                                                         .value
                                                                         ?.npub ??
                                                                     ''),
@@ -180,9 +183,15 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                           Flexible(
                                                             child:
                                                                 AppCompactTextRenderer(
-                                                              content:
-                                                                  lastChatMessage
-                                                                      .content,
+                                                              content: lastEvent ==
+                                                                      null
+                                                                  ? ''
+                                                                  : lastEvent
+                                                                          is ChatMessage
+                                                                      ? (lastEvent
+                                                                              as ChatMessage)
+                                                                          .content
+                                                                      : 'nostr:nevent1${lastEvent!.id}',
                                                               onResolveEvent:
                                                                   onResolveEvent,
                                                               onResolveProfile:
