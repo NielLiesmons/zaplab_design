@@ -29,7 +29,7 @@ export 'bottom_bars/bottom_bar.dart';
 export 'bottom_bars/bottom_bar_content_feed.dart';
 export 'bottom_bars/bottom_bar_home.dart';
 export 'bottom_bars/bottom_bar_chat.dart';
-
+export 'bottom_bars/bottom_bar_welcome.dart';
 // Buttons
 export 'buttons/button.dart';
 export 'buttons/cross_button.dart';
@@ -45,11 +45,14 @@ export 'chat/quoted_message.dart';
 export 'communities/community_home_panel.dart';
 export 'communities/community_screen.dart';
 export 'communities/community_welcome_header.dart';
+export 'communities/community_welcome_feed.dart';
+
 // Images
 export 'images/emoji_image.dart';
 export 'images/full_width_image.dart';
 export 'images/image_card.dart';
 export 'images/image_stack.dart';
+
 // Interactions
 export 'interactions/interaction_pills.dart';
 export 'interactions/interaction_bar.dart';
@@ -107,6 +110,7 @@ export 'selector/selector_button.dart';
 // Settings
 export 'settings/settings_screen.dart';
 export 'settings/setting_section.dart';
+
 // Text
 export 'text/asciidoc/asciidoc_renderer.dart';
 export 'text/asciidoc/asciidoc_parser.dart';

@@ -95,7 +95,7 @@ class AppInputModal extends StatelessWidget {
                       ? (details) {
                           if (details.delta.dy > 0) {
                             modalOffset.value += details.delta.dy;
-                            if (modalOffset.value > 160 &&
+                            if (modalOffset.value > 40 &&
                                 Navigator.of(context).canPop()) {
                               Navigator.of(context).pop();
                             }

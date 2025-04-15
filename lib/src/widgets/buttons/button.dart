@@ -114,7 +114,7 @@ class AppButtonLayout extends StatelessWidget {
       padding: square
           ? null
           : const AppEdgeInsets.symmetric(
-              horizontal: AppGapSize.s16,
+              horizontal: AppGapSize.s12,
             ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

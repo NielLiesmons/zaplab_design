@@ -81,7 +81,7 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
                       ),
                       child: AppSkeletonLoader(),
                     ),
-                    const AppGap.s8(),
+                    const AppGap.s6(),
                     Opacity(
                       opacity: 0.66,
                       child: Expanded(
@@ -90,30 +90,35 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
                           children: [
                             // Random height message bubbles with varying widths
                             for (var j = 0; j < (i % 3) + 1; j++) ...[
-                              AppContainer(
-                                height:
-                                    (j % 2 == 0 ? 40.0 : 60.0) + (i % 3) * 10.0,
-                                width: i % 3 == 0
-                                    ? 104.0
-                                    : i % 3 == 1
-                                        ? 200.0
-                                        : 240.0,
-                                margin: const AppEdgeInsets.only(
-                                    bottom: AppGapSize.s4),
-                                clipBehavior: Clip.hardEdge,
-                                decoration: BoxDecoration(
-                                  color: theme.colors.grey33,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(theme.sizes.s16),
-                                    topRight: Radius.circular(theme.sizes.s16),
-                                    bottomRight:
-                                        Radius.circular(theme.sizes.s16),
-                                    bottomLeft: Radius.circular(j == (i % 3)
-                                        ? theme.sizes.s4
-                                        : theme.sizes.s16),
+                              Column(
+                                children: [
+                                  AppContainer(
+                                    height: (j % 2 == 0 ? 40.0 : 60.0) +
+                                        (i % 3) * 10.0,
+                                    width: i % 3 == 0
+                                        ? 104.0
+                                        : i % 3 == 1
+                                            ? 200.0
+                                            : 240.0,
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(
+                                      color: theme.colors.grey33,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft:
+                                            Radius.circular(theme.sizes.s16),
+                                        topRight:
+                                            Radius.circular(theme.sizes.s16),
+                                        bottomRight:
+                                            Radius.circular(theme.sizes.s16),
+                                        bottomLeft: Radius.circular(j == (i % 3)
+                                            ? theme.sizes.s4
+                                            : theme.sizes.s16),
+                                      ),
+                                    ),
+                                    child: const AppSkeletonLoader(),
                                   ),
-                                ),
-                                child: const AppSkeletonLoader(),
+                                  if (j < (i % 3)) const AppGap.s2(),
+                                ],
                               ),
                             ],
                           ],
@@ -123,7 +128,7 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
                     const AppGap.s48(),
                   ],
                 ),
-                const AppGap.s2(),
+                const AppGap.s6(),
               ],
             ],
           ),

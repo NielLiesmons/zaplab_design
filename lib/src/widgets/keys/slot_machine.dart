@@ -1,15 +1,12 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:math';
+import 'package:zaplab_design/src/utils/emoji_list.dart';
 
 class AppSlotMachine extends StatefulWidget {
-  final List<int>? targetIndices; // Optional predetermined final positions
-  final int minRandomEmojis; // Minimum number of emojis to show before settling
   final String? initialNsec; // Optional initial nsec to display
 
   const AppSlotMachine({
     super.key,
-    this.targetIndices,
-    this.minRandomEmojis = 50,
     this.initialNsec,
   });
 
@@ -43,28 +40,27 @@ class _AppSlotMachineState extends State<AppSlotMachine>
     with TickerProviderStateMixin {
   List<String> targetEmojis = [];
   String targetNsec = '';
-  String targetNpub = '';
   String targetMnemonic = '';
   final List<String> _currentEmojis = List.filled(12, '-');
+  final List<List<int>> _diskIndices = List.generate(12, (_) => []);
   String _currentMode = 'Emoji';
 
   late final List<AnimationController> _controllers;
   late final List<Animation<double>> _animations;
-  final List<int> _currentIndices =
-      List.generate(12, (index) => 0); // 3 rows * 4 disks
-  double _handleOffset = 18.0; // Initial circle position
+  final List<int> _currentIndices = List.generate(12, (index) => 0);
+  double _handleOffset = 18.0;
   bool _isDragging = false;
   late final AnimationController _handleController;
   late Animation<double> _handleAnimation;
 
   List<String> _nsecParts = [];
+  List<String> _mnemonicWords = [];
 
   @override
   void initState() {
     super.initState();
     _initializeEmojis();
     _initializeAnimations();
-    _initializeTargetIndices();
     _initializeNsecParts();
 
     _handleController = AnimationController(
@@ -72,7 +68,6 @@ class _AppSlotMachineState extends State<AppSlotMachine>
       duration: const Duration(milliseconds: 200),
     );
 
-    // Add listener to trigger rebuild
     _handleController.addListener(() {
       setState(() {
         if (_handleController.isAnimating) {
@@ -89,11 +84,14 @@ class _AppSlotMachineState extends State<AppSlotMachine>
         targetNsec = widget.initialNsec!;
         // Verify the checksum
         final isValid = KeyGenerator.verifyNsecChecksum(widget.initialNsec!);
-        print('Initial nsec checksum valid: $isValid');
         targetMnemonic = KeyGenerator.nsecToMnemonic(widget.initialNsec!) ?? '';
-        final emojiIndices =
-            KeyGenerator.nsecToEmojiIndices(widget.initialNsec!);
-        targetEmojis = emojiIndices.map((i) => emojis[i]).toList();
+        _mnemonicWords = targetMnemonic.split(' ');
+        final emojis = KeyGenerator.nsecToEmojis(widget.initialNsec!);
+        if (emojis != null) {
+          targetEmojis = List<String>.from(
+              emojis); // Create a copy to prevent reference issues
+          _currentEmojis.fillRange(0, _currentEmojis.length, '-');
+        }
       });
     } else {
       // Generate a new key with valid mnemonic
@@ -114,19 +112,12 @@ class _AppSlotMachineState extends State<AppSlotMachine>
     _animations = _controllers.map((controller) {
       return Tween<double>(
         begin: 0,
-        end: emojis.length.toDouble(),
+        end: targetEmojis.length.toDouble(),
       ).animate(CurvedAnimation(
         parent: controller,
         curve: Curves.easeInOut,
       ));
     }).toList();
-  }
-
-  void _initializeTargetIndices() {
-    if (widget.targetIndices != null) {
-      _currentIndices.clear();
-      _currentIndices.addAll(widget.targetIndices!);
-    }
   }
 
   void _initializeNsecParts() {
@@ -148,17 +139,26 @@ class _AppSlotMachineState extends State<AppSlotMachine>
 
     // Verify the checksum
     final isValid = KeyGenerator.verifyNsecChecksum(nsec);
-    print('Nsec checksum valid: $isValid');
 
     // Convert nsec to emojis
-    final emojiIndices = KeyGenerator.nsecToEmojiIndices(nsec);
-    print('Emoji indices: $emojiIndices');
+    final emojis = KeyGenerator.nsecToEmojis(nsec);
+    if (emojis == null) {
+      throw Exception('Failed to generate emojis from nsec');
+    }
+    print('Generated emojis: $emojis');
 
     setState(() {
       targetMnemonic = mnemonic;
+      _mnemonicWords = mnemonic.split(' ');
       targetNsec = nsec;
-      targetEmojis = emojiIndices.map((i) => emojis[i]).toList();
+      targetEmojis = List<String>.from(
+          emojis); // Create a copy to prevent reference issues
       _nsecParts = _splitNsecIntoParts(nsec);
+      _currentEmojis.fillRange(0, _currentEmojis.length, '-');
+      // Initialize disk indices with empty lists
+      for (var i = 0; i < _diskIndices.length; i++) {
+        _diskIndices[i] = [];
+      }
     });
   }
 
@@ -175,11 +175,11 @@ class _AppSlotMachineState extends State<AppSlotMachine>
       final end = start + 6;
       if (end <= hex.length) {
         parts.add(hex.substring(start, end));
+      } else {
+        // If we don't have enough characters, pad with empty string
+        parts.add('');
       }
     }
-
-    // Add empty string for the last slot
-    parts.add('');
 
     return parts;
   }
@@ -194,37 +194,38 @@ class _AppSlotMachineState extends State<AppSlotMachine>
   }
 
   void _spin() {
+    // For each disk, create its sequence of indices
     for (var i = 0; i < _controllers.length; i++) {
       final staggerDelay = i * 100; // Stagger start times
 
       Future.delayed(Duration(milliseconds: staggerDelay), () {
-        // Calculate final position based on target emojis
-        final targetIndex =
-            emojis.indexOf(targetEmojis[i % targetEmojis.length]);
+        // Create a sequence of 50 random indices
+        final diskIndices = List<int>.generate(50, (index) {
+          return Random().nextInt(emojis.length);
+        });
 
-        // Show exactly 50 random emojis before the target
-        final endValue = 50 + targetIndex.toDouble();
+        // Add the target index at the end
+        diskIndices.add(emojis.indexOf(targetEmojis[i]));
+
+        // Set the indices for this disk
+        setState(() {
+          _diskIndices[i] = diskIndices;
+        });
 
         _controllers[i].duration = const Duration(milliseconds: 2000);
         _controllers[i].reset();
 
         _animations[i] = Tween<double>(
           begin: 0,
-          end: endValue,
+          end: diskIndices.length.toDouble(),
         ).animate(CurvedAnimation(
           parent: _controllers[i],
           curve: SlotSpinCurve(),
         ));
 
-        // Start with a random emoji instead of '-'
-        setState(() {
-          _currentEmojis[i] = emojis[Random().nextInt(emojis.length)];
-        });
-
         _controllers[i].forward().then((_) {
           setState(() {
-            _currentIndices[i] = targetIndex;
-            _currentEmojis[i] = targetEmojis[i % targetEmojis.length];
+            _currentEmojis[i] = targetEmojis[i];
           });
         });
       });
@@ -286,20 +287,128 @@ class _AppSlotMachineState extends State<AppSlotMachine>
         animation: _animations[controllerIndex],
         builder: (context, child) {
           final value = _animations[controllerIndex].value;
-          final currentIndex = value.floor() % emojis.length;
+          final currentIndex = value.floor();
           final offset = -(value % 1.0) * 56.0 + 16;
 
           String getDisplayText(String emoji) {
             if (_currentMode == 'Words') {
-              if (targetMnemonic.isEmpty) return '-';
-              final words = targetMnemonic.split(' ');
-              return words[controllerIndex % words.length];
+              if (_mnemonicWords.isEmpty) return '-';
+              return _mnemonicWords[controllerIndex % _mnemonicWords.length];
             } else if (_currentMode == 'Nsec') {
               if (_nsecParts.isEmpty) return '-';
-              return _nsecParts[controllerIndex];
+              return controllerIndex < _nsecParts.length
+                  ? _nsecParts[controllerIndex]
+                  : '';
             }
             return emoji;
           }
+
+          final diskIndices = _diskIndices[controllerIndex];
+          final currentEmoji = _currentEmojis[controllerIndex];
+
+          // If we're not spinning, show the current emoji
+          if (diskIndices.isEmpty ||
+              !_controllers[controllerIndex].isAnimating) {
+            return Stack(
+              children: [
+                Positioned(
+                  top: offset - 56,
+                  left: 0,
+                  right: 0,
+                  child: AppContainer(
+                    height: 56,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: theme.colors.black33,
+                          width: LineThicknessData.normal().medium,
+                        ),
+                      ),
+                    ),
+                    child: Center(
+                      child: AppText(
+                        getDisplayText(currentEmoji),
+                        fontSize: _currentMode == 'Words'
+                            ? 11
+                            : _currentMode == 'Nsec'
+                                ? 12
+                                : 30,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: offset,
+                  left: 0,
+                  right: 0,
+                  child: AppContainer(
+                    height: 56,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: theme.colors.black33,
+                          width: LineThicknessData.normal().medium,
+                        ),
+                      ),
+                    ),
+                    child: Center(
+                      child: currentEmoji == '-'
+                          ? AppContainer(
+                              width: 24,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: theme.colors.white33,
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                            )
+                          : AppText(
+                              getDisplayText(currentEmoji),
+                              fontSize: _currentMode == 'Words'
+                                  ? 11
+                                  : _currentMode == 'Nsec'
+                                      ? 12
+                                      : 30,
+                            ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: offset + 56,
+                  left: 0,
+                  right: 0,
+                  child: AppContainer(
+                    height: 56,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: theme.colors.black33,
+                          width: LineThicknessData.normal().medium,
+                        ),
+                      ),
+                    ),
+                    child: Center(
+                      child: AppText(
+                        getDisplayText(currentEmoji),
+                        fontSize: _currentMode == 'Words'
+                            ? 11
+                            : _currentMode == 'Nsec'
+                                ? 12
+                                : 30,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+
+          // Show spinning animation
+          final currentSpinEmoji =
+              emojis[diskIndices[currentIndex % diskIndices.length]];
+          final prevSpinEmoji =
+              emojis[diskIndices[(currentIndex - 1) % diskIndices.length]];
+          final nextSpinEmoji =
+              emojis[diskIndices[(currentIndex + 1) % diskIndices.length]];
 
           return Stack(
             children: [
@@ -319,8 +428,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                   ),
                   child: Center(
                     child: AppText(
-                      getDisplayText(
-                          emojis[(currentIndex - 1) % emojis.length]),
+                      getDisplayText(prevSpinEmoji),
                       fontSize: _currentMode == 'Words'
                           ? 11
                           : _currentMode == 'Nsec'
@@ -345,23 +453,14 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                     ),
                   ),
                   child: Center(
-                    child: _currentEmojis[controllerIndex] == '-'
-                        ? AppContainer(
-                            width: 24,
-                            height: 8,
-                            decoration: BoxDecoration(
-                              color: theme.colors.white33,
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                          )
-                        : AppText(
-                            getDisplayText(emojis[currentIndex]),
-                            fontSize: _currentMode == 'Words'
-                                ? 11
-                                : _currentMode == 'Nsec'
-                                    ? 12
-                                    : 30,
-                          ),
+                    child: AppText(
+                      getDisplayText(currentSpinEmoji),
+                      fontSize: _currentMode == 'Words'
+                          ? 11
+                          : _currentMode == 'Nsec'
+                              ? 12
+                              : 30,
+                    ),
                   ),
                 ),
               ),
@@ -381,8 +480,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                   ),
                   child: Center(
                     child: AppText(
-                      getDisplayText(
-                          emojis[(currentIndex + 1) % emojis.length]),
+                      getDisplayText(nextSpinEmoji),
                       fontSize: _currentMode == 'Words'
                           ? 11
                           : _currentMode == 'Nsec'
@@ -657,8 +755,6 @@ class _AppSlotMachineState extends State<AppSlotMachine>
     final theme = AppTheme.of(context);
     const totalHeight = 296.0;
 
-    print('Current mode: $_currentMode'); // Debug print
-
     return Column(
       children: [
         Row(
@@ -683,7 +779,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
           child: AppSelector(
             children: [
               AppSelectorButton(
-                selectedContent: [
+                selectedContent: const [
                   AppText.reg14("Emoji"),
                 ],
                 unselectedContent: [
@@ -692,7 +788,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                 isSelected: _currentMode == 'Emoji',
               ),
               AppSelectorButton(
-                selectedContent: [
+                selectedContent: const [
                   AppText.reg14("Words"),
                 ],
                 unselectedContent: [
@@ -701,7 +797,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                 isSelected: _currentMode == 'Words',
               ),
               AppSelectorButton(
-                selectedContent: [
+                selectedContent: const [
                   AppText.reg14("Nsec"),
                 ],
                 unselectedContent: [
@@ -711,7 +807,6 @@ class _AppSlotMachineState extends State<AppSlotMachine>
               ),
             ],
             onChanged: (index) {
-              print('Selector changed to index: $index');
               setState(() {
                 switch (index) {
                   case 0:
