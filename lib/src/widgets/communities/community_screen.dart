@@ -5,7 +5,9 @@ import 'package:models/models.dart';
 extension StringExtension on String {
   String formatTabLabel() {
     final capitalized = this[0].toUpperCase() + substring(1);
-    return this == 'chat' ? capitalized : '${capitalized}s';
+    return this == 'chat' || this == 'welcome'
+        ? capitalized
+        : '${capitalized}s';
   }
 }
 
@@ -110,15 +112,15 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const AppGap.s12(),
-                    TapBuilder(
-                      onTap: widget.onProfileTap,
-                      builder: (context, state, hasFocus) {
-                        return Expanded(
-                          child: AppText.bold14(
+                    Expanded(
+                      child: TapBuilder(
+                        onTap: widget.onProfileTap,
+                        builder: (context, state, hasFocus) {
+                          return AppText.bold14(
                             profileName,
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                     TapBuilder(
                       onTap: widget.onNotificationsTap,
@@ -140,36 +142,37 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
                                 ),
                               ),
                             ),
-                            Positioned(
-                              top: -4,
-                              right: -10,
-                              child: AppContainer(
-                                height: theme.sizes.s20,
-                                padding: const AppEdgeInsets.symmetric(
-                                  horizontal: AppGapSize.s6,
-                                ),
-                                decoration: BoxDecoration(
-                                  gradient: theme.colors.blurple,
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                    minWidth: 8,
+                            if (mainCount > 0)
+                              Positioned(
+                                top: -4,
+                                right: -10,
+                                child: AppContainer(
+                                  height: theme.sizes.s20,
+                                  padding: const AppEdgeInsets.symmetric(
+                                    horizontal: AppGapSize.s6,
                                   ),
-                                  child: Center(
-                                    child: AppText.med10(
-                                      '$mainCount',
-                                      color: AppColorsData.dark().white,
+                                  decoration: BoxDecoration(
+                                    gradient: theme.colors.blurple,
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                      minWidth: 8,
+                                    ),
+                                    child: Center(
+                                      child: AppText.med10(
+                                        '$mainCount',
+                                        color: AppColorsData.dark().white,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
                           ],
                         );
                       },
                     ),
-                    const AppGap.s10(),
+                    if (mainCount > 0) const AppGap.s10(),
                   ],
                 ),
               ),

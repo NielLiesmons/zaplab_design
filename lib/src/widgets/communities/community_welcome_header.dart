@@ -1,17 +1,18 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:math' as math;
+import 'dart:ui';
 import 'package:models/models.dart';
 
 class AppCommunityWelcomeHeader extends StatefulWidget {
   final Community community;
-  final VoidCallback? onTap;
+  final VoidCallback? onProfileTap;
   final List<String>? profileImageUrls;
   final List<String>? emojiImageUrls;
 
   const AppCommunityWelcomeHeader({
     super.key,
     required this.community,
-    this.onTap,
+    this.onProfileTap,
     this.profileImageUrls,
     this.emojiImageUrls,
   });
@@ -109,17 +110,51 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
                 // Community image
                 AppProfilePic.s104(
                     widget.community.author.value?.pictureUrl ?? '',
-                    onTap: widget.onTap),
+                    onTap: widget.onProfileTap),
               ],
             ),
           ),
-          const AppGap.s4(),
+          const AppGap.s8(),
           // Community name
-          AppText.h2(
+          AppText.h1(
             widget.community.author.value?.name ??
                 formatNpub(widget.community.author.value?.npub ?? ''),
             textAlign: TextAlign.center,
             color: theme.colors.white,
+          ),
+          const AppGap.s12(),
+          // Community description
+          ClipRRect(
+            borderRadius: theme.radius.asBorderRadius().rad24,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+              child: AppContainer(
+                padding: const AppEdgeInsets.symmetric(
+                  horizontal: AppGapSize.s12,
+                  vertical: AppGapSize.s4,
+                ),
+                decoration: BoxDecoration(
+                  color: theme.colors.white8,
+                  borderRadius: theme.radius.asBorderRadius().rad24,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const AppEmojiImage(
+                      emojiUrl:
+                          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn3.emoji.gg%2Fdefault%2Fapple%2Fcastle.png',
+                      emojiName: '',
+                      size: 12,
+                    ),
+                    const AppGap.s6(),
+                    AppText.reg12(
+                      'Community',
+                      color: theme.colors.white66,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ],
       ),
