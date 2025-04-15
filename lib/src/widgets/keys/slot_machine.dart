@@ -170,11 +170,12 @@ class _AppSlotMachineState extends State<AppSlotMachine>
     final hex = nsec.substring(5);
 
     // Split remaining hex into 6-character chunks
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 11; i++) {
       final start = i * 6;
       final end = start + 6;
-      if (end <= hex.length) {
-        parts.add(hex.substring(start, end));
+      if (start < hex.length) {
+        // If we have characters left, add them (even if less than 6)
+        parts.add(hex.substring(start, end > hex.length ? hex.length : end));
       } else {
         // If we don't have enough characters, pad with empty string
         parts.add('');
@@ -204,6 +205,11 @@ class _AppSlotMachineState extends State<AppSlotMachine>
           return Random().nextInt(emojis.length);
         });
 
+        // Add the current emoji index at the start
+        if (_currentEmojis[i] != '-') {
+          diskIndices.insert(0, emojis.indexOf(_currentEmojis[i]));
+        }
+
         // Add the target index at the end
         diskIndices.add(emojis.indexOf(targetEmojis[i]));
 
@@ -226,6 +232,8 @@ class _AppSlotMachineState extends State<AppSlotMachine>
         _controllers[i].forward().then((_) {
           setState(() {
             _currentEmojis[i] = targetEmojis[i];
+            // Update the disk indices to start with the current emoji for next spin
+            _diskIndices[i] = [emojis.indexOf(_currentEmojis[i])];
           });
         });
       });
