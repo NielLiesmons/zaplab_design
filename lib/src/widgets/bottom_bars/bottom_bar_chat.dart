@@ -1,16 +1,28 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:tap_builder/tap_builder.dart';
+import 'package:models/models.dart';
 
 class AppBottomBarChat extends StatelessWidget {
-  const AppBottomBarChat({
-    super.key,
-    this.onAddTap,
-    this.onMessageTap,
-    this.onActions,
-  });
-
   final VoidCallback? onAddTap;
   final VoidCallback? onMessageTap;
+  final VoidCallback? onVoiceTap;
   final VoidCallback? onActions;
+  final String? draftMessage;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
+
+  const AppBottomBarChat({
+    super.key,
+    required this.onAddTap,
+    required this.onMessageTap,
+    required this.onVoiceTap,
+    required this.onActions,
+    this.draftMessage,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,36 +43,70 @@ class AppBottomBarChat extends StatelessWidget {
           ),
           const AppGap.s12(),
           Expanded(
-            child: AppContainer(
-              height: theme.sizes.s40,
-              decoration: BoxDecoration(
-                color: theme.colors.black33,
-                borderRadius: theme.radius.asBorderRadius().rad16,
-                border: Border.all(
-                  color: theme.colors.white33,
-                  width: LineThicknessData.normal().thin,
-                ),
-              ),
-              padding: const AppEdgeInsets.only(
-                left: AppGapSize.s12,
-                right: AppGapSize.s8,
-              ),
-              child: Center(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AppText.med14('Message', color: theme.colors.white33),
-                    const Spacer(),
-                    AppIcon.s18(theme.icons.characters.voice,
-                        color: theme.colors.white33),
-                  ],
-                ),
-              ),
+            child: TapBuilder(
+              onTap: onMessageTap,
+              builder: (context, state, hasFocus) {
+                double scaleFactor = 1.0;
+                if (state == TapState.pressed) {
+                  scaleFactor = 0.99;
+                } else if (state == TapState.hover) {
+                  scaleFactor = 1.01;
+                }
+
+                return Transform.scale(
+                  scale: scaleFactor,
+                  child: AppContainer(
+                    height: theme.sizes.s40,
+                    decoration: BoxDecoration(
+                      color: theme.colors.black33,
+                      borderRadius: theme.radius.asBorderRadius().rad16,
+                      border: Border.all(
+                        color: theme.colors.white33,
+                        width: LineThicknessData.normal().thin,
+                      ),
+                    ),
+                    padding: const AppEdgeInsets.only(
+                      left: AppGapSize.s16,
+                      right: AppGapSize.s12,
+                    ),
+                    child: Center(
+                      child: draftMessage != null
+                          ? AppCompactTextRenderer(
+                              content: draftMessage!,
+                              maxLines: 1,
+                              onResolveEvent: onResolveEvent,
+                              onResolveProfile: onResolveProfile,
+                              onResolveEmoji: (_) async => '',
+                              isMedium: false,
+                              isWhite: true,
+                            )
+                          : Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                AppText.med14('Message',
+                                    color: theme.colors.white33),
+                                const Spacer(),
+                                TapBuilder(
+                                  onTap: onVoiceTap,
+                                  builder: (context, state, hasFocus) {
+                                    return AppIcon.s18(
+                                        theme.icons.characters.voice,
+                                        color: theme.colors.white33);
+                                  },
+                                ),
+                              ],
+                            ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
           const AppGap.s12(),
           AppButton(
             square: true,
+            inactiveColor: theme.colors.black33,
+            onTap: onActions,
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -72,8 +118,6 @@ class AppBottomBarChat extends StatelessWidget {
                 ],
               ),
             ],
-            inactiveColor: theme.colors.black33,
-            onTap: onActions,
           ),
         ],
       ),

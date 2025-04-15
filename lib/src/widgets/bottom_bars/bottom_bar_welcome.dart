@@ -1,8 +1,8 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 
-class AppBottomBarContentFeed extends StatelessWidget {
-  const AppBottomBarContentFeed({
+class AppBottomBarWelcome extends StatelessWidget {
+  const AppBottomBarWelcome({
     super.key,
     this.onAddTap,
     this.onExploreTap,
@@ -21,14 +21,18 @@ class AppBottomBarContentFeed extends StatelessWidget {
       child: Row(
         children: [
           AppButton(
-            square: true,
-            children: [
-              AppIcon.s12(theme.icons.characters.plus,
-                  outlineThickness: LineThicknessData.normal().thick,
-                  outlineColor: theme.colors.white66),
-            ],
-            inactiveColor: theme.colors.white16,
+            inactiveGradient: theme.colors.blurple,
             onTap: onAddTap,
+            children: [
+              AppIcon.s12(
+                theme.icons.characters.plus,
+                outlineThickness: LineThicknessData.normal().thick,
+                outlineColor: AppColorsData.dark().white,
+              ),
+              const AppGap.s8(),
+              AppText.med14('Add', color: AppColorsData.dark().white),
+              const AppGap.s4(),
+            ],
           ),
           const AppGap.s12(),
           Expanded(
@@ -84,6 +88,8 @@ class AppBottomBarContentFeed extends StatelessWidget {
           const AppGap.s12(),
           AppButton(
             square: true,
+            inactiveColor: theme.colors.black33,
+            onTap: onActions,
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -95,8 +101,6 @@ class AppBottomBarContentFeed extends StatelessWidget {
                 ],
               ),
             ],
-            inactiveColor: theme.colors.black33,
-            onTap: onActions,
           ),
         ],
       ),

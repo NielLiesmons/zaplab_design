@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:tap_builder/tap_builder.dart';
 
 class AppBottomBarHome extends StatelessWidget {
   const AppBottomBarHome({
@@ -42,32 +43,53 @@ class AppBottomBarHome extends StatelessWidget {
           ),
           const AppGap.s12(),
           Expanded(
-            child: AppContainer(
-              height: theme.sizes.s40,
-              decoration: BoxDecoration(
-                color: theme.colors.black33,
-                borderRadius: theme.radius.asBorderRadius().rad16,
-                border: Border.all(
-                  color: theme.colors.white33,
-                  width: LineThicknessData.normal().thin,
-                ),
-              ),
-              padding: const AppEdgeInsets.only(
-                left: AppGapSize.s12,
-                right: AppGapSize.s8,
-              ),
-              child: Center(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AppIcon.s18(theme.icons.characters.search,
-                        outlineThickness: LineThicknessData.normal().medium,
-                        outlineColor: theme.colors.white33),
-                    const AppGap.s8(),
-                    AppText.med14('Explore', color: theme.colors.white33),
-                  ],
-                ),
-              ),
+            child: TapBuilder(
+              onTap: onExploreTap,
+              builder: (context, state, hasFocus) {
+                double scaleFactor = 1.0;
+                if (state == TapState.pressed) {
+                  scaleFactor = 0.99;
+                } else if (state == TapState.hover) {
+                  scaleFactor = 1.01;
+                }
+
+                return Transform.scale(
+                  scale: scaleFactor,
+                  child: Semantics(
+                    enabled: true,
+                    selected: true,
+                    child: AppContainer(
+                      height: theme.sizes.s40,
+                      decoration: BoxDecoration(
+                        color: theme.colors.black33,
+                        borderRadius: theme.radius.asBorderRadius().rad16,
+                        border: Border.all(
+                          color: theme.colors.white33,
+                          width: LineThicknessData.normal().thin,
+                        ),
+                      ),
+                      padding: const AppEdgeInsets.only(
+                        left: AppGapSize.s12,
+                        right: AppGapSize.s8,
+                      ),
+                      child: Center(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            AppIcon.s18(theme.icons.characters.search,
+                                outlineThickness:
+                                    LineThicknessData.normal().medium,
+                                outlineColor: theme.colors.white33),
+                            const AppGap.s8(),
+                            AppText.med14('Explore',
+                                color: theme.colors.white33),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
           const AppGap.s12(),
