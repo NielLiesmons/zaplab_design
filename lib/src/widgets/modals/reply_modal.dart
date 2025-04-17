@@ -66,50 +66,72 @@ class _AppReplyModalState extends State<AppReplyModal> {
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: [
-              if (widget.event is ChatMessage)
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+              if (widget.event is! ChatMessage)
+                Column(
                   children: [
-                    AppProfilePic.s40(
-                      widget.event.author.value?.pictureUrl ?? '',
-                    ),
-                    const AppGap.s12(),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        AppProfilePic.s40(
+                          widget.event.author.value?.pictureUrl ?? '',
+                        ),
+                        const AppGap.s12(),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              AppEmojiImage(
-                                emojiUrl:
-                                    'assets/emoji/${getEventContentType(widget.event)}.png',
-                                emojiName: getEventContentType(widget.event),
-                                size: 16,
+                              Row(
+                                children: [
+                                  AppEmojiImage(
+                                    emojiUrl:
+                                        'assets/emoji/${getEventContentType(widget.event)}.png',
+                                    emojiName:
+                                        getEventContentType(widget.event),
+                                    size: 16,
+                                  ),
+                                  const AppGap.s10(),
+                                  Expanded(
+                                    child: AppCompactTextRenderer(
+                                      content:
+                                          getEventDisplayText(widget.event),
+                                      onResolveEvent: widget.onResolveEvent,
+                                      onResolveProfile: widget.onResolveProfile,
+                                      onResolveEmoji: widget.onResolveEmoji,
+                                      isWhite: true,
+                                      isMedium: true,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const AppGap.s10(),
-                              Expanded(
-                                child: AppCompactTextRenderer(
-                                  content: getEventDisplayText(widget.event),
-                                  onResolveEvent: widget.onResolveEvent,
-                                  onResolveProfile: widget.onResolveProfile,
-                                  onResolveEmoji: widget.onResolveEmoji,
-                                  isWhite: true,
-                                  isMedium: true,
-                                ),
+                              const AppGap.s2(),
+                              AppText.reg12(
+                                widget.event.author.value?.name ??
+                                    formatNpub(
+                                        widget.event.author.value?.pubkey ??
+                                            ''),
+                                color: theme.colors.white66,
                               ),
                             ],
                           ),
-                          const AppGap.s2(),
-                          AppText.reg12(
-                            widget.event.author.value?.name ??
-                                formatNpub(
-                                    widget.event.author.value?.pubkey ?? ''),
-                            color: theme.colors.white66,
-                          ),
-                        ],
-                      ),
+                        ),
+                        const AppGap.s8(),
+                      ],
                     ),
-                    const AppGap.s8(),
+                    Row(
+                      children: [
+                        AppContainer(
+                          width: theme.sizes.s38,
+                          child: Center(
+                            child: AppContainer(
+                              decoration:
+                                  BoxDecoration(color: theme.colors.white33),
+                              width: LineThicknessData.normal().medium,
+                              height: theme.sizes.s16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               if (widget.event is ChatMessage)

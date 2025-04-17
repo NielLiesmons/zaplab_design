@@ -94,7 +94,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
       _canOpenActionZone = false;
     } else if (!_canOpenActionZone) {
       _startPositionTimer?.cancel();
-      _startPositionTimer = Timer(const Duration(milliseconds: 100), () {
+      _startPositionTimer = Timer(const Duration(milliseconds: 20), () {
         _canOpenActionZone = true;
       });
     }

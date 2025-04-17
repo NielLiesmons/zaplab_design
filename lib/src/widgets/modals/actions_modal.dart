@@ -7,6 +7,8 @@ class AppActionsModal extends StatelessWidget {
   // Event
   final Event event;
   final Function(Event) onEventTap;
+  // Reply
+  final Function(Event) onReplyTap;
   // Emoji
   final List<Emoji> recentEmoji;
   final Function(Emoji) onEmojiTap;
@@ -31,6 +33,7 @@ class AppActionsModal extends StatelessWidget {
     super.key,
     required this.event,
     required this.onEventTap,
+    required this.onReplyTap,
     required this.recentEmoji,
     required this.onEmojiTap,
     required this.onMoreEmojiTap,
@@ -52,10 +55,11 @@ class AppActionsModal extends StatelessWidget {
     BuildContext context, {
     required Event event,
     required Function(Event) onEventTap,
+    required Function(Event) onReplyTap,
     required List<Emoji> recentEmoji,
-    required List<double> recentAmounts,
     required Function(Emoji) onEmojiTap,
     required VoidCallback onMoreEmojiTap,
+    required List<double> recentAmounts,
     required Function(double) onZapTap,
     required Function(Event) onMoreZapsTap,
     required Function(Event) onReportTap,
@@ -76,6 +80,7 @@ class AppActionsModal extends StatelessWidget {
         AppActionsModal(
           event: event,
           onEventTap: onEventTap,
+          onReplyTap: onReplyTap,
           recentEmoji: recentEmoji,
           onEmojiTap: onEmojiTap,
           onMoreEmojiTap: onMoreEmojiTap,
@@ -95,6 +100,7 @@ class AppActionsModal extends StatelessWidget {
           context,
           event: event,
           onEventTap: onEventTap,
+          onReplyTap: onReplyTap,
           recentEmoji: recentEmoji,
           recentAmounts: recentAmounts,
           onEmojiTap: onEmojiTap,
@@ -124,6 +130,7 @@ class AppActionsModal extends StatelessWidget {
           context,
           event: event,
           onEventTap: onEventTap,
+          onReplyTap: onReplyTap,
           recentEmoji: recentEmoji,
           recentAmounts: recentAmounts,
           onEmojiTap: onEmojiTap,
@@ -184,6 +191,7 @@ class AppActionsModal extends StatelessWidget {
     BuildContext context, {
     required Event event,
     required Function(Event) onEventTap,
+    required Function(Event) onReplyTap,
     required List<Emoji> recentEmoji,
     required List<double> recentAmounts,
     required Function(Emoji) onEmojiTap,
@@ -298,9 +306,9 @@ class AppActionsModal extends StatelessWidget {
                                   ),
                                   const AppGap.s2(),
                                   AppText.reg12(
-                                    formatNpub(event.author.value?.pubkey ??
+                                    event.author.value?.name ??
                                         formatNpub(
-                                            event.author.value?.pubkey ?? '')),
+                                            event.author.value?.npub ?? ''),
                                     color: theme.colors.white66,
                                   ),
                                 ],
@@ -309,49 +317,67 @@ class AppActionsModal extends StatelessWidget {
                             const AppGap.s8(),
                           ],
                         ),
-                        Row(children: [
-                          AppContainer(
-                            width: theme.sizes.s38,
-                            child: Center(
-                              child: AppContainer(
-                                decoration:
-                                    BoxDecoration(color: theme.colors.white33),
-                                width: LineThicknessData.normal().medium,
-                                height: theme.sizes.s16,
+                        Row(
+                          children: [
+                            AppContainer(
+                              width: theme.sizes.s38,
+                              child: Center(
+                                child: AppContainer(
+                                  decoration: BoxDecoration(
+                                      color: theme.colors.white33),
+                                  width: LineThicknessData.normal().medium,
+                                  height: theme.sizes.s16,
+                                ),
                               ),
                             ),
-                          ),
-                        ]),
-                        AppContainer(
-                          height: theme.sizes.s40,
-                          decoration: BoxDecoration(
-                            color: theme.colors.black33,
-                            borderRadius: theme.radius.asBorderRadius().rad16,
-                            border: Border.all(
-                              color: theme.colors.white33,
-                              width: LineThicknessData.normal().thin,
-                            ),
-                          ),
-                          padding: const AppEdgeInsets.all(AppGapSize.s8),
-                          child: AppContainer(
-                            padding: const AppEdgeInsets.only(
-                              left: AppGapSize.s8,
-                              right: AppGapSize.s8,
-                            ),
-                            child: Row(
-                              children: [
-                                AppText.med14(
-                                  'Reply',
-                                  color: theme.colors.white33,
+                          ],
+                        ),
+                        TapBuilder(
+                          onTap: () => onReplyTap(event),
+                          builder: (context, state, hasFocus) {
+                            double scaleFactor = 1.0;
+                            if (state == TapState.pressed) {
+                              scaleFactor = 0.99;
+                            } else if (state == TapState.hover) {
+                              scaleFactor = 1.005;
+                            }
+
+                            return Transform.scale(
+                              scale: scaleFactor,
+                              child: AppContainer(
+                                height: theme.sizes.s40,
+                                decoration: BoxDecoration(
+                                  color: theme.colors.black33,
+                                  borderRadius:
+                                      theme.radius.asBorderRadius().rad16,
+                                  border: Border.all(
+                                    color: theme.colors.white33,
+                                    width: LineThicknessData.normal().thin,
+                                  ),
                                 ),
-                                const Spacer(),
-                                AppIcon.s16(
-                                  theme.icons.characters.voice,
-                                  color: theme.colors.white33,
+                                padding: const AppEdgeInsets.all(AppGapSize.s8),
+                                child: AppContainer(
+                                  padding: const AppEdgeInsets.only(
+                                    left: AppGapSize.s8,
+                                    right: AppGapSize.s8,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      AppText.med14(
+                                        'Reply',
+                                        color: theme.colors.white33,
+                                      ),
+                                      const Spacer(),
+                                      AppIcon.s16(
+                                        theme.icons.characters.voice,
+                                        color: theme.colors.white33,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),

@@ -339,7 +339,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                         fontSize: _currentMode == 'Words'
                             ? 11
                             : _currentMode == 'Nsec'
-                                ? 12
+                                ? 11
                                 : 30,
                       ),
                     ),
@@ -374,7 +374,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                               fontSize: _currentMode == 'Words'
                                   ? 11
                                   : _currentMode == 'Nsec'
-                                      ? 12
+                                      ? 11
                                       : 30,
                             ),
                     ),
@@ -400,7 +400,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                         fontSize: _currentMode == 'Words'
                             ? 11
                             : _currentMode == 'Nsec'
-                                ? 12
+                                ? 11
                                 : 30,
                       ),
                     ),

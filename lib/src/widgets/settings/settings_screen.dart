@@ -338,7 +338,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
               if (widget.onAppearanceTap != null || widget.onHostingTap != null)
                 const AppGap.s12(),
               AppSettingSection(
-                icon: AppIcon.s24(theme.icons.characters.security,
+                icon: AppIcon.s28(theme.icons.characters.security,
                     gradient: theme.colors.blurple),
                 title: 'Security',
                 description: widget.securityDescription ?? '',

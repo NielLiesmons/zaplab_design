@@ -67,23 +67,16 @@ typedef NostrProfileSearch = Future<List<Profile>> Function(String query);
 
 // Emoji
 typedef NostrEmojiResolver = Future<String> Function(String identifier);
-typedef NostrEmojiSearch = Future<List<ReplaceEmoji>> Function(String query);
-
-class ReplaceEmoji {
-  final String emojiUrl;
-  final String emojiName;
-
-  const ReplaceEmoji({required this.emojiUrl, required this.emojiName});
-}
+typedef NostrEmojiSearch = Future<List<Emoji>> Function(String query);
 
 // Emoj
 
 class Emoji {
-  final String? emojiUrl;
+  final String emojiUrl;
   final String emojiName;
 
   const Emoji({
-    this.emojiUrl,
+    required this.emojiUrl,
     required this.emojiName,
   });
 }

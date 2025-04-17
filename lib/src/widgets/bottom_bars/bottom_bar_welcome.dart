@@ -43,7 +43,7 @@ class AppBottomBarWelcome extends StatelessWidget {
                 if (state == TapState.pressed) {
                   scaleFactor = 0.99;
                 } else if (state == TapState.hover) {
-                  scaleFactor = 1.01;
+                  scaleFactor = 1.005;
                 }
 
                 return Transform.scale(

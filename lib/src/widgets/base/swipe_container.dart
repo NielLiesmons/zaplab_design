@@ -270,99 +270,110 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+    final isDesktop = PlatformUtils.isDesktop;
 
-    return GestureDetector(
-      onHorizontalDragStart: _handleDragStart,
-      onHorizontalDragUpdate: _handleDragUpdate,
-      onHorizontalDragEnd: _handleDragEnd,
-      child: AppContainer(
-        decoration: widget.decoration ?? const BoxDecoration(),
-        margin: widget.margin,
-        clipBehavior: widget.isTransparent ? Clip.none : Clip.hardEdge,
-        child: Stack(
-          children: [
-            // Main content
-            AnimatedBuilder(
-              animation: _slideAnimation,
-              builder: (context, child) => Transform.translate(
-                offset: _slideAnimation.value,
-                child: ClipRRect(
-                  child: AppContainer(
-                    padding: widget.padding,
-                    alignment: widget.alignment,
-                    constraints: widget.constraints,
-                    child: widget.child,
+    return Listener(
+      onPointerDown: isDesktop
+          ? (event) {
+              if (event.buttons == 2) {
+                // Right click
+                widget.onSwipeRight?.call();
+              }
+            }
+          : null,
+      child: GestureDetector(
+        onHorizontalDragStart: _handleDragStart,
+        onHorizontalDragUpdate: _handleDragUpdate,
+        onHorizontalDragEnd: _handleDragEnd,
+        child: AppContainer(
+          decoration: widget.decoration ?? const BoxDecoration(),
+          margin: widget.margin,
+          clipBehavior: widget.isTransparent ? Clip.none : Clip.hardEdge,
+          child: Stack(
+            children: [
+              // Main content
+              AnimatedBuilder(
+                animation: _slideAnimation,
+                builder: (context, child) => Transform.translate(
+                  offset: _slideAnimation.value,
+                  child: ClipRRect(
+                    child: AppContainer(
+                      padding: widget.padding,
+                      alignment: widget.alignment,
+                      constraints: widget.constraints,
+                      child: widget.child,
+                    ),
                   ),
                 ),
               ),
-            ),
-            // Left action overlay
-            if (widget.leftContent != null)
-              Positioned(
-                left: 0,
-                top: 0,
-                bottom: 0,
-                child: AnimatedBuilder(
-                  animation: _leftWidthAnimation,
-                  builder: (context, child) => SizedBox(
-                    width: _leftWidthAnimation.value,
-                    child: AppContainer(
-                      decoration: widget.isTransparent
-                          ? null
-                          : BoxDecoration(
-                              color: theme.colors.white16,
-                            ),
-                      child: Center(
-                        child: ScaleTransition(
-                          scale: _leftScaleAnimation,
+              // Left action overlay
+              if (widget.leftContent != null)
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: AnimatedBuilder(
+                    animation: _leftWidthAnimation,
+                    builder: (context, child) => SizedBox(
+                      width: _leftWidthAnimation.value,
+                      child: AppContainer(
+                        decoration: widget.isTransparent
+                            ? null
+                            : BoxDecoration(
+                                color: theme.colors.white16,
+                              ),
+                        child: Center(
                           child: ScaleTransition(
-                            scale: Tween<double>(begin: 1.0, end: 1.25)
-                                .animate(CurvedAnimation(
-                              parent: _popController,
-                              curve: Curves.easeOut,
-                            )),
-                            child: widget.leftContent,
+                            scale: _leftScaleAnimation,
+                            child: ScaleTransition(
+                              scale: Tween<double>(begin: 1.0, end: 1.25)
+                                  .animate(CurvedAnimation(
+                                parent: _popController,
+                                curve: Curves.easeOut,
+                              )),
+                              child: widget.leftContent,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            // Right action overlay
-            if (widget.rightContent != null)
-              Positioned(
-                right: 0,
-                top: 0,
-                bottom: 0,
-                child: AnimatedBuilder(
-                  animation: _rightWidthAnimation,
-                  builder: (context, child) => SizedBox(
-                    width: _rightWidthAnimation.value,
-                    child: AppContainer(
-                      decoration: widget.isTransparent
-                          ? null
-                          : BoxDecoration(
-                              color: theme.colors.white16,
-                            ),
-                      child: Center(
-                        child: ScaleTransition(
-                          scale: _rightScaleAnimation,
+              // Right action overlay
+              if (widget.rightContent != null)
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: AnimatedBuilder(
+                    animation: _rightWidthAnimation,
+                    builder: (context, child) => SizedBox(
+                      width: _rightWidthAnimation.value,
+                      child: AppContainer(
+                        decoration: widget.isTransparent
+                            ? null
+                            : BoxDecoration(
+                                color: theme.colors.white16,
+                              ),
+                        child: Center(
                           child: ScaleTransition(
-                            scale: Tween<double>(begin: 1.0, end: 1.25)
-                                .animate(CurvedAnimation(
-                              parent: _popController,
-                              curve: Curves.easeOut,
-                            )),
-                            child: widget.rightContent,
+                            scale: _rightScaleAnimation,
+                            child: ScaleTransition(
+                              scale: Tween<double>(begin: 1.0, end: 1.25)
+                                  .animate(CurvedAnimation(
+                                parent: _popController,
+                                curve: Curves.easeOut,
+                              )),
+                              child: widget.rightContent,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );
