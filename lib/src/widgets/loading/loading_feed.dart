@@ -3,6 +3,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 enum LoadingFeedType {
   content,
   chat,
+  post,
 }
 
 class AppLoadingFeed extends StatefulWidget {
@@ -129,6 +130,93 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
               ],
             ],
           ),
+        );
+      case LoadingFeedType.post:
+        return Column(
+          children: [
+            for (var i = 0; i < 21; i++) ...[
+              AppContainer(
+                padding: const AppEdgeInsets.all(AppGapSize.s12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IntrinsicHeight(
+                      child: Row(
+                        children: [
+                          const Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              AppContainer(
+                                height: 38,
+                                width: 38,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                clipBehavior: Clip.hardEdge,
+                                child: AppSkeletonLoader(),
+                              ),
+                            ],
+                          ),
+                          const AppGap.s12(),
+                          Expanded(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    AppContainer(
+                                      height: 16,
+                                      width: 128,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            theme.radius.asBorderRadius().rad16,
+                                      ),
+                                      clipBehavior: Clip.hardEdge,
+                                      child: const AppSkeletonLoader(),
+                                    ),
+                                    const Spacer(),
+                                    AppContainer(
+                                      height: 14,
+                                      width: 32,
+                                      decoration: BoxDecoration(
+                                        color: theme.colors.white8,
+                                        borderRadius:
+                                            theme.radius.asBorderRadius().rad16,
+                                      ),
+                                      clipBehavior: Clip.hardEdge,
+                                    ),
+                                  ],
+                                ),
+                                const AppGap.s8(),
+                                AppContainer(
+                                  height: 160,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        theme.radius.asBorderRadius().rad16,
+                                  ),
+                                  clipBehavior: Clip.hardEdge,
+                                  child: const Opacity(
+                                    opacity: 0.50,
+                                    child: AppSkeletonLoader(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              AppDivider.horizontal(color: theme.colors.white8),
+            ],
+          ],
         );
     }
   }

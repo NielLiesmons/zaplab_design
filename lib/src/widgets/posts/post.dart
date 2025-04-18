@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
 class AppPost extends StatelessWidget {
-  final Note note;
+  final Note post;
   // TODO: Implement reactions, zaps, and communities once HasMany is available
   // final List<ReplaceReaction> reactions;
   // final List<ReplaceZap> zaps;
@@ -15,7 +15,7 @@ class AppPost extends StatelessWidget {
 
   const AppPost({
     super.key,
-    required this.note,
+    required this.post,
     // TODO: Implement reactions, zaps, and communities once HasMany is available
     // this.reactions = const [],
     // this.zaps = const [],
@@ -38,7 +38,7 @@ class AppPost extends StatelessWidget {
         children: [
           Row(
             children: [
-              AppProfilePic.s48(note.author.value?.pictureUrl ?? ''),
+              AppProfilePic.s48(post.author.value?.pictureUrl ?? ''),
               const AppGap.s12(),
               Expanded(
                 child: Column(
@@ -48,10 +48,10 @@ class AppPost extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        AppText.bold14(note.author.value?.name ??
-                            formatNpub(note.author.value?.pubkey ?? '')),
+                        AppText.bold14(post.author.value?.name ??
+                            formatNpub(post.author.value?.pubkey ?? '')),
                         AppText.reg12(
-                          TimestampFormatter.format(note.createdAt,
+                          TimestampFormatter.format(post.createdAt,
                               format: TimestampFormat.relative),
                           color: theme.colors.white33,
                         ),
@@ -59,7 +59,7 @@ class AppPost extends StatelessWidget {
                     ),
                     const AppGap.s6(),
                     AppShortTextRenderer(
-                      content: note.content,
+                      content: post.content,
                       onResolveEvent: onResolveEvent,
                       onResolveProfile: onResolveProfile,
                       onResolveEmoji: onResolveEmoji,
