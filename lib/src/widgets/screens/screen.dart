@@ -18,6 +18,7 @@ class HistoryItem {
 class AppScreen extends StatefulWidget {
   final Widget child;
   final Widget? topBarContent;
+  final Widget? topBarContentOnScroll;
   final Widget? bottomBarContent;
   final List<HistoryItem> history;
   final VoidCallback onHomeTap;
@@ -28,6 +29,7 @@ class AppScreen extends StatefulWidget {
     super.key,
     required this.child,
     this.topBarContent,
+    this.topBarContentOnScroll,
     this.bottomBarContent,
     this.history = const [],
     required this.onHomeTap,
@@ -89,6 +91,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   DateTime? _menuOpenedAt;
   bool _showTopBarContent = false;
   bool _isInitialDrag = true;
+  bool _showTopBarContentOnScroll = false;
 
   @override
   void initState() {
@@ -133,6 +136,8 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
       _isAtTop = _scrollController.offset <= 0;
       _showTopBarContent =
           widget.alwaysShowTopBar || _scrollController.offset > 7.0;
+      _showTopBarContentOnScroll = widget.topBarContentOnScroll != null &&
+          _scrollController.offset > 80.0;
     });
   }
 
@@ -700,6 +705,11 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                       ],
                                                     ),
                                                   ),
+                                                ],
+                                                if (widget.topBarContentOnScroll !=
+                                                        null &&
+                                                    _showTopBarContentOnScroll) ...[
+                                                  widget.topBarContentOnScroll!
                                                 ],
                                               ],
                                             ),
