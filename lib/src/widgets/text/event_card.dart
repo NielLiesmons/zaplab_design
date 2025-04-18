@@ -123,10 +123,8 @@ class AppEventCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      AppEmojiImage(
-                        emojiUrl:
-                            'assets/emoji/${getEventContentType(event)}.png',
-                        emojiName: getEventContentType(event),
+                      AppEmojiContentType(
+                        contentType: getEventContentType(event),
                         size: 16,
                       ),
                       const AppGap.s10(),
@@ -146,7 +144,7 @@ class AppEventCard extends StatelessWidget {
                   const AppGap.s2(),
                   AppText.reg12(
                     event!.author.value?.name ??
-                        formatNpub(event!.author.value?.pubkey ?? ''),
+                        formatNpub(event!.author.value?.npub ?? ''),
                     color: theme.colors.white66,
                   ),
                 ],

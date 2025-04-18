@@ -13,6 +13,7 @@ class ReplyUserData {
 
 class AppFeedPost extends StatelessWidget {
   final Note post;
+  final Function(Event) onTap;
   final List<ReplyUserData> topReplies;
   final int totalReplies;
   final Function(Event) onActions;
@@ -28,6 +29,7 @@ class AppFeedPost extends StatelessWidget {
   const AppFeedPost({
     super.key,
     required this.post,
+    required this.onTap,
     this.topReplies = const [],
     this.totalReplies = 0,
     required this.onReply,
@@ -48,6 +50,7 @@ class AppFeedPost extends StatelessWidget {
     return Column(
       children: [
         AppSwipeContainer(
+          onTap: () => onTap(post),
           padding: const AppEdgeInsets.all(AppGapSize.s12),
           leftContent: AppIcon.s16(
             theme.icons.characters.reply,

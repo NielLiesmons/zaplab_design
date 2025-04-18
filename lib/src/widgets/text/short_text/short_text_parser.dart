@@ -11,8 +11,18 @@ class AppShortTextParser {
     for (int i = 0; i < lines.length; i++) {
       String line = lines[i].trim();
 
-      // Skip empty lines
+      // Handle empty lines by creating empty paragraphs
       if (line.isEmpty) {
+        elements.add(const AppShortTextElement(
+          type: AppShortTextElementType.paragraph,
+          content: '',
+          children: [
+            AppShortTextElement(
+              type: AppShortTextElementType.styledText,
+              content: '',
+            ),
+          ],
+        ));
         continue;
       }
 

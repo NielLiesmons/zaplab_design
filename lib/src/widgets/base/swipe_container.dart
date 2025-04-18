@@ -13,6 +13,7 @@ class AppSwipeContainer extends StatefulWidget {
   final AlignmentGeometry? alignment;
   final BoxConstraints? constraints;
   final bool isTransparent;
+  final VoidCallback? onTap;
 
   const AppSwipeContainer({
     super.key,
@@ -28,6 +29,7 @@ class AppSwipeContainer extends StatefulWidget {
     this.alignment,
     this.constraints,
     this.isTransparent = false,
+    this.onTap,
   });
 
   @override
@@ -285,6 +287,7 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
         onHorizontalDragStart: _handleDragStart,
         onHorizontalDragUpdate: _handleDragUpdate,
         onHorizontalDragEnd: _handleDragEnd,
+        onTap: widget.onTap,
         child: AppContainer(
           decoration: widget.decoration ?? const BoxDecoration(),
           margin: widget.margin,

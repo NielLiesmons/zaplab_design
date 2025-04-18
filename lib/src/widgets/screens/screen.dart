@@ -18,7 +18,6 @@ class HistoryItem {
 class AppScreen extends StatefulWidget {
   final Widget child;
   final Widget? topBarContent;
-  final Widget? topBarContentOnScroll;
   final Widget? bottomBarContent;
   final List<HistoryItem> history;
   final VoidCallback onHomeTap;
@@ -29,7 +28,6 @@ class AppScreen extends StatefulWidget {
     super.key,
     required this.child,
     this.topBarContent,
-    this.topBarContentOnScroll,
     this.bottomBarContent,
     this.history = const [],
     required this.onHomeTap,
@@ -91,7 +89,6 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   DateTime? _menuOpenedAt;
   bool _showTopBarContent = false;
   bool _isInitialDrag = true;
-  bool _showTopBarContentOnScroll = false;
 
   @override
   void initState() {
@@ -135,9 +132,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
     setState(() {
       _isAtTop = _scrollController.offset <= 0;
       _showTopBarContent =
-          widget.alwaysShowTopBar || _scrollController.offset > 7.0;
-      _showTopBarContentOnScroll = widget.topBarContentOnScroll != null &&
-          _scrollController.offset > 80.0;
+          widget.alwaysShowTopBar || _scrollController.offset > 56;
     });
   }
 
@@ -666,50 +661,97 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                 if (widget.topBarContent !=
                                                         null &&
                                                     _showTopBarContent) ...[
-                                                  AnimatedOpacity(
-                                                    duration:
-                                                        theme.durations.fast,
-                                                    opacity: _showTopBarContent
-                                                        ? 1.0
-                                                        : 0.0,
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        widget.customTopBar
-                                                            ? widget
-                                                                .topBarContent!
-                                                            : Column(
+                                                  AnimatedContainer(
+                                                    duration: const Duration(
+                                                        milliseconds: 100),
+                                                    height: widget
+                                                            .alwaysShowTopBar
+                                                        ? null
+                                                        : !_scrollController
+                                                                    .hasClients ||
+                                                                _scrollController
+                                                                        .offset <
+                                                                    32
+                                                            ? 0.0
+                                                            : _scrollController
+                                                                        .offset >
+                                                                    72
+                                                                ? null
+                                                                : (_scrollController
+                                                                            .offset -
+                                                                        32) /
+                                                                    40 *
+                                                                    56,
+                                                    child: widget
+                                                                .alwaysShowTopBar ||
+                                                            (!_scrollController
+                                                                    .hasClients ||
+                                                                _scrollController
+                                                                        .offset >=
+                                                                    72)
+                                                        ? GestureDetector(
+                                                            onTap: () {
+                                                              if (_scrollController
+                                                                  .hasClients) {
+                                                                _scrollController
+                                                                    .animateTo(
+                                                                  0,
+                                                                  duration: const Duration(
+                                                                      milliseconds:
+                                                                          300),
+                                                                  curve: Curves
+                                                                      .easeOut,
+                                                                );
+                                                              }
+                                                            },
+                                                            child: MouseRegion(
+                                                              cursor: PlatformUtils
+                                                                      .isDesktop
+                                                                  ? SystemMouseCursors
+                                                                      .click
+                                                                  : MouseCursor
+                                                                      .defer,
+                                                              child: Column(
                                                                 mainAxisSize:
                                                                     MainAxisSize
                                                                         .min,
                                                                 children: [
-                                                                  AppContainer(
-                                                                    padding:
-                                                                        const AppEdgeInsets
-                                                                            .only(
-                                                                      left: AppGapSize
-                                                                          .s12,
-                                                                      right: AppGapSize
-                                                                          .s12,
-                                                                      bottom:
-                                                                          AppGapSize
-                                                                              .s12,
-                                                                    ),
-                                                                    child: widget
-                                                                        .topBarContent!,
-                                                                  ),
-                                                                  const AppDivider(),
+                                                                  widget
+                                                                          .customTopBar
+                                                                      ? widget
+                                                                          .topBarContent!
+                                                                      : Column(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.min,
+                                                                          children: [
+                                                                            AppContainer(
+                                                                              padding: const AppEdgeInsets.only(
+                                                                                left: AppGapSize.s12,
+                                                                                right: AppGapSize.s12,
+                                                                                bottom: AppGapSize.s12,
+                                                                              ),
+                                                                              child: widget.topBarContent!,
+                                                                            ),
+                                                                            const AppDivider(),
+                                                                          ],
+                                                                        ),
                                                                 ],
                                                               ),
-                                                      ],
-                                                    ),
+                                                            ),
+                                                          )
+                                                        : const Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              SizedBox(
+                                                                  width: double
+                                                                      .infinity),
+                                                              Spacer(),
+                                                              AppDivider(),
+                                                            ],
+                                                          ),
                                                   ),
-                                                ],
-                                                if (widget.topBarContentOnScroll !=
-                                                        null &&
-                                                    _showTopBarContentOnScroll) ...[
-                                                  widget.topBarContentOnScroll!
                                                 ],
                                               ],
                                             ),

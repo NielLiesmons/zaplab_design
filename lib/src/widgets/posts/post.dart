@@ -6,7 +6,7 @@ class AppPost extends StatelessWidget {
   // TODO: Implement reactions, zaps, and communities once HasMany is available
   // final List<ReplaceReaction> reactions;
   // final List<ReplaceZap> zaps;
-  // final List<ReplaceCommunity> communities;
+  final List<Community> communities;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -19,7 +19,7 @@ class AppPost extends StatelessWidget {
     // TODO: Implement reactions, zaps, and communities once HasMany is available
     // this.reactions = const [],
     // this.zaps = const [],
-    // this.communities = const [],
+    this.communities = const [],
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -37,6 +37,7 @@ class AppPost extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppProfilePic.s48(post.author.value?.pictureUrl ?? ''),
               const AppGap.s12(),
@@ -58,14 +59,10 @@ class AppPost extends StatelessWidget {
                       ],
                     ),
                     const AppGap.s6(),
-                    AppShortTextRenderer(
-                      content: post.content,
-                      onResolveEvent: onResolveEvent,
-                      onResolveProfile: onResolveProfile,
-                      onResolveEmoji: onResolveEmoji,
-                      onResolveHashtag: onResolveHashtag,
-                      onLinkTap: onLinkTap,
+                    AppCommunityStack(
+                      communities: communities,
                     ),
+
                     // TODO: Implement reactions, zaps, and communities once HasMany is available
                     /*
                     if (note.reactions.length > 0 ||
@@ -112,6 +109,21 @@ class AppPost extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const AppGap.s12(),
+          AppContainer(
+            padding: const AppEdgeInsets.symmetric(
+              vertical: AppGapSize.none,
+              horizontal: AppGapSize.s4,
+            ),
+            child: AppShortTextRenderer(
+              content: post.content,
+              onResolveEvent: onResolveEvent,
+              onResolveProfile: onResolveProfile,
+              onResolveEmoji: onResolveEmoji,
+              onResolveHashtag: onResolveHashtag,
+              onLinkTap: onLinkTap,
+            ),
           ),
         ],
       ),

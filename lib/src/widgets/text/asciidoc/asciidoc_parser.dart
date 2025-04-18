@@ -11,8 +11,18 @@ class AsciiDocParser {
     for (int i = 0; i < lines.length; i++) {
       String line = lines[i].trim();
 
-      // Skip empty lines
+      // Handle empty lines by creating empty paragraphs
       if (line.isEmpty) {
+        elements.add(const AsciiDocElement(
+          type: AsciiDocElementType.paragraph,
+          content: '',
+          children: [
+            AsciiDocElement(
+              type: AsciiDocElementType.styledText,
+              content: '',
+            ),
+          ],
+        ));
         continue;
       }
 
