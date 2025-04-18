@@ -1,11 +1,10 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 typedef ZapResult = ({double amount, String message});
 
 class AppZapModal extends StatefulWidget {
-  final String profileName;
-  final String contentType;
-  final String profileImageUrl;
+  final Event event;
   final List<({double amount, String profileImageUrl})> otherZaps;
   final List<double> recentAmounts;
   final NostrEventResolver onResolveEvent;
@@ -20,9 +19,7 @@ class AppZapModal extends StatefulWidget {
 
   const AppZapModal({
     super.key,
-    required this.profileName,
-    required this.contentType,
-    required this.profileImageUrl,
+    required this.event,
     this.otherZaps = const [],
     this.recentAmounts = const [],
     required this.onResolveEvent,
@@ -38,9 +35,7 @@ class AppZapModal extends StatefulWidget {
 
   static Future<({double amount, String message})?> show(
     BuildContext context, {
-    required String profileName,
-    required String contentType,
-    required String profileImageUrl,
+    required Event event,
     List<({double amount, String profileImageUrl})> otherZaps = const [],
     List<double> recentAmounts = const [],
     required NostrEventResolver onResolveEvent,
@@ -59,7 +54,8 @@ class AppZapModal extends StatefulWidget {
     return AppModal.show<({double amount, String message})>(
       context,
       title: 'Zap',
-      description: "$profileName's $contentType",
+      description:
+          "${event.author.value?.name}'s ${getEventContentType(event) == 'chat' ? 'Message' : getEventContentType(event)[0].toUpperCase() + getEventContentType(event).substring(1)}",
       children: [
         StatefulBuilder(
           builder: (context, setState) {
@@ -70,7 +66,7 @@ class AppZapModal extends StatefulWidget {
                   AppZapSlider(
                     initialValue: amount,
                     otherZaps: otherZaps,
-                    profileImageUrl: profileImageUrl,
+                    profileImageUrl: event.author.value?.pictureUrl ?? '',
                     recentAmounts: recentAmounts,
                     onValueChanged: (value) {
                       setState(() => amount = value);
@@ -126,46 +122,52 @@ class _AppZapModalState extends State<AppZapModal> {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    return AppContainer(
-      child: Column(
+    return AppModal(
+      title: 'Zap',
+      description:
+          "${widget.event.author.value?.name}'s ${getEventContentType(widget.event) == 'chat' ? 'Message' : getEventContentType(widget.event)[0].toUpperCase() + getEventContentType(widget.event).substring(1)}",
+      bottomBar: AppButton(
+        onTap: () {
+          Navigator.of(context).pop(
+            (amount: amount, message: message),
+          );
+        },
+        inactiveGradient: theme.colors.blurple,
+        pressedGradient: theme.colors.blurple,
         children: [
-          const AppGap.s4(),
-          AppZapSlider(
-            initialValue: amount,
-            otherZaps: widget.otherZaps,
-            profileImageUrl: widget.profileImageUrl,
-            recentAmounts: widget.recentAmounts,
-            onValueChanged: (value) {
-              setState(() => amount = value);
-            },
-            onResolveEvent: widget.onResolveEvent,
-            onResolveProfile: widget.onResolveProfile,
-            onResolveEmoji: widget.onResolveEmoji,
-            onSearchProfiles: widget.onSearchProfiles,
-            onSearchEmojis: widget.onSearchEmojis,
-            onCameraTap: widget.onCameraTap,
-            onEmojiTap: widget.onEmojiTap,
-            onGifTap: widget.onGifTap,
-            onAddTap: widget.onAddTap,
-          ),
-          const AppGap.s16(),
-          AppButton(
-            children: [
-              AppText.med16(
-                'Zap',
-                color: AppColorsData.dark().white,
-              ),
-            ],
-            onTap: () {
-              Navigator.of(context).pop(
-                (amount: amount, message: message),
-              );
-            },
-            inactiveGradient: theme.colors.blurple,
-            pressedGradient: theme.colors.blurple,
+          AppText.med16(
+            'Zap',
+            color: AppColorsData.dark().white,
           ),
         ],
       ),
+      children: [
+        AppContainer(
+          child: Column(
+            children: [
+              const AppGap.s4(),
+              AppZapSlider(
+                initialValue: amount,
+                otherZaps: widget.otherZaps,
+                profileImageUrl: widget.event.author.value?.pictureUrl ?? '',
+                recentAmounts: widget.recentAmounts,
+                onValueChanged: (value) {
+                  setState(() => amount = value);
+                },
+                onResolveEvent: widget.onResolveEvent,
+                onResolveProfile: widget.onResolveProfile,
+                onResolveEmoji: widget.onResolveEmoji,
+                onSearchProfiles: widget.onSearchProfiles,
+                onSearchEmojis: widget.onSearchEmojis,
+                onCameraTap: widget.onCameraTap,
+                onEmojiTap: widget.onEmojiTap,
+                onGifTap: widget.onGifTap,
+                onAddTap: widget.onAddTap,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

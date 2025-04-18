@@ -58,10 +58,23 @@ class _AppZapSliderState extends State<AppZapSlider> {
   // Add state variable for message
   String _message = '';
 
+  // Add focus node for text field
+  late FocusNode _focusNode;
+  late TextEditingController _messageController;
+
   @override
   void initState() {
     super.initState();
     _value = widget.initialValue.clamp(_minValue, _maxValue);
+    _focusNode = FocusNode();
+    _messageController = TextEditingController(text: _message);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _messageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -294,25 +307,31 @@ class _AppZapSliderState extends State<AppZapSlider> {
   }
 
   void _handleMessageTap() async {
-    final controller = TextEditingController(text: _message);
+    _messageController.text = _message;
     final theme = AppTheme.of(context);
+
+    // Request focus before showing the modal
+    _focusNode.requestFocus();
 
     await AppInputModal.show(
       context,
       children: [
         AppShortTextField(
-          controller: controller,
+          focusNode: _focusNode,
+          controller: _messageController,
           onChanged: (value) {
             setState(() {
               _message = value;
             });
           },
-          placeholder: [
-            AppText.reg14(
-              'Your Message',
-              color: theme.colors.white33,
-            ),
-          ],
+          placeholder: _message.isEmpty
+              ? [
+                  AppText.reg16(
+                    'Your Message',
+                    color: theme.colors.white33,
+                  ),
+                ]
+              : null,
           onResolveEvent: widget.onResolveEvent,
           onResolveProfile: widget.onResolveProfile,
           onResolveEmoji: widget.onResolveEmoji,
@@ -323,9 +342,6 @@ class _AppZapSliderState extends State<AppZapSlider> {
           onGifTap: widget.onGifTap,
           onAddTap: widget.onAddTap,
           onDoneTap: () {
-            setState(() {
-              _message = controller.text;
-            });
             Navigator.pop(context);
           },
         ),

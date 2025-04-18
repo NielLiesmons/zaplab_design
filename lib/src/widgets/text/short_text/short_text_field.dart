@@ -266,7 +266,8 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
                 const Spacer(),
                 AppSmallButton(
                   onTap: () {
-                    // Handle send action
+                    widget.onDoneTap?.call();
+                    widget.onSendTap?.call();
                   },
                   inactiveGradient: theme.colors.blurple,
                   pressedGradient: theme.colors.blurple,
