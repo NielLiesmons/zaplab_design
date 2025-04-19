@@ -117,7 +117,7 @@ class AppInputModal extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.colors.black66.withValues(alpha: 84),
+                          color: theme.colors.black16,
                           blurRadius: 32,
                           offset: const Offset(0, -12),
                         ),

@@ -310,7 +310,7 @@ class AppModal extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: theme.colors.black.withValues(alpha: 84),
+                      color: theme.colors.black16,
                       blurRadius: 32,
                       offset: const Offset(0, -12),
                     ),
@@ -449,7 +449,7 @@ class AppModal extends StatelessWidget {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: theme.colors.black33,
+                              color: theme.colors.black16,
                               blurRadius: 32,
                               offset: const Offset(0, -12),
                             ),
