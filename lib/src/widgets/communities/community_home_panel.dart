@@ -4,8 +4,8 @@ import 'package:models/models.dart';
 
 class AppCommunityHomePanel extends StatelessWidget {
   final Community community;
-  final Event? lastEvent;
-  final NostrEventResolver onResolveEvent;
+  final Model? lastModel;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final Map<String, int> contentCounts;
@@ -18,8 +18,8 @@ class AppCommunityHomePanel extends StatelessWidget {
   const AppCommunityHomePanel({
     super.key,
     required this.community,
-    this.lastEvent,
-    required this.onResolveEvent,
+    this.lastModel,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     this.contentCounts = const {},
@@ -92,9 +92,9 @@ class AppCommunityHomePanel extends StatelessWidget {
                                   ),
                                 ),
                                 AppText.reg12(
-                                  lastEvent != null
+                                  lastModel != null
                                       ? TimestampFormatter.format(
-                                          lastEvent!.createdAt,
+                                          lastModel!.createdAt,
                                           format: TimestampFormat.relative,
                                         )
                                       : ' ',
@@ -167,11 +167,11 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                       child: Row(
                                                         children: [
                                                           AppText.bold12(
-                                                            lastEvent
+                                                            lastModel
                                                                     ?.author
                                                                     .value
                                                                     ?.name ??
-                                                                formatNpub(lastEvent
+                                                                formatNpub(lastModel
                                                                         ?.author
                                                                         .value
                                                                         ?.npub ??
@@ -183,17 +183,17 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                           Flexible(
                                                             child:
                                                                 AppCompactTextRenderer(
-                                                              content: lastEvent ==
+                                                              content: lastModel ==
                                                                       null
                                                                   ? ''
-                                                                  : lastEvent
+                                                                  : lastModel
                                                                           is ChatMessage
-                                                                      ? (lastEvent
+                                                                      ? (lastModel
                                                                               as ChatMessage)
                                                                           .content
-                                                                      : 'nostr:nevent1${lastEvent!.id}',
-                                                              onResolveEvent:
-                                                                  onResolveEvent,
+                                                                      : 'nostr:nevent1${lastModel!.id}',
+                                                              onResolveModel:
+                                                                  onResolveModel,
                                                               onResolveProfile:
                                                                   onResolveProfile,
                                                               onResolveEmoji:

@@ -2,16 +2,14 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
 class AppInteractionBar extends StatefulWidget {
-  final List<CashuZap> zaps;
+  final List<Zap> zaps;
   final List<Reaction> reactions;
-  final String nevent;
-  final void Function(CashuZap)? onZapTap;
+  final void Function(Zap)? onZapTap;
   final void Function(Reaction)? onReactionTap;
   final VoidCallback? onExpand;
 
   const AppInteractionBar({
     super.key,
-    required this.nevent,
     this.zaps = const [],
     this.reactions = const [],
     this.onZapTap,
@@ -133,7 +131,6 @@ class _AppInteractionBarState extends State<AppInteractionBar>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     AppInteractionPills(
-                      nevent: widget.nevent,
                       zaps: widget.zaps,
                       reactions: widget.reactions,
                       onZapTap: widget.onZapTap,

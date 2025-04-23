@@ -3,14 +3,14 @@ import 'package:models/models.dart';
 
 class AppQuotedMessage extends StatelessWidget {
   final ChatMessage chatMessage;
-  final NostrEventResolver onResolveEvent;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
 
   const AppQuotedMessage({
     super.key,
     required this.chatMessage,
-    required this.onResolveEvent,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
   });
@@ -73,7 +73,7 @@ class AppQuotedMessage extends StatelessWidget {
                         content: chatMessage.content,
                         maxLines: 1,
                         shouldTruncate: true,
-                        onResolveEvent: onResolveEvent,
+                        onResolveModel: onResolveModel,
                         onResolveProfile: onResolveProfile,
                         onResolveEmoji: onResolveEmoji,
                       ),

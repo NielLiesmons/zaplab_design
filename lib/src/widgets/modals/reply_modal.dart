@@ -2,8 +2,8 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
 class AppReplyModal extends StatefulWidget {
-  final Event event;
-  final NostrEventResolver onResolveEvent;
+  final Model model;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrProfileSearch onSearchProfiles;
@@ -17,8 +17,8 @@ class AppReplyModal extends StatefulWidget {
 
   const AppReplyModal({
     super.key,
-    required this.event,
-    required this.onResolveEvent,
+    required this.model,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onSearchProfiles,
@@ -66,14 +66,14 @@ class _AppReplyModalState extends State<AppReplyModal> {
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: [
-              if (widget.event is! ChatMessage)
+              if (widget.model is! ChatMessage)
                 Column(
                   children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         AppProfilePic.s40(
-                          widget.event.author.value?.pictureUrl ?? '',
+                          widget.model.author.value?.pictureUrl ?? '',
                         ),
                         const AppGap.s12(),
                         Expanded(
@@ -84,17 +84,17 @@ class _AppReplyModalState extends State<AppReplyModal> {
                                 children: [
                                   AppEmojiImage(
                                     emojiUrl:
-                                        'assets/emoji/${getEventContentType(widget.event)}.png',
+                                        'assets/emoji/${getModelContentType(widget.model)}.png',
                                     emojiName:
-                                        getEventContentType(widget.event),
+                                        getModelContentType(widget.model),
                                     size: 16,
                                   ),
                                   const AppGap.s10(),
                                   Expanded(
                                     child: AppCompactTextRenderer(
                                       content:
-                                          getEventDisplayText(widget.event),
-                                      onResolveEvent: widget.onResolveEvent,
+                                          getModelDisplayText(widget.model),
+                                      onResolveModel: widget.onResolveModel,
                                       onResolveProfile: widget.onResolveProfile,
                                       onResolveEmoji: widget.onResolveEmoji,
                                       isWhite: true,
@@ -105,9 +105,9 @@ class _AppReplyModalState extends State<AppReplyModal> {
                               ),
                               const AppGap.s2(),
                               AppText.reg12(
-                                widget.event.author.value?.name ??
+                                widget.model.author.value?.name ??
                                     formatNpub(
-                                        widget.event.author.value?.pubkey ??
+                                        widget.model.author.value?.pubkey ??
                                             ''),
                                 color: theme.colors.white66,
                               ),
@@ -134,7 +134,7 @@ class _AppReplyModalState extends State<AppReplyModal> {
                     ),
                   ],
                 ),
-              if (widget.event is ChatMessage)
+              if (widget.model is ChatMessage)
                 Row(children: [
                   AppContainer(
                     width: theme.sizes.s38,
@@ -156,12 +156,12 @@ class _AppReplyModalState extends State<AppReplyModal> {
                     color: theme.colors.white33,
                   ),
                 ],
-                quotedChatMessage: widget.event is ChatMessage
-                    ? (widget.event as ChatMessage)
+                quotedChatMessage: widget.model is ChatMessage
+                    ? (widget.model as ChatMessage)
                     : null,
                 onSearchProfiles: widget.onSearchProfiles,
                 onSearchEmojis: widget.onSearchEmojis,
-                onResolveEvent: widget.onResolveEvent,
+                onResolveModel: widget.onResolveModel,
                 onResolveProfile: widget.onResolveProfile,
                 onResolveEmoji: widget.onResolveEmoji,
                 onCameraTap: widget.onCameraTap,

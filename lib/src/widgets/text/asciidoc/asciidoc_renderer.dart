@@ -5,7 +5,7 @@ import 'package:models/models.dart';
 
 class AppAsciiDocRenderer extends StatelessWidget {
   final String content;
-  final NostrEventResolver onResolveEvent;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
@@ -14,7 +14,7 @@ class AppAsciiDocRenderer extends StatelessWidget {
   const AppAsciiDocRenderer({
     super.key,
     required this.content,
-    required this.onResolveEvent,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -86,7 +86,7 @@ class AppAsciiDocRenderer extends StatelessWidget {
       AsciiDocElementType.image => const AppEdgeInsets.only(
           bottom: AppGapSize.s8,
         ),
-      AsciiDocElementType.nostrEvent => const AppEdgeInsets.only(
+      AsciiDocElementType.nostrModel => const AppEdgeInsets.only(
           top: AppGapSize.s4,
           bottom: AppGapSize.s8,
           left: AppGapSize.s16,
@@ -252,7 +252,7 @@ class AppAsciiDocRenderer extends StatelessWidget {
           final List<InlineSpan> currentSpans = [];
 
           for (var child in element.children!) {
-            if (child.type == AsciiDocElementType.nostrEvent) {
+            if (child.type == AsciiDocElementType.nostrModel) {
               if (currentSpans.isNotEmpty) {
                 paragraphPieces.add(
                   AppSelectableText.rich(
@@ -267,13 +267,13 @@ class AppAsciiDocRenderer extends StatelessWidget {
               paragraphPieces.add(const SizedBox(height: 8));
               paragraphPieces.add(
                 AppContainer(
-                  child: FutureBuilder<({Event event, VoidCallback? onTap})>(
-                    future: onResolveEvent(child.content),
+                  child: FutureBuilder<({Model model, VoidCallback? onTap})>(
+                    future: onResolveModel(child.content),
                     builder: (context, snapshot) {
                       return ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 320),
-                        child: AppEventCard(
-                          event: snapshot.data?.event,
+                        child: AppModelCard(
+                          model: snapshot.data?.model,
                           onTap: snapshot.data?.onTap,
                         ),
                       );

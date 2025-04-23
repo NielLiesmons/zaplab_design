@@ -1,63 +1,28 @@
 import 'package:flutter/foundation.dart';
 import 'package:models/models.dart';
 
-// Event
-typedef NostrEventResolver = Future<({Event event, VoidCallback? onTap})>
+// Model
+typedef NostrModelResolver = Future<({Model model, VoidCallback? onTap})>
     Function(String nevent);
 
-String getEventContentType(Event? event) {
-  return switch (event) {
-    Event<Article>() => 'article',
-    Event<ChatMessage>() => 'chat',
-    Event<Note>() => 'post',
-    Event<App>() => 'app',
+String getModelContentType(Model? model) {
+  return switch (model) {
+    Model<Article>() => 'article',
+    Model<ChatMessage>() => 'chat',
+    Model<Note>() => 'post',
+    Model<App>() => 'app',
     _ => 'nostr',
   };
 }
 
-String getEventDisplayText(Event<dynamic>? event) {
-  return switch (event) {
-    Event<Article>() => (event.internal as Article).title ?? '',
-    Event<ChatMessage>() => event.internal.content ?? '',
-    Event<Note>() => event.internal.content ?? '',
-    Event<App>() => (event.internal as App).name ?? 'App Name',
+String getModelDisplayText(Model<dynamic>? model) {
+  return switch (model) {
+    Model<Article>() => (model as Article).title ?? '',
+    Model<ChatMessage>() => (model as ChatMessage).content ?? '',
+    Model<Note>() => (model as Note).content ?? '',
+    Model<App>() => (model as App).name ?? 'App Name',
     _ => '',
   };
-}
-
-// Cashu Zap
-class CashuZap extends RegularEvent<CashuZap> {
-  CashuZap.fromMap(super.map, super.ref) : super.fromMap();
-
-  String get content => internal.content;
-  int get amount =>
-      int.tryParse(internal.getFirstTagValue('amount') ?? '0') ?? 0;
-}
-
-// Communikey
-class Communikey extends ParameterizableReplaceableEvent<Communikey> {
-  Communikey.fromMap(super.map, super.ref) : super.fromMap();
-
-  String get content => internal.content;
-  Set<String> get contentTypes => internal.getTagSetValues('content-type');
-  String? get location => internal.getFirstTagValue('location');
-}
-
-class PartialCommunikey
-    extends ParameterizableReplaceablePartialEvent<Communikey> {
-  PartialCommunikey({
-    required String content,
-    required Set<String> contentTypes,
-    String? location,
-  }) {
-    internal.content = content;
-    for (final type in contentTypes) {
-      internal.addTagValue('content-type', type);
-    }
-    if (location != null) {
-      internal.addTagValue('location', location);
-    }
-  }
 }
 
 // Profile

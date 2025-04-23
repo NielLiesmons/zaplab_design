@@ -89,7 +89,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
         final emojis = KeyGenerator.nsecToEmojis(widget.initialNsec!);
         if (emojis != null) {
           targetEmojis = List<String>.from(
-              emojis); // Create a copy to prevent reference issues
+              emojis); // Create a copy to prmodel reference issues
           _currentEmojis.fillRange(0, _currentEmojis.length, '-');
         }
       });
@@ -152,7 +152,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
       _mnemonicWords = mnemonic.split(' ');
       targetNsec = nsec;
       targetEmojis = List<String>.from(
-          emojis); // Create a copy to prevent reference issues
+          emojis); // Create a copy to prmodel reference issues
       _nsecParts = _splitNsecIntoParts(nsec);
       _currentEmojis.fillRange(0, _currentEmojis.length, '-');
       // Initialize disk indices with empty lists

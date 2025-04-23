@@ -295,7 +295,7 @@ class AsciiDocParser {
         RegExp(r'_(?!\*)(.*?)(?<!\*)_'); // Match _ but not _* or *_
     final RegExp underlinePattern = RegExp(r'\[\.underline\]#(.*?)#');
     final RegExp lineThroughPattern = RegExp(r'\[\.line-through\]#(.*?)#');
-    final RegExp nostrEventPattern = RegExp(r'nostr:nevent1\w+');
+    final RegExp nostrModelPattern = RegExp(r'nostr:nevent1\w+');
     final RegExp nostrProfilePattern = RegExp(r'nostr:n(?:pub1|profile1)\w+');
     final RegExp emojiPattern = RegExp(r':([a-zA-Z0-9_-]+):');
     final RegExp hashtagPattern = RegExp(r'(?<=^|\s)#([a-zA-Z0-9_-]+)');
@@ -318,8 +318,8 @@ class AsciiDocParser {
           underlinePattern.matchAsPrefix(text, currentPosition);
       final Match? lineThroughMatch =
           lineThroughPattern.matchAsPrefix(text, currentPosition);
-      final Match? nostrEventMatch =
-          nostrEventPattern.matchAsPrefix(text, currentPosition);
+      final Match? nostrModelMatch =
+          nostrModelPattern.matchAsPrefix(text, currentPosition);
       final Match? nostrProfileMatch =
           nostrProfilePattern.firstMatch(text.substring(currentPosition));
       final Match? emojiMatch =
@@ -338,7 +338,7 @@ class AsciiDocParser {
         underlineMatch,
         lineThroughMatch,
         monospaceMatch,
-        nostrEventMatch,
+        nostrModelMatch,
         nostrProfileMatch,
         emojiMatch,
         hashtagMatch,
@@ -401,9 +401,9 @@ class AsciiDocParser {
           type: AsciiDocElementType.hashtag,
           content: firstMatch.group(1)!,
         ));
-      } else if (firstMatch == nostrEventMatch) {
+      } else if (firstMatch == nostrModelMatch) {
         styledElements.add(AsciiDocElement(
-          type: AsciiDocElementType.nostrEvent,
+          type: AsciiDocElementType.nostrModel,
           content: firstMatch[0]!.trim(),
         ));
 

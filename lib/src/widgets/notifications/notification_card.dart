@@ -1,17 +1,19 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:models/models.dart';
 
 class AppNotificationCard extends StatelessWidget {
+  final Model model;
+  final void Function(Model) onActions;
+  final void Function(Model) onReply;
+  final bool isUnread;
+
   const AppNotificationCard({
     super.key,
-    required this.nevent,
+    required this.model,
     required this.onReply,
     required this.onActions,
     this.isUnread = false,
   });
-  final String nevent;
-  final void Function(String) onActions;
-  final void Function(String) onReply;
-  final bool isUnread;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +37,8 @@ class AppNotificationCard extends StatelessWidget {
         outlineColor: theme.colors.white66,
         outlineThickness: LineThicknessData.normal().medium,
       ),
-      onSwipeLeft: () => onReply(nevent),
-      onSwipeRight: () => onActions(nevent),
+      onSwipeLeft: () => onReply(model),
+      onSwipeRight: () => onActions(model),
       child: Column(
         children: [
           IntrinsicHeight(
@@ -126,8 +128,8 @@ class AppNotificationCard extends StatelessWidget {
                         isMedium: true,
                         isWhite: true,
                         maxLines: 6,
-                        onResolveEvent: (event) {
-                          print(event);
+                        onResolveModel: (model) {
+                          print(model);
                           return Future.value(null); //TODO: Implement
                         },
                         onResolveProfile: (profile) {

@@ -4,22 +4,22 @@ import 'package:models/models.dart';
 class AppMessageStack extends StatelessWidget {
   final List<ChatMessage> messages;
   final bool isOutgoing;
-  final NostrEventResolver onResolveEvent;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
-  final Function(Event) onActions;
-  final Function(Event) onReply;
+  final Function(Model) onActions;
+  final Function(Model) onReply;
   final Function(Reaction) onReactionTap;
-  final Function(CashuZap) onZapTap;
+  final Function(Zap) onZapTap;
   final bool isTyping;
 
   const AppMessageStack({
     super.key,
     required this.messages,
     this.isOutgoing = false,
-    required this.onResolveEvent,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -73,7 +73,7 @@ class AppMessageStack extends StatelessWidget {
                     onReply: onReply,
                     onReactionTap: onReactionTap,
                     onZapTap: onZapTap,
-                    onResolveEvent: onResolveEvent,
+                    onResolveModel: onResolveModel,
                     onResolveProfile: onResolveProfile,
                     onResolveEmoji: onResolveEmoji,
                     onResolveHashtag: onResolveHashtag,

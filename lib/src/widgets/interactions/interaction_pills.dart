@@ -3,15 +3,13 @@ import 'package:collection/collection.dart';
 import 'package:models/models.dart';
 
 class AppInteractionPills extends StatelessWidget {
-  final List<CashuZap> zaps;
+  final List<Zap> zaps;
   final List<Reaction> reactions;
-  final String nevent;
-  final void Function(CashuZap)? onZapTap;
+  final void Function(Zap)? onZapTap;
   final void Function(Reaction)? onReactionTap;
 
   const AppInteractionPills({
     super.key,
-    required this.nevent,
     this.zaps = const [],
     this.reactions = const [],
     this.onZapTap,

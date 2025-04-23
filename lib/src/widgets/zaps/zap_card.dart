@@ -2,8 +2,8 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
 class AppZapCard extends StatelessWidget {
-  final CashuZap zap;
-  final NostrEventResolver onResolveEvent;
+  final Zap zap;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final VoidCallback? onTap;
@@ -11,7 +11,7 @@ class AppZapCard extends StatelessWidget {
   const AppZapCard({
     super.key,
     required this.zap,
-    required this.onResolveEvent,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     this.onTap,
@@ -60,7 +60,7 @@ class AppZapCard extends StatelessWidget {
               ],
             ),
           ),
-          if (zap.content.isNotEmpty) ...[
+          if (zap.event.content.isNotEmpty) ...[
             const AppDivider.horizontal(),
             AppContainer(
               padding: const AppEdgeInsets.symmetric(
@@ -68,8 +68,8 @@ class AppZapCard extends StatelessWidget {
                 vertical: AppGapSize.s8,
               ),
               child: AppCompactTextRenderer(
-                content: zap.content,
-                onResolveEvent: onResolveEvent,
+                content: zap.event.content,
+                onResolveModel: onResolveModel,
                 onResolveProfile: onResolveProfile,
                 onResolveEmoji: onResolveEmoji,
               ),

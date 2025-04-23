@@ -15,7 +15,7 @@ class AppEditableShortText extends StatefulWidget {
   final List<Widget>? placeholder;
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
-  final NostrEventResolver onResolveEvent;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
 
@@ -30,7 +30,7 @@ class AppEditableShortText extends StatefulWidget {
     this.placeholder,
     required this.onSearchProfiles,
     required this.onSearchEmojis,
-    required this.onResolveEvent,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
   });
@@ -832,7 +832,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
 
   @override
   void dispose() {
-    // First remove listeners to prevent any callbacks during disposal
+    // First remove listeners to prmodel any callbacks during disposal
     _controller.removeListener(_handleTextChanged);
     if (widget.controller != null) {
       widget.controller!.removeListener(_handleExternalControllerChange);

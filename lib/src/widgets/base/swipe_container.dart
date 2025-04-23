@@ -276,8 +276,8 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
 
     return Listener(
       onPointerDown: isDesktop
-          ? (event) {
-              if (event.buttons == 2) {
+          ? (model) {
+              if (model.buttons == 2) {
                 // Right click
                 widget.onSwipeRight?.call();
               }

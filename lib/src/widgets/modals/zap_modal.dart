@@ -4,10 +4,10 @@ import 'package:models/models.dart';
 typedef ZapResult = ({double amount, String message});
 
 class AppZapModal extends StatefulWidget {
-  final Event event;
+  final Model model;
   final List<({double amount, String profileImageUrl})> otherZaps;
   final List<double> recentAmounts;
-  final NostrEventResolver onResolveEvent;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrProfileSearch onSearchProfiles;
@@ -19,10 +19,10 @@ class AppZapModal extends StatefulWidget {
 
   const AppZapModal({
     super.key,
-    required this.event,
+    required this.model,
     this.otherZaps = const [],
     this.recentAmounts = const [],
-    required this.onResolveEvent,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onSearchProfiles,
@@ -35,10 +35,10 @@ class AppZapModal extends StatefulWidget {
 
   static Future<({double amount, String message})?> show(
     BuildContext context, {
-    required Event event,
+    required Model model,
     List<({double amount, String profileImageUrl})> otherZaps = const [],
     List<double> recentAmounts = const [],
-    required NostrEventResolver onResolveEvent,
+    required NostrModelResolver onResolveModel,
     required NostrProfileResolver onResolveProfile,
     required NostrEmojiResolver onResolveEmoji,
     required NostrProfileSearch onSearchProfiles,
@@ -55,7 +55,7 @@ class AppZapModal extends StatefulWidget {
       context,
       title: 'Zap',
       description:
-          "${event.author.value?.name}'s ${getEventContentType(event) == 'chat' ? 'Message' : getEventContentType(event)[0].toUpperCase() + getEventContentType(event).substring(1)}",
+          "${model.author.value?.name}'s ${getModelContentType(model) == 'chat' ? 'Message' : getModelContentType(model)[0].toUpperCase() + getModelContentType(model).substring(1)}",
       children: [
         StatefulBuilder(
           builder: (context, setState) {
@@ -66,12 +66,12 @@ class AppZapModal extends StatefulWidget {
                   AppZapSlider(
                     initialValue: amount,
                     otherZaps: otherZaps,
-                    profileImageUrl: event.author.value?.pictureUrl ?? '',
+                    profileImageUrl: model.author.value?.pictureUrl ?? '',
                     recentAmounts: recentAmounts,
                     onValueChanged: (value) {
                       setState(() => amount = value);
                     },
-                    onResolveEvent: onResolveEvent,
+                    onResolveModel: onResolveModel,
                     onResolveProfile: onResolveProfile,
                     onResolveEmoji: onResolveEmoji,
                     onSearchProfiles: onSearchProfiles,
@@ -125,7 +125,7 @@ class _AppZapModalState extends State<AppZapModal> {
     return AppModal(
       title: 'Zap',
       description:
-          "${widget.event.author.value?.name}'s ${getEventContentType(widget.event) == 'chat' ? 'Message' : getEventContentType(widget.event)[0].toUpperCase() + getEventContentType(widget.event).substring(1)}",
+          "${widget.model.author.value?.name}'s ${getModelContentType(widget.model) == 'chat' ? 'Message' : getModelContentType(widget.model)[0].toUpperCase() + getModelContentType(widget.model).substring(1)}",
       bottomBar: AppButton(
         onTap: () {
           Navigator.of(context).pop(
@@ -149,12 +149,12 @@ class _AppZapModalState extends State<AppZapModal> {
               AppZapSlider(
                 initialValue: amount,
                 otherZaps: widget.otherZaps,
-                profileImageUrl: widget.event.author.value?.pictureUrl ?? '',
+                profileImageUrl: widget.model.author.value?.pictureUrl ?? '',
                 recentAmounts: widget.recentAmounts,
                 onValueChanged: (value) {
                   setState(() => amount = value);
                 },
-                onResolveEvent: widget.onResolveEvent,
+                onResolveModel: widget.onResolveModel,
                 onResolveProfile: widget.onResolveProfile,
                 onResolveEmoji: widget.onResolveEmoji,
                 onSearchProfiles: widget.onSearchProfiles,

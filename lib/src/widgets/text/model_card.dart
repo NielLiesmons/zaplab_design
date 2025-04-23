@@ -1,19 +1,19 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppEventCard extends StatelessWidget {
-  final Event? event;
-  final NostrEventResolver? onResolveEvent;
+class AppModelCard extends StatelessWidget {
+  final Model? model;
+  final NostrModelResolver? onResolveModel;
   final NostrProfileResolver? onResolveProfile;
   final NostrEmojiResolver? onResolveEmoji;
   final NostrHashtagResolver? onResolveHashtag;
   final VoidCallback? onTap;
 
-  const AppEventCard({
+  const AppModelCard({
     super.key,
-    required this.event,
+    required this.model,
     this.onTap,
-    this.onResolveEvent,
+    this.onResolveModel,
     this.onResolveProfile,
     this.onResolveEmoji,
     this.onResolveHashtag,
@@ -25,7 +25,7 @@ class AppEventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    if (event == null || getEventContentType(event) == 'nostr') {
+    if (model == null || getModelContentType(model) == 'nostr') {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
         child: AppPanelButton(
@@ -56,34 +56,34 @@ class AppEventCard extends StatelessWidget {
       );
     }
 
-    if (event is Article) {
+    if (model is Article) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
         child: AppArticleCard(
-          article: event as Article,
+          article: model as Article,
           onTap: onTap,
         ),
       );
     }
 
-    if (event is ChatMessage) {
+    if (model is ChatMessage) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
         child: AppQuotedMessage(
-          chatMessage: event as ChatMessage,
-          onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
+          chatMessage: model as ChatMessage,
+          onResolveModel: onResolveModel ?? (_) => Future.value(null),
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
           onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
         ),
       );
     }
 
-    if (event is Zap) {
+    if (model is Zap) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
         child: AppZapCard(
-          zap: event as CashuZap,
-          onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
+          zap: model as Zap,
+          onResolveModel: onResolveModel ?? (_) => Future.value(null),
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
           onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
           onTap: onTap,
@@ -91,13 +91,13 @@ class AppEventCard extends StatelessWidget {
       );
     }
 
-    if (event is Note) {
+    if (model is Note) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
         child: AppPostCard(
-          post: event as Note,
+          post: model as Note,
           onTap: onTap,
-          onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
+          onResolveModel: onResolveModel ?? (_) => Future.value(null),
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
           onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
         ),
@@ -115,7 +115,7 @@ class AppEventCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AppProfilePic.s40(event!.author.value?.pictureUrl ?? ''),
+            AppProfilePic.s40(model!.author.value?.pictureUrl ?? ''),
             const AppGap.s12(),
             Expanded(
               child: Column(
@@ -124,15 +124,15 @@ class AppEventCard extends StatelessWidget {
                   Row(
                     children: [
                       AppEmojiContentType(
-                        contentType: getEventContentType(event),
+                        contentType: getModelContentType(model),
                         size: 16,
                       ),
                       const AppGap.s10(),
                       Expanded(
                         child: AppCompactTextRenderer(
-                          content: getEventDisplayText(event),
-                          onResolveEvent:
-                              onResolveEvent ?? (_) => Future.value(null),
+                          content: getModelDisplayText(model),
+                          onResolveModel:
+                              onResolveModel ?? (_) => Future.value(null),
                           onResolveProfile:
                               onResolveProfile ?? (_) => Future.value(null),
                           onResolveEmoji:
@@ -143,8 +143,8 @@ class AppEventCard extends StatelessWidget {
                   ),
                   const AppGap.s2(),
                   AppText.reg12(
-                    event!.author.value?.name ??
-                        formatNpub(event!.author.value?.npub ?? ''),
+                    model!.author.value?.name ??
+                        formatNpub(model!.author.value?.npub ?? ''),
                     color: theme.colors.white66,
                   ),
                 ],

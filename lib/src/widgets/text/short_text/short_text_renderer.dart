@@ -8,14 +8,14 @@ enum ShortTextContentType {
   singleImageStack,
   singleEmoji,
   singleProfile,
-  singleEvent,
+  singleModel,
   mixed;
 
   bool get isSingleContent => switch (this) {
         ShortTextContentType.singleImageStack ||
         ShortTextContentType.singleEmoji ||
         ShortTextContentType.singleProfile ||
-        ShortTextContentType.singleEvent =>
+        ShortTextContentType.singleModel =>
           true,
         _ => false,
       };
@@ -43,7 +43,7 @@ class ShortTextContent extends InheritedWidget {
 
 class AppShortTextRenderer extends StatelessWidget {
   final String content;
-  final NostrEventResolver onResolveEvent;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
@@ -52,7 +52,7 @@ class AppShortTextRenderer extends StatelessWidget {
   const AppShortTextRenderer({
     super.key,
     required this.content,
-    required this.onResolveEvent,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -96,9 +96,9 @@ class AppShortTextRenderer extends StatelessWidget {
         return ShortTextContentType.singleProfile;
       }
 
-      // Single event
-      if (child.type == AppShortTextElementType.nostrEvent) {
-        return ShortTextContentType.singleEvent;
+      // Single model
+      if (child.type == AppShortTextElementType.nostrModel) {
+        return ShortTextContentType.singleModel;
       }
     }
 
@@ -298,7 +298,7 @@ class AppShortTextRenderer extends StatelessWidget {
           }
 
           for (var child in element.children!) {
-            if (child.type == AppShortTextElementType.nostrEvent) {
+            if (child.type == AppShortTextElementType.nostrModel) {
               if (currentSpans.isNotEmpty) {
                 paragraphPieces.add(
                   AppContainer(
@@ -319,15 +319,15 @@ class AppShortTextRenderer extends StatelessWidget {
               }
               paragraphPieces.add(const AppGap.s2());
               paragraphPieces.add(
-                FutureBuilder<({Event event, VoidCallback? onTap})>(
-                  future: onResolveEvent(child.content),
+                FutureBuilder<({Model model, VoidCallback? onTap})>(
+                  future: onResolveModel(child.content),
                   builder: (context, snapshot) {
                     return ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 320),
-                      child: AppEventCard(
-                        event: snapshot.data?.event,
+                      child: AppModelCard(
+                        model: snapshot.data?.model,
                         onTap: snapshot.data?.onTap,
-                        onResolveEvent: onResolveEvent,
+                        onResolveModel: onResolveModel,
                         onResolveProfile: onResolveProfile,
                         onResolveEmoji: onResolveEmoji,
                         onResolveHashtag: onResolveHashtag,

@@ -1,8 +1,9 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:models/models.dart';
 
 class AppZapPill extends StatelessWidget {
-  final CashuZap zap;
+  final Zap zap;
   final VoidCallback onTap;
   final bool isOutgoing;
 

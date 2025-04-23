@@ -4,11 +4,11 @@ import 'dart:ui';
 import 'package:models/models.dart';
 
 class AppActionsModal extends StatelessWidget {
-  // Event
-  final Event event;
-  final Function(Event) onEventTap;
+  // Model
+  final Model model;
+  final Function(Model) onModelTap;
   // Reply
-  final Function(Event) onReplyTap;
+  final Function(Model) onReplyTap;
   // Emoji
   final List<Emoji> recentEmoji;
   final Function(Emoji) onEmojiTap;
@@ -16,23 +16,23 @@ class AppActionsModal extends StatelessWidget {
   // Zaps
   final List<double> recentAmounts;
   final Function(double) onZapTap;
-  final Function(Event) onMoreZapsTap;
+  final Function(Model) onMoreZapsTap;
   // Other actions
-  final Function(Event) onReportTap;
-  final Function(Event) onAddProfileTap;
-  final Function(Event) onOpenWithTap;
-  final Function(Event) onLabelTap;
-  final Function(Event) onShareTap;
+  final Function(Model) onReportTap;
+  final Function(Model) onAddProfileTap;
+  final Function(Model) onOpenWithTap;
+  final Function(Model) onLabelTap;
+  final Function(Model) onShareTap;
   // Compact text rendering
-  final NostrEventResolver onResolveEvent;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
 
   const AppActionsModal({
     super.key,
-    required this.event,
-    required this.onEventTap,
+    required this.model,
+    required this.onModelTap,
     required this.onReplyTap,
     required this.recentEmoji,
     required this.onEmojiTap,
@@ -45,7 +45,7 @@ class AppActionsModal extends StatelessWidget {
     required this.onOpenWithTap,
     required this.onLabelTap,
     required this.onShareTap,
-    required this.onResolveEvent,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -53,21 +53,21 @@ class AppActionsModal extends StatelessWidget {
 
   static Future<void> show(
     BuildContext context, {
-    required Event event,
-    required Function(Event) onEventTap,
-    required Function(Event) onReplyTap,
+    required Model model,
+    required Function(Model) onModelTap,
+    required Function(Model) onReplyTap,
     required List<Emoji> recentEmoji,
     required Function(Emoji) onEmojiTap,
     required VoidCallback onMoreEmojiTap,
     required List<double> recentAmounts,
     required Function(double) onZapTap,
-    required Function(Event) onMoreZapsTap,
-    required Function(Event) onReportTap,
-    required Function(Event) onAddProfileTap,
-    required Function(Event) onOpenWithTap,
-    required Function(Event) onLabelTap,
-    required Function(Event) onShareTap,
-    required NostrEventResolver onResolveEvent,
+    required Function(Model) onMoreZapsTap,
+    required Function(Model) onReportTap,
+    required Function(Model) onAddProfileTap,
+    required Function(Model) onOpenWithTap,
+    required Function(Model) onLabelTap,
+    required Function(Model) onShareTap,
+    required NostrModelResolver onResolveModel,
     required NostrProfileResolver onResolveProfile,
     required NostrEmojiResolver onResolveEmoji,
     required NostrHashtagResolver onResolveHashtag,
@@ -78,8 +78,8 @@ class AppActionsModal extends StatelessWidget {
       topBar: _buildTopBar(context),
       children: [
         AppActionsModal(
-          event: event,
-          onEventTap: onEventTap,
+          model: model,
+          onModelTap: onModelTap,
           onReplyTap: onReplyTap,
           recentEmoji: recentEmoji,
           onEmojiTap: onEmojiTap,
@@ -87,7 +87,7 @@ class AppActionsModal extends StatelessWidget {
           recentAmounts: recentAmounts,
           onZapTap: onZapTap,
           onMoreZapsTap: onMoreZapsTap,
-          onResolveEvent: onResolveEvent,
+          onResolveModel: onResolveModel,
           onResolveProfile: onResolveProfile,
           onResolveEmoji: onResolveEmoji,
           onResolveHashtag: onResolveHashtag,
@@ -98,8 +98,8 @@ class AppActionsModal extends StatelessWidget {
           onShareTap: onShareTap,
         )._buildContent(
           context,
-          event: event,
-          onEventTap: onEventTap,
+          model: model,
+          onModelTap: onModelTap,
           onReplyTap: onReplyTap,
           recentEmoji: recentEmoji,
           recentAmounts: recentAmounts,
@@ -112,7 +112,7 @@ class AppActionsModal extends StatelessWidget {
           onOpenWithTap: onOpenWithTap,
           onLabelTap: onLabelTap,
           onShareTap: onShareTap,
-          onResolveEvent: onResolveEvent,
+          onResolveModel: onResolveModel,
           onResolveProfile: onResolveProfile,
           onResolveEmoji: onResolveEmoji,
           onResolveHashtag: onResolveHashtag,
@@ -128,8 +128,8 @@ class AppActionsModal extends StatelessWidget {
       children: [
         _buildContent(
           context,
-          event: event,
-          onEventTap: onEventTap,
+          model: model,
+          onModelTap: onModelTap,
           onReplyTap: onReplyTap,
           recentEmoji: recentEmoji,
           recentAmounts: recentAmounts,
@@ -142,7 +142,7 @@ class AppActionsModal extends StatelessWidget {
           onOpenWithTap: onOpenWithTap,
           onLabelTap: onLabelTap,
           onShareTap: onShareTap,
-          onResolveEvent: onResolveEvent,
+          onResolveModel: onResolveModel,
           onResolveProfile: onResolveProfile,
           onResolveEmoji: onResolveEmoji,
           onResolveHashtag: onResolveHashtag,
@@ -189,21 +189,21 @@ class AppActionsModal extends StatelessWidget {
 
   Widget _buildContent(
     BuildContext context, {
-    required Event event,
-    required Function(Event) onEventTap,
-    required Function(Event) onReplyTap,
+    required Model model,
+    required Function(Model) onModelTap,
+    required Function(Model) onReplyTap,
     required List<Emoji> recentEmoji,
     required List<double> recentAmounts,
     required Function(Emoji) onEmojiTap,
     required VoidCallback onMoreEmojiTap,
     required Function(double) onZapTap,
-    required Function(Event) onMoreZapsTap,
-    required Function(Event) onReportTap,
-    required Function(Event) onAddProfileTap,
-    required Function(Event) onOpenWithTap,
-    required Function(Event) onLabelTap,
-    required Function(Event) onShareTap,
-    required NostrEventResolver onResolveEvent,
+    required Function(Model) onMoreZapsTap,
+    required Function(Model) onReportTap,
+    required Function(Model) onAddProfileTap,
+    required Function(Model) onOpenWithTap,
+    required Function(Model) onLabelTap,
+    required Function(Model) onShareTap,
+    required NostrModelResolver onResolveModel,
     required NostrProfileResolver onResolveProfile,
     required NostrEmojiResolver onResolveEmoji,
     required NostrHashtagResolver onResolveHashtag,
@@ -215,7 +215,7 @@ class AppActionsModal extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TapBuilder(
-          onTap: onEventTap(event),
+          onTap: onModelTap(model),
           builder: (context, state, isFocused) {
             double scaleFactor = 1.0;
             if (state == TapState.pressed) {
@@ -228,7 +228,7 @@ class AppActionsModal extends StatelessWidget {
               scale: scaleFactor,
               duration: AppDurationsData.normal().fast,
               curve: Curves.easeInOut,
-              child: event is ChatMessage
+              child: Model is ChatMessage
                   ? AppContainer(
                       decoration: BoxDecoration(
                         color: theme.colors.black33,
@@ -242,8 +242,8 @@ class AppActionsModal extends StatelessWidget {
                       child: Column(
                         children: [
                           AppQuotedMessage(
-                            chatMessage: event,
-                            onResolveEvent: onResolveEvent,
+                            chatMessage: model as ChatMessage,
+                            onResolveModel: onResolveModel,
                             onResolveProfile: onResolveProfile,
                             onResolveEmoji: onResolveEmoji,
                           ),
@@ -277,7 +277,7 @@ class AppActionsModal extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             AppProfilePic.s40(
-                                event.author.value?.pictureUrl ?? ''),
+                                model.author.value?.pictureUrl ?? ''),
                             const AppGap.s12(),
                             Expanded(
                               child: Column(
@@ -287,15 +287,15 @@ class AppActionsModal extends StatelessWidget {
                                     children: [
                                       AppEmojiImage(
                                         emojiUrl:
-                                            'assets/emoji/${getEventContentType(event)}.png',
-                                        emojiName: getEventContentType(event),
+                                            'assets/emoji/${getModelContentType(model)}.png',
+                                        emojiName: getModelContentType(model),
                                         size: 16,
                                       ),
                                       const AppGap.s10(),
                                       Expanded(
                                         child: AppCompactTextRenderer(
-                                          content: getEventDisplayText(event),
-                                          onResolveEvent: onResolveEvent,
+                                          content: getModelDisplayText(model),
+                                          onResolveModel: onResolveModel,
                                           onResolveProfile: onResolveProfile,
                                           onResolveEmoji: onResolveEmoji,
                                           isWhite: true,
@@ -306,9 +306,9 @@ class AppActionsModal extends StatelessWidget {
                                   ),
                                   const AppGap.s2(),
                                   AppText.reg12(
-                                    event.author.value?.name ??
+                                    model.author.value?.name ??
                                         formatNpub(
-                                            event.author.value?.npub ?? ''),
+                                            model.author.value?.npub ?? ''),
                                     color: theme.colors.white66,
                                   ),
                                 ],
@@ -333,7 +333,7 @@ class AppActionsModal extends StatelessWidget {
                           ],
                         ),
                         TapBuilder(
-                          onTap: () => onReplyTap(event),
+                          onTap: () => onReplyTap(model),
                           builder: (context, state, hasFocus) {
                             double scaleFactor = 1.0;
                             if (state == TapState.pressed) {
@@ -604,7 +604,7 @@ class AppActionsModal extends StatelessWidget {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                     child: TapBuilder(
-                      onTap: onMoreZapsTap(event),
+                      onTap: onMoreZapsTap(model),
                       builder: (context, state, isFocused) {
                         return AppContainer(
                           height: double.infinity,
@@ -644,10 +644,10 @@ class AppActionsModal extends StatelessWidget {
                     bottom: AppGapSize.s16,
                   ),
                   onTap: i == 0
-                      ? onOpenWithTap(event)
+                      ? onOpenWithTap(model)
                       : i == 1
-                          ? onLabelTap(event)
-                          : onShareTap(event),
+                          ? onLabelTap(model)
+                          : onShareTap(model),
                   isLight: true,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -681,7 +681,7 @@ class AppActionsModal extends StatelessWidget {
         ),
         const AppGap.s12(),
         AppButton(
-          onTap: onReportTap(event),
+          onTap: onReportTap(model),
           inactiveColor: theme.colors.black33,
           children: [
             AppText.med14('Report', gradient: theme.colors.rouge),
@@ -689,7 +689,7 @@ class AppActionsModal extends StatelessWidget {
         ),
         const AppGap.s12(),
         AppButton(
-          onTap: onAddProfileTap(event),
+          onTap: onAddProfileTap(model),
           children: [
             AppIcon.s16(
               theme.icons.characters.plus,
@@ -699,8 +699,8 @@ class AppActionsModal extends StatelessWidget {
             const AppGap.s12(),
             AppText.reg14('Add ', color: AppColorsData.dark().white),
             AppText.bold14(
-              event.author.value?.name ??
-                  formatNpub(event.author.value?.pubkey ?? ''),
+              model.author.value?.name ??
+                  formatNpub(model.author.value?.pubkey ?? ''),
               color: AppColorsData.dark().white,
             ),
           ],

@@ -8,7 +8,7 @@ class AppBottomBarChat extends StatelessWidget {
   final VoidCallback? onVoiceTap;
   final VoidCallback? onActions;
   final String? draftMessage;
-  final NostrEventResolver onResolveEvent;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
 
@@ -19,7 +19,7 @@ class AppBottomBarChat extends StatelessWidget {
     required this.onVoiceTap,
     required this.onActions,
     this.draftMessage,
-    required this.onResolveEvent,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
   });
@@ -74,7 +74,7 @@ class AppBottomBarChat extends StatelessWidget {
                           ? AppCompactTextRenderer(
                               content: draftMessage!,
                               maxLines: 1,
-                              onResolveEvent: onResolveEvent,
+                              onResolveModel: onResolveModel,
                               onResolveProfile: onResolveProfile,
                               onResolveEmoji: (_) async => '',
                               isMedium: false,

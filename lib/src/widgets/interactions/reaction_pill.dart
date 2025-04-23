@@ -62,7 +62,7 @@ class AppReactionPill extends StatelessWidget {
                   )
                 else
                   AppText.med16(
-                    reaction.internal.content,
+                    reaction.event.content,
                   ),
                 const AppGap.s6(),
                 AppProfilePic.s18(reaction.author.value?.pictureUrl ?? ''),

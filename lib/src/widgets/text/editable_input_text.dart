@@ -80,7 +80,7 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
 
   @override
   void dispose() {
-    // First remove listeners to prevent any callbacks during disposal
+    // First remove listeners to prmodel any callbacks during disposal
     _controller.removeListener(_handleTextChanged);
     if (widget.controller != null) {
       widget.controller!.removeListener(_handleExternalControllerChange);

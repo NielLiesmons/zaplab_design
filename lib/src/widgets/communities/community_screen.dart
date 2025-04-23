@@ -23,18 +23,18 @@ class AppCommunityScreen extends StatefulWidget {
   // Other actions & settings
   final VoidCallback? onHomeTap;
   final VoidCallback? onNotificationsTap;
-  final String? focusedMessageNevent;
+  final String? focusedMessageNmodel;
   // Short text rendering
-  final NostrEventResolver onResolveEvent;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
-  // Actions on individual events
-  final Function(Event) onActions;
-  final Function(Event) onReply;
+  // Actions on individual models
+  final Function(Model) onActions;
+  final Function(Model) onReply;
   final Function(Reaction) onReactionTap;
-  final Function(CashuZap) onZapTap;
+  final Function(Zap) onZapTap;
 
   const AppCommunityScreen({
     super.key,
@@ -46,17 +46,17 @@ class AppCommunityScreen extends StatefulWidget {
     // Content related
     this.mainCount,
     required this.contentTypes,
-    this.focusedMessageNevent,
+    this.focusedMessageNmodel,
     // Other actions & settings
     this.onHomeTap,
     this.onNotificationsTap,
     // Resolvers
-    required this.onResolveEvent,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
-    // Actions on individual events
+    // Actions on individual models
     required this.onActions,
     required this.onReply,
     required this.onReactionTap,

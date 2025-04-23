@@ -55,7 +55,7 @@ class AppArticleCard extends StatelessWidget {
               ),
             ),
 
-          // Event info section
+          // Model info section
           AppContainer(
             padding: const AppEdgeInsets.only(
               left: AppGapSize.s12,

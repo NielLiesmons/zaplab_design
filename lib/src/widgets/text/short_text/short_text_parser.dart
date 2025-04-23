@@ -238,7 +238,7 @@ class AppShortTextParser {
     final RegExp underlinePattern = RegExp(r'__([^_]+)__');
     final RegExp lineThroughPattern = RegExp(r'~~([^~]+)~~');
     final RegExp monospacePattern = RegExp(r'`([^`]+)`');
-    final RegExp nostrEventPattern = RegExp(r'nostr:nevent1\w+');
+    final RegExp nostrModelPattern = RegExp(r'nostr:nevent1\w+');
     final RegExp nostrProfilePattern = RegExp(r'nostr:n(?:pub1|profile1)\w+');
     final RegExp emojiPattern = RegExp(r':([a-zA-Z0-9_-]+):');
     final RegExp utfEmojiPattern = RegExp(
@@ -296,8 +296,8 @@ class AppShortTextParser {
           lineThroughPattern.matchAsPrefix(text, currentPosition);
       final Match? monospaceMatch =
           monospacePattern.matchAsPrefix(text, currentPosition);
-      final Match? nostrEventMatch =
-          nostrEventPattern.matchAsPrefix(text, currentPosition);
+      final Match? nostrModelMatch =
+          nostrModelPattern.matchAsPrefix(text, currentPosition);
       final Match? nostrProfileMatch =
           nostrProfilePattern.matchAsPrefix(text, currentPosition);
       final Match? emojiMatch =
@@ -316,7 +316,7 @@ class AppShortTextParser {
         underlineMatch,
         lineThroughMatch,
         monospaceMatch,
-        nostrEventMatch,
+        nostrModelMatch,
         nostrProfileMatch,
         emojiMatch,
         urlMatch,
@@ -395,9 +395,9 @@ class AppShortTextParser {
           type: AppShortTextElementType.hashtag,
           content: firstMatch.group(1)!,
         ));
-      } else if (firstMatch == nostrEventMatch) {
+      } else if (firstMatch == nostrModelMatch) {
         styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.nostrEvent,
+          type: AppShortTextElementType.nostrModel,
           content: firstMatch[0]!.trim(),
         ));
 

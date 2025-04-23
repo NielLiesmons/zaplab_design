@@ -121,8 +121,8 @@ export 'text/admonition.dart';
 export 'text/amount.dart';
 export 'text/code_block.dart';
 export 'text/editable_input_text.dart';
-export 'text/event_card.dart';
 export 'text/input_text_field.dart';
+export 'text/model_card.dart';
 export 'text/section_title.dart';
 
 export 'text/short_text/compact_text_renderer.dart';

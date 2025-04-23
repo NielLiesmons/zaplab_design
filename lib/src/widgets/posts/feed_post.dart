@@ -13,14 +13,14 @@ class ReplyUserData {
 
 class AppFeedPost extends StatelessWidget {
   final Note post;
-  final Function(Event) onTap;
+  final Function(Model) onTap;
   final List<ReplyUserData> topReplies;
   final int totalReplies;
-  final Function(Event) onActions;
-  final Function(Event) onReply;
+  final Function(Model) onActions;
+  final Function(Model) onReply;
   final Function(Reaction)? onReactionTap;
-  final Function(CashuZap)? onZapTap;
-  final NostrEventResolver onResolveEvent;
+  final Function(Zap)? onZapTap;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
@@ -36,7 +36,7 @@ class AppFeedPost extends StatelessWidget {
     required this.onActions,
     required this.onReactionTap,
     required this.onZapTap,
-    required this.onResolveEvent,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -104,7 +104,7 @@ class AppFeedPost extends StatelessWidget {
                           const AppGap.s2(),
                           AppShortTextRenderer(
                             content: post.content,
-                            onResolveEvent: onResolveEvent,
+                            onResolveModel: onResolveModel,
                             onResolveProfile: onResolveProfile,
                             onResolveEmoji: onResolveEmoji,
                             onResolveHashtag: onResolveHashtag,

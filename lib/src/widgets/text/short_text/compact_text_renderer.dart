@@ -3,7 +3,7 @@ import 'package:models/models.dart';
 
 class AppCompactTextRenderer extends StatelessWidget {
   final String content;
-  final NostrEventResolver onResolveEvent;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final int? maxLines;
@@ -14,7 +14,7 @@ class AppCompactTextRenderer extends StatelessWidget {
   const AppCompactTextRenderer({
     super.key,
     required this.content,
-    required this.onResolveEvent,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     this.maxLines,
@@ -109,7 +109,7 @@ class AppCompactTextRenderer extends StatelessWidget {
       } else if (element.type == AppShortTextElementType.paragraph &&
           element.children != null) {
         for (var child in element.children!) {
-          if (child.type == AppShortTextElementType.nostrEvent) {
+          if (child.type == AppShortTextElementType.nostrModel) {
             spans.add(TextSpan(
               children: [
                 TextSpan(
@@ -124,42 +124,42 @@ class AppCompactTextRenderer extends StatelessWidget {
                 ),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
-                  child: FutureBuilder<({Event event, VoidCallback? onTap})>(
-                    future: onResolveEvent(child.content),
+                  child: FutureBuilder<({Model model, VoidCallback? onTap})>(
+                    future: onResolveModel(child.content),
                     builder: (context, snapshot) {
                       return Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           AppEmojiContentType(
                             contentType:
-                                getEventContentType(snapshot.data?.event),
+                                getModelContentType(snapshot.data?.model),
                             size: emojiSize,
                             opacity: 0.66,
                           ),
                           isMedium ? const AppGap.s8() : const AppGap.s6(),
                           isMedium
                               ? AppText.reg14(
-                                  getEventContentType(snapshot.data?.event) ==
+                                  getModelContentType(snapshot.data?.model) ==
                                           'nostr'
                                       ? 'Nostr Publication  '
-                                      : getEventContentType(
-                                                  snapshot.data?.event)[0]
+                                      : getModelContentType(
+                                                  snapshot.data?.model)[0]
                                               .toUpperCase() +
-                                          getEventContentType(
-                                                  snapshot.data?.event)
+                                          getModelContentType(
+                                                  snapshot.data?.model)
                                               .substring(1) +
                                           ("  "),
                                   color: textColor,
                                 )
                               : AppText.reg12(
-                                  getEventContentType(snapshot.data?.event) ==
+                                  getModelContentType(snapshot.data?.model) ==
                                           'nostr'
                                       ? 'Nostr Publication  '
-                                      : getEventContentType(
-                                                  snapshot.data?.event)[0]
+                                      : getModelContentType(
+                                                  snapshot.data?.model)[0]
                                               .toUpperCase() +
-                                          getEventContentType(
-                                                  snapshot.data?.event)
+                                          getModelContentType(
+                                                  snapshot.data?.model)
                                               .substring(1) +
                                           ("  "),
                                   color: textColor,

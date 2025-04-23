@@ -2,13 +2,13 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
 class AppZapBubble extends StatefulWidget {
-  final CashuZap zap;
+  final Zap zap;
   final bool isOutgoing;
-  final Function(Event) onActions;
-  final Function(Event) onReply;
+  final Function(Model) onActions;
+  final Function(Model) onReply;
   final Function(Reaction)? onReactionTap;
-  final Function(CashuZap)? onZapTap;
-  final NostrEventResolver onResolveEvent;
+  final Function(Zap)? onZapTap;
+  final NostrModelResolver onResolveModel;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
@@ -22,7 +22,7 @@ class AppZapBubble extends StatefulWidget {
     required this.onReply,
     this.onReactionTap,
     this.onZapTap,
-    required this.onResolveEvent,
+    required this.onResolveModel,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -123,8 +123,8 @@ class _AppZapBubbleState extends State<AppZapBubble> {
                               ],
                               const AppGap.s4(),
                               AppShortTextRenderer(
-                                content: widget.zap.content,
-                                onResolveEvent: widget.onResolveEvent,
+                                content: widget.zap.event.content,
+                                onResolveModel: widget.onResolveModel,
                                 onResolveProfile: widget.onResolveProfile,
                                 onResolveEmoji: widget.onResolveEmoji,
                                 onResolveHashtag: widget.onResolveHashtag,
