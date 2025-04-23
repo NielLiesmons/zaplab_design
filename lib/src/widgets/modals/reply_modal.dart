@@ -3,7 +3,7 @@ import 'package:models/models.dart';
 
 class AppReplyModal extends StatefulWidget {
   final Model model;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrProfileSearch onSearchProfiles;
@@ -18,7 +18,7 @@ class AppReplyModal extends StatefulWidget {
   const AppReplyModal({
     super.key,
     required this.model,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onSearchProfiles,
@@ -94,7 +94,7 @@ class _AppReplyModalState extends State<AppReplyModal> {
                                     child: AppCompactTextRenderer(
                                       content:
                                           getModelDisplayText(widget.model),
-                                      onResolveModel: widget.onResolveModel,
+                                      onResolveEvent: widget.onResolveEvent,
                                       onResolveProfile: widget.onResolveProfile,
                                       onResolveEmoji: widget.onResolveEmoji,
                                       isWhite: true,
@@ -161,7 +161,7 @@ class _AppReplyModalState extends State<AppReplyModal> {
                     : null,
                 onSearchProfiles: widget.onSearchProfiles,
                 onSearchEmojis: widget.onSearchEmojis,
-                onResolveModel: widget.onResolveModel,
+                onResolveEvent: widget.onResolveEvent,
                 onResolveProfile: widget.onResolveProfile,
                 onResolveEmoji: widget.onResolveEmoji,
                 onCameraTap: widget.onCameraTap,

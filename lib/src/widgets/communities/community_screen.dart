@@ -25,7 +25,7 @@ class AppCommunityScreen extends StatefulWidget {
   final VoidCallback? onNotificationsTap;
   final String? focusedMessageNmodel;
   // Short text rendering
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
@@ -51,7 +51,7 @@ class AppCommunityScreen extends StatefulWidget {
     this.onHomeTap,
     this.onNotificationsTap,
     // Resolvers
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,

@@ -4,7 +4,7 @@ import 'package:models/models.dart';
 class AppPostCard extends StatelessWidget {
   final Note post;
   final VoidCallback? onTap;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
 
@@ -12,7 +12,7 @@ class AppPostCard extends StatelessWidget {
     super.key,
     required this.post,
     this.onTap,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
   });
@@ -55,7 +55,7 @@ class AppPostCard extends StatelessWidget {
           AppContainer(
             child: AppCompactTextRenderer(
               content: post.content,
-              onResolveModel: onResolveModel,
+              onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,
               onResolveEmoji: onResolveEmoji,
               maxLines: 3,

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:models/models.dart';
 
 // Model
-typedef NostrModelResolver = Future<({Model model, VoidCallback? onTap})>
+typedef NostrEventResolver = Future<({Model model, VoidCallback? onTap})>
     Function(String nevent);
 
 String getModelContentType(Model? model) {

@@ -43,7 +43,7 @@ class ShortTextContent extends InheritedWidget {
 
 class AppShortTextRenderer extends StatelessWidget {
   final String content;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
@@ -52,7 +52,7 @@ class AppShortTextRenderer extends StatelessWidget {
   const AppShortTextRenderer({
     super.key,
     required this.content,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -320,14 +320,14 @@ class AppShortTextRenderer extends StatelessWidget {
               paragraphPieces.add(const AppGap.s2());
               paragraphPieces.add(
                 FutureBuilder<({Model model, VoidCallback? onTap})>(
-                  future: onResolveModel(child.content),
+                  future: onResolveEvent(child.content),
                   builder: (context, snapshot) {
                     return ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 320),
                       child: AppModelCard(
                         model: snapshot.data?.model,
                         onTap: snapshot.data?.onTap,
-                        onResolveModel: onResolveModel,
+                        onResolveEvent: onResolveEvent,
                         onResolveProfile: onResolveProfile,
                         onResolveEmoji: onResolveEmoji,
                         onResolveHashtag: onResolveHashtag,

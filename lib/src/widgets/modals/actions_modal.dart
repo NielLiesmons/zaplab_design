@@ -24,7 +24,7 @@ class AppActionsModal extends StatelessWidget {
   final Function(Model) onLabelTap;
   final Function(Model) onShareTap;
   // Compact text rendering
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
@@ -45,7 +45,7 @@ class AppActionsModal extends StatelessWidget {
     required this.onOpenWithTap,
     required this.onLabelTap,
     required this.onShareTap,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -67,7 +67,7 @@ class AppActionsModal extends StatelessWidget {
     required Function(Model) onOpenWithTap,
     required Function(Model) onLabelTap,
     required Function(Model) onShareTap,
-    required NostrModelResolver onResolveModel,
+    required NostrEventResolver onResolveEvent,
     required NostrProfileResolver onResolveProfile,
     required NostrEmojiResolver onResolveEmoji,
     required NostrHashtagResolver onResolveHashtag,
@@ -87,7 +87,7 @@ class AppActionsModal extends StatelessWidget {
           recentAmounts: recentAmounts,
           onZapTap: onZapTap,
           onMoreZapsTap: onMoreZapsTap,
-          onResolveModel: onResolveModel,
+          onResolveEvent: onResolveEvent,
           onResolveProfile: onResolveProfile,
           onResolveEmoji: onResolveEmoji,
           onResolveHashtag: onResolveHashtag,
@@ -112,7 +112,7 @@ class AppActionsModal extends StatelessWidget {
           onOpenWithTap: onOpenWithTap,
           onLabelTap: onLabelTap,
           onShareTap: onShareTap,
-          onResolveModel: onResolveModel,
+          onResolveEvent: onResolveEvent,
           onResolveProfile: onResolveProfile,
           onResolveEmoji: onResolveEmoji,
           onResolveHashtag: onResolveHashtag,
@@ -142,7 +142,7 @@ class AppActionsModal extends StatelessWidget {
           onOpenWithTap: onOpenWithTap,
           onLabelTap: onLabelTap,
           onShareTap: onShareTap,
-          onResolveModel: onResolveModel,
+          onResolveEvent: onResolveEvent,
           onResolveProfile: onResolveProfile,
           onResolveEmoji: onResolveEmoji,
           onResolveHashtag: onResolveHashtag,
@@ -203,7 +203,7 @@ class AppActionsModal extends StatelessWidget {
     required Function(Model) onOpenWithTap,
     required Function(Model) onLabelTap,
     required Function(Model) onShareTap,
-    required NostrModelResolver onResolveModel,
+    required NostrEventResolver onResolveEvent,
     required NostrProfileResolver onResolveProfile,
     required NostrEmojiResolver onResolveEmoji,
     required NostrHashtagResolver onResolveHashtag,
@@ -243,7 +243,7 @@ class AppActionsModal extends StatelessWidget {
                         children: [
                           AppQuotedMessage(
                             chatMessage: model as ChatMessage,
-                            onResolveModel: onResolveModel,
+                            onResolveEvent: onResolveEvent,
                             onResolveProfile: onResolveProfile,
                             onResolveEmoji: onResolveEmoji,
                           ),
@@ -295,7 +295,7 @@ class AppActionsModal extends StatelessWidget {
                                       Expanded(
                                         child: AppCompactTextRenderer(
                                           content: getModelDisplayText(model),
-                                          onResolveModel: onResolveModel,
+                                          onResolveEvent: onResolveEvent,
                                           onResolveProfile: onResolveProfile,
                                           onResolveEmoji: onResolveEmoji,
                                           isWhite: true,

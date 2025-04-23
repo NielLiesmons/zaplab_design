@@ -4,7 +4,7 @@ import 'package:models/models.dart';
 class AppMessageStack extends StatelessWidget {
   final List<ChatMessage> messages;
   final bool isOutgoing;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
@@ -19,7 +19,7 @@ class AppMessageStack extends StatelessWidget {
     super.key,
     required this.messages,
     this.isOutgoing = false,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -73,7 +73,7 @@ class AppMessageStack extends StatelessWidget {
                     onReply: onReply,
                     onReactionTap: onReactionTap,
                     onZapTap: onZapTap,
-                    onResolveModel: onResolveModel,
+                    onResolveEvent: onResolveEvent,
                     onResolveProfile: onResolveProfile,
                     onResolveEmoji: onResolveEmoji,
                     onResolveHashtag: onResolveHashtag,

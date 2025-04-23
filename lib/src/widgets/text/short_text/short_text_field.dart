@@ -13,7 +13,7 @@ class AppShortTextField extends StatefulWidget {
   final Zap? quotedZap;
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final VoidCallback onCameraTap;
@@ -35,7 +35,7 @@ class AppShortTextField extends StatefulWidget {
     this.backgroundColor,
     this.quotedChatMessage,
     this.quotedZap,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onSearchProfiles,
@@ -59,7 +59,7 @@ class AppShortTextField extends StatefulWidget {
     Color? backgroundColor,
     ChatMessage? quotedChatMessage,
     Zap? quotedZap,
-    NostrModelResolver? onResolveModel,
+    NostrEventResolver? onResolveEvent,
     NostrProfileResolver? onResolveProfile,
     NostrEmojiResolver? onResolveEmoji,
     NostrProfileSearch? onSearchProfiles,
@@ -82,7 +82,7 @@ class AppShortTextField extends StatefulWidget {
       backgroundColor: backgroundColor ?? this.backgroundColor,
       quotedChatMessage: quotedChatMessage ?? this.quotedChatMessage,
       quotedZap: quotedZap ?? this.quotedZap,
-      onResolveModel: onResolveModel ?? this.onResolveModel,
+      onResolveEvent: onResolveEvent ?? this.onResolveEvent,
       onResolveProfile: onResolveProfile ?? this.onResolveProfile,
       onResolveEmoji: onResolveEmoji ?? this.onResolveEmoji,
       onSearchProfiles: onSearchProfiles ?? this.onSearchProfiles,
@@ -137,7 +137,7 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
               ),
               child: AppZapCard(
                 zap: widget.quotedZap!,
-                onResolveModel: widget.onResolveModel,
+                onResolveEvent: widget.onResolveEvent,
                 onResolveProfile: widget.onResolveProfile,
                 onResolveEmoji: widget.onResolveEmoji,
               ),
@@ -152,7 +152,7 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
               ),
               child: AppQuotedMessage(
                 chatMessage: widget.quotedChatMessage!,
-                onResolveModel: widget.onResolveModel,
+                onResolveEvent: widget.onResolveEvent,
                 onResolveProfile: widget.onResolveProfile,
                 onResolveEmoji: widget.onResolveEmoji,
               ),
@@ -192,7 +192,7 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
                 placeholder: widget.placeholder,
                 onSearchProfiles: widget.onSearchProfiles,
                 onSearchEmojis: widget.onSearchEmojis,
-                onResolveModel: widget.onResolveModel,
+                onResolveEvent: widget.onResolveEvent,
                 onResolveProfile: widget.onResolveProfile,
                 onResolveEmoji: widget.onResolveEmoji,
               ),

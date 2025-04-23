@@ -5,7 +5,7 @@ import 'package:models/models.dart';
 class AppCommunityHomePanel extends StatelessWidget {
   final Community community;
   final Model? lastModel;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final Map<String, int> contentCounts;
@@ -19,7 +19,7 @@ class AppCommunityHomePanel extends StatelessWidget {
     super.key,
     required this.community,
     this.lastModel,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     this.contentCounts = const {},
@@ -192,8 +192,8 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                                               as ChatMessage)
                                                                           .content
                                                                       : 'nostr:nevent1${lastModel!.id}',
-                                                              onResolveModel:
-                                                                  onResolveModel,
+                                                              onResolveEvent:
+                                                                  onResolveEvent,
                                                               onResolveProfile:
                                                                   onResolveProfile,
                                                               onResolveEmoji:

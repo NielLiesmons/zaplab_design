@@ -15,7 +15,7 @@ class AppEditableShortText extends StatefulWidget {
   final List<Widget>? placeholder;
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
 
@@ -30,7 +30,7 @@ class AppEditableShortText extends StatefulWidget {
     this.placeholder,
     required this.onSearchProfiles,
     required this.onSearchEmojis,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
   });

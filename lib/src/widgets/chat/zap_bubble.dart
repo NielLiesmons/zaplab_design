@@ -8,7 +8,7 @@ class AppZapBubble extends StatefulWidget {
   final Function(Model) onReply;
   final Function(Reaction)? onReactionTap;
   final Function(Zap)? onZapTap;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
@@ -22,7 +22,7 @@ class AppZapBubble extends StatefulWidget {
     required this.onReply,
     this.onReactionTap,
     this.onZapTap,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -124,7 +124,7 @@ class _AppZapBubbleState extends State<AppZapBubble> {
                               const AppGap.s4(),
                               AppShortTextRenderer(
                                 content: widget.zap.event.content,
-                                onResolveModel: widget.onResolveModel,
+                                onResolveEvent: widget.onResolveEvent,
                                 onResolveProfile: widget.onResolveProfile,
                                 onResolveEmoji: widget.onResolveEmoji,
                                 onResolveHashtag: widget.onResolveHashtag,

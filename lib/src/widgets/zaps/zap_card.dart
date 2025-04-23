@@ -3,7 +3,7 @@ import 'package:models/models.dart';
 
 class AppZapCard extends StatelessWidget {
   final Zap zap;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final VoidCallback? onTap;
@@ -11,7 +11,7 @@ class AppZapCard extends StatelessWidget {
   const AppZapCard({
     super.key,
     required this.zap,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     this.onTap,
@@ -69,7 +69,7 @@ class AppZapCard extends StatelessWidget {
               ),
               child: AppCompactTextRenderer(
                 content: zap.event.content,
-                onResolveModel: onResolveModel,
+                onResolveEvent: onResolveEvent,
                 onResolveProfile: onResolveProfile,
                 onResolveEmoji: onResolveEmoji,
               ),

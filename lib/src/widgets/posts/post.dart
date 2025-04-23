@@ -7,7 +7,7 @@ class AppPost extends StatelessWidget {
   // final List<ReplaceReaction> reactions;
   // final List<ReplaceZap> zaps;
   final List<Community> communities;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
@@ -20,7 +20,7 @@ class AppPost extends StatelessWidget {
     // this.reactions = const [],
     // this.zaps = const [],
     this.communities = const [],
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -118,7 +118,7 @@ class AppPost extends StatelessWidget {
             ),
             child: AppShortTextRenderer(
               content: post.content,
-              onResolveModel: onResolveModel,
+              onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,
               onResolveEmoji: onResolveEmoji,
               onResolveHashtag: onResolveHashtag,

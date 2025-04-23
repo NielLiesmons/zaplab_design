@@ -3,7 +3,7 @@ import 'package:models/models.dart';
 
 class AppCompactTextRenderer extends StatelessWidget {
   final String content;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final int? maxLines;
@@ -14,7 +14,7 @@ class AppCompactTextRenderer extends StatelessWidget {
   const AppCompactTextRenderer({
     super.key,
     required this.content,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     this.maxLines,
@@ -125,7 +125,7 @@ class AppCompactTextRenderer extends StatelessWidget {
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
                   child: FutureBuilder<({Model model, VoidCallback? onTap})>(
-                    future: onResolveModel(child.content),
+                    future: onResolveEvent(child.content),
                     builder: (context, snapshot) {
                       return Row(
                         mainAxisSize: MainAxisSize.min,

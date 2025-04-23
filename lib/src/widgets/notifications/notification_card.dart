@@ -128,7 +128,7 @@ class AppNotificationCard extends StatelessWidget {
                         isMedium: true,
                         isWhite: true,
                         maxLines: 6,
-                        onResolveModel: (model) {
+                        onResolveEvent: (model) {
                           print(model);
                           return Future.value(null); //TODO: Implement
                         },

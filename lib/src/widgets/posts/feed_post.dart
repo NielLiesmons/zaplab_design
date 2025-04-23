@@ -20,7 +20,7 @@ class AppFeedPost extends StatelessWidget {
   final Function(Model) onReply;
   final Function(Reaction)? onReactionTap;
   final Function(Zap)? onZapTap;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
@@ -36,7 +36,7 @@ class AppFeedPost extends StatelessWidget {
     required this.onActions,
     required this.onReactionTap,
     required this.onZapTap,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -104,7 +104,7 @@ class AppFeedPost extends StatelessWidget {
                           const AppGap.s2(),
                           AppShortTextRenderer(
                             content: post.content,
-                            onResolveModel: onResolveModel,
+                            onResolveEvent: onResolveEvent,
                             onResolveProfile: onResolveProfile,
                             onResolveEmoji: onResolveEmoji,
                             onResolveHashtag: onResolveHashtag,

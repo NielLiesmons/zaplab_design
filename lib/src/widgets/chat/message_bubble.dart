@@ -30,7 +30,7 @@ class AppMessageBubble extends StatefulWidget {
   final Function(Model) onReply;
   final Function(Reaction)? onReactionTap;
   final Function(Zap)? onZapTap;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
@@ -47,7 +47,7 @@ class AppMessageBubble extends StatefulWidget {
     required this.onReply,
     this.onReactionTap,
     this.onZapTap,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -195,7 +195,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                       )
                                     : AppShortTextRenderer(
                                         content: widget.message.content,
-                                        onResolveModel: widget.onResolveModel,
+                                        onResolveEvent: widget.onResolveEvent,
                                         onResolveProfile:
                                             widget.onResolveProfile,
                                         onResolveEmoji: widget.onResolveEmoji,

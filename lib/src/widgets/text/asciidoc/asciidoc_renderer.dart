@@ -5,7 +5,7 @@ import 'package:models/models.dart';
 
 class AppAsciiDocRenderer extends StatelessWidget {
   final String content;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
@@ -14,7 +14,7 @@ class AppAsciiDocRenderer extends StatelessWidget {
   const AppAsciiDocRenderer({
     super.key,
     required this.content,
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onResolveHashtag,
@@ -268,7 +268,7 @@ class AppAsciiDocRenderer extends StatelessWidget {
               paragraphPieces.add(
                 AppContainer(
                   child: FutureBuilder<({Model model, VoidCallback? onTap})>(
-                    future: onResolveModel(child.content),
+                    future: onResolveEvent(child.content),
                     builder: (context, snapshot) {
                       return ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 320),

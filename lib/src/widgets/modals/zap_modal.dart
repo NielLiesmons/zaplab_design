@@ -7,7 +7,7 @@ class AppZapModal extends StatefulWidget {
   final Model model;
   final List<({double amount, String profileImageUrl})> otherZaps;
   final List<double> recentAmounts;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrProfileSearch onSearchProfiles;
@@ -22,7 +22,7 @@ class AppZapModal extends StatefulWidget {
     required this.model,
     this.otherZaps = const [],
     this.recentAmounts = const [],
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onSearchProfiles,
@@ -38,7 +38,7 @@ class AppZapModal extends StatefulWidget {
     required Model model,
     List<({double amount, String profileImageUrl})> otherZaps = const [],
     List<double> recentAmounts = const [],
-    required NostrModelResolver onResolveModel,
+    required NostrEventResolver onResolveEvent,
     required NostrProfileResolver onResolveProfile,
     required NostrEmojiResolver onResolveEmoji,
     required NostrProfileSearch onSearchProfiles,
@@ -71,7 +71,7 @@ class AppZapModal extends StatefulWidget {
                     onValueChanged: (value) {
                       setState(() => amount = value);
                     },
-                    onResolveModel: onResolveModel,
+                    onResolveEvent: onResolveEvent,
                     onResolveProfile: onResolveProfile,
                     onResolveEmoji: onResolveEmoji,
                     onSearchProfiles: onSearchProfiles,
@@ -154,7 +154,7 @@ class _AppZapModalState extends State<AppZapModal> {
                 onValueChanged: (value) {
                   setState(() => amount = value);
                 },
-                onResolveModel: widget.onResolveModel,
+                onResolveEvent: widget.onResolveEvent,
                 onResolveProfile: widget.onResolveProfile,
                 onResolveEmoji: widget.onResolveEmoji,
                 onSearchProfiles: widget.onSearchProfiles,

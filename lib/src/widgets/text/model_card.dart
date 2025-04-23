@@ -3,7 +3,7 @@ import 'package:models/models.dart';
 
 class AppModelCard extends StatelessWidget {
   final Model? model;
-  final NostrModelResolver? onResolveModel;
+  final NostrEventResolver? onResolveEvent;
   final NostrProfileResolver? onResolveProfile;
   final NostrEmojiResolver? onResolveEmoji;
   final NostrHashtagResolver? onResolveHashtag;
@@ -13,7 +13,7 @@ class AppModelCard extends StatelessWidget {
     super.key,
     required this.model,
     this.onTap,
-    this.onResolveModel,
+    this.onResolveEvent,
     this.onResolveProfile,
     this.onResolveEmoji,
     this.onResolveHashtag,
@@ -71,7 +71,7 @@ class AppModelCard extends StatelessWidget {
         constraints: BoxConstraints(minWidth: minWidth),
         child: AppQuotedMessage(
           chatMessage: model as ChatMessage,
-          onResolveModel: onResolveModel ?? (_) => Future.value(null),
+          onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
           onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
         ),
@@ -83,7 +83,7 @@ class AppModelCard extends StatelessWidget {
         constraints: BoxConstraints(minWidth: minWidth),
         child: AppZapCard(
           zap: model as Zap,
-          onResolveModel: onResolveModel ?? (_) => Future.value(null),
+          onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
           onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
           onTap: onTap,
@@ -97,7 +97,7 @@ class AppModelCard extends StatelessWidget {
         child: AppPostCard(
           post: model as Note,
           onTap: onTap,
-          onResolveModel: onResolveModel ?? (_) => Future.value(null),
+          onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
           onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
         ),
@@ -131,8 +131,8 @@ class AppModelCard extends StatelessWidget {
                       Expanded(
                         child: AppCompactTextRenderer(
                           content: getModelDisplayText(model),
-                          onResolveModel:
-                              onResolveModel ?? (_) => Future.value(null),
+                          onResolveEvent:
+                              onResolveEvent ?? (_) => Future.value(null),
                           onResolveProfile:
                               onResolveProfile ?? (_) => Future.value(null),
                           onResolveEmoji:

@@ -10,7 +10,7 @@ class AppZapSlider extends StatefulWidget {
   final ValueChanged<double>? onValueChanged;
   final List<double>? recentAmounts;
   final List<({double amount, String profileImageUrl})> otherZaps;
-  final NostrModelResolver onResolveModel;
+  final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrProfileSearch onSearchProfiles;
@@ -27,7 +27,7 @@ class AppZapSlider extends StatefulWidget {
     this.onValueChanged,
     this.recentAmounts,
     this.otherZaps = const [],
-    required this.onResolveModel,
+    required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     required this.onSearchProfiles,
@@ -332,7 +332,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
                   ),
                 ]
               : null,
-          onResolveModel: widget.onResolveModel,
+          onResolveEvent: widget.onResolveEvent,
           onResolveProfile: widget.onResolveProfile,
           onResolveEmoji: widget.onResolveEmoji,
           onSearchProfiles: widget.onSearchProfiles,
