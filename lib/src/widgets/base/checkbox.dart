@@ -130,7 +130,7 @@ class AppCheckBoxState extends State<AppCheckBox>
                           scale: _checkAnimation.value,
                           child: AppIcon.s8(
                             theme.icons.characters.check,
-                            outlineColor: AppColorsData.dark().white,
+                            outlineColor: theme.colors.whiteEnforced,
                             outlineThickness: LineThicknessData.normal().thick,
                           ),
                         ),

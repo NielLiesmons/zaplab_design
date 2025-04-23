@@ -15,7 +15,7 @@ class AppImageCard extends StatelessWidget {
     return AppContainer(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: theme.colors.grey66,
+        color: theme.colors.gray66,
         borderRadius: theme.radius.asBorderRadius().rad16,
         border: Border.all(
           color: theme.colors.white16,

@@ -276,12 +276,12 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
                     if (widget.onSendTap != null)
                       AppIcon.s16(
                         theme.icons.characters.send,
-                        color: AppColorsData.dark().white,
+                        color: theme.colors.whiteEnforced,
                       ),
                     if (widget.onDoneTap != null)
                       AppText.med14(
                         'Done',
-                        color: AppColorsData.dark().white,
+                        color: theme.colors.whiteEnforced,
                       ),
                   ],
                 ),

@@ -559,7 +559,7 @@ class AppZapSliderPainter extends CustomPainter {
       center.dy + radius * math.sin(handleAngle),
     );
 
-    final handlePaint = Paint()..color = AppColorsData.dark().white;
+    final handlePaint = Paint()..color = AppColorsData.dark().whiteEnforced;
 
     canvas.drawCircle(handlePosition, handleSize / 2, handlePaint);
   }

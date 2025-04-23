@@ -22,10 +22,10 @@ class AppOtherProfileCard extends StatelessWidget {
       height: 144,
       padding: const AppEdgeInsets.all(AppGapSize.s16),
       decoration: BoxDecoration(
-        color: theme.colors.grey33,
+        color: theme.colors.gray33,
         borderRadius: theme.radius.asBorderRadius().rad16,
         border: Border.all(
-          color: theme.colors.grey,
+          color: theme.colors.gray,
           width: LineThicknessData.normal().medium,
         ),
       ),

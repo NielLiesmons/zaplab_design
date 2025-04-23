@@ -78,7 +78,7 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
           children: [
             AppText.med16(
               'Done',
-              color: AppColorsData.dark().white,
+              color: theme.colors.whiteEnforced,
             ),
           ],
           onTap: () => Navigator.of(context).pop(),
@@ -96,7 +96,7 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
           children: [
             AppText.med16(
               'Done',
-              color: AppColorsData.dark().white,
+              color: theme.colors.whiteEnforced,
             ),
           ],
           onTap: () => Navigator.of(context).pop(),

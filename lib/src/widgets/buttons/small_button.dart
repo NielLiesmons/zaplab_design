@@ -139,7 +139,7 @@ class AppSmallButtonLayout extends StatelessWidget {
           ),
           if (onChevronTap != null) ...[
             AppDivider.vertical(
-              color: AppColorsData.dark().white33,
+              color: theme.colors.whiteEnforced.withValues(alpha: 0.33),
             ),
             GestureDetector(
               onTap: onChevronTap,
@@ -153,7 +153,8 @@ class AppSmallButtonLayout extends StatelessWidget {
                 ),
                 child: AppIcon.s4(
                   theme.icons.characters.chevronDown,
-                  outlineColor: AppColorsData.dark().white66,
+                  outlineColor:
+                      theme.colors.whiteEnforced.withValues(alpha: 0.66),
                   outlineThickness: LineThicknessData.normal().medium,
                 ),
               ),

@@ -132,7 +132,7 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
                               height: 32,
                               width: 32,
                               decoration: BoxDecoration(
-                                color: theme.colors.grey66,
+                                color: theme.colors.gray66,
                                 shape: BoxShape.circle,
                               ),
                               child: Center(
@@ -162,7 +162,7 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
                                     child: Center(
                                       child: AppText.med10(
                                         '$mainCount',
-                                        color: AppColorsData.dark().white,
+                                        color: theme.colors.whiteEnforced,
                                       ),
                                     ),
                                   ),

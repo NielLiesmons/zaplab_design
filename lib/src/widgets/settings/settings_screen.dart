@@ -114,7 +114,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
               width: theme.sizes.s32,
               height: theme.sizes.s32,
               decoration: BoxDecoration(
-                color: theme.colors.grey66,
+                color: theme.colors.gray66,
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -214,10 +214,10 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                         height: 144,
                         padding: const AppEdgeInsets.all(AppGapSize.s16),
                         decoration: BoxDecoration(
-                          color: theme.colors.grey33,
+                          color: theme.colors.gray33,
                           borderRadius: theme.radius.asBorderRadius().rad16,
                           border: Border.all(
-                            color: theme.colors.grey,
+                            color: theme.colors.gray,
                             width: LineThicknessData.normal().medium,
                           ),
                         ),
@@ -274,7 +274,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
             if (widget.onHistoryTap != null)
               AppSettingSection(
                 icon: AppIcon.s20(theme.icons.characters.clock,
-                    gradient: theme.colors.greydient66),
+                    gradient: theme.colors.graydient66),
                 title: 'History',
                 description: widget.historyDescription ?? '',
                 onTap: widget.onHistoryTap,
@@ -283,7 +283,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
               if (widget.onHistoryTap != null) const AppGap.s12(),
               AppSettingSection(
                 icon: AppIcon.s20(theme.icons.characters.draft,
-                    gradient: theme.colors.greydient66),
+                    gradient: theme.colors.graydient66),
                 title: 'Drafts',
                 description: widget.draftsDescription ?? '',
                 onTap: widget.onDraftsTap,
@@ -294,7 +294,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                 const AppGap.s12(),
               AppSettingSection(
                 icon: AppIcon.s20(theme.icons.characters.label,
-                    gradient: theme.colors.greydient66),
+                    gradient: theme.colors.graydient66),
                 title: 'Labels',
                 description: widget.labelsDescription ?? '',
                 onTap: widget.onLabelsTap,

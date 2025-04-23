@@ -131,7 +131,7 @@ class AppInputModal extends StatelessWidget {
                         filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                         child: AppContainer(
                           decoration: BoxDecoration(
-                            color: theme.colors.grey66,
+                            color: theme.colors.gray66,
                             border: Border(
                               top: BorderSide(
                                 color: theme.colors.white16,

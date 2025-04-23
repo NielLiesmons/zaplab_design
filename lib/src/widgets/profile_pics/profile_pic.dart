@@ -110,7 +110,7 @@ class AppProfilePic extends StatelessWidget {
                 color: theme.colors.white16,
                 width: thickness,
               ),
-              color: theme.colors.grey66,
+              color: theme.colors.gray66,
             ),
             child: ClipOval(
               child: Image.network(

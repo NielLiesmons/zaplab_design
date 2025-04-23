@@ -123,7 +123,7 @@ class _AppToastState extends State<AppToast>
                     child: AppContainer(
                       width: width,
                       decoration: BoxDecoration(
-                        color: theme.colors.grey66,
+                        color: theme.colors.gray66,
                         borderRadius: BorderRadius.vertical(
                           bottom: const AppRadiusData.normal().rad32,
                         ),

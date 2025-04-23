@@ -35,7 +35,7 @@ class AppPanel extends StatelessWidget {
                         ? theme.colors.white8
                         : (isInsideModal
                             ? theme.colors.black33
-                            : theme.colors.grey66))))
+                            : theme.colors.gray66))))
             : null,
         gradient: gradient,
         borderRadius: theme.radius.asBorderRadius().rad16,

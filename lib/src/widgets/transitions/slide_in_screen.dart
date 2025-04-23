@@ -20,7 +20,7 @@ class AppSlideInScreen extends CustomTransitionPage {
                   filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                   child: AppContainer(
                     decoration: BoxDecoration(
-                      color: theme.colors.grey33,
+                      color: theme.colors.gray33,
                     ),
                   ),
                 ),

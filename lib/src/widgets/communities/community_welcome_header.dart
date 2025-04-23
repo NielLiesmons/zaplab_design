@@ -2,6 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:math' as math;
 import 'dart:ui';
 import 'package:models/models.dart';
+import 'package:flutter/material.dart';
 
 class AppCommunityWelcomeHeader extends StatefulWidget {
   final Community community;
@@ -116,11 +117,37 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
           ),
           const AppGap.s8(),
           // Community name
-          AppText.h1(
-            widget.community.author.value?.name ??
-                formatNpub(widget.community.author.value?.npub ?? ''),
-            textAlign: TextAlign.center,
-            color: theme.colors.white,
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              // Blurred background
+              ImageFiltered(
+                imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: AppContainer(
+                  decoration: BoxDecoration(
+                    color: theme.colors.black,
+                    borderRadius: theme.radius.asBorderRadius().rad16,
+                  ),
+                  padding: const AppEdgeInsets.all(AppGapSize.s8),
+                  child: Opacity(
+                    opacity: 0,
+                    child: AppText.h1(
+                      widget.community.author.value?.name ??
+                          formatNpub(widget.community.author.value?.npub ?? ''),
+                      textAlign: TextAlign.center,
+                      color: theme.colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              // Original text on top
+              AppText.h1(
+                widget.community.author.value?.name ??
+                    formatNpub(widget.community.author.value?.npub ?? ''),
+                textAlign: TextAlign.center,
+                color: theme.colors.white,
+              ),
+            ],
           ),
           const AppGap.s12(),
           // Community description

@@ -35,7 +35,7 @@ class AppSettingSection extends StatelessWidget {
                 width: theme.sizes.s48,
                 height: theme.sizes.s48,
                 decoration: BoxDecoration(
-                  color: theme.colors.grey66,
+                  color: theme.colors.gray66,
                   borderRadius: theme.radius.asBorderRadius().rad16,
                 ),
                 child: Center(child: icon),

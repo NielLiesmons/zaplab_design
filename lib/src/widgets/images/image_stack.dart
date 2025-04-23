@@ -303,7 +303,7 @@ class _AppImageStackState extends State<AppImageStack> {
                                   padding: const AppEdgeInsets.symmetric(
                                       horizontal: AppGapSize.s10),
                                   decoration: BoxDecoration(
-                                    color: theme.colors.grey66,
+                                    color: theme.colors.gray66,
                                     borderRadius: BorderRadius.circular(13),
                                   ),
                                   child: Center(

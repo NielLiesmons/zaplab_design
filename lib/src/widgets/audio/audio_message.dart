@@ -332,7 +332,7 @@ class _AppAudioMessageState extends State<AppAudioMessage>
                       return Center(
                         child: AppIcon.s12(
                           theme.icons.characters.magic,
-                          gradient: theme.colors.greydient66,
+                          gradient: theme.colors.graydient66,
                         ),
                       );
                     },

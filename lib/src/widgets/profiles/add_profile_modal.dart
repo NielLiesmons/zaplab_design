@@ -77,10 +77,10 @@ class _AppAddProfileModalState extends State<AppAddProfileModal> {
                 children: [
                   AppIcon.s12(
                     theme.icons.characters.play,
-                    color: AppColorsData.dark().white,
+                    color: theme.colors.whiteEnforced,
                   ),
                   const AppGap.s12(),
-                  AppText.med14("Start", color: AppColorsData.dark().white),
+                  AppText.med14("Start", color: theme.colors.whiteEnforced),
                 ],
               ),
               const AppGap.s16(),

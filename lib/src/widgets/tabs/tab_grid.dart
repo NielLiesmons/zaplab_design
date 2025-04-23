@@ -56,7 +56,7 @@ class AppTabGrid extends StatelessWidget {
                           AppText.med14(
                             tabs[row * 3 + col].label,
                             color: row * 3 + col == selectedIndex
-                                ? AppColorsData.dark().white
+                                ? theme.colors.whiteEnforced
                                 : null,
                           ),
                         ],

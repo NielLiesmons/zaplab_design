@@ -26,7 +26,7 @@ class AppTabButton extends StatelessWidget {
 
     final defaultGradient = theme.colors.blurple;
     final inactiveColor =
-        isInsideModal ? theme.colors.white8 : theme.colors.grey66;
+        isInsideModal ? theme.colors.white8 : theme.colors.gray66;
 
     return TapBuilder(
       onTap: onTap,
@@ -57,7 +57,7 @@ class AppTabButton extends StatelessWidget {
                 AppText.med14(
                   label,
                   color: isSelected
-                      ? AppColorsData.dark().white
+                      ? theme.colors.whiteEnforced
                       : theme.colors.white,
                 ),
                 if (count != null && count! > 0) ...[
@@ -65,7 +65,7 @@ class AppTabButton extends StatelessWidget {
                   AppText.med14(
                     count.toString(),
                     color: isSelected
-                        ? AppColorsData.dark().white66
+                        ? theme.colors.whiteEnforced.withValues(alpha: 0.66)
                         : theme.colors.white66,
                   ),
                 ],

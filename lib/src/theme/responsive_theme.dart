@@ -5,7 +5,7 @@ import 'theme.dart';
 
 enum AppThemeColorMode {
   light,
-  grey,
+  gray,
   dark,
 }
 
@@ -136,7 +136,7 @@ class AppResponsiveThemeState extends State<AppResponsiveTheme> {
     final colorMode = this.colorMode;
     theme = switch (colorMode) {
       AppThemeColorMode.dark => theme.withColors(AppColorsData.dark()),
-      AppThemeColorMode.grey => theme.withColors(AppColorsData.grey()),
+      AppThemeColorMode.gray => theme.withColors(AppColorsData.gray()),
       AppThemeColorMode.light => theme.withColors(AppColorsData.light()),
     };
 

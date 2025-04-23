@@ -325,7 +325,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
                       const AppGap.s2(),
                       AppIcon.s20(
                         theme.icons.characters.emojiFill,
-                        gradient: theme.colors.greydient33,
+                        gradient: theme.colors.graydient33,
                       ),
                     ],
                   ),

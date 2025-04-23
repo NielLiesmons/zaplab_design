@@ -329,7 +329,7 @@ class AppModal extends StatelessWidget {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                     child: AppContainer(
-                      decoration: BoxDecoration(color: theme.colors.grey66),
+                      decoration: BoxDecoration(color: theme.colors.gray66),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -469,7 +469,7 @@ class AppModal extends StatelessWidget {
                             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                             child: AppContainer(
                               decoration:
-                                  BoxDecoration(color: theme.colors.grey66),
+                                  BoxDecoration(color: theme.colors.gray66),
                               child: ListView(
                                 controller: scrollController,
                                 padding:
@@ -547,7 +547,7 @@ class AppModal extends StatelessWidget {
                                     ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                                 child: AppContainer(
                                   decoration: BoxDecoration(
-                                    color: theme.colors.grey66,
+                                    color: theme.colors.gray66,
                                     border: Border(
                                       bottom: BorderSide(
                                         color: theme.colors.white16,
@@ -604,7 +604,7 @@ class AppModal extends StatelessWidget {
                     )
                   : const AppEdgeInsets.all(AppGapSize.none),
               decoration: BoxDecoration(
-                color: theme.colors.grey66,
+                color: theme.colors.gray66,
                 border: Border(
                   top: BorderSide(
                     color: theme.colors.white16,

@@ -366,7 +366,7 @@ class _AppAmountModalState extends State<AppAmountModal> {
                         : AppIconSize.s14,
                     outlineColor: value == 'backspace'
                         ? theme.colors.white66
-                        : AppColorsData.dark().white,
+                        : theme.colors.whiteEnforced,
                     outlineThickness: value == 'backspace'
                         ? LineThicknessData.normal().medium
                         : LineThicknessData.normal().thick,

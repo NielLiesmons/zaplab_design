@@ -80,7 +80,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                   ? null
                   : (isInsideModal
                       ? theme.colors.white16
-                      : theme.colors.grey66),
+                      : theme.colors.gray66),
               gradient: contentType.isSingleContent
                   ? null
                   : widget.isOutgoing

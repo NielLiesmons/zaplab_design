@@ -23,7 +23,7 @@ class AppCurrentProfileCard extends StatelessWidget {
       width: 256,
       padding: const AppEdgeInsets.all(AppGapSize.s16),
       decoration: BoxDecoration(
-        color: theme.colors.grey66,
+        color: theme.colors.gray66,
         borderRadius: theme.radius.asBorderRadius().rad16,
       ),
       child: Column(

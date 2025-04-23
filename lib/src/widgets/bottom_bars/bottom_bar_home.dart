@@ -26,7 +26,7 @@ class AppBottomBarHome extends StatelessWidget {
             square: true,
             children: [
               AppIcon.s20(theme.icons.characters.zap,
-                  color: AppColorsData.dark().white),
+                  color: theme.colors.whiteEnforced),
             ],
             onTap: onZapTap,
           ),

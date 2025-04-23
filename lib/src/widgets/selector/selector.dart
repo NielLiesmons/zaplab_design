@@ -40,7 +40,7 @@ class _AppSelectorState extends State<AppSelector> {
     return AppContainer(
       padding: const AppEdgeInsets.all(AppGapSize.s8),
       decoration: BoxDecoration(
-        color: isInsideModal ? theme.colors.black33 : theme.colors.grey66,
+        color: isInsideModal ? theme.colors.black33 : theme.colors.gray66,
         borderRadius: widget.emphasized
             ? theme.radius.asBorderRadius().rad24
             : theme.radius.asBorderRadius().rad16,

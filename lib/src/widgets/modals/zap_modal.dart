@@ -91,7 +91,7 @@ class AppZapModal extends StatefulWidget {
         children: [
           AppText.med16(
             'Zap',
-            color: AppColorsData.dark().white,
+            color: AppTheme.of(context).colors.whiteEnforced,
           ),
         ],
         onTap: () => Navigator.of(context).pop(
@@ -137,7 +137,7 @@ class _AppZapModalState extends State<AppZapModal> {
         children: [
           AppText.med16(
             'Zap',
-            color: AppColorsData.dark().white,
+            color: theme.colors.whiteEnforced,
           ),
         ],
       ),

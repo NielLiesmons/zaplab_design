@@ -109,7 +109,7 @@ class AppSwitchState extends State<AppSwitch>
                     height: 16,
                     decoration: BoxDecoration(
                       color: _isOn
-                          ? AppColorsData.dark().white // Color for "on" state
+                          ? theme.colors.whiteEnforced // Color for "on" state
                           : theme.colors.white33, // Color for "off" state
                       shape: BoxShape.circle,
                     ),

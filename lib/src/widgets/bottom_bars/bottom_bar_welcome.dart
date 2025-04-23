@@ -27,10 +27,10 @@ class AppBottomBarWelcome extends StatelessWidget {
               AppIcon.s12(
                 theme.icons.characters.plus,
                 outlineThickness: LineThicknessData.normal().thick,
-                outlineColor: AppColorsData.dark().white,
+                outlineColor: theme.colors.whiteEnforced,
               ),
               const AppGap.s8(),
-              AppText.med14('Add', color: AppColorsData.dark().white),
+              AppText.med14('Add', color: theme.colors.whiteEnforced),
               const AppGap.s4(),
             ],
           ),

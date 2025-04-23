@@ -9,14 +9,15 @@ class AppColorsData extends Equatable {
   final Color white33;
   final Color white16;
   final Color white8;
+  final Color whiteEnforced;
   final Color black;
   final Color black66;
   final Color black33;
   final Color black16;
   final Color black8;
-  final Color grey;
-  final Color grey66;
-  final Color grey33;
+  final Color gray;
+  final Color gray66;
+  final Color gray33;
   final Color blurpleColor;
   final Color blurpleColor66;
   final Color goldColor;
@@ -35,10 +36,10 @@ class AppColorsData extends Equatable {
   final Gradient gold66;
   final Gradient gold33;
   final Gradient gold16;
-  final Gradient greydient;
-  final Gradient greydient66;
-  final Gradient greydient33;
-  final Gradient greydient16;
+  final Gradient graydient;
+  final Gradient graydient66;
+  final Gradient graydient33;
+  final Gradient graydient16;
 
   const AppColorsData({
     required this.white,
@@ -46,14 +47,15 @@ class AppColorsData extends Equatable {
     required this.white33,
     required this.white16,
     required this.white8,
+    required this.whiteEnforced,
     required this.black,
     required this.black66,
     required this.black33,
     required this.black16,
     required this.black8,
-    required this.grey,
-    required this.grey66,
-    required this.grey33,
+    required this.gray,
+    required this.gray66,
+    required this.gray33,
     required this.blurpleColor,
     required this.blurpleColor66,
     required this.goldColor,
@@ -70,10 +72,10 @@ class AppColorsData extends Equatable {
     required this.gold66,
     required this.gold33,
     required this.gold16,
-    required this.greydient,
-    required this.greydient66,
-    required this.greydient33,
-    required this.greydient16,
+    required this.graydient,
+    required this.graydient66,
+    required this.graydient33,
+    required this.graydient16,
   });
 
   /// Dark mode
@@ -84,14 +86,15 @@ class AppColorsData extends Equatable {
         white33: const Color(0xFFFFFFFF).withValues(alpha: 0.33),
         white16: const Color(0xFFFFFFFF).withValues(alpha: 0.16),
         white8: const Color(0xFFFFFFFF).withValues(alpha: 0.08),
+        whiteEnforced: const Color(0xFFFFFFFF),
         black: const Color(0xFF000000),
         black66: const Color(0xFF000000).withValues(alpha: 0.66),
         black33: const Color(0xFF000000).withValues(alpha: 0.33),
         black16: const Color(0xFF000000).withValues(alpha: 0.16),
         black8: const Color(0xFF000000).withValues(alpha: 0.08),
-        grey: const Color(0xFF232323),
-        grey66: const Color(0xFF333333).withValues(alpha: 0.66),
-        grey33: const Color(0xFF333333).withValues(alpha: 0.33),
+        gray: const Color(0xFF232323),
+        gray66: const Color(0xFF333333).withValues(alpha: 0.66),
+        gray33: const Color(0xFF333333).withValues(alpha: 0.33),
         blurpleColor: const Color(0xFF8483FE),
         blurpleColor66: const Color(0xFF8483FE).withValues(alpha: 0.66),
         goldColor: const Color(0xFFF5C763),
@@ -188,12 +191,12 @@ class AppColorsData extends Equatable {
           end: Alignment.bottomRight,
         ),
 
-        greydient: const LinearGradient(
+        graydient: const LinearGradient(
           colors: [Color(0xFFFFFFFF), Color(0xFFDBDBFF)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        greydient66: LinearGradient(
+        graydient66: LinearGradient(
           colors: [
             const Color(0xFFFFFFFF).withValues(alpha: 0.66),
             const Color(0xFFDBDBFF).withValues(alpha: 0.66)
@@ -201,7 +204,7 @@ class AppColorsData extends Equatable {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        greydient33: LinearGradient(
+        graydient33: LinearGradient(
           colors: [
             const Color(0xFFFFFFFF).withValues(alpha: 0.33),
             const Color(0xFFDBDBFF).withValues(alpha: 0.33)
@@ -209,7 +212,7 @@ class AppColorsData extends Equatable {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        greydient16: LinearGradient(
+        graydient16: LinearGradient(
           colors: [
             const Color(0xFFFFFFFF).withValues(alpha: 0.16),
             const Color(0xFFDBDBFF).withValues(alpha: 0.16)
@@ -227,14 +230,15 @@ class AppColorsData extends Equatable {
         white33: const Color(0xFF000000).withValues(alpha: 0.29),
         white16: const Color(0xFF000000).withValues(alpha: 0.16),
         white8: const Color(0xFF000000).withValues(alpha: 0.08),
+        whiteEnforced: const Color(0xFFF0EAE2),
         black: const Color(0xFFF0EAE2),
         black66: const Color(0xFFF0EAE2).withValues(alpha: 0.66),
         black33: const Color(0xFFF0EAE2).withValues(alpha: 0.33),
         black16: const Color(0xFFF0EAE2).withValues(alpha: 0.16),
         black8: const Color(0xFFF0EAE2).withValues(alpha: 0.08),
-        grey: const Color(0xFFD5CBBE),
-        grey66: const Color(0xFFD1C7BB).withValues(alpha: 0.66),
-        grey33: const Color(0xFFD1C7BB).withValues(alpha: 0.33),
+        gray: const Color(0xFFD5CBBE),
+        gray66: const Color(0xFFD1C7BB).withValues(alpha: 0.66),
+        gray33: const Color(0xFFD1C7BB).withValues(alpha: 0.33),
         blurpleColor: const Color.fromRGBO(75, 75, 205, 1),
         blurpleColor66:
             const Color.fromARGB(255, 75, 75, 205).withValues(alpha: 0.66),
@@ -333,12 +337,12 @@ class AppColorsData extends Equatable {
           end: Alignment.bottomRight,
         ),
 
-        greydient: const LinearGradient(
+        graydient: const LinearGradient(
           colors: [Color(0xFF535367), Color(0xFF232323)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        greydient66: LinearGradient(
+        graydient66: LinearGradient(
           colors: [
             const Color(0xFF535367).withValues(alpha: 0.66),
             const Color(0xFF232323).withValues(alpha: 0.66)
@@ -346,7 +350,7 @@ class AppColorsData extends Equatable {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        greydient33: LinearGradient(
+        graydient33: LinearGradient(
           colors: [
             const Color(0xFF535367).withValues(alpha: 0.33),
             const Color(0xFF232323).withValues(alpha: 0.33)
@@ -354,7 +358,7 @@ class AppColorsData extends Equatable {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        greydient16: LinearGradient(
+        graydient16: LinearGradient(
           colors: [
             const Color(0xFFFFFFFF).withValues(alpha: 0.16),
             const Color(0xFFDBDBFF).withValues(alpha: 0.16)
@@ -365,21 +369,22 @@ class AppColorsData extends Equatable {
       );
 
   /// Grey mode
-  factory AppColorsData.grey() => AppColorsData(
+  factory AppColorsData.gray() => AppColorsData(
         /// Colors (full or 66% / 33% transparent)
         white: const Color(0xFFFFFFFF),
         white66: const Color(0xFFFFFFFF).withValues(alpha: 0.66),
         white33: const Color(0xFFFFFFFF).withValues(alpha: 0.33),
         white16: const Color(0xFFFFFFFF).withValues(alpha: 0.16),
         white8: const Color(0xFFFFFFFF).withValues(alpha: 0.08),
+        whiteEnforced: const Color(0xFFFFFFFF),
         black: const Color(0xFF181818),
         black66: const Color(0xFF181818).withValues(alpha: 0.66),
         black33: const Color(0xFF000000).withValues(alpha: 0.33),
         black16: const Color(0xFF000000).withValues(alpha: 0.16),
         black8: const Color(0xFF000000).withValues(alpha: 0.08),
-        grey: const Color(0xFF232323),
-        grey66: const Color(0xFF333333).withValues(alpha: 0.66),
-        grey33: const Color(0xFF333333).withValues(alpha: 0.33),
+        gray: const Color(0xFF232323),
+        gray66: const Color(0xFF333333).withValues(alpha: 0.66),
+        gray33: const Color(0xFF333333).withValues(alpha: 0.33),
         blurpleColor: const Color(0xFF8483FE),
         blurpleColor66: const Color(0xFF8483FE).withValues(alpha: 0.66),
         goldColor: const Color(0xFFF5C763),
@@ -476,12 +481,12 @@ class AppColorsData extends Equatable {
           end: Alignment.bottomRight,
         ),
 
-        greydient: const LinearGradient(
+        graydient: const LinearGradient(
           colors: [Color(0xFFFFFFFF), Color(0xFFDBDBFF)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        greydient66: LinearGradient(
+        graydient66: LinearGradient(
           colors: [
             const Color(0xFFFFFFFF).withValues(alpha: 0.66),
             const Color(0xFFDBDBFF).withValues(alpha: 0.66)
@@ -489,7 +494,7 @@ class AppColorsData extends Equatable {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        greydient33: LinearGradient(
+        graydient33: LinearGradient(
           colors: [
             const Color(0xFFFFFFFF).withValues(alpha: 0.33),
             const Color(0xFFDBDBFF).withValues(alpha: 0.33)
@@ -497,7 +502,7 @@ class AppColorsData extends Equatable {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        greydient16: LinearGradient(
+        graydient16: LinearGradient(
           colors: [
             const Color(0xFFFFFFFF).withValues(alpha: 0.16),
             const Color(0xFFDBDBFF).withValues(alpha: 0.16)
@@ -514,14 +519,15 @@ class AppColorsData extends Equatable {
         white33.named('white33'),
         white16.named('white16'),
         white8.named('white8'),
+        whiteEnforced.named('whiteEnforced'),
         black.named('black'),
         black66.named('black66'),
         black33.named('black33'),
         black16.named('black16'),
         black8.named('black8'),
-        grey.named('grey'),
-        grey66.named('grey66'),
-        grey33.named('grey33'),
+        gray.named('gray'),
+        gray66.named('gray66'),
+        gray33.named('gray33'),
         blurpleColor.named('blurpleColor'),
         blurpleColor66.named('blurpleColor66'),
         goldColor.named('goldColor'),
@@ -538,9 +544,9 @@ class AppColorsData extends Equatable {
         gold66.named('gold66'),
         gold33.named('gold33'),
         gold16.named('gold16'),
-        greydient.named('greydient'),
-        greydient66.named('greydient66'),
-        greydient33.named('greydient33'),
-        greydient16.named('greydient16'),
+        graydient.named('graydient'),
+        graydient66.named('graydient66'),
+        graydient33.named('graydient33'),
+        graydient16.named('graydient16'),
       ];
 }

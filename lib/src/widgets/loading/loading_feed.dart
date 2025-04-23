@@ -102,7 +102,7 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
                                           : 240.0,
                                   clipBehavior: Clip.hardEdge,
                                   decoration: BoxDecoration(
-                                    color: theme.colors.grey33,
+                                    color: theme.colors.gray33,
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(theme.sizes.s16),
                                       topRight:

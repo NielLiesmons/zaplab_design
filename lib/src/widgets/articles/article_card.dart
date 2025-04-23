@@ -33,7 +33,7 @@ class AppArticleCard extends StatelessWidget {
                 child: AppContainer(
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
-                    color: theme.colors.grey33,
+                    color: theme.colors.gray33,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(14.6),
                       topRight: Radius.circular(14.6),

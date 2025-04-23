@@ -42,7 +42,7 @@ class AppZapPill extends StatelessWidget {
                       ? theme.colors.white8
                       : isInsideMessageBubble
                           ? theme.colors.white16
-                          : theme.colors.grey66,
+                          : theme.colors.gray66,
               gradient: isOutgoing ? theme.colors.gold : null,
               borderRadius: BorderRadius.all(theme.radius.rad16),
             ),

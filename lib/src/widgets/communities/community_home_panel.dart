@@ -230,7 +230,7 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                                 BoxDecoration(
                                                               color: theme
                                                                   .colors
-                                                                  .grey66,
+                                                                  .gray66,
                                                               borderRadius: theme
                                                                   .radius
                                                                   .asBorderRadius()
@@ -288,7 +288,7 @@ class AppCommunityHomePanel extends StatelessWidget {
                                     child: Center(
                                       child: AppText.reg12(
                                         displayCount,
-                                        color: AppColorsData.dark().white,
+                                        color: theme.colors.whiteEnforced,
                                       ),
                                     ),
                                   ),

@@ -54,7 +54,7 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
               width: double.infinity,
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
-                color: theme.colors.grey66,
+                color: theme.colors.gray66,
                 border: Border.all(
                   color: theme.colors.white16,
                   width: LineThicknessData.normal().thin,
@@ -69,7 +69,7 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
                       width: double.infinity,
                       height: skeletonHeight,
                       decoration: BoxDecoration(
-                        color: theme.colors.grey33,
+                        color: theme.colors.gray33,
                       ),
                       child: const AppSkeletonLoader(),
                     );
@@ -85,7 +85,7 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
                     width: constraints.maxWidth,
                     height: useMaxHeight ? maxHeight : height,
                     decoration: BoxDecoration(
-                      color: theme.colors.grey66,
+                      color: theme.colors.gray66,
                       border: Border.all(
                         color: theme.colors.white16,
                         width: LineThicknessData.normal().thin,

@@ -43,7 +43,7 @@ class AppSwipePanel extends StatelessWidget {
             ? (color ??
                 (isInsideModal
                     ? (isLight ? theme.colors.white8 : theme.colors.black33)
-                    : theme.colors.grey66))
+                    : theme.colors.gray66))
             : null,
         gradient: gradient,
         borderRadius: theme.radius.asBorderRadius().rad16,

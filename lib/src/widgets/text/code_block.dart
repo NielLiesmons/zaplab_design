@@ -75,7 +75,7 @@ class _AppCodeBlockState extends State<AppCodeBlock>
               vertical: AppGapSize.s6,
             ),
             decoration: BoxDecoration(
-              color: theme.colors.grey33,
+              color: theme.colors.gray33,
               borderRadius: theme.radius.asBorderRadius().rad16,
               border: Border.all(
                 color: theme.colors.white16,

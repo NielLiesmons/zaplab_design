@@ -23,7 +23,7 @@ class AppAdmonition extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             AppPanel(
-              color: theme.colors.grey66,
+              color: theme.colors.gray66,
               padding: const AppEdgeInsets.only(
                 left: AppGapSize.s12,
                 right: AppGapSize.s12,

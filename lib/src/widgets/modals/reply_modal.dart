@@ -134,19 +134,6 @@ class _AppReplyModalState extends State<AppReplyModal> {
                     ),
                   ],
                 ),
-              if (widget.model is ChatMessage)
-                Row(children: [
-                  AppContainer(
-                    width: theme.sizes.s38,
-                    child: Center(
-                      child: AppContainer(
-                        decoration: BoxDecoration(color: theme.colors.white33),
-                        width: LineThicknessData.normal().medium,
-                        height: theme.sizes.s16,
-                      ),
-                    ),
-                  ),
-                ]),
               AppShortTextField(
                 controller: _controller,
                 focusNode: _focusNode,

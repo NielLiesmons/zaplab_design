@@ -228,7 +228,7 @@ class AppActionsModal extends StatelessWidget {
               scale: scaleFactor,
               duration: AppDurationsData.normal().fast,
               curve: Curves.easeInOut,
-              child: Model is ChatMessage
+              child: model is ChatMessage
                   ? AppContainer(
                       decoration: BoxDecoration(
                         color: theme.colors.black33,
@@ -242,7 +242,7 @@ class AppActionsModal extends StatelessWidget {
                       child: Column(
                         children: [
                           AppQuotedMessage(
-                            chatMessage: model as ChatMessage,
+                            chatMessage: model,
                             onResolveEvent: onResolveEvent,
                             onResolveProfile: onResolveProfile,
                             onResolveEmoji: onResolveEmoji,
@@ -694,14 +694,14 @@ class AppActionsModal extends StatelessWidget {
             AppIcon.s16(
               theme.icons.characters.plus,
               outlineThickness: LineThicknessData.normal().thick,
-              outlineColor: AppColorsData.dark().white,
+              outlineColor: theme.colors.whiteEnforced,
             ),
             const AppGap.s12(),
-            AppText.reg14('Add ', color: AppColorsData.dark().white),
+            AppText.reg14('Add ', color: theme.colors.whiteEnforced),
             AppText.bold14(
               model.author.value?.name ??
                   formatNpub(model.author.value?.pubkey ?? ''),
-              color: AppColorsData.dark().white,
+              color: theme.colors.whiteEnforced,
             ),
           ],
         ),

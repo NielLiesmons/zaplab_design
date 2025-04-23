@@ -193,7 +193,7 @@ class AppAppReleaseCard extends StatelessWidget {
             children: [
               AppText.med16(
                 isInstalled ? 'Update' : 'Install',
-                color: AppColorsData.dark().white,
+                color: theme.colors.whiteEnforced,
               ),
             ],
           ),

@@ -42,7 +42,7 @@ class AppBottomBar extends StatelessWidget {
               top: AppGapSize.s16,
               bottom: bottomPadding,
             ),
-            decoration: BoxDecoration(color: theme.colors.grey66),
+            decoration: BoxDecoration(color: theme.colors.gray66),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

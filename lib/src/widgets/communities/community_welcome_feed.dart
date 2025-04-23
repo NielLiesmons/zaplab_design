@@ -54,7 +54,7 @@ class AppCommunityWelcomeFeed extends StatelessWidget {
                   vertical: AppGapSize.s10,
                 ),
                 decoration: BoxDecoration(
-                  color: theme.colors.grey66,
+                  color: theme.colors.gray66,
                   borderRadius: theme.radius.asBorderRadius().rad16,
                 ),
                 child: AppText.reg14(
@@ -79,7 +79,7 @@ class AppCommunityWelcomeFeed extends StatelessWidget {
                   vertical: AppGapSize.s10,
                 ),
                 decoration: BoxDecoration(
-                  color: theme.colors.grey66,
+                  color: theme.colors.gray66,
                   borderRadius: theme.radius.asBorderRadius().rad16,
                 ),
                 child: Row(
@@ -112,7 +112,7 @@ class AppCommunityWelcomeFeed extends StatelessWidget {
                   vertical: AppGapSize.s10,
                 ),
                 decoration: BoxDecoration(
-                  color: theme.colors.grey66,
+                  color: theme.colors.gray66,
                   borderRadius: theme.radius.asBorderRadius().rad16,
                 ),
                 child: Row(
