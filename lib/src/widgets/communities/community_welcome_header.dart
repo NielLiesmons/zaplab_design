@@ -2,7 +2,6 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:math' as math;
 import 'dart:ui';
 import 'package:models/models.dart';
-import 'package:flutter/material.dart';
 
 class AppCommunityWelcomeHeader extends StatefulWidget {
   final Community community;
@@ -149,16 +148,18 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
               ),
             ],
           ),
-          const AppGap.s12(),
+          const AppGap.s4(),
           // Community description
           ClipRRect(
             borderRadius: theme.radius.asBorderRadius().rad24,
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
               child: AppContainer(
-                padding: const AppEdgeInsets.symmetric(
-                  horizontal: AppGapSize.s12,
-                  vertical: AppGapSize.s4,
+                padding: const AppEdgeInsets.only(
+                  left: AppGapSize.s12,
+                  right: AppGapSize.s14,
+                  top: AppGapSize.s6,
+                  bottom: AppGapSize.s6,
                 ),
                 decoration: BoxDecoration(
                   color: theme.colors.white8,
@@ -167,11 +168,9 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const AppEmojiImage(
-                      emojiUrl:
-                          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn3.emoji.gg%2Fdefault%2Fapple%2Fcastle.png',
-                      emojiName: '',
-                      size: 12,
+                    const AppEmojiContentType(
+                      contentType: 'community',
+                      size: 16,
                     ),
                     const AppGap.s6(),
                     AppText.reg12(

@@ -46,7 +46,6 @@ export 'chat/quoted_message.dart';
 export 'communities/community_home_panel.dart';
 export 'communities/community_screen.dart';
 export 'communities/community_welcome_header.dart';
-export 'communities/community_welcome_feed.dart';
 
 // Images
 export 'images/emoji_image.dart';

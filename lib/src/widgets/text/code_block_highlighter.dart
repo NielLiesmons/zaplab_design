@@ -1,11 +1,14 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'dart:convert';
 
 class CodeBlockHighlighter extends StatelessWidget {
   final String code;
+  final String? language;
 
   const CodeBlockHighlighter({
     super.key,
     required this.code,
+    this.language,
   });
 
   Color _getMidGradientColor(Gradient gradient) {
@@ -14,10 +17,24 @@ class CodeBlockHighlighter extends StatelessWidget {
         linearGradient.colors.first, linearGradient.colors.last, 0.5)!;
   }
 
+  String _formatJson(String jsonString) {
+    try {
+      final json = jsonDecode(jsonString);
+      final encoder = JsonEncoder.withIndent('  ');
+      return encoder.convert(json);
+    } catch (e) {
+      return jsonString;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final List<TextSpan> spans = [];
+
+    // Format code if it's JSON
+    final formattedCode =
+        language?.toLowerCase() == 'json' ? _formatJson(code) : code;
 
     // Define all patterns with their colors
     final patterns = [
@@ -30,15 +47,15 @@ class CodeBlockHighlighter extends StatelessWidget {
     ];
 
     var currentPosition = 0;
-    while (currentPosition < code.length) {
+    while (currentPosition < formattedCode.length) {
       var matchFound = false;
 
       for (final (pattern, color) in patterns) {
-        final match = pattern.matchAsPrefix(code, currentPosition);
+        final match = pattern.matchAsPrefix(formattedCode, currentPosition);
         if (match != null) {
           if (match.start > currentPosition) {
             spans.add(TextSpan(
-              text: code.substring(currentPosition, match.start),
+              text: formattedCode.substring(currentPosition, match.start),
             ));
           }
           spans.add(TextSpan(
@@ -55,7 +72,7 @@ class CodeBlockHighlighter extends StatelessWidget {
         // Move to next character if no pattern matches
         final nextPosition = currentPosition + 1;
         spans.add(TextSpan(
-          text: code.substring(currentPosition, nextPosition),
+          text: formattedCode.substring(currentPosition, nextPosition),
         ));
         currentPosition = nextPosition;
       }

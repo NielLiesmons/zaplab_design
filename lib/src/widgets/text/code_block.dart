@@ -5,12 +5,12 @@ import 'dart:ui';
 
 class AppCodeBlock extends StatefulWidget {
   final String code;
-  final String language;
+  final String? language;
 
   const AppCodeBlock({
     super.key,
     required this.code,
-    required this.language,
+    this.language,
   });
 
   @override
@@ -85,7 +85,17 @@ class _AppCodeBlockState extends State<AppCodeBlock>
             child: SingleChildScrollView(
               clipBehavior: Clip.none,
               scrollDirection: Axis.horizontal,
-              child: CodeBlockHighlighter(code: widget.code),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppText.h3(widget.language ?? '',
+                      color: theme.colors.white66),
+                  CodeBlockHighlighter(
+                    code: widget.code,
+                    language: widget.language,
+                  ),
+                ],
+              ),
             ),
           ),
           Positioned(

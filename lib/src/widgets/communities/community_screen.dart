@@ -35,6 +35,8 @@ class AppCommunityScreen extends StatefulWidget {
   final Function(Model) onReply;
   final Function(Reaction) onReactionTap;
   final Function(Zap) onZapTap;
+  // Initial tab
+  final int? initialTab;
 
   const AppCommunityScreen({
     super.key,
@@ -61,6 +63,8 @@ class AppCommunityScreen extends StatefulWidget {
     required this.onReply,
     required this.onReactionTap,
     required this.onZapTap,
+    // Initial tab
+    this.initialTab,
   });
 
   @override
@@ -73,8 +77,16 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
   @override
   void initState() {
     super.initState();
-    _tabController = AppTabController(length: widget.contentTypes.length + 1);
+    _tabController = AppTabController(
+      length: widget.contentTypes.length,
+      initialIndex:
+          widget.initialTab?.clamp(0, widget.contentTypes.length - 1) ?? 0,
+    );
     _tabController.addListener(() {
+      if (_tabController.index < 0 ||
+          _tabController.index >= widget.contentTypes.length) {
+        _tabController.animateTo(0);
+      }
       setState(() {});
     });
   }
@@ -199,12 +211,20 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
 
   Widget _buildContent() {
     final contentTypes = widget.contentTypes.keys.toList();
+    if (_tabController.index < 0 ||
+        _tabController.index >= contentTypes.length) {
+      return const SizedBox.shrink();
+    }
     final selectedType = contentTypes[_tabController.index];
     return widget.contentTypes[selectedType]?.feed ?? const SizedBox.shrink();
   }
 
   Widget _buildBottomBar() {
     final contentTypes = widget.contentTypes.keys.toList();
+    if (_tabController.index < 0 ||
+        _tabController.index >= contentTypes.length) {
+      return const SizedBox.shrink();
+    }
     final selectedType = contentTypes[_tabController.index];
     return widget.contentTypes[selectedType]?.bottomBar ??
         const SizedBox.shrink();

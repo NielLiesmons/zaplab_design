@@ -10,8 +10,9 @@ class AppCommunityHomePanel extends StatelessWidget {
   final NostrEmojiResolver onResolveEmoji;
   final Map<String, int> contentCounts;
   final int? mainCount;
-  final Function(Community) onNavigateToChat;
+  final Function(Community) onNavigateToCommunity;
   final Function(Community, String contentType)? onNavigateToContent;
+  final Function(Community)? onNavigateToNotifications;
   final Function(Community)? onCreateNewPublication;
   final Function(Community)? onActions;
 
@@ -24,8 +25,9 @@ class AppCommunityHomePanel extends StatelessWidget {
     required this.onResolveEmoji,
     this.contentCounts = const {},
     this.mainCount,
-    required this.onNavigateToChat,
+    required this.onNavigateToCommunity,
     this.onNavigateToContent,
+    this.onNavigateToNotifications,
     this.onCreateNewPublication,
     this.onActions,
   });
@@ -33,7 +35,7 @@ class AppCommunityHomePanel extends StatelessWidget {
   (String, double) _getCountDisplay(int count) {
     if (count > 99) return ('99+', 40);
     if (count > 9) return (count.toString(), 32);
-    return (count.toString(), 24);
+    return (count.toString(), 26);
   }
 
   @override
@@ -43,7 +45,7 @@ class AppCommunityHomePanel extends StatelessWidget {
     final (displayCount, containerWidth) = _getCountDisplay(mainCount!);
 
     return TapBuilder(
-      onTap: () => onNavigateToChat(community),
+      onTap: () => onNavigateToCommunity(community),
       builder: (context, state, hasFocus) {
         return Column(children: [
           AppSwipeContainer(
@@ -70,7 +72,7 @@ class AppCommunityHomePanel extends StatelessWidget {
                   children: [
                     AppProfilePic.s48(
                       community.author.value?.pictureUrl ?? '',
-                      onTap: () => onNavigateToChat(community),
+                      onTap: () => onNavigateToCommunity(community),
                     ),
                     Expanded(
                       child: Column(
@@ -103,9 +105,9 @@ class AppCommunityHomePanel extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const AppGap.s8(),
+                          const AppGap.s6(),
                           AppContainer(
-                            height: theme.sizes.s24,
+                            height: 26,
                             child: Stack(
                               children: [
                                 ShaderMask(
@@ -210,53 +212,68 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                       .where((entry) =>
                                                           entry.value > 0)
                                                       .map(
-                                                        (entry) => AppContainer(
-                                                          padding:
-                                                              const AppEdgeInsets
-                                                                  .only(
-                                                            right:
-                                                                AppGapSize.s8,
-                                                          ),
-                                                          child: AppContainer(
-                                                            height:
-                                                                theme.sizes.s24,
-                                                            padding:
-                                                                const AppEdgeInsets
-                                                                    .symmetric(
-                                                              horizontal:
-                                                                  AppGapSize.s8,
-                                                            ),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: theme
-                                                                  .colors
-                                                                  .gray66,
-                                                              borderRadius: theme
-                                                                  .radius
-                                                                  .asBorderRadius()
-                                                                  .rad12,
-                                                            ),
-                                                            child: Row(
-                                                              children: [
-                                                                AppEmojiImage(
-                                                                  emojiUrl:
-                                                                      'assets/emoji/${entry.key}.png',
-                                                                  emojiName:
-                                                                      entry.key,
-                                                                  size: 16,
+                                                        (entry) => TapBuilder(
+                                                          onTap: () =>
+                                                              onNavigateToContent
+                                                                  ?.call(
+                                                                      community,
+                                                                      entry
+                                                                          .key),
+                                                          builder: (context,
+                                                              state, hasFocus) {
+                                                            return AppContainer(
+                                                              padding:
+                                                                  const AppEdgeInsets
+                                                                      .only(
+                                                                right:
+                                                                    AppGapSize
+                                                                        .s8,
+                                                              ),
+                                                              child:
+                                                                  AppContainer(
+                                                                height: theme
+                                                                    .sizes.s56,
+                                                                padding:
+                                                                    const AppEdgeInsets
+                                                                        .symmetric(
+                                                                  horizontal:
+                                                                      AppGapSize
+                                                                          .s8,
                                                                 ),
-                                                                const AppGap
-                                                                    .s4(),
-                                                                AppText.reg12(
-                                                                  entry.value
-                                                                      .toString(),
+                                                                decoration:
+                                                                    BoxDecoration(
                                                                   color: theme
                                                                       .colors
-                                                                      .white66,
+                                                                      .gray66,
+                                                                  borderRadius: theme
+                                                                      .radius
+                                                                      .asBorderRadius()
+                                                                      .rad16,
                                                                 ),
-                                                              ],
-                                                            ),
-                                                          ),
+                                                                child: Row(
+                                                                  children: [
+                                                                    AppEmojiContentType(
+                                                                      contentType:
+                                                                          entry
+                                                                              .key,
+                                                                      size: 16,
+                                                                    ),
+                                                                    const AppGap
+                                                                        .s6(),
+                                                                    AppText
+                                                                        .reg12(
+                                                                      entry
+                                                                          .value
+                                                                          .toString(),
+                                                                      color: theme
+                                                                          .colors
+                                                                          .white66,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
                                                         ),
                                                       ),
                                                   SizedBox(
@@ -273,24 +290,30 @@ class AppCommunityHomePanel extends StatelessWidget {
                                 ),
                                 Positioned(
                                   right: 0,
-                                  child: AppContainer(
-                                    height: theme.sizes.s24,
-                                    width: containerWidth,
-                                    padding: const AppEdgeInsets.symmetric(
-                                      horizontal: AppGapSize.s8,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      gradient: theme.colors.blurple,
-                                      borderRadius: BorderRadius.circular(
-                                        theme.sizes.s12,
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: AppText.reg12(
-                                        displayCount,
-                                        color: theme.colors.whiteEnforced,
-                                      ),
-                                    ),
+                                  child: TapBuilder(
+                                    onTap: () =>
+                                        onNavigateToNotifications!(community),
+                                    builder: (context, state, hasFocus) {
+                                      return AppContainer(
+                                        height: 26,
+                                        width: containerWidth,
+                                        padding: const AppEdgeInsets.symmetric(
+                                          horizontal: AppGapSize.s8,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          gradient: theme.colors.blurple,
+                                          borderRadius: theme.radius
+                                              .asBorderRadius()
+                                              .rad16,
+                                        ),
+                                        child: Center(
+                                          child: AppText.med12(
+                                            displayCount,
+                                            color: theme.colors.whiteEnforced,
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                               ],

@@ -53,6 +53,7 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
       parent: _slideController,
       curve: Curves.easeInOut,
     ));
+    _selectedIndex = widget.controller.index;
     widget.controller.addListener(_handleTabChange);
   }
 
