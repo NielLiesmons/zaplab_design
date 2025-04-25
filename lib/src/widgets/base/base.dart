@@ -3,6 +3,7 @@ import 'package:window_manager/window_manager.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'dart:ui';
+import 'package:models/models.dart';
 
 // Define window size constraints
 const kMinWindowWidth = 440.0;
@@ -28,7 +29,9 @@ class AppBase extends StatelessWidget {
   final VoidCallback? onBackTap;
   final VoidCallback? onSearchTap;
   final VoidCallback? onAddTap;
+  final VoidCallback? onProfilesTap;
   final Widget? historyMenu;
+  final Profile? currentProfile;
 
   AppBase({
     super.key,
@@ -47,7 +50,9 @@ class AppBase extends StatelessWidget {
     this.onBackTap,
     this.onSearchTap,
     this.onAddTap,
+    this.onProfilesTap,
     this.historyMenu,
+    this.currentProfile,
   }) {
     // Initialize window settings for desktop platforms
     if (PlatformUtils.isDesktop) {
@@ -91,7 +96,9 @@ class AppBase extends StatelessWidget {
           onBackTap: onBackTap,
           onSearchTap: onSearchTap,
           onAddTap: onAddTap,
+          onProfilesTap: onProfilesTap,
           historyWidget: historyMenu,
+          currentProfile: currentProfile,
         ),
       ),
     );
@@ -113,7 +120,9 @@ class _AppBaseContent extends StatefulWidget {
   final VoidCallback? onBackTap;
   final VoidCallback? onSearchTap;
   final VoidCallback? onAddTap;
+  final VoidCallback? onProfilesTap;
   final Widget? historyWidget;
+  final Profile? currentProfile;
 
   const _AppBaseContent({
     required this.title,
@@ -129,7 +138,9 @@ class _AppBaseContent extends StatefulWidget {
     this.onBackTap,
     this.onSearchTap,
     this.onAddTap,
+    this.onProfilesTap,
     this.historyWidget,
+    this.currentProfile,
   });
 
   @override
@@ -292,6 +303,14 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                         ),
                                         onTap: widget.onSearchTap!,
                                       ),
+                                    const Spacer(),
+                                    if (widget.onProfilesTap != null &&
+                                        widget.currentProfile != null)
+                                      AppProfilePic.s38(
+                                          widget.currentProfile!.pictureUrl ??
+                                              '',
+                                          onTap: widget.onProfilesTap!),
+                                    const AppGap.s12(),
                                   ],
                                 ),
                               ),
