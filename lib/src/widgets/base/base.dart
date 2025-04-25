@@ -1,14 +1,16 @@
 import 'package:flutter/services.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:tap_builder/tap_builder.dart';
+import 'dart:ui';
 
 // Define window size constraints
-const kMinWindowWidth = 400.0;
+const kMinWindowWidth = 440.0;
 const kMinWindowHeight = 640.0;
-const kMaxWindowWidth = 640.0;
+const kMaxWindowWidth = 720.0;
 const kMaxWindowHeight = 1280.0;
-const kDefaultWindowWidth = 480.0;
-const kDefaultWindowHeight = 776.0;
+const kDefaultWindowWidth = 580.0;
+const kDefaultWindowHeight = 800.0;
 
 class AppBase extends StatelessWidget {
   final String title;
@@ -22,6 +24,11 @@ class AppBase extends StatelessWidget {
   final AppThemeColorMode? colorMode;
   final AppTextScale? textScale;
   final AppSystemScale? systemScale;
+  final VoidCallback? onHomeTap;
+  final VoidCallback? onBackTap;
+  final VoidCallback? onSearchTap;
+  final VoidCallback? onAddTap;
+  final Widget? historyMenu;
 
   AppBase({
     super.key,
@@ -36,6 +43,11 @@ class AppBase extends StatelessWidget {
     this.colorMode,
     this.textScale,
     this.systemScale,
+    this.onHomeTap,
+    this.onBackTap,
+    this.onSearchTap,
+    this.onAddTap,
+    this.historyMenu,
   }) {
     // Initialize window settings for desktop platforms
     if (PlatformUtils.isDesktop) {
@@ -44,9 +56,16 @@ class AppBase extends StatelessWidget {
           .setMinimumSize(const Size(kMinWindowWidth, kMinWindowHeight));
       windowManager
           .setMaximumSize(const Size(kMaxWindowWidth, kMaxWindowHeight));
-      windowManager
-          .setSize(const Size(kDefaultWindowWidth, kDefaultWindowHeight));
-      windowManager.center();
+
+      // Only set default size if window has never been opened before
+      windowManager.getSize().then((size) {
+        if (size.width == 0 && size.height == 0) {
+          windowManager
+              .setSize(const Size(kDefaultWindowWidth, kDefaultWindowHeight));
+          windowManager.center();
+        }
+      });
+
       windowManager.setTitleBarStyle(TitleBarStyle.hidden);
     }
   }
@@ -68,6 +87,11 @@ class AppBase extends StatelessWidget {
           localizationsDelegates: localizationsDelegates,
           textScaleFactor: textScaleFactor,
           colorMode: colorMode,
+          onHomeTap: onHomeTap,
+          onBackTap: onBackTap,
+          onSearchTap: onSearchTap,
+          onAddTap: onAddTap,
+          historyWidget: historyMenu,
         ),
       ),
     );
@@ -75,7 +99,7 @@ class AppBase extends StatelessWidget {
 }
 
 /// Internal widget that handles the actual base functionality
-class _AppBaseContent extends StatelessWidget {
+class _AppBaseContent extends StatefulWidget {
   final String title;
   final RouterConfig<Object> routerConfig;
   final Widget? appLogo;
@@ -85,6 +109,11 @@ class _AppBaseContent extends StatelessWidget {
   final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
   final double? textScaleFactor;
   final AppThemeColorMode? colorMode;
+  final VoidCallback? onHomeTap;
+  final VoidCallback? onBackTap;
+  final VoidCallback? onSearchTap;
+  final VoidCallback? onAddTap;
+  final Widget? historyWidget;
 
   const _AppBaseContent({
     required this.title,
@@ -96,7 +125,57 @@ class _AppBaseContent extends StatelessWidget {
     this.localizationsDelegates,
     this.textScaleFactor,
     this.colorMode,
+    this.onHomeTap,
+    this.onBackTap,
+    this.onSearchTap,
+    this.onAddTap,
+    this.historyWidget,
   });
+
+  @override
+  State<_AppBaseContent> createState() => _AppBaseContentState();
+}
+
+class _AppBaseContentState extends State<_AppBaseContent>
+    with SingleTickerProviderStateMixin {
+  bool _showHistoryMenu = false;
+  late AnimationController _menuController;
+  late Animation<double> _menuAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _menuController = AnimationController(
+      duration: AppDurationsData.normal().normal,
+      vsync: this,
+    );
+    _menuAnimation = CurvedAnimation(
+      parent: _menuController,
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  @override
+  void dispose() {
+    _menuController.dispose();
+    super.dispose();
+  }
+
+  void _toggleHistoryMenu(bool show) {
+    setState(() {
+      _showHistoryMenu = show;
+      if (show) {
+        _menuController.forward(from: 0);
+      } else {
+        _menuController.reverse();
+      }
+    });
+  }
+
+  bool get _shouldShowSidebar =>
+      widget.onHomeTap != null ||
+      widget.onBackTap != null ||
+      widget.onSearchTap != null;
 
   @override
   Widget build(BuildContext context) {
@@ -117,24 +196,305 @@ class _AppBaseContent extends StatelessWidget {
       );
     }
 
+    final isDesktopOrWeb = PlatformUtils.isDesktop || PlatformUtils.isWeb;
+
     return AppResponsiveWrapper(
       child: MediaQuery(
         data: MediaQuery.of(context).copyWith(
-          textScaler: TextScaler.linear(textScaleFactor ?? 1.0),
+          textScaler: TextScaler.linear(widget.textScaleFactor ?? 1.0),
         ),
         child: WidgetsApp.router(
-          routerConfig: routerConfig,
+          routerConfig: widget.routerConfig,
           builder: (context, child) {
             return AppScaffold(
-              body: child ?? const SizedBox.shrink(),
+              body: Stack(
+                children: [
+                  Row(
+                    children: [
+                      // Sidebar (on desktop or web if any callbacks are provided)
+                      if (isDesktopOrWeb && _shouldShowSidebar)
+                        AppContainer(
+                          decoration: BoxDecoration(
+                            color: AppTheme.of(context).colors.gray33,
+                          ),
+                          child: Row(
+                            children: [
+                              AppContainer(
+                                padding: const AppEdgeInsets.all(AppGapSize.s4),
+                                child: Column(
+                                  children: [
+                                    const AppGap.s24(),
+                                    if (widget.onBackTap != null)
+                                      GestureDetector(
+                                        onLongPress:
+                                            widget.historyWidget != null
+                                                ? () => _toggleHistoryMenu(true)
+                                                : null,
+                                        onSecondaryTap:
+                                            widget.historyWidget != null
+                                                ? () => _toggleHistoryMenu(true)
+                                                : null,
+                                        child: _buildBackButton(
+                                          context,
+                                          onTap: _showHistoryMenu
+                                              ? () => _toggleHistoryMenu(false)
+                                              : widget.onBackTap!,
+                                          isMenuOpen: _showHistoryMenu,
+                                          showHistoryControls:
+                                              widget.historyWidget != null,
+                                        ),
+                                      ),
+                                    if (widget.onHomeTap != null)
+                                      _buildSidebarItem(
+                                        context,
+                                        icon: AppIcon.s20(
+                                          AppTheme.of(context)
+                                              .icons
+                                              .characters
+                                              .home,
+                                          outlineColor: AppTheme.of(context)
+                                              .colors
+                                              .white66,
+                                          outlineThickness:
+                                              LineThicknessData.normal().medium,
+                                        ),
+                                        onTap: widget.onHomeTap!,
+                                      ),
+                                    if (widget.onSearchTap != null)
+                                      _buildSidebarItem(
+                                        context,
+                                        icon: AppIcon.s20(
+                                          AppTheme.of(context)
+                                              .icons
+                                              .characters
+                                              .search,
+                                          outlineColor: AppTheme.of(context)
+                                              .colors
+                                              .white66,
+                                          outlineThickness:
+                                              LineThicknessData.normal().medium,
+                                        ),
+                                        onTap: widget.onSearchTap!,
+                                      ),
+                                    if (widget.onAddTap != null)
+                                      _buildSidebarItem(
+                                        context,
+                                        icon: AppIcon.s20(
+                                          AppTheme.of(context)
+                                              .icons
+                                              .characters
+                                              .plus,
+                                          outlineColor: AppTheme.of(context)
+                                              .colors
+                                              .white66,
+                                          outlineThickness:
+                                              LineThicknessData.normal().medium,
+                                        ),
+                                        onTap: widget.onSearchTap!,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                              AppContainer(
+                                width: 1.4,
+                                decoration: BoxDecoration(
+                                  color: AppTheme.of(context).colors.white8,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      // Main content area
+                      Expanded(
+                        child: child ?? const SizedBox.shrink(),
+                      )
+                    ],
+                  ),
+                  if (_showHistoryMenu && widget.historyWidget != null)
+                    Positioned.fill(
+                      child: Stack(
+                        children: [
+                          // Semi-transparent overlay
+                          Positioned(
+                            left: 64,
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            child: GestureDetector(
+                              onTap: () => _toggleHistoryMenu(false),
+                              child: ClipRect(
+                                child: BackdropFilter(
+                                  filter:
+                                      ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                                  child: AppContainer(
+                                    decoration: BoxDecoration(
+                                      color:
+                                          AppTheme.of(context).colors.black33,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          // History menu
+                          Positioned(
+                            left: 64,
+                            top: 0,
+                            bottom: 0,
+                            child: ClipRect(
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                                child: AnimatedBuilder(
+                                  animation: _menuAnimation,
+                                  builder: (context, child) {
+                                    return Transform.translate(
+                                      offset: Offset(
+                                        -240 * (1 - _menuAnimation.value),
+                                        0,
+                                      ),
+                                      child: AppContainer(
+                                        width: 240,
+                                        decoration: BoxDecoration(
+                                          color: AppTheme.of(context)
+                                              .colors
+                                              .gray66,
+                                          border: Border(
+                                            right: BorderSide(
+                                              color: AppTheme.of(context)
+                                                  .colors
+                                                  .white16,
+                                              width: LineThicknessData.normal()
+                                                  .thin,
+                                            ),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            const AppGap.s20(),
+                                            AppContainer(
+                                              padding: const AppEdgeInsets.all(
+                                                  AppGapSize.s12),
+                                              child: widget.historyWidget!,
+                                            ),
+                                            const Spacer(),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
             );
           },
-          title: title,
-          locale: locale,
-          localizationsDelegates: localizationsDelegates,
-          supportedLocales: supportedLocales,
-          color: const Color(0xFF000000),
+          title: widget.title,
+          locale: widget.locale,
+          localizationsDelegates: widget.localizationsDelegates,
+          supportedLocales: widget.supportedLocales,
+          color: AppTheme.of(context).colors.white,
         ),
+      ),
+    );
+  }
+
+  Widget _buildBackButton(
+    BuildContext context, {
+    required VoidCallback onTap,
+    bool isMenuOpen = false,
+    bool showHistoryControls = false,
+  }) {
+    final theme = AppTheme.of(context);
+    return MouseRegion(
+      child: TapBuilder(
+        onTap: onTap,
+        builder: (context, state, isFocused) {
+          double scaleFactor = 1.0;
+          if (state == TapState.pressed) {
+            scaleFactor = 0.97;
+          } else if (state == TapState.hover) {
+            scaleFactor = 1.01;
+          }
+
+          return Transform.scale(
+            scale: scaleFactor,
+            child: AppContainer(
+              height: 38,
+              width: 38,
+              margin: const AppEdgeInsets.all(AppGapSize.s4),
+              padding: isMenuOpen && showHistoryControls
+                  ? const AppEdgeInsets.all(AppGapSize.none)
+                  : const AppEdgeInsets.only(right: AppGapSize.s2),
+              decoration: BoxDecoration(
+                color: theme.colors.white8,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: isMenuOpen && showHistoryControls
+                    ? AppIcon.s14(
+                        theme.icons.characters.cross,
+                        outlineColor: theme.colors.white66,
+                        outlineThickness: LineThicknessData.normal().medium,
+                      )
+                    : AppIcon.s16(
+                        theme.icons.characters.chevronLeft,
+                        outlineColor: theme.colors.white66,
+                        outlineThickness: LineThicknessData.normal().medium,
+                      ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSidebarItem(
+    BuildContext context, {
+    required Widget icon,
+    required VoidCallback onTap,
+  }) {
+    final theme = AppTheme.of(context);
+    return MouseRegion(
+      child: TapBuilder(
+        onTap: onTap,
+        builder: (context, state, isFocused) {
+          double scaleFactor = 1.0;
+          if (state == TapState.pressed) {
+            scaleFactor = 0.97;
+          } else if (state == TapState.hover) {
+            scaleFactor = 1.01;
+          }
+
+          return Transform.scale(
+            scale: scaleFactor,
+            child: AppContainer(
+              height: 48,
+              width: 48,
+              margin: const AppEdgeInsets.symmetric(
+                vertical: AppGapSize.s2,
+                horizontal: AppGapSize.s4,
+              ),
+              decoration: BoxDecoration(
+                color: state == TapState.hover ||
+                        state == TapState.pressed ||
+                        isFocused
+                    ? theme.colors.white8
+                    : null,
+                borderRadius: theme.radius.asBorderRadius().rad16,
+              ),
+              child: Center(
+                child: icon,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
