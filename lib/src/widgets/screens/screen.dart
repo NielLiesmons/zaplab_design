@@ -7,12 +7,12 @@ class HistoryItem {
   const HistoryItem({
     required this.contentType,
     required this.title,
-    // TODO: add callback
+    // TODO: add callback and replace with Models
   });
 
   final String contentType;
   final String title;
-  // TODO: add callback
+  // TODO: add callback and replace with Models
 }
 
 class AppScreen extends StatefulWidget {
@@ -89,6 +89,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   DateTime? _menuOpenedAt;
   bool _showTopBarContent = false;
   bool _isInitialDrag = true;
+  bool _isPopping = false;
 
   @override
   void initState() {
@@ -132,7 +133,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
     setState(() {
       _isAtTop = _scrollController.offset <= 0;
       _showTopBarContent =
-          widget.alwaysShowTopBar || _scrollController.offset > 56;
+          widget.alwaysShowTopBar || _scrollController.offset > 2;
     });
   }
 
@@ -194,8 +195,14 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
     setState(() {
       // Check for empty history pop condition first
       if (widget.history.isEmpty && _currentDrag + delta > 0) {
-        if (Navigator.canPop(context)) {
-          Navigator.of(context).pop();
+        _currentDrag = (_currentDrag + delta).clamp(0, 40.0).toDouble();
+        if (_currentDrag >= 40.0 && Navigator.canPop(context)) {
+          // Only pop if we're not already in the process of popping
+          if (!_isPopping) {
+            _isPopping = true;
+            Navigator.of(context).pop();
+            // Future.microtask(() => _isPopping = false);
+          }
         }
         return;
       }
@@ -209,33 +216,30 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   void _handleDragEnd(DragEndDetails details) {
     final velocity = details.velocity.pixelsPerSecond.dy;
 
+    if (widget.history.isEmpty && _currentDrag > 0) {
+      _closeMenu();
+      return;
+    }
+
     if (_currentDrag > _menuHeight * 0.66) {
-      // In top third when dragging up
       if (velocity < -500) {
-        // Fast upward flick
         _closeMenu();
       } else {
-        _openMenu(); // Snap back to open
+        _openMenu();
       }
     } else if (_currentDrag > _menuHeight * 0.33) {
-      // In middle third
       if (velocity > 500) {
-        // Fast downward flick
         _openMenu();
       } else if (velocity < -500) {
-        // Fast upward flick
         _closeMenu();
       } else {
-        // Snap to nearest end based on direction
         velocity > 0 ? _openMenu() : _closeMenu();
       }
     } else {
-      // In bottom third
       if (velocity > 500) {
-        // Fast downward flick
         _openMenu();
       } else {
-        _closeMenu(); // Snap back to closed
+        _closeMenu();
       }
     }
   }
@@ -260,7 +264,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
               child: AppContainer(
                 height: PlatformUtils.isMobile
                     ? MediaQuery.of(context).padding.top + 2
-                    : 26,
+                    : 23,
                 decoration: BoxDecoration(
                   color: _currentDrag < 5
                       ? theme.colors.black
@@ -512,7 +516,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                             (_topBarHeight +
                                 (PlatformUtils.isMobile
                                     ? MediaQuery.of(context).padding.top
-                                    : 24)),
+                                    : 20)),
                       ),
                       child: AppScaffold(
                         body: Stack(
@@ -560,7 +564,9 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                     child: Column(
                                       children: [
                                         // Top padding to account for the gap and drag handle in the top bar
-                                        SizedBox(height: theme.sizes.s10),
+                                        PlatformUtils.isDesktop
+                                            ? const AppGap.s8()
+                                            : const AppGap.s10(),
                                         // Actual content
                                         widget.child,
                                       ],
@@ -671,7 +677,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                                     .hasClients ||
                                                                 _scrollController
                                                                         .offset <
-                                                                    32
+                                                                    2
                                                             ? 0.0
                                                             : _scrollController
                                                                         .offset >
@@ -679,9 +685,9 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                                 ? null
                                                                 : (_scrollController
                                                                             .offset -
-                                                                        32) /
-                                                                    40 *
-                                                                    56,
+                                                                        2) /
+                                                                    70 *
+                                                                    72,
                                                     child: widget
                                                                 .alwaysShowTopBar ||
                                                             (!_scrollController
