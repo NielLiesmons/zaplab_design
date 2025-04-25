@@ -229,47 +229,52 @@ class AppActionsModal extends StatelessWidget {
               duration: AppDurationsData.normal().fast,
               curve: Curves.easeInOut,
               child: model is ChatMessage
-                  ? AppContainer(
-                      decoration: BoxDecoration(
-                        color: theme.colors.black33,
-                        borderRadius: theme.radius.asBorderRadius().rad16,
-                        border: Border.all(
-                          color: theme.colors.white33,
-                          width: LineThicknessData.normal().thin,
-                        ),
-                      ),
-                      padding: const AppEdgeInsets.all(AppGapSize.s8),
-                      child: Column(
-                        children: [
-                          AppQuotedMessage(
-                            chatMessage: model,
-                            onResolveEvent: onResolveEvent,
-                            onResolveProfile: onResolveProfile,
-                            onResolveEmoji: onResolveEmoji,
-                          ),
-                          AppContainer(
-                            padding: const AppEdgeInsets.only(
-                              left: AppGapSize.s8,
-                              right: AppGapSize.s8,
-                              top: AppGapSize.s12,
-                              bottom: AppGapSize.s4,
-                            ),
-                            child: Row(
-                              children: [
-                                AppText.med14(
-                                  'Reply',
-                                  color: theme.colors.white33,
-                                ),
-                                const Spacer(),
-                                AppIcon.s16(
-                                  theme.icons.characters.voice,
-                                  color: theme.colors.white33,
-                                ),
-                              ],
+                  ? TapBuilder(
+                      onTap: () => onReplyTap(model),
+                      builder: (context, state, hasFocus) {
+                        return AppContainer(
+                          decoration: BoxDecoration(
+                            color: theme.colors.black33,
+                            borderRadius: theme.radius.asBorderRadius().rad16,
+                            border: Border.all(
+                              color: theme.colors.white33,
+                              width: LineThicknessData.normal().thin,
                             ),
                           ),
-                        ],
-                      ),
+                          padding: const AppEdgeInsets.all(AppGapSize.s8),
+                          child: Column(
+                            children: [
+                              AppQuotedMessage(
+                                chatMessage: model,
+                                onResolveEvent: onResolveEvent,
+                                onResolveProfile: onResolveProfile,
+                                onResolveEmoji: onResolveEmoji,
+                              ),
+                              AppContainer(
+                                padding: const AppEdgeInsets.only(
+                                  left: AppGapSize.s8,
+                                  right: AppGapSize.s8,
+                                  top: AppGapSize.s12,
+                                  bottom: AppGapSize.s4,
+                                ),
+                                child: Row(
+                                  children: [
+                                    AppText.med14(
+                                      'Reply',
+                                      color: theme.colors.white33,
+                                    ),
+                                    const Spacer(),
+                                    AppIcon.s16(
+                                      theme.icons.characters.voice,
+                                      color: theme.colors.white33,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     )
                   : Column(
                       children: [

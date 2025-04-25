@@ -4,6 +4,7 @@ export 'apps/app_small_card.dart';
 
 // Articles
 export 'articles/article_card.dart';
+export 'articles/article_header.dart';
 // Audio
 export 'audio/audio_message.dart';
 

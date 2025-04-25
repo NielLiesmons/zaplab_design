@@ -62,49 +62,6 @@ class AppPost extends StatelessWidget {
                     AppCommunityStack(
                       communities: communities,
                     ),
-
-                    // TODO: Implement reactions, zaps, and communities once HasMany is available
-                    /*
-                    if (note.reactions.length > 0 ||
-                        note.zaps.length > 0) ...[
-                      const AppGap.s8(),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: AppInteractionPills(
-                          nevent: note.id,
-                          reactions: note.reactions
-                              .map((r) => ReplaceReaction(
-                                    npub: r.author.value?.pubkey ?? '',
-                                    nevent: note.id,
-                                    profileName: r.author.value?.name ??
-                                        formatNpub(r.author.value?.pubkey ?? ''),
-                                    profilePicUrl: r.author.value?.pictureUrl ?? '',
-                                    emojiUrl: r.content,
-                                    emojiName: r.content,
-                                    timestamp: r.createdAt,
-                                    isOutgoing: r.author.value?.pubkey ==
-                                        note.author.value?.pubkey,
-                                  ))
-                              .toList(),
-                          zaps: note.zaps
-                              .map((z) => ReplaceZap(
-                                    npub: z.author.value?.pubkey ?? '',
-                                    nevent: note.id,
-                                    amount: int.tryParse(z.content) ?? 0,
-                                    profileName: z.author.value?.name ??
-                                        formatNpub(z.author.value?.pubkey ?? ''),
-                                    profilePicUrl: z.author.value?.pictureUrl ?? '',
-                                    timestamp: z.createdAt,
-                                    isOutgoing: z.author.value?.pubkey ==
-                                        note.author.value?.pubkey,
-                                  ))
-                              .toList(),
-                          onReactionTap: onReactionTap,
-                          onZapTap: onZapTap,
-                        ),
-                      ),
-                    ],
-                    */
                   ],
                 ),
               ),

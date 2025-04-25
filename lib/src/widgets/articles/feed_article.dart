@@ -1,37 +1,19 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppFeedPost extends StatelessWidget {
-  final Note post;
-  final Function(Model) onTap;
+class AppFeedArticle extends StatelessWidget {
+  final Article article;
   final List<Reply> topReplies;
   final int totalReplies;
-  final Function(Model) onActions;
-  final Function(Model) onReply;
-  final Function(Reaction)? onReactionTap;
-  final Function(Zap)? onZapTap;
-  final NostrEventResolver onResolveEvent;
-  final NostrProfileResolver onResolveProfile;
-  final NostrEmojiResolver onResolveEmoji;
-  final NostrHashtagResolver onResolveHashtag;
-  final LinkTapHandler onLinkTap;
+  final VoidCallback? onTap;
   final bool isUnread;
 
-  const AppFeedPost({
+  const AppFeedArticle({
     super.key,
-    required this.post,
-    required this.onTap,
+    required this.article,
     this.topReplies = const [],
     this.totalReplies = 0,
-    required this.onReply,
-    required this.onActions,
-    required this.onReactionTap,
-    required this.onZapTap,
-    required this.onResolveEvent,
-    required this.onResolveProfile,
-    required this.onResolveEmoji,
-    required this.onResolveHashtag,
-    required this.onLinkTap,
+    this.onTap,
     this.isUnread = false,
   });
 
@@ -39,24 +21,42 @@ class AppFeedPost extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    return Column(
-      children: [
-        AppSwipeContainer(
-          onTap: () => onTap(post),
-          padding: const AppEdgeInsets.all(AppGapSize.s12),
-          leftContent: AppIcon.s16(
-            theme.icons.characters.reply,
-            outlineColor: theme.colors.white66,
-            outlineThickness: LineThicknessData.normal().medium,
-          ),
-          rightContent: AppIcon.s10(
-            theme.icons.characters.chevronUp,
-            outlineColor: theme.colors.white66,
-            outlineThickness: LineThicknessData.normal().medium,
-          ),
-          onSwipeLeft: () => onReply(post),
-          onSwipeRight: () => onActions(post),
-          child: Column(
+    return AppContainer(
+      padding: const AppEdgeInsets.all(AppGapSize.s12),
+      child: Column(
+        children: [
+          // Image container with 16:9 aspect ratio
+          if (article.imageUrl != null && article.imageUrl!.isNotEmpty)
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: AppContainer(
+                width: double.infinity,
+                padding: const AppEdgeInsets.all(AppGapSize.s2),
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  color: theme.colors.gray33,
+                  borderRadius: theme.radius.asBorderRadius().rad16,
+                  border: Border.all(
+                    color: theme.colors.white16,
+                    width: LineThicknessData.normal().thin,
+                  ),
+                ),
+                child: Image.network(
+                  article.imageUrl!,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return const AppSkeletonLoader();
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    print('Error loading image: $error');
+                    return const AppSkeletonLoader();
+                  },
+                ),
+              ),
+            ),
+          const AppGap.s12(),
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               IntrinsicHeight(
@@ -65,7 +65,8 @@ class AppFeedPost extends StatelessWidget {
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        AppProfilePic.s38(post.author.value?.pictureUrl ?? ''),
+                        AppProfilePic.s38(
+                            article.author.value?.pictureUrl ?? ''),
                         if (topReplies.isNotEmpty)
                           Expanded(
                             child: AppDivider.vertical(
@@ -81,16 +82,9 @@ class AppFeedPost extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              AppText.bold14(post.author.value?.name ??
-                                  formatNpub(post.author.value?.pubkey ?? '')),
-                              AppText.reg12(
-                                TimestampFormatter.format(post.createdAt,
-                                    format: TimestampFormat.relative),
-                                color: theme.colors.white33,
-                              ),
+                              AppText.h2(article.title ?? 'No Title'),
+                              const AppGap.s4(),
                               if (isUnread)
                                 AppContainer(
                                   height: theme.sizes.s8,
@@ -102,15 +96,28 @@ class AppFeedPost extends StatelessWidget {
                                 ),
                             ],
                           ),
-                          const AppGap.s2(),
-                          AppShortTextRenderer(
-                            content: post.content,
-                            onResolveEvent: onResolveEvent,
-                            onResolveProfile: onResolveProfile,
-                            onResolveEmoji: onResolveEmoji,
-                            onResolveHashtag: onResolveHashtag,
-                            onLinkTap: onLinkTap,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              AppText.med12(
+                                  article.author.value?.name ??
+                                      formatNpub(
+                                          article.author.value?.pubkey ?? ''),
+                                  color: theme.colors.white66),
+                              AppText.reg12(
+                                TimestampFormatter.format(article.createdAt,
+                                    format: TimestampFormat.relative),
+                                color: theme.colors.white33,
+                              ),
+                            ],
                           ),
+                          const AppGap.s2(),
+                          if (article.summary != null &&
+                              article.summary!.isNotEmpty)
+                            AppText.regArticle(
+                              article.summary!,
+                              fontSize: 14,
+                            ),
                           // TODO: Implement Zaps and Reactions once HasMany is available
                         ],
                       ),
@@ -159,9 +166,9 @@ class AppFeedPost extends StatelessWidget {
               ],
             ],
           ),
-        ),
-        const AppDivider.horizontal(),
-      ],
+          AppText.reg14(article.summary ?? '')
+        ],
+      ),
     );
   }
 }

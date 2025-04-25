@@ -1,4 +1,5 @@
 import 'package:zaplab_design/src/theme/theme.dart';
+import 'package:zaplab_design/src/utils/platform.dart';
 import 'package:flutter/widgets.dart';
 
 class AppDragHandle extends StatelessWidget {
@@ -7,15 +8,17 @@ class AppDragHandle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    return SizedBox(
-      width: theme.sizes.s32,
-      height: theme.sizes.s4,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: theme.colors.white33,
-          borderRadius: BorderRadius.circular(2),
-        ),
-      ),
-    );
+    return PlatformUtils.isMobile
+        ? SizedBox(
+            width: theme.sizes.s32,
+            height: theme.sizes.s4,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: theme.colors.white33,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          )
+        : const SizedBox.shrink();
   }
 }

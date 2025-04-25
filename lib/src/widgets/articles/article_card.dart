@@ -14,8 +14,6 @@ class AppArticleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    // TODO: Get image URL from article model once implemented
-    final imageUrl = null;
 
     return AppPanelButton(
       padding: const AppEdgeInsets.all(AppGapSize.none),
@@ -24,7 +22,7 @@ class AppArticleCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Image container with 16:9 aspect ratio
-          if (imageUrl != null && imageUrl.isNotEmpty)
+          if (article.imageUrl != null && article.imageUrl!.isNotEmpty)
             AspectRatio(
               aspectRatio: 16 / 9,
               child: AppContainer(
@@ -40,14 +38,14 @@ class AppArticleCard extends StatelessWidget {
                     ),
                   ),
                   child: Image.network(
-                    imageUrl,
+                    article.imageUrl!,
                     fit: BoxFit.cover,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;
                       return const AppSkeletonLoader();
                     },
                     errorBuilder: (context, error, stackTrace) {
-                      print('Error loading asset: $error');
+                      print('Error loading image: $error');
                       return const AppSkeletonLoader();
                     },
                   ),

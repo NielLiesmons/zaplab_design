@@ -9,7 +9,7 @@ class AppTopSafeArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height:
-          PlatformUtils.isMobile ? MediaQuery.of(context).padding.top : 24.0,
+          PlatformUtils.isMobile ? MediaQuery.of(context).padding.top : 20.0,
     );
   }
 }

@@ -46,6 +46,17 @@ class Emoji {
   });
 }
 
+// Reply
+class Reply extends RegularModel<Reply> {
+  Reply.fromMap(super.map, super.ref) : super.fromMap();
+}
+
+class PartialReply extends RegularPartialModel<Reply> {
+  PartialReply(String content) {
+    event.content = content;
+  }
+}
+
 // Hashtag
 typedef NostrHashtagResolver = Future<void Function()?> Function(
     String identifier);
