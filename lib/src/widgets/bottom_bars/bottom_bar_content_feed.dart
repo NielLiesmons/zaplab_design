@@ -5,12 +5,12 @@ class AppBottomBarContentFeed extends StatelessWidget {
   const AppBottomBarContentFeed({
     super.key,
     this.onAddTap,
-    this.onExploreTap,
+    this.onSearchTap,
     this.onActions,
   });
 
   final VoidCallback? onAddTap;
-  final VoidCallback? onExploreTap;
+  final VoidCallback? onSearchTap;
   final VoidCallback? onActions;
 
   @override
@@ -33,7 +33,7 @@ class AppBottomBarContentFeed extends StatelessWidget {
           const AppGap.s12(),
           Expanded(
             child: TapBuilder(
-              onTap: onExploreTap,
+              onTap: onSearchTap,
               builder: (context, state, hasFocus) {
                 double scaleFactor = 1.0;
                 if (state == TapState.pressed) {
@@ -70,7 +70,7 @@ class AppBottomBarContentFeed extends StatelessWidget {
                                     LineThicknessData.normal().medium,
                                 outlineColor: theme.colors.white33),
                             const AppGap.s8(),
-                            AppText.med14('Explore',
+                            AppText.med14('Search',
                                 color: theme.colors.white33),
                           ],
                         ),
