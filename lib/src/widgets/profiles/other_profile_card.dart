@@ -5,12 +5,13 @@ class AppOtherProfileCard extends StatelessWidget {
   final Profile profile;
   final VoidCallback? onSelect;
   final VoidCallback? onShare;
-
+  final VoidCallback? onView;
   const AppOtherProfileCard({
     super.key,
     required this.profile,
     this.onSelect,
     this.onShare,
+    this.onView,
   });
 
   @override
@@ -39,49 +40,30 @@ class AppOtherProfileCard extends StatelessWidget {
                   height: theme.sizes.s56,
                   child: Center(
                     child: AppProfilePic.s48(
-                        profile.author.value?.pictureUrl ?? ''),
+                      profile.author.value?.pictureUrl ?? '',
+                      onTap: onView,
+                    ),
                   ),
                 ),
                 const AppGap.s12(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppText.bold16(
-                      profile.author.value?.name ??
-                          formatNpub(profile.author.value?.npub ?? ''),
-                      color: theme.colors.white,
-                    ),
-                    Row(
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: onView,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AppContainer(
-                          height: theme.sizes.s8,
-                          width: theme.sizes.s8,
-                          decoration: BoxDecoration(
-                            color: Color(
-                              int.parse(
-                                    profileToColor(profile).substring(1),
-                                    radix: 16,
-                                  ) +
-                                  0xFF000000,
-                            ),
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(
-                              color: theme.colors.white16,
-                              width: LineThicknessData.normal().thin,
-                            ),
-                          ),
+                        AppText.bold16(
+                          profile.author.value?.name ??
+                              formatNpub(profile.author.value?.npub ?? ''),
+                          color: theme.colors.white,
+                          maxLines: 1,
+                          textOverflow: TextOverflow.ellipsis,
                         ),
-                        const AppGap.s8(),
-                        AppContainer(
-                          child: AppText.med12(
-                            formatNpub(profile.author.value?.npub ?? ''),
-                            textOverflow: TextOverflow.ellipsis,
-                            color: theme.colors.white66,
-                          ),
-                        ),
+                        AppNpubDisplay(profile: profile),
                       ],
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),

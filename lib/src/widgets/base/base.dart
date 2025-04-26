@@ -207,8 +207,6 @@ class _AppBaseContentState extends State<_AppBaseContent>
       );
     }
 
-    final isDesktopOrWeb = PlatformUtils.isDesktop || PlatformUtils.isWeb;
-
     return AppResponsiveWrapper(
       child: MediaQuery(
         data: MediaQuery.of(context).copyWith(
@@ -223,7 +221,7 @@ class _AppBaseContentState extends State<_AppBaseContent>
                   Row(
                     children: [
                       // Sidebar (on desktop or web if any callbacks are provided)
-                      if (isDesktopOrWeb && _shouldShowSidebar)
+                      if (!PlatformUtils.isMobile && _shouldShowSidebar)
                         AppContainer(
                           decoration: BoxDecoration(
                             color: AppTheme.of(context).colors.gray33,
@@ -301,7 +299,7 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                           outlineThickness:
                                               LineThicknessData.normal().medium,
                                         ),
-                                        onTap: widget.onSearchTap!,
+                                        onTap: widget.onAddTap!,
                                       ),
                                     const Spacer(),
                                     if (widget.onProfilesTap != null &&

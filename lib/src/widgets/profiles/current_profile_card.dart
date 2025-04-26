@@ -47,37 +47,10 @@ class AppCurrentProfileCard extends StatelessWidget {
                       profile.author.value?.name ??
                           formatNpub(profile.author.value?.npub ?? ''),
                       color: theme.colors.white,
+                      maxLines: 1,
+                      textOverflow: TextOverflow.ellipsis,
                     ),
-                    Row(
-                      children: [
-                        AppContainer(
-                          height: theme.sizes.s8,
-                          width: theme.sizes.s8,
-                          decoration: BoxDecoration(
-                            color: Color(
-                              int.parse(
-                                    profileToColor(profile).substring(1),
-                                    radix: 16,
-                                  ) +
-                                  0xFF000000,
-                            ),
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(
-                              color: theme.colors.white16,
-                              width: LineThicknessData.normal().thin,
-                            ),
-                          ),
-                        ),
-                        const AppGap.s8(),
-                        AppContainer(
-                          child: AppText.med12(
-                            formatNpub(profile.author.value?.npub ?? ''),
-                            textOverflow: TextOverflow.ellipsis,
-                            color: theme.colors.white66,
-                          ),
-                        ),
-                      ],
-                    ),
+                    AppNpubDisplay(profile: profile),
                   ],
                 ),
               ],

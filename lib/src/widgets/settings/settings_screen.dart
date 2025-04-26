@@ -7,6 +7,7 @@ class AppSettingsScreen extends StatefulWidget {
   final List<Profile> profiles;
   final Function(Profile) onSelect;
   final VoidCallback? onAddProfile;
+  final Function(Profile)? onViewProfile;
 
   // Current profile
   final Profile currentProfile;
@@ -40,6 +41,7 @@ class AppSettingsScreen extends StatefulWidget {
     required this.profiles,
     required this.onSelect,
     this.onAddProfile,
+    this.onViewProfile,
     required this.currentProfile,
     this.settingSections,
     this.onHistoryTap,
@@ -165,7 +167,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                   child: AppCurrentProfileCard(
                     profile: currentProfile,
                     onView: () {
-                      // TODO: Implement view profile
+                      widget.onViewProfile?.call(currentProfile);
                     },
                     onEdit: () {
                       // TODO: Implement edit profile
@@ -184,6 +186,9 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                           const AppGap.s16(),
                           AppOtherProfileCard(
                             profile: profile,
+                            onView: () {
+                              widget.onViewProfile?.call(profile);
+                            },
                             onSelect: () {
                               widget.onSelect(profile);
                               _animateProfileChange();

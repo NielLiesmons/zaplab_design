@@ -31,6 +31,7 @@ export 'bottom_bars/bottom_bar.dart';
 export 'bottom_bars/bottom_bar_content_feed.dart';
 export 'bottom_bars/bottom_bar_home.dart';
 export 'bottom_bars/bottom_bar_chat.dart';
+export 'bottom_bars/bottom_bar_profile.dart';
 export 'bottom_bars/bottom_bar_welcome.dart';
 // Buttons
 export 'buttons/button.dart';
@@ -44,6 +45,7 @@ export 'chat/message_stack.dart';
 export 'chat/quoted_message.dart';
 
 // Communities
+export 'communities/community_card.dart';
 export 'communities/community_home_panel.dart';
 export 'communities/community_screen.dart';
 export 'communities/community_welcome_header.dart';
@@ -90,7 +92,9 @@ export 'posts/post_card.dart';
 // Profiles
 export 'profiles/add_profile_modal.dart';
 export 'profiles/current_profile_card.dart';
+export 'profiles/npub_display.dart';
 export 'profiles/other_profile_card.dart';
+export 'profiles/profile_header.dart';
 export 'profiles/profile_inline.dart';
 
 // Profile Pics

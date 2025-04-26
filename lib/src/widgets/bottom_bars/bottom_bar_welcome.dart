@@ -2,16 +2,15 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 
 class AppBottomBarWelcome extends StatelessWidget {
+  final VoidCallback? onAddLabelTap;
+  final VoidCallback? onSearchTap;
+  final VoidCallback? onActions;
   const AppBottomBarWelcome({
     super.key,
-    this.onAddTap,
+    this.onAddLabelTap,
     this.onSearchTap,
     this.onActions,
   });
-
-  final VoidCallback? onAddTap;
-  final VoidCallback? onSearchTap;
-  final VoidCallback? onActions;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class AppBottomBarWelcome extends StatelessWidget {
         children: [
           AppButton(
             inactiveGradient: theme.colors.blurple,
-            onTap: onAddTap,
+            onTap: onAddLabelTap,
             children: [
               AppIcon.s12(
                 theme.icons.characters.plus,

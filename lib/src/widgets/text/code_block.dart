@@ -71,7 +71,7 @@ class _AppCodeBlockState extends State<AppCodeBlock>
             width: double.infinity,
             clipBehavior: Clip.hardEdge,
             padding: const AppEdgeInsets.symmetric(
-              horizontal: AppGapSize.s8,
+              horizontal: AppGapSize.s10,
               vertical: AppGapSize.s6,
             ),
             decoration: BoxDecoration(
@@ -82,20 +82,20 @@ class _AppCodeBlockState extends State<AppCodeBlock>
                 width: LineThicknessData.normal().medium,
               ),
             ),
-            child: SingleChildScrollView(
-              clipBehavior: Clip.none,
-              scrollDirection: Axis.horizontal,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppText.h3(widget.language ?? '',
-                      color: theme.colors.white66),
-                  CodeBlockHighlighter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText.h3(widget.language ?? '', color: theme.colors.white33),
+                const AppGap.s2(),
+                SingleChildScrollView(
+                  clipBehavior: Clip.none,
+                  scrollDirection: Axis.horizontal,
+                  child: CodeBlockHighlighter(
                     code: widget.code,
                     language: widget.language,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Positioned(

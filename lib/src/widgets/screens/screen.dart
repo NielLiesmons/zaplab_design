@@ -23,6 +23,7 @@ class AppScreen extends StatefulWidget {
   final VoidCallback onHomeTap;
   final bool alwaysShowTopBar;
   final bool customTopBar;
+  final bool noTopGap;
 
   const AppScreen({
     super.key,
@@ -33,56 +34,57 @@ class AppScreen extends StatefulWidget {
     required this.onHomeTap,
     this.alwaysShowTopBar = false,
     this.customTopBar = false,
+    this.noTopGap = false,
   });
 
-  static Future<T?> show<T>({
-    required BuildContext context,
-    required Widget child,
-    Widget? topBarContent,
-    Widget? bottomBarContent,
-    List<HistoryItem> history = const [],
-    bool alwaysShowTopBar = false,
-    bool customTopBar = false,
-  }) {
-    return Navigator.of(context).push<T>(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => AppScreen(
-          onHomeTap: () => Navigator.of(context).pop(),
-          topBarContent: topBarContent,
-          bottomBarContent: bottomBarContent,
-          history: history,
-          alwaysShowTopBar: alwaysShowTopBar,
-          customTopBar: customTopBar,
-          child: child,
-        ),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          final theme = AppTheme.of(context);
-          return Stack(
-            children: [
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                child: AppContainer(
-                  decoration: BoxDecoration(
-                    color: theme.colors.gray33,
-                  ),
-                ),
-              ),
-              SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0, 1),
-                  end: Offset.zero,
-                ).animate(CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeOut,
-                )),
-                child: child,
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
+  // static Future<T?> show<T>({
+  //   required BuildContext context,
+  //   required Widget child,
+  //   Widget? topBarContent,
+  //   Widget? bottomBarContent,
+  //   List<HistoryItem> history = const [],
+  //   bool alwaysShowTopBar = false,
+  //   bool customTopBar = false,
+  // }) {
+  //   return Navigator.of(context).push<T>(
+  //     PageRouteBuilder(
+  //       pageBuilder: (context, animation, secondaryAnimation) => AppScreen(
+  //         onHomeTap: () => Navigator.of(context).pop(),
+  //         topBarContent: topBarContent,
+  //         bottomBarContent: bottomBarContent,
+  //         history: history,
+  //         alwaysShowTopBar: alwaysShowTopBar,
+  //         customTopBar: customTopBar,
+  //         child: child,
+  //       ),
+  //       transitionsBuilder: (context, animation, secondaryAnimation, child) {
+  //         final theme = AppTheme.of(context);
+  //         return Stack(
+  //           children: [
+  //             BackdropFilter(
+  //               filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+  //               child: AppContainer(
+  //                 decoration: BoxDecoration(
+  //                   color: theme.colors.gray33,
+  //                 ),
+  //               ),
+  //             ),
+  //             SlideTransition(
+  //               position: Tween<Offset>(
+  //                 begin: const Offset(0, 1),
+  //                 end: Offset.zero,
+  //               ).animate(CurvedAnimation(
+  //                 parent: animation,
+  //                 curve: Curves.easeOut,
+  //               )),
+  //               child: child,
+  //             ),
+  //           ],
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
   @override
   State<AppScreen> createState() => _AppScreenState();
@@ -577,11 +579,14 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                     child: Column(
                                       children: [
                                         // Top padding to account for the gap and drag handle in the top bar
-                                        PlatformUtils.isDesktop
-                                            ? const AppGap.s8()
-                                            : const AppGap.s10(),
+                                        if (!widget.noTopGap)
+                                          !PlatformUtils.isMobile
+                                              ? const AppGap.s8()
+                                              : const AppGap.s10(),
                                         // Actual content
                                         widget.child,
+                                        if (widget.bottomBarContent != null)
+                                          const SizedBox(height: 70),
                                       ],
                                     ),
                                   ),
@@ -589,15 +594,18 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                               ),
                             ),
 
-                            // Black bar that renders the top 8px of the screen always in black so that the blure of the top bar's white top border doesn't pick up on the screen content.
-                            Positioned(
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              child: AppContainer(
-                                height: theme.sizes.s8,
-                                decoration: BoxDecoration(
-                                  color: theme.colors.black,
+                            //Black bar that renders the top 8px of the screen always in black so that the blure of the top bar's white top border doesn't pick up on the screen content.
+                            Opacity(
+                              opacity: widget.noTopGap ? 0.0 : 1.0,
+                              child: Positioned(
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                child: AppContainer(
+                                  height: theme.sizes.s8,
+                                  decoration: BoxDecoration(
+                                    color: theme.colors.black,
+                                  ),
                                 ),
                               ),
                             ),
@@ -694,20 +702,20 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                             ? 0.0
                                                             : _scrollController
                                                                         .offset >
-                                                                    72
+                                                                    68
                                                                 ? null
                                                                 : (_scrollController
                                                                             .offset -
                                                                         2) /
-                                                                    70 *
-                                                                    72,
+                                                                    66 *
+                                                                    68,
                                                     child: widget
                                                                 .alwaysShowTopBar ||
                                                             (!_scrollController
                                                                     .hasClients ||
                                                                 _scrollController
                                                                         .offset >=
-                                                                    72)
+                                                                    68)
                                                         ? GestureDetector(
                                                             onTap: () {
                                                               if (_scrollController
@@ -747,7 +755,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                                               padding: const AppEdgeInsets.only(
                                                                                 left: AppGapSize.s12,
                                                                                 right: AppGapSize.s12,
-                                                                                bottom: AppGapSize.s12,
+                                                                                bottom: AppGapSize.s8,
                                                                               ),
                                                                               child: widget.topBarContent!,
                                                                             ),

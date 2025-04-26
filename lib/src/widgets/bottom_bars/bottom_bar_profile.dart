@@ -2,8 +2,8 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
-class AppBottomBarChat extends StatelessWidget {
-  final VoidCallback? onAddTap;
+class AppBottomBarProfile extends StatelessWidget {
+  final VoidCallback? onAddLabelTap;
   final VoidCallback? onMessageTap;
   final VoidCallback? onVoiceTap;
   final VoidCallback? onActions;
@@ -12,9 +12,9 @@ class AppBottomBarChat extends StatelessWidget {
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
 
-  const AppBottomBarChat({
+  const AppBottomBarProfile({
     super.key,
-    required this.onAddTap,
+    required this.onAddLabelTap,
     required this.onMessageTap,
     required this.onVoiceTap,
     required this.onActions,
@@ -32,14 +32,18 @@ class AppBottomBarChat extends StatelessWidget {
       child: Row(
         children: [
           AppButton(
-            square: true,
+            inactiveGradient: theme.colors.blurple,
+            onTap: onAddLabelTap,
             children: [
-              AppIcon.s12(theme.icons.characters.plus,
-                  outlineThickness: LineThicknessData.normal().thick,
-                  outlineColor: theme.colors.white66),
+              AppIcon.s12(
+                theme.icons.characters.plus,
+                outlineThickness: LineThicknessData.normal().thick,
+                outlineColor: theme.colors.whiteEnforced,
+              ),
+              const AppGap.s8(),
+              AppText.med14('Add', color: theme.colors.whiteEnforced),
+              const AppGap.s4(),
             ],
-            inactiveColor: theme.colors.white16,
-            onTap: onAddTap,
           ),
           const AppGap.s12(),
           Expanded(

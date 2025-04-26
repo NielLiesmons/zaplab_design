@@ -32,7 +32,12 @@ class AppPost extends StatelessWidget {
     final theme = AppTheme.of(context);
 
     return AppContainer(
-      padding: const AppEdgeInsets.all(AppGapSize.s12),
+      padding: const AppEdgeInsets.only(
+        top: AppGapSize.s4,
+        left: AppGapSize.s12,
+        right: AppGapSize.s12,
+        bottom: AppGapSize.s12,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

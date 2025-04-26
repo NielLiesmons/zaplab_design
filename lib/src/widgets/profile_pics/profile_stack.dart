@@ -6,10 +6,12 @@ class AppProfileStack extends StatelessWidget {
   AppProfileStack({
     super.key,
     required this.profiles,
+    this.description,
     VoidCallback? onTap,
   }) : onTap = onTap ?? (() {});
 
   final List<Profile> profiles;
+  final String? description;
   final VoidCallback onTap;
 
   List<Profile> get _visibleProfiles => profiles.take(3).toList();
@@ -31,7 +33,7 @@ class AppProfileStack extends StatelessWidget {
         return Transform.scale(
           scale: scaleFactor,
           child: AppContainer(
-            width: 148,
+            width: 240,
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
               child: Row(
@@ -45,23 +47,42 @@ class AppProfileStack extends StatelessWidget {
                             theme.sizes.s16 +
                                 (_visibleProfiles.length - 1) * 24,
                             0),
-                        child: AppContainer(
-                          height: theme.sizes.s32,
-                          padding: const AppEdgeInsets.only(
-                            left: AppGapSize.s24,
-                            right: AppGapSize.s12,
-                          ),
-                          decoration: BoxDecoration(
-                            color: theme.colors.white16,
-                            borderRadius: theme.radius.asBorderRadius().rad24,
-                          ),
-                          child: Center(
-                            child: AppText.med12(
-                              '${profiles.length}',
-                              color: theme.colors.white66,
-                              textOverflow: TextOverflow.ellipsis,
+                        child: Row(
+                          children: [
+                            AppContainer(
+                              height: theme.sizes.s32,
+                              padding: const AppEdgeInsets.only(
+                                left: AppGapSize.s24,
+                                right: AppGapSize.s12,
+                              ),
+                              decoration: BoxDecoration(
+                                color: theme.colors.white16,
+                                borderRadius:
+                                    theme.radius.asBorderRadius().rad24,
+                              ),
+                              child: Center(
+                                child: AppText.med12(
+                                  '${profiles.length}',
+                                  color: theme.colors.white66,
+                                  textOverflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                             ),
-                          ),
+                            if (description != null) ...[
+                              const AppGap.s8(),
+                              SizedBox(
+                                width: 120,
+                                child: Flexible(
+                                  child: AppText.reg10(
+                                    description!,
+                                    color: theme.colors.white33,
+                                    maxLines: 2,
+                                    textOverflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                       ),
                       SizedBox(
