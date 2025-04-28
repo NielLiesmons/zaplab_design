@@ -107,28 +107,53 @@ class TextSelectionGestureDetectorBuilder {
     }
 
     // Mobile behavior
-    return GestureDetector(
-      key: key,
-      behavior: behavior ?? HitTestBehavior.translucent,
-      onTapDown: (details) {
-        editableText.hideToolbar();
-        _handleMouseSelection(
-            details.globalPosition, SelectionChangedCause.tap);
+    final editableTextState = delegate.editableTextKey.currentState;
+    if (editableTextState == null) {
+      return child;
+    }
+
+    return Listener(
+      onPointerDown: (details) {
+        final selection = editableTextState.textEditingValue.selection;
+        if (!selection.isCollapsed) {
+          // If there's a selection, clear it
+          editableTextState.hideToolbar();
+          renderEditable.selectPositionAt(
+            from: details.position,
+            cause: SelectionChangedCause.tap,
+          );
+        } else {
+          // If there's no selection, handle the tap normally
+          _handleMouseSelection(details.position, SelectionChangedCause.tap);
+        }
       },
-      onDoubleTapDown: _handleDoubleClick,
-      onLongPressStart: (details) {
-        _handleMouseSelection(
-            details.globalPosition, SelectionChangedCause.longPress);
-        editableText.showToolbar();
-      },
-      onLongPressMoveUpdate: (details) {
-        _handleMouseDragSelection(
-          details.globalPosition - details.offsetFromOrigin,
-          details.globalPosition,
-          SelectionChangedCause.longPress,
-        );
-      },
-      child: child,
+      child: GestureDetector(
+        key: key,
+        behavior: behavior ?? HitTestBehavior.translucent,
+        onDoubleTapDown: _handleDoubleClick,
+        onLongPressStart: (details) {
+          renderEditable.handleTapDown(TapDownDetails(
+            globalPosition: details.globalPosition,
+            localPosition: details.localPosition,
+          ));
+          renderEditable.selectWord(cause: SelectionChangedCause.longPress);
+          editableTextState.showToolbar();
+        },
+        onLongPressMoveUpdate: (details) {
+          _handleMouseDragSelection(
+            details.globalPosition - details.offsetFromOrigin,
+            details.globalPosition,
+            SelectionChangedCause.longPress,
+          );
+        },
+        onLongPressEnd: (details) {
+          final selection = editableTextState.textEditingValue.selection;
+          if (!selection.isCollapsed) {
+            editableTextState.showToolbar();
+          }
+        },
+        child: child,
+      ),
     );
   }
 }

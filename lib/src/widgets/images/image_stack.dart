@@ -21,29 +21,27 @@ class AppImageStack extends StatefulWidget {
   static void _showFullScreen(BuildContext context, List<String> imageUrls) {
     final theme = AppTheme.of(context);
 
-    AppSlideInScreen(
-      child: AppScreen(
-        onHomeTap: () => Navigator.of(context).pop(),
-        alwaysShowTopBar: true,
-        topBarContent: AppContainer(
-          height: theme.sizes.s28,
-          padding: const AppEdgeInsets.only(
-            top: AppGapSize.s8,
-          ),
-          child: AppText.med14('${imageUrls.length} Images',
-              color: theme.colors.white66),
+    AppScreen.show(
+      context: context,
+      alwaysShowTopBar: true,
+      topBarContent: AppContainer(
+        height: theme.sizes.s28,
+        padding: const AppEdgeInsets.only(
+          top: AppGapSize.s8,
         ),
-        child: Column(
-          children: [
-            const AppGap.s40(),
-            for (final url in imageUrls) ...[
-              AppFullWidthImage(
-                url: url,
-              ),
-              const AppGap.s16(),
-            ],
+        child: AppText.med14('${imageUrls.length} Images',
+            color: theme.colors.white66),
+      ),
+      child: Column(
+        children: [
+          const AppGap.s40(),
+          for (final url in imageUrls) ...[
+            AppFullWidthImage(
+              url: url,
+            ),
+            const AppGap.s16(),
           ],
-        ),
+        ],
       ),
     );
   }
