@@ -421,7 +421,7 @@ class AppAsciiDocRenderer extends StatelessWidget {
                                 child: Text(
                                   '#${child.content}',
                                   style: theme.typography.regArticle.copyWith(
-                                    color: theme.colors.blurpleColor,
+                                    color: theme.colors.blurpleLightColor,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -437,7 +437,7 @@ class AppAsciiDocRenderer extends StatelessWidget {
                 currentSpans.add(TextSpan(
                   text: child.content,
                   style: theme.typography.regArticle.copyWith(
-                    color: theme.colors.blurpleColor,
+                    color: theme.colors.blurpleLightColor,
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () => onLinkTap(child.content),

@@ -72,13 +72,11 @@ class AppProfileStack extends StatelessWidget {
                               const AppGap.s8(),
                               SizedBox(
                                 width: 120,
-                                child: Flexible(
-                                  child: AppText.reg10(
-                                    description!,
-                                    color: theme.colors.white33,
-                                    maxLines: 2,
-                                    textOverflow: TextOverflow.ellipsis,
-                                  ),
+                                child: AppText.reg10(
+                                  description!,
+                                  color: theme.colors.white33,
+                                  maxLines: 2,
+                                  textOverflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ],

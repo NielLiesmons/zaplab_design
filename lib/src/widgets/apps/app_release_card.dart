@@ -106,7 +106,7 @@ class AppAppReleaseCard extends StatelessWidget {
                                         child: AppText.med14(
                                           app.repository ?? '',
                                           textOverflow: TextOverflow.ellipsis,
-                                          color: theme.colors.blurpleColor,
+                                          color: theme.colors.blurpleLightColor,
                                         ),
                                       ),
                                     ],

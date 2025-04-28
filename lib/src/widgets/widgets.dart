@@ -5,6 +5,8 @@ export 'apps/app_small_card.dart';
 // Articles
 export 'articles/article_card.dart';
 export 'articles/article_header.dart';
+export 'articles/feed_article.dart';
+
 // Audio
 export 'audio/audio_message.dart';
 
@@ -64,6 +66,9 @@ export 'interactions/zap_pill.dart';
 
 // Keys
 export 'keys/slot_machine.dart';
+
+// Labels
+export 'labels/label.dart';
 
 // Loading
 export 'loading/loading_bar.dart';

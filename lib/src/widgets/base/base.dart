@@ -6,7 +6,7 @@ import 'dart:ui';
 import 'package:models/models.dart';
 
 // Define window size constraints
-const kMinWindowWidth = 440.0;
+const kMinWindowWidth = 500.0;
 const kMinWindowHeight = 640.0;
 const kMaxWindowWidth = 720.0;
 const kMaxWindowHeight = 1280.0;

@@ -82,7 +82,7 @@ class _AppNpubDisplayState extends State<AppNpubDisplay>
             if (_showCheck)
               AppIcon.s8(
                 theme.icons.characters.check,
-                outlineColor: theme.colors.blurpleColor,
+                outlineColor: theme.colors.blurpleLightColor,
                 outlineThickness: LineThicknessData.normal().medium,
               ),
             if (state == TapState.hover && !_showCheck)

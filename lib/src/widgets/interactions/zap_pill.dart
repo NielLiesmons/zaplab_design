@@ -18,6 +18,7 @@ class AppZapPill extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final isInsideModal = ModalScope.of(context);
+    final isInsideScope = Scope.of(context);
     final (isInsideMessageBubble, _) = MessageBubbleScope.of(context);
 
     return TapBuilder(
@@ -38,7 +39,7 @@ class AppZapPill extends StatelessWidget {
             decoration: BoxDecoration(
               color: isOutgoing
                   ? null
-                  : isInsideModal
+                  : (isInsideModal || isInsideScope)
                       ? theme.colors.white8
                       : isInsideMessageBubble
                           ? theme.colors.white16

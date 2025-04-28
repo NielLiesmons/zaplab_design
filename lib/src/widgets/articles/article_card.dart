@@ -17,6 +17,7 @@ class AppArticleCard extends StatelessWidget {
 
     return AppPanelButton(
       padding: const AppEdgeInsets.all(AppGapSize.none),
+      isLight: true,
       onTap: onTap,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

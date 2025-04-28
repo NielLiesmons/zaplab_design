@@ -56,26 +56,26 @@ class AppProfileInline extends StatelessWidget {
                             ? isEditableText == true
                                 ? AppText.med16(
                                     profile.name!,
-                                    color: theme.colors.blurpleColor,
+                                    color: theme.colors.blurpleLightColor,
                                     maxLines: 1,
                                     textOverflow: TextOverflow.ellipsis,
                                   )
                                 : isCompact
                                     ? AppText.med12(
                                         profile.name!,
-                                        color: theme.colors.blurpleColor66,
+                                        color: theme.colors.blurpleLightColor66,
                                         maxLines: 1,
                                         textOverflow: TextOverflow.ellipsis,
                                       )
                                     : AppText.med14(
                                         profile.name!,
-                                        color: theme.colors.blurpleColor,
+                                        color: theme.colors.blurpleLightColor,
                                         maxLines: 1,
                                         textOverflow: TextOverflow.ellipsis,
                                       )
                             : AppText.boldArticle(
                                 profile.name!,
-                                color: theme.colors.blurpleColor,
+                                color: theme.colors.blurpleLightColor,
                                 maxLines: 1,
                                 textOverflow: TextOverflow.ellipsis,
                               )
@@ -83,26 +83,26 @@ class AppProfileInline extends StatelessWidget {
                             ? isEditableText == true
                                 ? AppText.med16(
                                     'ProfileName',
-                                    color: theme.colors.blurpleColor66,
+                                    color: theme.colors.blurpleLightColor66,
                                     maxLines: 1,
                                     textOverflow: TextOverflow.ellipsis,
                                   )
                                 : isCompact
                                     ? AppText.med12(
                                         'ProfileName',
-                                        color: theme.colors.blurpleColor66,
+                                        color: theme.colors.blurpleLightColor66,
                                         maxLines: 1,
                                         textOverflow: TextOverflow.ellipsis,
                                       )
                                     : AppText.med14(
                                         'ProfileName',
-                                        color: theme.colors.blurpleColor66,
+                                        color: theme.colors.blurpleLightColor66,
                                         maxLines: 1,
                                         textOverflow: TextOverflow.ellipsis,
                                       )
                             : AppText.boldArticle(
                                 'ProfileName',
-                                color: theme.colors.blurpleColor66,
+                                color: theme.colors.blurpleLightColor66,
                                 maxLines: 1,
                                 textOverflow: TextOverflow.ellipsis,
                               ),

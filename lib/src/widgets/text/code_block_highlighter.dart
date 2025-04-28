@@ -38,8 +38,8 @@ class CodeBlockHighlighter extends StatelessWidget {
 
     // Define all patterns with their colors
     final patterns = [
-      (RegExp(r'"[^"]*"'), theme.colors.blurpleColor), // double quotes
-      (RegExp(r"'[^']*'"), theme.colors.blurpleColor), // single quotes
+      (RegExp(r'"[^"]*"'), theme.colors.blurpleLightColor), // double quotes
+      (RegExp(r"'[^']*'"), theme.colors.blurpleLightColor), // single quotes
       (RegExp(r'[\[\]]'), theme.colors.goldColor66), // square brackets
       (RegExp(r'[\(\)]'), theme.colors.white66), // parentheses
       (RegExp(r'[\{\}]'), theme.colors.goldColor), // curly braces

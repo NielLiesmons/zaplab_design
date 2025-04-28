@@ -18,8 +18,11 @@ class AppColorsData extends Equatable {
   final Color gray;
   final Color gray66;
   final Color gray33;
+  final Color blurpleLightColor;
+  final Color blurpleLightColor66;
   final Color blurpleColor;
   final Color blurpleColor66;
+  final Color blurpleColor33;
   final Color goldColor;
   final Color goldColor66;
 
@@ -56,8 +59,11 @@ class AppColorsData extends Equatable {
     required this.gray,
     required this.gray66,
     required this.gray33,
+    required this.blurpleLightColor,
+    required this.blurpleLightColor66,
     required this.blurpleColor,
     required this.blurpleColor66,
+    required this.blurpleColor33,
     required this.goldColor,
     required this.goldColor66,
     required this.blurple,
@@ -95,8 +101,11 @@ class AppColorsData extends Equatable {
         gray: const Color(0xFF232323),
         gray66: const Color(0xFF333333).withValues(alpha: 0.66),
         gray33: const Color(0xFF333333).withValues(alpha: 0.33),
-        blurpleColor: const Color(0xFF8483FE),
-        blurpleColor66: const Color(0xFF8483FE).withValues(alpha: 0.66),
+        blurpleLightColor: const Color(0xFF8483FE),
+        blurpleLightColor66: const Color(0xFF8483FE).withValues(alpha: 0.66),
+        blurpleColor: const Color(0xFF5C5AFE),
+        blurpleColor66: const Color(0xFF5C5AFE).withValues(alpha: 0.66),
+        blurpleColor33: const Color(0xFF5C5AFE).withValues(alpha: 0.33),
         goldColor: const Color(0xFFF5C763),
         goldColor66: const Color(0xFFF5C763).withValues(alpha: 0.66),
 
@@ -239,9 +248,12 @@ class AppColorsData extends Equatable {
         gray: const Color(0xFFBBBBBB),
         gray66: const Color(0xFFBBBBBB).withValues(alpha: 0.66),
         gray33: const Color(0xFFBBBBBB).withValues(alpha: 0.33),
-        blurpleColor: const Color.fromRGBO(75, 75, 205, 1),
-        blurpleColor66:
+        blurpleLightColor: const Color.fromRGBO(75, 75, 205, 1),
+        blurpleLightColor66:
             const Color.fromARGB(255, 75, 75, 205).withValues(alpha: 0.66),
+        blurpleColor: const Color(0xFF5C5AFE),
+        blurpleColor66: const Color(0xFF5C5AFE).withValues(alpha: 0.66),
+        blurpleColor33: const Color(0xFF5C5AFE).withValues(alpha: 0.33),
         goldColor: const Color.fromARGB(255, 233, 173, 44),
         goldColor66:
             const Color.fromARGB(255, 233, 173, 44).withValues(alpha: 0.66),
@@ -385,8 +397,11 @@ class AppColorsData extends Equatable {
         gray: const Color(0xFF232323),
         gray66: const Color(0xFF333333).withValues(alpha: 0.66),
         gray33: const Color(0xFF333333).withValues(alpha: 0.33),
-        blurpleColor: const Color(0xFF8483FE),
-        blurpleColor66: const Color(0xFF8483FE).withValues(alpha: 0.66),
+        blurpleLightColor: const Color(0xFF8483FE),
+        blurpleLightColor66: const Color(0xFF8483FE).withValues(alpha: 0.66),
+        blurpleColor: const Color(0xFF5C5AFE),
+        blurpleColor66: const Color(0xFF5C5AFE).withValues(alpha: 0.66),
+        blurpleColor33: const Color(0xFF5C5AFE).withValues(alpha: 0.33),
         goldColor: const Color(0xFFF5C763),
         goldColor66: const Color(0xFFF5C763).withValues(alpha: 0.66),
 
@@ -528,8 +543,8 @@ class AppColorsData extends Equatable {
         gray.named('gray'),
         gray66.named('gray66'),
         gray33.named('gray33'),
-        blurpleColor.named('blurpleColor'),
-        blurpleColor66.named('blurpleColor66'),
+        blurpleLightColor.named('blurpleLightColor'),
+        blurpleLightColor66.named('blurpleLightColor66'),
         goldColor.named('goldColor'),
         goldColor66.named('goldColor66'),
         blurple.named('blurple'),

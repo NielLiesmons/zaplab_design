@@ -545,7 +545,7 @@ class AppShortTextRenderer extends StatelessWidget {
                                 child: Text(
                                   '#${child.content}',
                                   style: theme.typography.reg14.copyWith(
-                                    color: theme.colors.blurpleColor,
+                                    color: theme.colors.blurpleLightColor,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -561,7 +561,7 @@ class AppShortTextRenderer extends StatelessWidget {
                 currentSpans.add(TextSpan(
                   text: child.content,
                   style: theme.typography.reg14.copyWith(
-                    color: theme.colors.blurpleColor,
+                    color: theme.colors.blurpleLightColor,
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () => onLinkTap(child.content),
@@ -905,7 +905,7 @@ class AppShortTextRenderer extends StatelessWidget {
                         child: Text(
                           '#${element.content}',
                           style: theme.typography.reg14.copyWith(
-                            color: theme.colors.blurpleColor,
+                            color: theme.colors.blurpleLightColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -923,8 +923,9 @@ class AppShortTextRenderer extends StatelessWidget {
       return TextSpan(
         text: element.content,
         style: TextStyle(
-          color:
-              style == 'url' ? theme.colors.blurpleColor : theme.colors.white,
+          color: style == 'url'
+              ? theme.colors.blurpleLightColor
+              : theme.colors.white,
           fontWeight: (style == 'bold' || style == 'bold-italic')
               ? FontWeight.bold
               : null,

@@ -19,6 +19,7 @@ class AppPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+    final isInsideScope = Scope.of(context);
     final isInsideModal = ModalScope.of(context);
     final (isInsideMessage, _) = MessageBubbleScope.of(context);
 
@@ -33,7 +34,7 @@ class AppPanel extends StatelessWidget {
                     ? theme.colors.white8
                     : (isInsideMessage
                         ? theme.colors.white8
-                        : (isInsideModal
+                        : (isInsideModal || isInsideScope
                             ? theme.colors.black33
                             : theme.colors.gray66))))
             : null,

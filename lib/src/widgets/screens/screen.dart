@@ -37,54 +37,54 @@ class AppScreen extends StatefulWidget {
     this.noTopGap = false,
   });
 
-  // static Future<T?> show<T>({
-  //   required BuildContext context,
-  //   required Widget child,
-  //   Widget? topBarContent,
-  //   Widget? bottomBarContent,
-  //   List<HistoryItem> history = const [],
-  //   bool alwaysShowTopBar = false,
-  //   bool customTopBar = false,
-  // }) {
-  //   return Navigator.of(context).push<T>(
-  //     PageRouteBuilder(
-  //       pageBuilder: (context, animation, secondaryAnimation) => AppScreen(
-  //         onHomeTap: () => Navigator.of(context).pop(),
-  //         topBarContent: topBarContent,
-  //         bottomBarContent: bottomBarContent,
-  //         history: history,
-  //         alwaysShowTopBar: alwaysShowTopBar,
-  //         customTopBar: customTopBar,
-  //         child: child,
-  //       ),
-  //       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-  //         final theme = AppTheme.of(context);
-  //         return Stack(
-  //           children: [
-  //             BackdropFilter(
-  //               filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-  //               child: AppContainer(
-  //                 decoration: BoxDecoration(
-  //                   color: theme.colors.gray33,
-  //                 ),
-  //               ),
-  //             ),
-  //             SlideTransition(
-  //               position: Tween<Offset>(
-  //                 begin: const Offset(0, 1),
-  //                 end: Offset.zero,
-  //               ).animate(CurvedAnimation(
-  //                 parent: animation,
-  //                 curve: Curves.easeOut,
-  //               )),
-  //               child: child,
-  //             ),
-  //           ],
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
+  static Future<T?> show<T>({
+    required BuildContext context,
+    required Widget child,
+    Widget? topBarContent,
+    Widget? bottomBarContent,
+    List<HistoryItem> history = const [],
+    bool alwaysShowTopBar = false,
+    bool customTopBar = false,
+  }) {
+    return Navigator.of(context).push<T>(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => AppScreen(
+          onHomeTap: () => Navigator.of(context).pop(),
+          topBarContent: topBarContent,
+          bottomBarContent: bottomBarContent,
+          history: history,
+          alwaysShowTopBar: alwaysShowTopBar,
+          customTopBar: customTopBar,
+          child: child,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final theme = AppTheme.of(context);
+          return Stack(
+            children: [
+              BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                child: AppContainer(
+                  decoration: BoxDecoration(
+                    color: theme.colors.gray33,
+                  ),
+                ),
+              ),
+              SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0, 1),
+                  end: Offset.zero,
+                ).animate(CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeOut,
+                )),
+                child: child,
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
 
   @override
   State<AppScreen> createState() => _AppScreenState();
@@ -216,7 +216,6 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
           if (!_isPopping) {
             _isPopping = true;
             Navigator.of(context).pop();
-            // Future.microtask(() => _isPopping = false);
           }
         }
         return;
@@ -585,8 +584,8 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                               : const AppGap.s10(),
                                         // Actual content
                                         widget.child,
-                                        if (widget.bottomBarContent != null)
-                                          const SizedBox(height: 70),
+                                        // if (widget.bottomBarContent != null)
+                                        //   const SizedBox(height: 70),
                                       ],
                                     ),
                                   ),
@@ -595,9 +594,8 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                             ),
 
                             //Black bar that renders the top 8px of the screen always in black so that the blure of the top bar's white top border doesn't pick up on the screen content.
-                            Opacity(
-                              opacity: widget.noTopGap ? 0.0 : 1.0,
-                              child: Positioned(
+                            if (!widget.noTopGap)
+                              Positioned(
                                 top: 0,
                                 left: 0,
                                 right: 0,
@@ -608,7 +606,6 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                   ),
                                 ),
                               ),
-                            ),
 
                             // Top Bar + Gesture detection zone
                             Positioned(
@@ -752,10 +749,10 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                                               MainAxisSize.min,
                                                                           children: [
                                                                             AppContainer(
-                                                                              padding: const AppEdgeInsets.only(
+                                                                              padding: AppEdgeInsets.only(
                                                                                 left: AppGapSize.s12,
                                                                                 right: AppGapSize.s12,
-                                                                                bottom: AppGapSize.s8,
+                                                                                bottom: PlatformUtils.isMobile ? AppGapSize.s12 : AppGapSize.s10,
                                                                               ),
                                                                               child: widget.topBarContent!,
                                                                             ),

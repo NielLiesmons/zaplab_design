@@ -24,7 +24,7 @@ class AppTextSelectionControls extends TextSelectionControls {
               height: _handleSize,
               decoration: BoxDecoration(
                 color: type == TextSelectionHandleType.left
-                    ? theme.colors.blurpleColor
+                    ? theme.colors.blurpleLightColor
                     : null,
                 shape: BoxShape.circle,
               ),
@@ -33,7 +33,7 @@ class AppTextSelectionControls extends TextSelectionControls {
               width: _lineThickness,
               height: textLineHeight,
               decoration: BoxDecoration(
-                color: theme.colors.blurpleColor,
+                color: theme.colors.blurpleLightColor,
                 borderRadius: BorderRadius.circular(10000),
               ),
             ),
@@ -42,7 +42,7 @@ class AppTextSelectionControls extends TextSelectionControls {
               height: _handleSize,
               decoration: BoxDecoration(
                 color: type == TextSelectionHandleType.right
-                    ? theme.colors.blurpleColor
+                    ? theme.colors.blurpleLightColor
                     : null,
                 shape: BoxShape.circle,
               ),

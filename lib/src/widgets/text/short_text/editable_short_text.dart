@@ -963,7 +963,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
                   enableSuggestions: true,
                   readOnly: false,
                   selectionColor:
-                      theme.colors.blurpleColor.withValues(alpha: 0.33),
+                      theme.colors.blurpleLightColor.withValues(alpha: 0.33),
                   contextMenuBuilder: widget.contextMenuItems == null
                       ? null
                       : (context, editableTextState) {

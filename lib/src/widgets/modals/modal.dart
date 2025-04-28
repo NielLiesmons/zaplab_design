@@ -472,8 +472,10 @@ class AppModal extends StatelessWidget {
                                   BoxDecoration(color: theme.colors.gray66),
                               child: ListView(
                                 controller: scrollController,
-                                padding:
-                                    EdgeInsets.only(bottom: totalBottomPadding),
+                                padding: bottomBar != null
+                                    ? EdgeInsets.only(
+                                        bottom: totalBottomPadding)
+                                    : EdgeInsets.zero,
                                 children: [
                                   if (includePadding)
                                     AppContainer(

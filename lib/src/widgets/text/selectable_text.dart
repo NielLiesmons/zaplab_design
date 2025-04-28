@@ -110,7 +110,7 @@ class _AppSelectableTextState extends State<AppSelectableText>
         rendererIgnoresPointer: true,
         enableSuggestions: false,
         readOnly: true,
-        selectionColor: theme.colors.blurpleColor.withValues(
+        selectionColor: theme.colors.blurpleLightColor.withValues(
           alpha: 0.33,
         ),
         onSelectionChanged: (selection, cause) {

@@ -7,6 +7,7 @@ class AppCommunityCard extends StatelessWidget {
   final Profile? profile;
   final String? profileLabel;
   final List<Profile>? relevantProfiles;
+  final String? relevantProfilesDescription;
   final VoidCallback onProfilesTap;
 
   const AppCommunityCard({
@@ -16,6 +17,7 @@ class AppCommunityCard extends StatelessWidget {
     this.profile,
     this.profileLabel,
     this.relevantProfiles,
+    this.relevantProfilesDescription,
     required this.onProfilesTap,
   });
 
@@ -84,7 +86,7 @@ class AppCommunityCard extends StatelessWidget {
               children: [
                 AppProfileStack(
                   profiles: relevantProfiles ?? [],
-                  description: "Followers in your network",
+                  description: relevantProfilesDescription,
                 ),
                 const Spacer(),
               ],

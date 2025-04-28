@@ -90,7 +90,7 @@ class _AppAddProfileModalState extends State<AppAddProfileModal> {
                 children: [
                   AppIcon.s16(
                     theme.icons.characters.nostr,
-                    color: AppColorsData.dark().blurpleColor,
+                    color: AppColorsData.dark().blurpleLightColor,
                   ),
                   const AppGap.s12(),
                   AppText.reg14("Already have a Nostr key?",

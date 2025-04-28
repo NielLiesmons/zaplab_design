@@ -306,11 +306,11 @@ class AppCompactTextRenderer extends StatelessWidget {
                   child: isMedium
                       ? AppText.bold14(
                           '#${child.content}',
-                          color: theme.colors.blurpleColor,
+                          color: theme.colors.blurpleLightColor,
                         )
                       : AppText.bold12(
                           '#${child.content}',
-                          color: theme.colors.blurpleColor,
+                          color: theme.colors.blurpleLightColor,
                         ),
                 ),
               ],
@@ -319,7 +319,7 @@ class AppCompactTextRenderer extends StatelessWidget {
             spans.add(TextSpan(
               text: child.content,
               style: textStyle.copyWith(
-                color: theme.colors.blurpleColor,
+                color: theme.colors.blurpleLightColor,
               ),
             ));
           } else if (child.type == AppShortTextElementType.monospace) {
