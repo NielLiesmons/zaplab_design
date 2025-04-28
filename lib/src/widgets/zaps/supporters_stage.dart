@@ -42,24 +42,22 @@ class AppSupportersStage extends StatelessWidget {
                 child: SizedBox(
                   height: 64,
                   child: AppContainer(
+                    padding: const AppEdgeInsets.only(top: AppGapSize.s12),
                     decoration: BoxDecoration(
                       color: isInsideScope
                           ? theme.colors.white8
                           : theme.colors.gray66,
                       borderRadius: BorderRadius.only(
-                        topLeft: theme.radius.asBorderRadius().rad16.topLeft,
+                        topLeft: theme.radius.asBorderRadius().rad16.topRight,
                         bottomLeft:
-                            theme.radius.asBorderRadius().rad16.bottomLeft,
+                            theme.radius.asBorderRadius().rad16.bottomRight,
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: AppText.h3(
-                          '2',
-                          color: theme.colors.white66,
-                        ),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: AppText.med14(
+                        '2',
+                        color: theme.colors.white66,
                       ),
                     ),
                   ),
@@ -94,23 +92,22 @@ class AppSupportersStage extends StatelessWidget {
                 child: SizedBox(
                   height: 96,
                   child: AppContainer(
+                    padding: const AppEdgeInsets.only(top: AppGapSize.s12),
                     decoration: BoxDecoration(
                       color: isInsideScope
                           ? theme.colors.white8
                           : theme.colors.gray66,
                       borderRadius: BorderRadius.only(
-                        topLeft: theme.radius.asBorderRadius().rad16.topLeft,
                         topRight: theme.radius.asBorderRadius().rad16.topRight,
+                        topLeft:
+                            theme.radius.asBorderRadius().rad16.bottomRight,
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: AppText.h3(
-                          '1',
-                          color: theme.colors.white66,
-                        ),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: AppText.med14(
+                        '1',
+                        color: theme.colors.white66,
                       ),
                     ),
                   ),
@@ -145,6 +142,7 @@ class AppSupportersStage extends StatelessWidget {
                 child: SizedBox(
                   height: 48,
                   child: AppContainer(
+                    padding: const AppEdgeInsets.only(top: AppGapSize.s12),
                     decoration: BoxDecoration(
                       color: isInsideScope
                           ? theme.colors.white8
@@ -155,14 +153,11 @@ class AppSupportersStage extends StatelessWidget {
                             theme.radius.asBorderRadius().rad16.bottomRight,
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: AppText.h3(
-                          '3',
-                          color: theme.colors.white66,
-                        ),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: AppText.med14(
+                        '3',
+                        color: theme.colors.white66,
                       ),
                     ),
                   ),
