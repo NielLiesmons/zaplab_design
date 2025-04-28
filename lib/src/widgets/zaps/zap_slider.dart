@@ -129,7 +129,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
                                 handleSize: theme.sizes.s24,
                                 markerLength: theme.sizes.s8,
                                 markerThickness:
-                                    LineThicknessData.normal().thin,
+                                    AppLineThicknessData.normal().thin,
                                 markerColor: theme.colors.white33,
                                 labelStyle: theme.typography.med12,
                                 labelColor: theme.colors.white33,
@@ -183,7 +183,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
             borderRadius: theme.radius.asBorderRadius().rad16,
             border: Border.all(
               color: theme.colors.white33,
-              width: LineThicknessData.normal().thin,
+              width: AppLineThicknessData.normal().thin,
             ),
           ),
           child: Column(
@@ -350,7 +350,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
   }
 
   void _handleAmountTap() async {
-    await AppAmountModal.show(
+    await AppZapAmountModal.show(
       context,
       initialAmount: _value,
       recentAmounts: widget.recentAmounts ?? [],
@@ -416,7 +416,7 @@ class AppZapSliderPainter extends CustomPainter {
       ..shader = valueGradient.createShader(
         Rect.fromCircle(center: center, radius: 100.0),
       )
-      ..strokeWidth = LineThicknessData.normal().medium
+      ..strokeWidth = AppLineThicknessData.normal().medium
       ..strokeCap = StrokeCap.round;
 
     const radius = 100.0;

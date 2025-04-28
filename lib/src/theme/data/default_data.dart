@@ -1,6 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class DefaultData {
+class AppDefaultData {
   static const List<double> defaultAmounts = [
     21,
     100,

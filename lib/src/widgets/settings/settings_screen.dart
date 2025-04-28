@@ -223,7 +223,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                           borderRadius: theme.radius.asBorderRadius().rad16,
                           border: Border.all(
                             color: theme.colors.gray,
-                            width: LineThicknessData.normal().medium,
+                            width: AppLineThicknessData.normal().medium,
                           ),
                         ),
                         alignment: Alignment.centerLeft,
@@ -240,7 +240,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                                 child: AppIcon.s16(
                                   theme.icons.characters.plus,
                                   outlineThickness:
-                                      LineThicknessData.normal().thick,
+                                      AppLineThicknessData.normal().thick,
                                   outlineColor: theme.colors.white33,
                                 ),
                               ),
@@ -392,7 +392,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
         child: AppSettingSection(
           icon: AppIcon.s12(theme.icons.characters.cross,
               outlineColor: theme.colors.white33,
-              outlineThickness: LineThicknessData.normal().thick),
+              outlineThickness: AppLineThicknessData.normal().thick),
           title: 'Disconnect Profile',
           onTap: widget.onDisconnectTap,
         ),

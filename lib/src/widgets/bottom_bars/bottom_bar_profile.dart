@@ -37,7 +37,7 @@ class AppBottomBarProfile extends StatelessWidget {
             children: [
               AppIcon.s12(
                 theme.icons.characters.plus,
-                outlineThickness: LineThicknessData.normal().thick,
+                outlineThickness: AppLineThicknessData.normal().thick,
                 outlineColor: theme.colors.whiteEnforced,
               ),
               const AppGap.s8(),
@@ -66,7 +66,7 @@ class AppBottomBarProfile extends StatelessWidget {
                       borderRadius: theme.radius.asBorderRadius().rad16,
                       border: Border.all(
                         color: theme.colors.white33,
-                        width: LineThicknessData.normal().thin,
+                        width: AppLineThicknessData.normal().thin,
                       ),
                     ),
                     padding: const AppEdgeInsets.only(
@@ -116,7 +116,7 @@ class AppBottomBarProfile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppIcon.s8(theme.icons.characters.chevronUp,
-                      outlineThickness: LineThicknessData.normal().medium,
+                      outlineThickness: AppLineThicknessData.normal().medium,
                       outlineColor: theme.colors.white66),
                   const AppGap.s2(),
                 ],

@@ -83,10 +83,11 @@ class _AppSlotMachineState extends State<AppSlotMachine>
       setState(() {
         targetNsec = widget.initialNsec!;
         // Verify the checksum
-        final isValid = KeyGenerator.verifyNsecChecksum(widget.initialNsec!);
-        targetMnemonic = KeyGenerator.nsecToMnemonic(widget.initialNsec!) ?? '';
+        final isValid = AppKeyGenerator.verifyNsecChecksum(widget.initialNsec!);
+        targetMnemonic =
+            AppKeyGenerator.nsecToMnemonic(widget.initialNsec!) ?? '';
         _mnemonicWords = targetMnemonic.split(' ');
-        final emojis = KeyGenerator.nsecToEmojis(widget.initialNsec!);
+        final emojis = AppKeyGenerator.nsecToEmojis(widget.initialNsec!);
         if (emojis != null) {
           targetEmojis = List<String>.from(
               emojis); // Create a copy to prmodel reference issues
@@ -130,18 +131,18 @@ class _AppSlotMachineState extends State<AppSlotMachine>
 
   void _generateNewKey() {
     // Generate a new mnemonic
-    final mnemonic = KeyGenerator.generateMnemonic();
+    final mnemonic = AppKeyGenerator.generateMnemonic();
     print('Generated mnemonic: $mnemonic');
 
     // Convert mnemonic to nsec
-    final nsec = KeyGenerator.mnemonicToNsec(mnemonic);
+    final nsec = AppKeyGenerator.mnemonicToNsec(mnemonic);
     print('Generated nsec: $nsec');
 
     // Verify the checksum
-    final isValid = KeyGenerator.verifyNsecChecksum(nsec);
+    final isValid = AppKeyGenerator.verifyNsecChecksum(nsec);
 
     // Convert nsec to emojis
-    final emojis = KeyGenerator.nsecToEmojis(nsec);
+    final emojis = AppKeyGenerator.nsecToEmojis(nsec);
     if (emojis == null) {
       throw Exception('Failed to generate emojis from nsec');
     }
@@ -329,7 +330,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                       border: Border(
                         bottom: BorderSide(
                           color: theme.colors.black33,
-                          width: LineThicknessData.normal().medium,
+                          width: AppLineThicknessData.normal().medium,
                         ),
                       ),
                     ),
@@ -355,7 +356,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                       border: Border(
                         bottom: BorderSide(
                           color: theme.colors.black33,
-                          width: LineThicknessData.normal().medium,
+                          width: AppLineThicknessData.normal().medium,
                         ),
                       ),
                     ),
@@ -390,7 +391,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                       border: Border(
                         bottom: BorderSide(
                           color: theme.colors.black33,
-                          width: LineThicknessData.normal().medium,
+                          width: AppLineThicknessData.normal().medium,
                         ),
                       ),
                     ),
@@ -430,7 +431,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                     border: Border(
                       bottom: BorderSide(
                         color: theme.colors.black33,
-                        width: LineThicknessData.normal().medium,
+                        width: AppLineThicknessData.normal().medium,
                       ),
                     ),
                   ),
@@ -456,7 +457,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                     border: Border(
                       bottom: BorderSide(
                         color: theme.colors.black33,
-                        width: LineThicknessData.normal().medium,
+                        width: AppLineThicknessData.normal().medium,
                       ),
                     ),
                   ),
@@ -482,7 +483,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                     border: Border(
                       bottom: BorderSide(
                         color: theme.colors.black33,
-                        width: LineThicknessData.normal().medium,
+                        width: AppLineThicknessData.normal().medium,
                       ),
                     ),
                   ),
@@ -514,7 +515,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
         borderRadius: theme.radius.asBorderRadius().rad16,
         border: Border.all(
           color: theme.colors.white16,
-          width: LineThicknessData.normal().thin,
+          width: AppLineThicknessData.normal().thin,
         ),
       ),
       child: Stack(
@@ -655,7 +656,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                 borderRadius: theme.radius.asBorderRadius().rad16,
                 border: Border.all(
                   color: theme.colors.white16,
-                  width: LineThicknessData.normal().thin,
+                  width: AppLineThicknessData.normal().thin,
                 ),
               ),
             ),
@@ -825,7 +826,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                     // If we have a nsec but no mnemonic, generate the mnemonic
                     if (targetNsec.isNotEmpty && targetMnemonic.isEmpty) {
                       targetMnemonic =
-                          KeyGenerator.nsecToMnemonic(targetNsec) ?? '';
+                          AppKeyGenerator.nsecToMnemonic(targetNsec) ?? '';
                     }
                     break;
                   case 2:

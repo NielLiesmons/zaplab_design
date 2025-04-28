@@ -57,7 +57,7 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
                 color: theme.colors.gray66,
                 border: Border.all(
                   color: theme.colors.white16,
-                  width: LineThicknessData.normal().thin,
+                  width: AppLineThicknessData.normal().thin,
                 ),
               ),
               child: LayoutBuilder(
@@ -88,7 +88,7 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
                       color: theme.colors.gray66,
                       border: Border.all(
                         color: theme.colors.white16,
-                        width: LineThicknessData.normal().thin,
+                        width: AppLineThicknessData.normal().thin,
                       ),
                     ),
                     child: Center(

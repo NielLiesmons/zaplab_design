@@ -125,7 +125,8 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
                           AppIcon.s10(
                             theme.icons.characters.check,
                             outlineColor: theme.colors.white66,
-                            outlineThickness: LineThicknessData.normal().thick,
+                            outlineThickness:
+                                AppLineThicknessData.normal().thick,
                           ),
                           const AppGap.s6(),
                           AppText.med14(
@@ -163,7 +164,8 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
                           AppIcon.s10(
                             theme.icons.characters.check,
                             outlineColor: theme.colors.white66,
-                            outlineThickness: LineThicknessData.normal().thick,
+                            outlineThickness:
+                                AppLineThicknessData.normal().thick,
                           ),
                           const AppGap.s6(),
                           AppText.med14(
@@ -216,7 +218,7 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
                     borderRadius: theme.radius.asBorderRadius().rad8,
                     border: Border.all(
                       color: theme.colors.white33,
-                      width: LineThicknessData.normal().thin,
+                      width: AppLineThicknessData.normal().thin,
                     ),
                   ),
                   child: SingleChildScrollView(

@@ -19,7 +19,7 @@ class AppPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final isInsideScope = Scope.of(context);
+    final isInsideScope = AppScope.of(context);
     final isInsideModal = ModalScope.of(context);
     final (isInsideMessage, _) = MessageBubbleScope.of(context);
 

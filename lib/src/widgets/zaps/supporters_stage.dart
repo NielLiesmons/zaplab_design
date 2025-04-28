@@ -1,72 +1,175 @@
-import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
+import 'package:zaplab_design/zaplab_design.dart';
 
 class AppSupportersStage extends StatelessWidget {
-  const AppSupportersStage({super.key, required this.topThreeSupporters});
-
   final List<Profile> topThreeSupporters;
+
+  const AppSupportersStage({
+    super.key,
+    required this.topThreeSupporters,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
+    final isInsideScope = AppScope.of(context);
+
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        // First place (left)
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AppProfilePic.s56(
-                topThreeSupporters[0].author.value?.pictureUrl ?? ''),
-            const SizedBox(height: 8),
-            SizedBox(
-              height: 120,
-              child: AppContainer(
-                child: Center(
-                  child: AppText.med14(
-                      topThreeSupporters[0].author.value?.name ??
-                          formatNpub(
-                              topThreeSupporters[0].author.value?.npub ?? '')),
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AppProfilePic.s56(
+                  topThreeSupporters[0].author.value?.pictureUrl ?? ''),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: AppText.med14(
+                  topThreeSupporters[0].author.value?.name ??
+                      formatNpub(
+                          topThreeSupporters[0].author.value?.npub ?? ''),
+                  color: theme.colors.white,
+                  maxLines: 2,
+                  textOverflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Flexible(
+                fit: FlexFit.loose,
+                child: SizedBox(
+                  height: 64,
+                  child: AppContainer(
+                    decoration: BoxDecoration(
+                      color: isInsideScope
+                          ? theme.colors.white8
+                          : theme.colors.gray66,
+                      borderRadius: BorderRadius.only(
+                        topLeft: theme.radius.asBorderRadius().rad16.topLeft,
+                        bottomLeft:
+                            theme.radius.asBorderRadius().rad16.bottomLeft,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: AppText.h3(
+                          '2',
+                          color: theme.colors.white66,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(width: 16),
         // Second place (center - winner)
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AppProfilePic.s56(
-                topThreeSupporters[1].author.value?.pictureUrl ?? ''),
-            const SizedBox(height: 8),
-            SizedBox(
-              height: 180,
-              child: AppContainer(
-                child: Center(
-                  child: AppText.med14('Winner'),
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AppProfilePic.s56(
+                  topThreeSupporters[1].author.value?.pictureUrl ?? ''),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: AppText.med14(
+                  topThreeSupporters[1].author.value?.name ??
+                      formatNpub(
+                          topThreeSupporters[1].author.value?.npub ?? ''),
+                  color: theme.colors.white,
+                  maxLines: 2,
+                  textOverflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Flexible(
+                fit: FlexFit.loose,
+                child: SizedBox(
+                  height: 96,
+                  child: AppContainer(
+                    decoration: BoxDecoration(
+                      color: isInsideScope
+                          ? theme.colors.white8
+                          : theme.colors.gray66,
+                      borderRadius: BorderRadius.only(
+                        topLeft: theme.radius.asBorderRadius().rad16.topLeft,
+                        topRight: theme.radius.asBorderRadius().rad16.topRight,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: AppText.h3(
+                          '1',
+                          color: theme.colors.white66,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(width: 16),
         // Third place (right)
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AppProfilePic.s56(
-                topThreeSupporters[2].author.value?.pictureUrl ?? ''),
-            const SizedBox(height: 8),
-            SizedBox(
-              height: 60,
-              child: AppContainer(
-                child: Center(
-                  child: AppText.med14('Supporter 3'),
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AppProfilePic.s56(
+                  topThreeSupporters[2].author.value?.pictureUrl ?? ''),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: AppText.med14(
+                  topThreeSupporters[2].author.value?.name ??
+                      formatNpub(
+                          topThreeSupporters[2].author.value?.npub ?? ''),
+                  color: theme.colors.white,
+                  maxLines: 2,
+                  textOverflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Flexible(
+                fit: FlexFit.loose,
+                child: SizedBox(
+                  height: 48,
+                  child: AppContainer(
+                    decoration: BoxDecoration(
+                      color: isInsideScope
+                          ? theme.colors.white8
+                          : theme.colors.gray66,
+                      borderRadius: BorderRadius.only(
+                        topRight: theme.radius.asBorderRadius().rad16.topRight,
+                        bottomRight:
+                            theme.radius.asBorderRadius().rad16.bottomRight,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: AppText.h3(
+                          '3',
+                          color: theme.colors.white66,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );

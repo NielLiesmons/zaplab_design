@@ -130,7 +130,7 @@ class _AppToastState extends State<AppToast>
                         border: Border(
                           bottom: BorderSide(
                             color: theme.colors.white16,
-                            width: LineThicknessData.normal().thin,
+                            width: AppLineThicknessData.normal().thin,
                           ),
                         ),
                       ),
@@ -143,7 +143,7 @@ class _AppToastState extends State<AppToast>
                               left: AppGapSize.s16,
                               right: AppGapSize.s16,
                               bottom: AppGapSize.s16,
-                              top: PlatformUtils.isMobile
+                              top: AppPlatformUtils.isMobile
                                   ? AppGapSize.s4
                                   : AppGapSize.s16,
                             ),

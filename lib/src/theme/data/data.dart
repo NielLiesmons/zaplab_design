@@ -27,7 +27,7 @@ class AppThemeData extends Equatable {
   }) : _platform = platform;
 
   factory AppThemeData.normal() => AppThemeData(
-        borders: AppBorderData.fromThickness(LineThicknessData.normal()),
+        borders: AppBorderData.fromThickness(AppLineThicknessData.normal()),
         colors: AppColorsData.light(),
         durations: AppDurationsData.normal(),
         formFactor: AppFormFactor.small,

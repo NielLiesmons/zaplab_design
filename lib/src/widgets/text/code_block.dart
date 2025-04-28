@@ -79,7 +79,7 @@ class _AppCodeBlockState extends State<AppCodeBlock>
               borderRadius: theme.radius.asBorderRadius().rad16,
               border: Border.all(
                 color: theme.colors.white16,
-                width: LineThicknessData.normal().medium,
+                width: AppLineThicknessData.normal().medium,
               ),
             ),
             child: Column(
@@ -117,13 +117,14 @@ class _AppCodeBlockState extends State<AppCodeBlock>
                               theme.icons.characters.check,
                               outlineColor: theme.colors.white66,
                               outlineThickness:
-                                  LineThicknessData.normal().thick,
+                                  AppLineThicknessData.normal().thick,
                             ),
                           )
                         : AppIcon.s18(
                             theme.icons.characters.copy,
                             outlineColor: theme.colors.white66,
-                            outlineThickness: LineThicknessData.normal().medium,
+                            outlineThickness:
+                                AppLineThicknessData.normal().medium,
                           )
                   ],
                 ),

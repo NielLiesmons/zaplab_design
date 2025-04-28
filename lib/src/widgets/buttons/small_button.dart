@@ -155,7 +155,7 @@ class AppSmallButtonLayout extends StatelessWidget {
                   theme.icons.characters.chevronDown,
                   outlineColor:
                       theme.colors.whiteEnforced.withValues(alpha: 0.66),
-                  outlineThickness: LineThicknessData.normal().medium,
+                  outlineThickness: AppLineThicknessData.normal().medium,
                 ),
               ),
             ),

@@ -132,7 +132,7 @@ class _AppTextEmojiMenuState extends State<AppTextEmojiMenu> {
                     borderRadius: theme.radius.asBorderRadius().rad8,
                     border: Border.all(
                       color: theme.colors.white33,
-                      width: LineThicknessData.normal().thin,
+                      width: AppLineThicknessData.normal().thin,
                     ),
                   ),
                   child: Stack(

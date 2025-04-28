@@ -27,7 +27,7 @@ class AppOtherProfileCard extends StatelessWidget {
         borderRadius: theme.radius.asBorderRadius().rad16,
         border: Border.all(
           color: theme.colors.gray,
-          width: LineThicknessData.normal().medium,
+          width: AppLineThicknessData.normal().medium,
         ),
       ),
       child: Column(

@@ -104,12 +104,12 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
             leftContent: AppIcon.s16(
               theme.icons.characters.reply,
               outlineColor: theme.colors.white66,
-              outlineThickness: LineThicknessData.normal().medium,
+              outlineThickness: AppLineThicknessData.normal().medium,
             ),
             rightContent: AppIcon.s10(
               theme.icons.characters.chevronUp,
               outlineColor: theme.colors.white66,
-              outlineThickness: LineThicknessData.normal().medium,
+              outlineThickness: AppLineThicknessData.normal().medium,
             ),
             onSwipeLeft:
                 widget.isTyping ? null : () => widget.onReply(widget.message),

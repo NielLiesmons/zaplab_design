@@ -107,7 +107,7 @@ class _AppWelcomeModalState extends State<AppWelcomeModal> {
                       color: theme.colors.white66),
                 ],
               ),
-              PlatformUtils.isMobile ? const AppGap.s8() : const SizedBox(),
+              AppPlatformUtils.isMobile ? const AppGap.s8() : const SizedBox(),
             ],
           ),
         ),

@@ -125,7 +125,7 @@ class _AppReplyModalState extends State<AppReplyModal> {
                             child: AppContainer(
                               decoration:
                                   BoxDecoration(color: theme.colors.white33),
-                              width: LineThicknessData.normal().medium,
+                              width: AppLineThicknessData.normal().medium,
                               height: theme.sizes.s16,
                             ),
                           ),

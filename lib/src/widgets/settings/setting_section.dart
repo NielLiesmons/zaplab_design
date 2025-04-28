@@ -57,7 +57,7 @@ class AppSettingSection extends StatelessWidget {
               const AppGap.s12(),
               AppIcon.s16(
                 theme.icons.characters.chevronRight,
-                outlineThickness: LineThicknessData.normal().medium,
+                outlineThickness: AppLineThicknessData.normal().medium,
                 outlineColor: theme.colors.white33,
               ),
               const AppGap.s12(),

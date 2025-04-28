@@ -3,12 +3,12 @@ import 'package:tap_builder/tap_builder.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 
-class AppAmountModal extends StatefulWidget {
+class AppZapAmountModal extends StatefulWidget {
   final double initialAmount;
   final void Function(double)? onAmountChanged;
   final List<double> recentAmounts;
 
-  const AppAmountModal({
+  const AppZapAmountModal({
     super.key,
     required this.initialAmount,
     this.onAmountChanged,
@@ -24,7 +24,7 @@ class AppAmountModal extends StatefulWidget {
     return AppModal.show(
       context,
       children: [
-        AppAmountModal(
+        AppZapAmountModal(
           initialAmount: initialAmount,
           onAmountChanged: onAmountChanged,
           recentAmounts: recentAmounts,
@@ -34,10 +34,10 @@ class AppAmountModal extends StatefulWidget {
   }
 
   @override
-  State<AppAmountModal> createState() => _AppAmountModalState();
+  State<AppZapAmountModal> createState() => _AppZapAmountModalState();
 }
 
-class _AppAmountModalState extends State<AppAmountModal> {
+class _AppZapAmountModalState extends State<AppZapAmountModal> {
   bool _showCursor = true;
   late Timer _cursorTimer;
   late final ValueNotifier<double> _amount;
@@ -256,7 +256,7 @@ class _AppAmountModalState extends State<AppAmountModal> {
                     borderRadius: theme.radius.asBorderRadius().rad16,
                     border: Border.all(
                       color: theme.colors.white33,
-                      width: LineThicknessData.normal().thin,
+                      width: AppLineThicknessData.normal().thin,
                     ),
                   ),
                   clipBehavior: Clip.hardEdge,
@@ -368,8 +368,8 @@ class _AppAmountModalState extends State<AppAmountModal> {
                         ? theme.colors.white66
                         : theme.colors.whiteEnforced,
                     outlineThickness: value == 'backspace'
-                        ? LineThicknessData.normal().medium
-                        : LineThicknessData.normal().thick,
+                        ? AppLineThicknessData.normal().medium
+                        : AppLineThicknessData.normal().thick,
                   )
                 : AppText.med16(
                     value,

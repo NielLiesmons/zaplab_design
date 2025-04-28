@@ -19,7 +19,7 @@ class AppImageCard extends StatelessWidget {
         borderRadius: theme.radius.asBorderRadius().rad16,
         border: Border.all(
           color: theme.colors.white16,
-          width: LineThicknessData.normal().thin,
+          width: AppLineThicknessData.normal().thin,
         ),
       ),
       child: Image.network(

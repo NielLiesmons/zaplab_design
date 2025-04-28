@@ -5,7 +5,7 @@ import 'package:models/models.dart';
 extension StringExtension on String {
   String formatTabLabel() {
     final capitalized = this[0].toUpperCase() + substring(1);
-    return this == 'chat' || this == 'welcome'
+    return this == 'chat' || this == 'welcome' || this.endsWith('s')
         ? capitalized
         : '${capitalized}s';
   }
@@ -253,7 +253,7 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
             _buildContent(),
             const AppGap.s16(),
             const AppGap.s38(),
-            PlatformUtils.isMobile ? const AppGap.s4() : const AppGap.s16(),
+            AppPlatformUtils.isMobile ? const AppGap.s4() : const AppGap.s16(),
             const AppBottomSafeArea()
           ],
         ),

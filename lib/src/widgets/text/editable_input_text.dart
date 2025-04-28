@@ -117,7 +117,7 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
       ),
       child: SingleChildScrollView(
         clipBehavior: Clip.none,
-        physics: PlatformUtils.isMobile
+        physics: AppPlatformUtils.isMobile
             ? const ClampingScrollPhysics()
             : const AlwaysScrollableScrollPhysics(),
         child: Stack(

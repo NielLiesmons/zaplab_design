@@ -50,7 +50,7 @@ class AppInputModal extends StatelessWidget {
     final keyboardHeight =
         (MediaQuery.of(context).viewInsets.bottom / theme.system.scale);
     final bottomPadding =
-        PlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
+        AppPlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
 
     return Stack(
       children: [
@@ -91,7 +91,7 @@ class AppInputModal extends StatelessWidget {
               return Transform.translate(
                 offset: Offset(0, offset - keyboardHeight),
                 child: GestureDetector(
-                  onVerticalDragUpdate: PlatformUtils.isMobile
+                  onVerticalDragUpdate: AppPlatformUtils.isMobile
                       ? (details) {
                           if (details.delta.dy > 0) {
                             modalOffset.value += details.delta.dy;
@@ -102,7 +102,7 @@ class AppInputModal extends StatelessWidget {
                           }
                         }
                       : null,
-                  onVerticalDragEnd: PlatformUtils.isMobile
+                  onVerticalDragEnd: AppPlatformUtils.isMobile
                       ? (details) {
                           if (modalOffset.value > 0 &&
                               modalOffset.value <= 160) {
@@ -135,7 +135,7 @@ class AppInputModal extends StatelessWidget {
                             border: Border(
                               top: BorderSide(
                                 color: theme.colors.white16,
-                                width: LineThicknessData.normal().thin,
+                                width: AppLineThicknessData.normal().thin,
                               ),
                             ),
                           ),

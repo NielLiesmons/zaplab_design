@@ -87,7 +87,7 @@ class AppProfilePic extends StatelessWidget {
     final sizes = theme.sizes;
     final icons = theme.icons;
     final resolvedSize = _resolveSize(size, sizes);
-    final thickness = LineThicknessData.normal().thin;
+    final thickness = AppLineThicknessData.normal().thin;
 
     return TapBuilder(
       onTap: onTap,

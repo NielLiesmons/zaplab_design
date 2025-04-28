@@ -174,7 +174,7 @@ class AppActionsModal extends StatelessWidget {
             child: Center(
               child: AppIcon.s10(
                 theme.icons.characters.chevronUp,
-                outlineThickness: LineThicknessData.normal().medium,
+                outlineThickness: AppLineThicknessData.normal().medium,
                 outlineColor: theme.colors.white66,
                 color: theme.colors.white,
               ),
@@ -238,7 +238,7 @@ class AppActionsModal extends StatelessWidget {
                             borderRadius: theme.radius.asBorderRadius().rad16,
                             border: Border.all(
                               color: theme.colors.white33,
-                              width: LineThicknessData.normal().thin,
+                              width: AppLineThicknessData.normal().thin,
                             ),
                           ),
                           padding: const AppEdgeInsets.all(AppGapSize.s8),
@@ -330,7 +330,7 @@ class AppActionsModal extends StatelessWidget {
                                 child: AppContainer(
                                   decoration: BoxDecoration(
                                       color: theme.colors.white33),
-                                  width: LineThicknessData.normal().medium,
+                                  width: AppLineThicknessData.normal().medium,
                                   height: theme.sizes.s16,
                                 ),
                               ),
@@ -357,7 +357,7 @@ class AppActionsModal extends StatelessWidget {
                                       theme.radius.asBorderRadius().rad16,
                                   border: Border.all(
                                     color: theme.colors.white33,
-                                    width: LineThicknessData.normal().thin,
+                                    width: AppLineThicknessData.normal().thin,
                                   ),
                                 ),
                                 padding: const AppEdgeInsets.all(AppGapSize.s8),
@@ -497,7 +497,7 @@ class AppActionsModal extends StatelessWidget {
                             child: AppIcon.s8(
                               theme.icons.characters.chevronDown,
                               outlineThickness:
-                                  LineThicknessData.normal().medium,
+                                  AppLineThicknessData.normal().medium,
                               outlineColor: theme.colors.white66,
                             ),
                           ),
@@ -622,7 +622,7 @@ class AppActionsModal extends StatelessWidget {
                             child: AppIcon.s8(
                               theme.icons.characters.chevronDown,
                               outlineThickness:
-                                  LineThicknessData.normal().medium,
+                                  AppLineThicknessData.normal().medium,
                               outlineColor: theme.colors.white66,
                             ),
                           ),
@@ -664,7 +664,7 @@ class AppActionsModal extends StatelessWidget {
                             : i == 1
                                 ? theme.icons.characters.label
                                 : theme.icons.characters.share,
-                        outlineThickness: LineThicknessData.normal().medium,
+                        outlineThickness: AppLineThicknessData.normal().medium,
                         outlineColor: theme.colors.white66,
                       ),
                       const AppGap.s10(),
@@ -698,7 +698,7 @@ class AppActionsModal extends StatelessWidget {
           children: [
             AppIcon.s16(
               theme.icons.characters.plus,
-              outlineThickness: LineThicknessData.normal().thick,
+              outlineThickness: AppLineThicknessData.normal().thick,
               outlineColor: theme.colors.whiteEnforced,
             ),
             const AppGap.s12(),

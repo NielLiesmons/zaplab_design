@@ -97,7 +97,7 @@ class _AppAddProfileModalState extends State<AppAddProfileModal> {
                       color: theme.colors.white66),
                 ],
               ),
-              PlatformUtils.isMobile ? const AppGap.s8() : const SizedBox(),
+              AppPlatformUtils.isMobile ? const AppGap.s8() : const SizedBox(),
             ],
           ),
         ),

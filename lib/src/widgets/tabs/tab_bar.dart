@@ -293,7 +293,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                               color: theme.colors.white66,
                               outlineColor: theme.colors.white66,
                               outlineThickness:
-                                  LineThicknessData.normal().medium,
+                                  AppLineThicknessData.normal().medium,
                             ),
                           ),
                         ),

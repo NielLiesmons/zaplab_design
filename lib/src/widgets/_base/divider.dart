@@ -41,13 +41,13 @@ class AppDivider extends StatelessWidget {
               ? Border(
                   bottom: BorderSide(
                     color: color ?? theme.colors.white16,
-                    width: thickness ?? LineThicknessData.normal().medium,
+                    width: thickness ?? AppLineThicknessData.normal().medium,
                   ),
                 )
               : Border(
                   right: BorderSide(
                     color: color ?? theme.colors.white16,
-                    width: thickness ?? LineThicknessData.normal().medium,
+                    width: thickness ?? AppLineThicknessData.normal().medium,
                   ),
                 ),
         ),

@@ -52,12 +52,12 @@ class AppCommunityHomePanel extends StatelessWidget {
             leftContent: AppIcon.s16(
               theme.icons.characters.plus,
               outlineColor: theme.colors.white66,
-              outlineThickness: LineThicknessData.normal().medium,
+              outlineThickness: AppLineThicknessData.normal().medium,
             ),
             rightContent: AppIcon.s10(
               theme.icons.characters.chevronUp,
               outlineColor: theme.colors.white66,
-              outlineThickness: LineThicknessData.normal().medium,
+              outlineThickness: AppLineThicknessData.normal().medium,
             ),
             onSwipeLeft: () => onCreateNewPublication!(community),
             onSwipeRight: () => onActions!(community),

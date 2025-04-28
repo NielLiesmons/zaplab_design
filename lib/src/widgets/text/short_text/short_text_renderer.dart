@@ -725,7 +725,7 @@ class AppShortTextRenderer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppContainer(
-                width: LineThicknessData.normal().thick,
+                width: AppLineThicknessData.normal().thick,
                 decoration: BoxDecoration(
                   color: theme.colors.white33,
                   borderRadius: theme.radius.asBorderRadius().rad16,

@@ -171,7 +171,7 @@ class _AppImageStackState extends State<AppImageStack> {
                           borderRadius: theme.radius.asBorderRadius().rad16,
                           border: Border.all(
                             color: theme.colors.white16,
-                            width: LineThicknessData.normal().thin,
+                            width: AppLineThicknessData.normal().thin,
                           ),
                         ),
                         child: Opacity(
@@ -218,7 +218,7 @@ class _AppImageStackState extends State<AppImageStack> {
                           borderRadius: theme.radius.asBorderRadius().rad16,
                           border: Border.all(
                             color: theme.colors.white16,
-                            width: LineThicknessData.normal().thin,
+                            width: AppLineThicknessData.normal().thin,
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -263,7 +263,7 @@ class _AppImageStackState extends State<AppImageStack> {
                       borderRadius: theme.radius.asBorderRadius().rad16,
                       border: Border.all(
                         color: theme.colors.white16,
-                        width: LineThicknessData.normal().thin,
+                        width: AppLineThicknessData.normal().thin,
                       ),
                       boxShadow: [
                         BoxShadow(

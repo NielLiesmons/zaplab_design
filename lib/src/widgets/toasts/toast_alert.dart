@@ -47,7 +47,7 @@ class AppToastAlert extends StatelessWidget {
           child: AppIcon.s18(
             theme.icons.characters.alert,
             outlineColor: theme.colors.white66,
-            outlineThickness: LineThicknessData.normal().medium,
+            outlineThickness: AppLineThicknessData.normal().medium,
           ),
         ),
         const AppGap.s12(),

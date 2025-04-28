@@ -56,7 +56,7 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
   static const double _kTouchSlopDesktop = 40.0;
 
   double get _touchSlop {
-    if (!PlatformUtils.isMobile) {
+    if (!AppPlatformUtils.isMobile) {
       return _kTouchSlopDesktop;
     }
     return _kTouchSlopMobile;

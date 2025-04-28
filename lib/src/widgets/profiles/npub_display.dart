@@ -69,7 +69,7 @@ class _AppNpubDisplayState extends State<AppNpubDisplay>
                 borderRadius: BorderRadius.circular(100),
                 border: Border.all(
                   color: theme.colors.white16,
-                  width: LineThicknessData.normal().thin,
+                  width: AppLineThicknessData.normal().thin,
                 ),
               ),
             ),
@@ -83,13 +83,13 @@ class _AppNpubDisplayState extends State<AppNpubDisplay>
               AppIcon.s8(
                 theme.icons.characters.check,
                 outlineColor: theme.colors.blurpleLightColor,
-                outlineThickness: LineThicknessData.normal().medium,
+                outlineThickness: AppLineThicknessData.normal().medium,
               ),
             if (state == TapState.hover && !_showCheck)
               AppIcon.s14(
                 theme.icons.characters.copy,
                 outlineColor: theme.colors.white33,
-                outlineThickness: LineThicknessData.normal().medium,
+                outlineThickness: AppLineThicknessData.normal().medium,
               ),
           ],
         );

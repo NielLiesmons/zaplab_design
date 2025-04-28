@@ -18,7 +18,7 @@ class AppZapPill extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final isInsideModal = ModalScope.of(context);
-    final isInsideScope = Scope.of(context);
+    final isInsideScope = AppScope.of(context);
     final (isInsideMessageBubble, _) = MessageBubbleScope.of(context);
 
     return TapBuilder(

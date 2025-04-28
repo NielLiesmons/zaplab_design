@@ -75,15 +75,15 @@ class AppCrossButtonLayout extends StatelessWidget {
       case AppCrossButtonSize.s20:
         buttonSize = theme.sizes.s20;
         iconSize = AppIconSize.s8;
-        outlineThickness = LineThicknessData.normal().medium;
+        outlineThickness = AppLineThicknessData.normal().medium;
       case AppCrossButtonSize.s24:
         buttonSize = theme.sizes.s24;
         iconSize = AppIconSize.s8;
-        outlineThickness = LineThicknessData.normal().medium;
+        outlineThickness = AppLineThicknessData.normal().medium;
       case AppCrossButtonSize.s32:
         buttonSize = theme.sizes.s32;
         iconSize = AppIconSize.s12;
-        outlineThickness = LineThicknessData.normal().thick;
+        outlineThickness = AppLineThicknessData.normal().thick;
     }
 
     return AppContainer(

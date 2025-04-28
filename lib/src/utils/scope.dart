@@ -1,21 +1,21 @@
 import 'package:flutter/widgets.dart';
 
-class Scope extends InheritedWidget {
+class AppScope extends InheritedWidget {
   final bool isInsideScope;
 
-  const Scope({
+  const AppScope({
     super.key,
     required this.isInsideScope,
     required super.child,
   });
 
   static bool of(BuildContext context) {
-    final scope = context.dependOnInheritedWidgetOfExactType<Scope>();
+    final scope = context.dependOnInheritedWidgetOfExactType<AppScope>();
     return scope?.isInsideScope ?? false;
   }
 
   @override
-  bool updateShouldNotify(Scope oldWidget) {
+  bool updateShouldNotify(AppScope oldWidget) {
     return isInsideScope != oldWidget.isInsideScope;
   }
 }

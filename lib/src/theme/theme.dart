@@ -10,7 +10,6 @@ export 'data/default_data.dart';
 export 'data/durations.dart';
 export 'data/form_factor.dart';
 export 'data/icons.dart';
-export 'data/images.dart';
 export 'data/line_thickness.dart';
 export 'data/radius.dart';
 export 'data/sizes.dart';

@@ -59,7 +59,7 @@ class AppLabel extends StatelessWidget {
                         child: AppIcon.s10(
                           theme.icons.characters.check,
                           outlineColor: theme.colors.white,
-                          outlineThickness: LineThicknessData.normal().thick,
+                          outlineThickness: AppLineThicknessData.normal().thick,
                         ),
                       ),
                     Flexible(

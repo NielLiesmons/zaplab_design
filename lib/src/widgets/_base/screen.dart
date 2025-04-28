@@ -138,7 +138,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
 
   double get _menuHeight {
     final topPadding = MediaQuery.of(context).padding.top;
-    final baseHeight = 94.0 + (PlatformUtils.isMobile ? topPadding : 38.0);
+    final baseHeight = 94.0 + (AppPlatformUtils.isMobile ? topPadding : 38.0);
     final historyHeight =
         widget.history.length * AppTheme.of(context).sizes.s38;
     return baseHeight + historyHeight;
@@ -276,7 +276,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
             Opacity(
               opacity: _showTopZone ? 1.0 : 0.0,
               child: AppContainer(
-                height: PlatformUtils.isMobile
+                height: AppPlatformUtils.isMobile
                     ? MediaQuery.of(context).padding.top + 2
                     : 23,
                 decoration: BoxDecoration(
@@ -307,7 +307,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                               if (_currentDrag > 0) {
                                 if (details.primaryDelta! > 0 &&
                                     Navigator.canPop(context) &&
-                                    PlatformUtils.isMobile) {
+                                    AppPlatformUtils.isMobile) {
                                   final now = DateTime.now();
                                   if (_menuOpenedAt != null &&
                                       now
@@ -402,9 +402,9 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                 top: BorderSide(
                                                   color: AppColorsData.dark()
                                                       .white16,
-                                                  width:
-                                                      LineThicknessData.normal()
-                                                          .thin,
+                                                  width: AppLineThicknessData
+                                                          .normal()
+                                                      .thin,
                                                 ),
                                               ),
                                             ),
@@ -460,7 +460,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                   top: BorderSide(
                                                     color: AppColorsData.dark()
                                                         .white16,
-                                                    width: LineThicknessData
+                                                    width: AppLineThicknessData
                                                             .normal()
                                                         .thin,
                                                   ),
@@ -519,8 +519,8 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                           top: BorderSide(
                             color: theme.colors.white16,
                             width: _currentDrag > 0
-                                ? LineThicknessData.normal().thin
-                                : LineThicknessData.normal().medium,
+                                ? AppLineThicknessData.normal().thin
+                                : AppLineThicknessData.normal().medium,
                           ),
                         ),
                       ),
@@ -528,7 +528,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                         minHeight: MediaQuery.of(context).size.height *
                                 theme.system.scale -
                             (_topBarHeight +
-                                (PlatformUtils.isMobile
+                                (AppPlatformUtils.isMobile
                                     ? MediaQuery.of(context).padding.top
                                     : 20)),
                       ),
@@ -579,7 +579,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                       children: [
                                         // Top padding to account for the gap and drag handle in the top bar
                                         if (!widget.noTopGap)
-                                          !PlatformUtils.isMobile
+                                          !AppPlatformUtils.isMobile
                                               ? const AppGap.s8()
                                               : const AppGap.s10(),
                                         // Actual content
@@ -626,7 +626,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                       _menuOpenedAt != null &&
                                       details.primaryDelta! > 0 &&
                                       Navigator.canPop(context) &&
-                                      PlatformUtils.isMobile) {
+                                      AppPlatformUtils.isMobile) {
                                     Navigator.of(context).pop();
                                   } else {
                                     _handleDrag(details.primaryDelta!);
@@ -729,7 +729,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                               }
                                                             },
                                                             child: MouseRegion(
-                                                              cursor: PlatformUtils
+                                                              cursor: AppPlatformUtils
                                                                       .isDesktop
                                                                   ? SystemMouseCursors
                                                                       .click
@@ -752,7 +752,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                                               padding: AppEdgeInsets.only(
                                                                                 left: AppGapSize.s12,
                                                                                 right: AppGapSize.s12,
-                                                                                bottom: PlatformUtils.isMobile ? AppGapSize.s12 : AppGapSize.s10,
+                                                                                bottom: AppPlatformUtils.isMobile ? AppGapSize.s12 : AppGapSize.s10,
                                                                               ),
                                                                               child: widget.topBarContent!,
                                                                             ),

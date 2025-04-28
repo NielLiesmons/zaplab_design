@@ -161,7 +161,7 @@ class _AppAudioMessageState extends State<AppAudioMessage>
               child: AppIcon.s16(
                 theme.icons.characters.info,
                 outlineColor: theme.colors.white66,
-                outlineThickness: LineThicknessData.normal().medium,
+                outlineThickness: AppLineThicknessData.normal().medium,
               ),
             ),
             const AppGap.s8(),
@@ -277,7 +277,7 @@ class _AppAudioMessageState extends State<AppAudioMessage>
               const AppGap.s8(),
               // Duration
               AppText.reg12(
-                DurationFormatter.format(_player.duration != null
+                AppDurationFormatter.format(_player.duration != null
                     ? _player.duration! - _currentDuration
                     : Duration.zero),
                 color: theme.colors.white33,

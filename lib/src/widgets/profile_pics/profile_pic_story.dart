@@ -58,8 +58,8 @@ class AppProfilePicStory extends StatelessWidget {
     final theme = AppTheme.of(context);
     final sizes = theme.sizes;
     final resolvedSize = _resolveSize(size, sizes);
-    final outerBorderThickness = LineThicknessData.normal().medium;
-    final innerBorderThickness = LineThicknessData.normal().thin;
+    final outerBorderThickness = AppLineThicknessData.normal().medium;
+    final innerBorderThickness = AppLineThicknessData.normal().thin;
     final adjustedOuterSize = resolvedSize;
     final adjustedInnerSize = resolvedSize - 8;
 

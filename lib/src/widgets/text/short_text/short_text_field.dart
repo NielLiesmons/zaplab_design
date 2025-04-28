@@ -121,7 +121,7 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
         borderRadius: theme.radius.asBorderRadius().rad16,
         border: Border.all(
           color: theme.colors.white33,
-          width: LineThicknessData.normal().thin,
+          width: AppLineThicknessData.normal().thin,
         ),
       ),
       child: Column(
@@ -257,7 +257,7 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
                         AppIcon.s16(
                           theme.icons.characters.plus,
                           outlineColor: theme.colors.white33,
-                          outlineThickness: LineThicknessData.normal().thick,
+                          outlineThickness: AppLineThicknessData.normal().thick,
                         ),
                       ],
                     ),

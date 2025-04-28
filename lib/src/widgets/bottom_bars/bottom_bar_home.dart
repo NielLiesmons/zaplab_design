@@ -35,7 +35,7 @@ class AppBottomBarHome extends StatelessWidget {
             square: true,
             children: [
               AppIcon.s12(theme.icons.characters.plus,
-                  outlineThickness: LineThicknessData.normal().thick,
+                  outlineThickness: AppLineThicknessData.normal().thick,
                   outlineColor: theme.colors.white66),
             ],
             inactiveColor: theme.colors.white16,
@@ -65,7 +65,7 @@ class AppBottomBarHome extends StatelessWidget {
                         borderRadius: theme.radius.asBorderRadius().rad16,
                         border: Border.all(
                           color: theme.colors.white33,
-                          width: LineThicknessData.normal().thin,
+                          width: AppLineThicknessData.normal().thin,
                         ),
                       ),
                       padding: const AppEdgeInsets.only(
@@ -78,7 +78,7 @@ class AppBottomBarHome extends StatelessWidget {
                           children: [
                             AppIcon.s18(theme.icons.characters.search,
                                 outlineThickness:
-                                    LineThicknessData.normal().medium,
+                                    AppLineThicknessData.normal().medium,
                                 outlineColor: theme.colors.white33),
                             const AppGap.s8(),
                             AppText.med14('Search',
@@ -100,7 +100,7 @@ class AppBottomBarHome extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppIcon.s8(theme.icons.characters.chevronUp,
-                      outlineThickness: LineThicknessData.normal().medium,
+                      outlineThickness: AppLineThicknessData.normal().medium,
                       outlineColor: theme.colors.white66),
                   const AppGap.s2(),
                 ],

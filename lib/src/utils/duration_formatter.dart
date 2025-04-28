@@ -1,5 +1,5 @@
 /// A utility class for formatting durations into human-readable strings.
-class DurationFormatter {
+class AppDurationFormatter {
   /// Formats a duration into a string representation (e.g., "1:23" or "12:34").
   ///
   /// The format follows these rules:

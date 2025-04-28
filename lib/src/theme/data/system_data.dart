@@ -13,19 +13,22 @@ class AppSystemData extends Equatable {
   });
 
   factory AppSystemData.normal() => AppSystemData(
-        scale: PlatformUtils.isMobile ? mobileScaleFactor : desktopScaleFactor,
+        scale:
+            AppPlatformUtils.isMobile ? mobileScaleFactor : desktopScaleFactor,
       );
 
   factory AppSystemData.small() => AppSystemData(
-        scale:
-            (PlatformUtils.isMobile ? mobileScaleFactor : desktopScaleFactor) *
-                0.95,
+        scale: (AppPlatformUtils.isMobile
+                ? mobileScaleFactor
+                : desktopScaleFactor) *
+            0.95,
       );
 
   factory AppSystemData.large() => AppSystemData(
-        scale:
-            (PlatformUtils.isMobile ? mobileScaleFactor : desktopScaleFactor) *
-                1.05,
+        scale: (AppPlatformUtils.isMobile
+                ? mobileScaleFactor
+                : desktopScaleFactor) *
+            1.05,
       );
 
   @override

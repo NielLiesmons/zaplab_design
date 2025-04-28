@@ -44,7 +44,8 @@ class AppAppReleaseCard extends StatelessWidget {
                       const AppGap.s12(),
                       AppIcon.s14(theme.icons.characters.chevronRight,
                           outlineColor: theme.colors.white33,
-                          outlineThickness: LineThicknessData.normal().medium),
+                          outlineThickness:
+                              AppLineThicknessData.normal().medium),
                     ],
                   ),
                   AppText.reg12(

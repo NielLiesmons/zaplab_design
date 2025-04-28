@@ -29,7 +29,7 @@ class AppQuotedMessage extends StatelessWidget {
         child: Row(
           children: [
             AppContainer(
-              width: LineThicknessData.normal().thick,
+              width: AppLineThicknessData.normal().thick,
               decoration: BoxDecoration(
                 color: theme.colors.white66,
               ),

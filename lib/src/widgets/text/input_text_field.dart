@@ -64,7 +64,7 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
         borderRadius: theme.radius.asBorderRadius().rad16,
         border: Border.all(
           color: theme.colors.white33,
-          width: LineThicknessData.normal().thin,
+          width: AppLineThicknessData.normal().thin,
         ),
       ),
       child: Column(

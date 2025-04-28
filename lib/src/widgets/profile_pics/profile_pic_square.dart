@@ -51,7 +51,7 @@ class AppProfilePicSquare extends StatelessWidget {
     final sizes = theme.sizes;
     final icons = theme.icons;
     final resolvedSize = _resolveSize(size, sizes);
-    final thickness = LineThicknessData.normal().thin;
+    final thickness = AppLineThicknessData.normal().thin;
     final borderRadius = resolvedSize >= sizes.s72
         ? theme.radius.asBorderRadius().rad24
         : theme.radius.asBorderRadius().rad16;

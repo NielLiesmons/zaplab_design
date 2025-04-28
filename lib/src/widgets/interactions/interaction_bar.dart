@@ -166,7 +166,8 @@ class _AppInteractionBarState extends State<AppInteractionBar>
                             theme.icons.characters.expand,
                             color: theme.colors.white66,
                             outlineColor: theme.colors.white66,
-                            outlineThickness: LineThicknessData.normal().medium,
+                            outlineThickness:
+                                AppLineThicknessData.normal().medium,
                           ),
                         ),
                       ),

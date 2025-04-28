@@ -15,7 +15,7 @@ class AppBorderData extends Equatable {
     required this.thick,
   });
 
-  factory AppBorderData.fromThickness(LineThicknessData thicknessData) =>
+  factory AppBorderData.fromThickness(AppLineThicknessData thicknessData) =>
       AppBorderData(
         thin: thicknessData.thin,
         medium: thicknessData.medium,

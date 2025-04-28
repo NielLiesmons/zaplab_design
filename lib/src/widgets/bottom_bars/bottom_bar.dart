@@ -6,7 +6,7 @@ class AppBottomBar extends StatelessWidget {
     super.key,
     required this.child,
     bool? roundedTop,
-  }) : roundedTop = roundedTop ?? (PlatformUtils.isMobile);
+  }) : roundedTop = roundedTop ?? (AppPlatformUtils.isMobile);
 
   final Widget child;
   final bool roundedTop;
@@ -15,7 +15,7 @@ class AppBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final bottomPadding =
-        PlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
+        AppPlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
 
     return AppContainer(
       decoration: BoxDecoration(
@@ -25,7 +25,7 @@ class AppBottomBar extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color: theme.colors.white16,
-            width: LineThicknessData.normal().thin,
+            width: AppLineThicknessData.normal().thin,
           ),
         ),
       ),

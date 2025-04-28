@@ -121,7 +121,7 @@ class AppCheckBoxState extends State<AppCheckBox>
                       ? null
                       : Border.all(
                           color: theme.colors.white33,
-                          width: LineThicknessData.normal().medium,
+                          width: AppLineThicknessData.normal().medium,
                         ),
                 ),
                 child: _isChecked
@@ -131,7 +131,8 @@ class AppCheckBoxState extends State<AppCheckBox>
                           child: AppIcon.s8(
                             theme.icons.characters.check,
                             outlineColor: theme.colors.whiteEnforced,
-                            outlineThickness: LineThicknessData.normal().thick,
+                            outlineThickness:
+                                AppLineThicknessData.normal().thick,
                           ),
                         ),
                       )

@@ -8,7 +8,7 @@ class AppDragHandle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    return PlatformUtils.isMobile
+    return AppPlatformUtils.isMobile
         ? SizedBox(
             width: theme.sizes.s32,
             height: theme.sizes.s4,

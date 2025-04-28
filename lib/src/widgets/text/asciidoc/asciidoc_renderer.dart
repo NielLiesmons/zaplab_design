@@ -119,12 +119,12 @@ class AppAsciiDocRenderer extends StatelessWidget {
       leftContent: AppIcon.s16(
         theme.icons.characters.reply,
         outlineColor: theme.colors.white66,
-        outlineThickness: LineThicknessData.normal().medium,
+        outlineThickness: AppLineThicknessData.normal().medium,
       ),
       rightContent: AppIcon.s10(
         theme.icons.characters.chevronUp,
         outlineColor: theme.colors.white66,
-        outlineThickness: LineThicknessData.normal().medium,
+        outlineThickness: AppLineThicknessData.normal().medium,
       ),
       onSwipeLeft: () {}, // Add your action handlers
       onSwipeRight: () {}, // Add your reply handlers

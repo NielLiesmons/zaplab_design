@@ -55,7 +55,7 @@ class AppBase extends StatelessWidget {
     this.currentProfile,
   }) {
     // Initialize window settings for desktop platforms
-    if (PlatformUtils.isDesktop) {
+    if (AppPlatformUtils.isDesktop) {
       windowManager.ensureInitialized();
       windowManager
           .setMinimumSize(const Size(kMinWindowWidth, kMinWindowHeight));
@@ -191,7 +191,7 @@ class _AppBaseContentState extends State<_AppBaseContent>
   @override
   Widget build(BuildContext context) {
     // Set system UI overlay style for native platforms only
-    if (!PlatformUtils.isWeb) {
+    if (!AppPlatformUtils.isWeb) {
       SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(
           statusBarColor: Color(0x00000000),
@@ -221,7 +221,7 @@ class _AppBaseContentState extends State<_AppBaseContent>
                   Row(
                     children: [
                       // Sidebar (on desktop or web if any callbacks are provided)
-                      if (!PlatformUtils.isMobile && _shouldShowSidebar)
+                      if (!AppPlatformUtils.isMobile && _shouldShowSidebar)
                         AppContainer(
                           decoration: BoxDecoration(
                             color: AppTheme.of(context).colors.gray33,
@@ -265,7 +265,8 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                               .colors
                                               .white66,
                                           outlineThickness:
-                                              LineThicknessData.normal().medium,
+                                              AppLineThicknessData.normal()
+                                                  .medium,
                                         ),
                                         onTap: widget.onHomeTap!,
                                       ),
@@ -281,7 +282,8 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                               .colors
                                               .white66,
                                           outlineThickness:
-                                              LineThicknessData.normal().medium,
+                                              AppLineThicknessData.normal()
+                                                  .medium,
                                         ),
                                         onTap: widget.onSearchTap!,
                                       ),
@@ -297,7 +299,8 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                               .colors
                                               .white66,
                                           outlineThickness:
-                                              LineThicknessData.normal().medium,
+                                              AppLineThicknessData.normal()
+                                                  .medium,
                                         ),
                                         onTap: widget.onAddTap!,
                                       ),
@@ -381,8 +384,9 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                               color: AppTheme.of(context)
                                                   .colors
                                                   .white16,
-                                              width: LineThicknessData.normal()
-                                                  .thin,
+                                              width:
+                                                  AppLineThicknessData.normal()
+                                                      .thin,
                                             ),
                                           ),
                                         ),
@@ -457,12 +461,12 @@ class _AppBaseContentState extends State<_AppBaseContent>
                     ? AppIcon.s14(
                         theme.icons.characters.cross,
                         outlineColor: theme.colors.white66,
-                        outlineThickness: LineThicknessData.normal().medium,
+                        outlineThickness: AppLineThicknessData.normal().medium,
                       )
                     : AppIcon.s16(
                         theme.icons.characters.chevronLeft,
                         outlineColor: theme.colors.white66,
-                        outlineThickness: LineThicknessData.normal().medium,
+                        outlineThickness: AppLineThicknessData.normal().medium,
                       ),
               ),
             ),

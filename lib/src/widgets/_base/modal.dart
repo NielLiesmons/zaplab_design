@@ -241,7 +241,7 @@ class AppModal extends StatelessWidget {
                         allChildren,
                       ),
                     if (needsCompactMode &&
-                        (bottomBar != null || PlatformUtils.isMobile))
+                        (bottomBar != null || AppPlatformUtils.isMobile))
                       _buildBottomBarOverlay(context, theme),
                   ],
                 ),
@@ -280,7 +280,7 @@ class AppModal extends StatelessWidget {
     List<Widget> allChildren,
   ) {
     final bottomPadding =
-        PlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
+        AppPlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
     final modalOffset = ValueNotifier<double>(0.0);
 
     return ValueListenableBuilder<double>(
@@ -318,7 +318,7 @@ class AppModal extends StatelessWidget {
                   border: Border(
                     top: BorderSide(
                       color: theme.colors.white16,
-                      width: LineThicknessData.normal().thin,
+                      width: AppLineThicknessData.normal().thin,
                     ),
                   ),
                 ),
@@ -339,7 +339,7 @@ class AppModal extends StatelessWidget {
                                 left: AppGapSize.s16,
                                 right: AppGapSize.s16,
                                 top: AppGapSize.s16,
-                                bottom: PlatformUtils.isMobile
+                                bottom: AppPlatformUtils.isMobile
                                     ? AppGapSize.s12
                                     : AppGapSize.s16,
                               ),
@@ -457,7 +457,7 @@ class AppModal extends StatelessWidget {
                           border: Border(
                             top: BorderSide(
                               color: theme.colors.white16,
-                              width: LineThicknessData.normal().thin,
+                              width: AppLineThicknessData.normal().thin,
                             ),
                           ),
                         ),
@@ -553,7 +553,8 @@ class AppModal extends StatelessWidget {
                                     border: Border(
                                       bottom: BorderSide(
                                         color: theme.colors.white16,
-                                        width: LineThicknessData.normal().thin,
+                                        width:
+                                            AppLineThicknessData.normal().thin,
                                       ),
                                     ),
                                   ),
@@ -586,7 +587,7 @@ class AppModal extends StatelessWidget {
 
   Widget _buildBottomBarOverlay(BuildContext context, AppThemeData theme) {
     final bottomPadding =
-        PlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
+        AppPlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
 
     return Positioned(
       bottom: 0,
@@ -610,7 +611,7 @@ class AppModal extends StatelessWidget {
                 border: Border(
                   top: BorderSide(
                     color: theme.colors.white16,
-                    width: LineThicknessData.normal().thin,
+                    width: AppLineThicknessData.normal().thin,
                   ),
                 ),
               ),
@@ -618,7 +619,7 @@ class AppModal extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (bottomBar != null) bottomBar!,
-                  if (PlatformUtils.isMobile) const AppBottomSafeArea(),
+                  if (AppPlatformUtils.isMobile) const AppBottomSafeArea(),
                 ],
               ),
             ),
