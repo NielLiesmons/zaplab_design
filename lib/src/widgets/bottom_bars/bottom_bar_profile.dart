@@ -3,10 +3,11 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
 class AppBottomBarProfile extends StatelessWidget {
-  final VoidCallback? onAddLabelTap;
-  final VoidCallback? onMessageTap;
-  final VoidCallback? onVoiceTap;
-  final VoidCallback? onActions;
+  final Function(Profile) onAddLabelTap;
+  final Function(Profile) onMessageTap;
+  final Function(Profile) onVoiceTap;
+  final Function(Profile) onActions;
+  final Profile profile;
   final PartialChatMessage? draftMessage;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
@@ -18,6 +19,7 @@ class AppBottomBarProfile extends StatelessWidget {
     required this.onMessageTap,
     required this.onVoiceTap,
     required this.onActions,
+    required this.profile,
     this.draftMessage,
     required this.onResolveEvent,
     required this.onResolveProfile,
@@ -33,7 +35,7 @@ class AppBottomBarProfile extends StatelessWidget {
         children: [
           AppButton(
             inactiveGradient: theme.colors.blurple,
-            onTap: onAddLabelTap,
+            onTap: () => onAddLabelTap(profile),
             children: [
               AppIcon.s12(
                 theme.icons.characters.plus,
@@ -48,7 +50,7 @@ class AppBottomBarProfile extends StatelessWidget {
           const AppGap.s12(),
           Expanded(
             child: TapBuilder(
-              onTap: onMessageTap,
+              onTap: () => onMessageTap(profile),
               builder: (context, state, hasFocus) {
                 double scaleFactor = 1.0;
                 if (state == TapState.pressed) {
@@ -91,7 +93,7 @@ class AppBottomBarProfile extends StatelessWidget {
                                     color: theme.colors.white33),
                                 const Spacer(),
                                 TapBuilder(
-                                  onTap: onVoiceTap,
+                                  onTap: () => onVoiceTap(profile),
                                   builder: (context, state, hasFocus) {
                                     return AppIcon.s18(
                                         theme.icons.characters.voice,
@@ -110,7 +112,7 @@ class AppBottomBarProfile extends StatelessWidget {
           AppButton(
             square: true,
             inactiveColor: theme.colors.black33,
-            onTap: onActions,
+            onTap: () => onActions(profile),
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,

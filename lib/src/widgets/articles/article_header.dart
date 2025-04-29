@@ -16,9 +16,15 @@ class AppArticleHeader extends StatelessWidget {
     final theme = AppTheme.of(context);
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppContainer(
-          padding: const AppEdgeInsets.all(AppGapSize.s12),
+          padding: const AppEdgeInsets.only(
+            top: AppGapSize.s4,
+            bottom: AppGapSize.s12,
+            left: AppGapSize.s12,
+            right: AppGapSize.s12,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -53,12 +59,20 @@ class AppArticleHeader extends StatelessWidget {
         ),
         if (article.imageUrl != null) AppFullWidthImage(url: article.imageUrl!),
         AppContainer(
-          padding: const AppEdgeInsets.all(AppGapSize.s12),
+          padding: AppEdgeInsets.only(
+            top: article.imageUrl == null ? AppGapSize.none : AppGapSize.s8,
+            bottom: AppGapSize.s8,
+            left: AppGapSize.s12,
+            right: AppGapSize.s12,
+          ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppText.h2(article.title ?? ''),
               const AppGap.s4(),
-              if (article.summary != null) AppText.reg16(article.summary!)
+              if (article.summary != null)
+                AppText.regArticle(article.summary!,
+                    color: theme.colors.white66, fontSize: 14),
             ],
           ),
         ),

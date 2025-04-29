@@ -584,8 +584,13 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                               : const AppGap.s10(),
                                         // Actual content
                                         widget.child,
-                                        // if (widget.bottomBarContent != null)
-                                        //   const SizedBox(height: 70),
+                                        if (widget.bottomBarContent != null)
+                                          SizedBox(
+                                            height: AppPlatformUtils.isMobile
+                                                ? 60
+                                                : 70,
+                                          ),
+                                        const AppBottomSafeArea(),
                                       ],
                                     ),
                                   ),

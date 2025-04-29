@@ -1,5 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:async';
+import 'dart:math' as math;
 
 class AppFullWidthImage extends StatefulWidget {
   final String url;
@@ -77,7 +78,8 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
 
                   final imageSize = snapshot.data!;
                   final aspectRatio = imageSize.width / imageSize.height;
-                  final maxHeight = constraints.maxWidth * 1.618;
+                  final maxHeight =
+                      math.min(constraints.maxWidth * 1.618, 560.0);
                   final height = constraints.maxWidth / aspectRatio;
                   final useMaxHeight = height > maxHeight;
 

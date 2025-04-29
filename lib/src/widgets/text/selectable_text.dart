@@ -82,10 +82,7 @@ class _AppSelectableTextState extends State<AppSelectableText>
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final defaultStyle = theme.typography.reg14;
-    final textStyle = (widget.style ?? defaultStyle).copyWith(
-      height: defaultStyle.height,
-      leadingDistribution: defaultStyle.leadingDistribution,
-    );
+    final textStyle = widget.style ?? defaultStyle;
 
     return _selectionGestureDetectorBuilder.buildGestureDetector(
       behavior: HitTestBehavior.deferToChild,

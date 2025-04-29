@@ -1,4 +1,4 @@
-enum AsciiDocElementType {
+enum LongTextElementType {
   heading1, // = Heading
   heading2, // == Heading
   heading3, // === Heading
@@ -19,19 +19,21 @@ enum AsciiDocElementType {
   nostrProfile, // nostr:npub1... or nostr:nprofile1...
   nostrModel, // nostr:nevent1...
   emoji, // :emoji:
+  utfEmoji, // 💬
   hashtag, // Add this
   monospace, // `text`
+  blockQuote, // > Quote
 }
 
-class AsciiDocElement {
-  final AsciiDocElementType type;
+class LongTextElement {
+  final LongTextElementType type;
   final String content;
   final Map<String, String>? attributes; // For code blocks: language, etc.
   final int level; // For nested lists
   final bool? checked; // For checklists
-  final List<AsciiDocElement>? children; // Add this for nested styling
+  final List<LongTextElement>? children; // Add this for nested styling
 
-  const AsciiDocElement({
+  const LongTextElement({
     required this.type,
     required this.content,
     this.attributes,

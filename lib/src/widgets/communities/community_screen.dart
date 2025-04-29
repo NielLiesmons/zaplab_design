@@ -251,10 +251,6 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
             const AppGap.s24(),
             const AppGap.s2(),
             _buildContent(),
-            const AppGap.s16(),
-            const AppGap.s38(),
-            AppPlatformUtils.isMobile ? const AppGap.s4() : const AppGap.s16(),
-            const AppBottomSafeArea()
           ],
         ),
       ),

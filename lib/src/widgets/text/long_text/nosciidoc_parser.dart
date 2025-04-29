@@ -1,35 +1,56 @@
-import 'package:zaplab_design/src/widgets/text/asciidoc/asciidoc_element.dart';
+import 'package:zaplab_design/src/widgets/text/long_text/long_text_element.dart';
 
-class AsciiDocParser {
+class AppNosciiDocParser {
   final _listCounter = _ListCounter();
+  bool inBlockQuote = false;
+  int blockQuoteLevel = 0;
+  final blockQuoteBuffer = StringBuffer();
 
-  List<AsciiDocElement> parse(String text) {
-    final List<AsciiDocElement> elements = [];
+  List<LongTextElement> parse(String text) {
+    final List<LongTextElement> elements = [];
     final List<String> lines = text.split('\n');
     int? lastListLevel;
 
     for (int i = 0; i < lines.length; i++) {
       String line = lines[i].trim();
 
+      // Handle block quotes
+      if (line.startsWith('>')) {
+        if (!inBlockQuote) {
+          inBlockQuote = true;
+          blockQuoteLevel = 1;
+          // Count additional > for nested quotes
+          while (line.startsWith('>' * (blockQuoteLevel + 1))) {
+            blockQuoteLevel++;
+          }
+          line = line.substring(blockQuoteLevel).trim();
+        } else {
+          line = line.substring(blockQuoteLevel).trim();
+        }
+        blockQuoteBuffer.writeln(line);
+        continue;
+      } else if (inBlockQuote) {
+        // End of block quote
+        elements.add(LongTextElement(
+          type: LongTextElementType.blockQuote,
+          content: blockQuoteBuffer.toString().trim(),
+          level: blockQuoteLevel,
+          children: _parseStyledText(blockQuoteBuffer.toString().trim()),
+        ));
+        blockQuoteBuffer.clear();
+        inBlockQuote = false;
+        blockQuoteLevel = 0;
+      }
+
       // Handle empty lines by creating empty paragraphs
       if (line.isEmpty) {
-        elements.add(const AsciiDocElement(
-          type: AsciiDocElementType.paragraph,
-          content: '',
-          children: [
-            AsciiDocElement(
-              type: AsciiDocElementType.styledText,
-              content: '',
-            ),
-          ],
-        ));
         continue;
       }
 
       // Handle horizontal rules
       if (line == '---' || line == '- - -' || line == '***') {
-        elements.add(const AsciiDocElement(
-          type: AsciiDocElementType.horizontalRule,
+        elements.add(const LongTextElement(
+          type: LongTextElementType.horizontalRule,
           content: '',
         ));
         continue;
@@ -65,8 +86,8 @@ class AsciiDocParser {
             title = lines[i - 1].substring(1).trim();
           }
 
-          elements.add(AsciiDocElement(
-            type: AsciiDocElementType.image,
+          elements.add(LongTextElement(
+            type: LongTextElementType.image,
             content: path,
             attributes: {
               if (title != null) 'title': title,
@@ -86,20 +107,22 @@ class AsciiDocParser {
         if (content.startsWith('[')) {
           final bool? checked = _parseCheckboxState(content);
           if (checked != null) {
-            elements.add(AsciiDocElement(
-              type: AsciiDocElementType.checkListItem,
+            elements.add(LongTextElement(
+              type: LongTextElementType.checkListItem,
               content: content.substring(4).trim(), // Remove checkbox
               level: level - 1,
               checked: checked,
+              children: _parseStyledText(content.substring(4).trim()),
             ));
             continue;
           }
         }
 
-        elements.add(AsciiDocElement(
-          type: AsciiDocElementType.listItem,
+        elements.add(LongTextElement(
+          type: LongTextElementType.listItem,
           content: content,
           level: level - 1,
+          children: _parseStyledText(content),
         ));
       }
 
@@ -113,11 +136,13 @@ class AsciiDocParser {
         // }
         lastListLevel = level - 1;
 
-        elements.add(AsciiDocElement(
-          type: AsciiDocElementType.orderedListItem,
+        elements.add(LongTextElement(
+          type: LongTextElementType.orderedListItem,
           content: line.replaceAll(RegExp(r'^\.+\s*'), '').trim(),
           level: level - 1,
           attributes: {'number': _listCounter.nextNumber(level)},
+          children:
+              _parseStyledText(line.replaceAll(RegExp(r'^\.+\s*'), '').trim()),
         ));
         continue;
       }
@@ -126,8 +151,8 @@ class AsciiDocParser {
       else if (line.contains('::')) {
         final parts = line.split('::');
         if (parts.length == 2) {
-          elements.add(AsciiDocElement(
-            type: AsciiDocElementType.descriptionListItem,
+          elements.add(LongTextElement(
+            type: LongTextElementType.descriptionListItem,
             content: parts[0].trim(),
             attributes: {'description': parts[1].trim()},
           ));
@@ -135,28 +160,28 @@ class AsciiDocParser {
       }
 
       if (line.startsWith('=====')) {
-        elements.add(AsciiDocElement(
-          type: AsciiDocElementType.heading5,
+        elements.add(LongTextElement(
+          type: LongTextElementType.heading5,
           content: line.replaceAll('=====', '').trim(),
         ));
       } else if (line.startsWith('====')) {
-        elements.add(AsciiDocElement(
-          type: AsciiDocElementType.heading4,
+        elements.add(LongTextElement(
+          type: LongTextElementType.heading4,
           content: line.replaceAll('====', '').trim(),
         ));
       } else if (line.startsWith('===')) {
-        elements.add(AsciiDocElement(
-          type: AsciiDocElementType.heading3,
+        elements.add(LongTextElement(
+          type: LongTextElementType.heading3,
           content: line.replaceAll('===', '').trim(),
         ));
       } else if (line.startsWith('==')) {
-        elements.add(AsciiDocElement(
-          type: AsciiDocElementType.heading2,
+        elements.add(LongTextElement(
+          type: LongTextElementType.heading2,
           content: line.replaceAll('==', '').trim(),
         ));
       } else if (line.startsWith('=')) {
-        elements.add(AsciiDocElement(
-          type: AsciiDocElementType.heading1,
+        elements.add(LongTextElement(
+          type: LongTextElementType.heading1,
           content: line.replaceAll('=', '').trim(),
         ));
       }
@@ -168,8 +193,7 @@ class AsciiDocParser {
 
         // If previous line had brackets, we need to remove the paragraph that was added
         if (i > 1 && lines[i - 2].startsWith('[')) {
-          elements
-              .removeLast(); // Remove the bracket line that was added as paragraph
+          elements.removeLast();
         }
 
         while (i < lines.length && !lines[i].startsWith('----')) {
@@ -177,15 +201,51 @@ class AsciiDocParser {
           i++;
         }
 
-        elements.add(AsciiDocElement(
-          type: AsciiDocElementType.codeBlock,
+        elements.add(LongTextElement(
+          type: LongTextElementType.codeBlock,
           content: codeContent.toString().trimRight(),
           attributes: {'language': 'plain'},
         ));
+        continue;
+      }
+
+      if (line == '____') {
+        final StringBuffer quoteContent = StringBuffer();
+        i++; // Skip the opening delimiter
+
+        while (i < lines.length && !lines[i].startsWith('____')) {
+          quoteContent.writeln(lines[i]);
+          i++;
+        }
+
+        elements.add(LongTextElement(
+          type: LongTextElementType.blockQuote,
+          content: quoteContent.toString().trim(),
+          children: _parseStyledText(quoteContent.toString().trim()),
+        ));
+        continue;
+      }
+
+      if (line.startsWith('[quote')) {
+        // Skip the [quote] line
+        i++;
+        if (i < lines.length) {
+          final StringBuffer quoteContent = StringBuffer();
+          while (i < lines.length && lines[i].trim().isNotEmpty) {
+            quoteContent.writeln(lines[i]);
+            i++;
+          }
+          elements.add(LongTextElement(
+            type: LongTextElementType.blockQuote,
+            content: quoteContent.toString().trim(),
+            children: _parseStyledText(quoteContent.toString().trim()),
+          ));
+        }
+        continue;
       }
 
       // Handle admonitions
-      else if (line.startsWith('NOTE:') ||
+      if (line.startsWith('NOTE:') ||
           line.startsWith('TIP:') ||
           line.startsWith('IMPORTANT:') ||
           line.startsWith('WARNING:') ||
@@ -194,8 +254,8 @@ class AsciiDocParser {
         final String type = line.substring(0, colonIndex);
         final String admonitionContent = line.substring(colonIndex + 1).trim();
 
-        elements.add(AsciiDocElement(
-          type: AsciiDocElementType.admonition,
+        elements.add(LongTextElement(
+          type: LongTextElementType.admonition,
           content: admonitionContent,
           attributes: {'type': type.toLowerCase()},
         ));
@@ -207,8 +267,8 @@ class AsciiDocParser {
         i++;
         if (i < lines.length) {
           final String paragraphContent = lines[i].trim();
-          elements.add(AsciiDocElement(
-            type: AsciiDocElementType.paragraph,
+          elements.add(LongTextElement(
+            type: LongTextElementType.paragraph,
             content: paragraphContent,
             attributes: {'role': 'lead'},
           ));
@@ -229,12 +289,21 @@ class AsciiDocParser {
           !line.startsWith('image::')) {
         final children = _parseStyledText(line);
 
-        elements.add(AsciiDocElement(
-          type: AsciiDocElementType.paragraph,
+        elements.add(LongTextElement(
+          type: LongTextElementType.paragraph,
           content: line,
           children: children,
         ));
       }
+    }
+
+    // Handle any remaining block quote
+    if (inBlockQuote) {
+      elements.add(LongTextElement(
+        type: LongTextElementType.blockQuote,
+        content: blockQuoteBuffer.toString().trim(),
+        level: blockQuoteLevel,
+      ));
     }
 
     return elements;
@@ -270,7 +339,7 @@ class AsciiDocParser {
     return null;
   }
 
-  List<AsciiDocElement>? _parseStyledText(String text) {
+  List<LongTextElement>? _parseStyledText(String text) {
     if (!text.contains('*') &&
         !text.contains('_') &&
         !text.contains('`') &&
@@ -283,7 +352,7 @@ class AsciiDocParser {
       return null;
     }
 
-    final List<AsciiDocElement> styledElements = [];
+    final List<LongTextElement> styledElements = [];
     // Make combined patterns more specific and check them first
     final RegExp combinedPattern =
         RegExp(r'\*_(.*?)_\*'); // Only match *_text_* pattern
@@ -304,6 +373,7 @@ class AsciiDocParser {
       caseSensitive: false,
     );
     final RegExp monospacePattern = RegExp(r'`([^`]+)`');
+    final RegExp namedLinkPattern = RegExp(r'([^:]+):([^\[]+)\[\]');
     int currentPosition = 0;
 
     while (currentPosition < text.length) {
@@ -329,6 +399,8 @@ class AsciiDocParser {
       final Match? urlMatch = urlPattern.matchAsPrefix(text, currentPosition);
       final Match? monospaceMatch =
           monospacePattern.firstMatch(text.substring(currentPosition));
+      final Match? namedLinkMatch =
+          namedLinkPattern.firstMatch(text.substring(currentPosition));
 
       final List<Match?> matches = [
         combined1Match,
@@ -343,13 +415,14 @@ class AsciiDocParser {
         emojiMatch,
         hashtagMatch,
         urlMatch,
+        namedLinkMatch,
       ].where((m) => m != null).toList();
 
       if (matches.isEmpty) {
         // If no matches found, add one character and continue
         if (currentPosition < text.length) {
-          styledElements.add(AsciiDocElement(
-            type: AsciiDocElementType.styledText,
+          styledElements.add(LongTextElement(
+            type: LongTextElementType.styledText,
             content: text[currentPosition],
           ));
         }
@@ -362,8 +435,8 @@ class AsciiDocParser {
 
       // Add any text before the match
       if (firstMatch.start > currentPosition) {
-        styledElements.add(AsciiDocElement(
-          type: AsciiDocElementType.styledText,
+        styledElements.add(LongTextElement(
+          type: LongTextElementType.styledText,
           content: text.substring(currentPosition, firstMatch.start),
         ));
       }
@@ -386,50 +459,45 @@ class AsciiDocParser {
                             ? 'underline'
                             : 'line-through';
 
-        styledElements.add(AsciiDocElement(
-          type: AsciiDocElementType.styledText,
+        styledElements.add(LongTextElement(
+          type: LongTextElementType.styledText,
           content: content,
           attributes: {'style': style},
         ));
       } else if (firstMatch == emojiMatch) {
-        styledElements.add(AsciiDocElement(
-          type: AsciiDocElementType.emoji,
+        styledElements.add(LongTextElement(
+          type: LongTextElementType.emoji,
           content: firstMatch.group(1)!,
         ));
       } else if (firstMatch == hashtagMatch) {
-        styledElements.add(AsciiDocElement(
-          type: AsciiDocElementType.hashtag,
+        styledElements.add(LongTextElement(
+          type: LongTextElementType.hashtag,
           content: firstMatch.group(1)!,
         ));
       } else if (firstMatch == nostrModelMatch) {
-        styledElements.add(AsciiDocElement(
-          type: AsciiDocElementType.nostrModel,
+        styledElements.add(LongTextElement(
+          type: LongTextElementType.nostrModel,
           content: firstMatch[0]!.trim(),
         ));
-
-        // Skip any whitespace after the match before continuing
-        int nextPosition = firstMatch.end;
-        while (nextPosition < text.length && text[nextPosition] == ' ') {
-          nextPosition++;
-        }
-        currentPosition = nextPosition;
-        continue;
       } else if (firstMatch == nostrProfileMatch) {
-        styledElements.add(AsciiDocElement(
-          type: AsciiDocElementType.nostrProfile,
+        styledElements.add(LongTextElement(
+          type: LongTextElementType.nostrProfile,
           content: firstMatch[0]!,
         ));
-        currentPosition = firstMatch == nostrProfileMatch
-            ? currentPosition + firstMatch.end
-            : firstMatch.end;
       } else if (firstMatch == urlMatch) {
-        styledElements.add(AsciiDocElement(
-          type: AsciiDocElementType.link,
+        styledElements.add(LongTextElement(
+          type: LongTextElementType.link,
           content: firstMatch[0]!,
+        ));
+      } else if (firstMatch == namedLinkMatch) {
+        styledElements.add(LongTextElement(
+          type: LongTextElementType.link,
+          content: firstMatch.group(2)!,
+          attributes: {'text': firstMatch.group(1)!},
         ));
       } else if (firstMatch == monospaceMatch) {
-        styledElements.add(AsciiDocElement(
-          type: AsciiDocElementType.monospace,
+        styledElements.add(LongTextElement(
+          type: LongTextElementType.monospace,
           content: firstMatch.group(1)!,
         ));
       }
