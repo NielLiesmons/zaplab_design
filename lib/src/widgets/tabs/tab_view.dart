@@ -138,7 +138,14 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
                   }
                 },
               ),
-              widget.tabs[_selectedIndex].content,
+              Flexible(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    minHeight: 0,
+                  ),
+                  child: widget.tabs[_selectedIndex].content,
+                ),
+              ),
             ],
           ),
         ),

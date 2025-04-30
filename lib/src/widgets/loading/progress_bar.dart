@@ -14,33 +14,36 @@ class AppProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    return Stack(
-      children: [
-        // Background bar
-        AppContainer(
-          height: height,
-          decoration: BoxDecoration(
-            borderRadius: theme.radius.asBorderRadius().rad16,
-            color: theme.colors.white8,
+    return SizedBox(
+      height: height,
+      child: Stack(
+        children: [
+          // Background bar
+          AppContainer(
+            height: height,
+            decoration: BoxDecoration(
+              borderRadius: theme.radius.asBorderRadius().rad16,
+              color: theme.colors.white8,
+            ),
           ),
-        ),
-        // Progress bar
-        Align(
-          alignment: Alignment.centerLeft,
-          child: FractionallySizedBox(
+          // Progress bar
+          Align(
             alignment: Alignment.centerLeft,
-            widthFactor: progress,
-            child: AnimatedContainer(
-              duration: theme.durations.fast,
-              height: height,
-              decoration: BoxDecoration(
-                borderRadius: theme.radius.asBorderRadius().rad16,
-                gradient: theme.colors.blurple66,
+            child: FractionallySizedBox(
+              alignment: Alignment.centerLeft,
+              widthFactor: progress,
+              child: AnimatedContainer(
+                duration: theme.durations.fast,
+                height: height,
+                decoration: BoxDecoration(
+                  borderRadius: theme.radius.asBorderRadius().rad16,
+                  gradient: theme.colors.blurple66,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

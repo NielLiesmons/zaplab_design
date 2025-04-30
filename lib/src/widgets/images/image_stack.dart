@@ -25,7 +25,7 @@ class AppImageStack extends StatefulWidget {
       context: context,
       alwaysShowTopBar: true,
       topBarContent: AppContainer(
-        height: theme.sizes.s28,
+        height: theme.sizes.s32,
         padding: const AppEdgeInsets.only(
           top: AppGapSize.s8,
         ),

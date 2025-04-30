@@ -69,6 +69,11 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
       parent: _actionZoneController,
       curve: Curves.easeInOut,
     ));
+
+    // Add a post-frame callback to check initial scrollability
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkScrollability();
+    });
   }
 
   void _setupAnimations() {
@@ -92,6 +97,9 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
   void _handleScroll() {
     if (!_scrollController.hasClients || _isExpanded) return;
     final theme = AppTheme.of(context);
+
+    // Check scrollability when scroll position changes
+    _checkScrollability();
 
     if (_scrollController.position.pixels > 0.1) {
       _canOpenActionZone = false;
@@ -232,6 +240,24 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
     ));
   }
 
+  void _checkScrollability() {
+    if (!mounted || !_scrollController.hasClients) return;
+    final isScrollable = _scrollController.position.maxScrollExtent > 0;
+    if (isScrollable != _isScrollable) {
+      setState(() => _isScrollable = isScrollable);
+    }
+  }
+
+  @override
+  void didUpdateWidget(AppTabBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.tabs != widget.tabs) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _checkScrollability();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
@@ -256,55 +282,42 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                             ? _actionWidthAnimation.value + theme.sizes.s16
                             : 0,
                         0),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          final isScrollable =
-                              _scrollController.position.maxScrollExtent > 0;
-                          if (isScrollable != _isScrollable) {
-                            setState(() => _isScrollable = isScrollable);
-                          }
-                        });
-                        return SingleChildScrollView(
-                          controller: _scrollController,
-                          clipBehavior: Clip.none,
-                          physics: _isExpanded
-                              ? const NeverScrollableScrollPhysics()
-                              : const ScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          dragStartBehavior: DragStartBehavior.down,
-                          child: AppContainer(
-                            padding: const AppEdgeInsets.symmetric(
-                              horizontal: AppGapSize.s12,
-                              vertical: AppGapSize.s12,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                for (var i = 0;
-                                    i < widget.tabs.length;
-                                    i++) ...[
-                                  AppTabButton(
-                                    key: _tabKeys[i],
-                                    label: widget.tabs[i].label,
-                                    count: widget.tabs[i].count,
-                                    icon: widget.tabs[i].icon,
-                                    isSelected: i == widget.selectedIndex,
-                                    onTap: () => widget.onTabSelected(i),
-                                    onLongPress:
-                                        widget.tabs[i].settingsContent != null
-                                            ? () => widget.onTabLongPress(i)
-                                            : null,
-                                  ),
-                                  if (i < widget.tabs.length - 1)
-                                    const AppGap.s12(),
-                                ],
-                              ],
-                            ),
-                          ),
-                        );
-                      },
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      clipBehavior: Clip.none,
+                      physics: _isExpanded
+                          ? const NeverScrollableScrollPhysics()
+                          : const ScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      dragStartBehavior: DragStartBehavior.down,
+                      child: AppContainer(
+                        padding: const AppEdgeInsets.symmetric(
+                          horizontal: AppGapSize.s12,
+                          vertical: AppGapSize.s12,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            for (var i = 0; i < widget.tabs.length; i++) ...[
+                              AppTabButton(
+                                key: _tabKeys[i],
+                                label: widget.tabs[i].label,
+                                count: widget.tabs[i].count,
+                                icon: widget.tabs[i].icon,
+                                isSelected: i == widget.selectedIndex,
+                                onTap: () => widget.onTabSelected(i),
+                                onLongPress:
+                                    widget.tabs[i].settingsContent != null
+                                        ? () => widget.onTabLongPress(i)
+                                        : null,
+                              ),
+                              if (i < widget.tabs.length - 1)
+                                const AppGap.s12(),
+                            ],
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
