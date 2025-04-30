@@ -1,6 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter/gestures.dart';
 import 'dart:async';
+import 'dart:ui' as ui;
 
 class AppTabBar extends StatefulWidget {
   const AppTabBar({
@@ -35,6 +36,8 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
   bool _isExpanded = false;
   Timer? _startPositionTimer;
   bool _canOpenActionZone = true;
+  bool _isHovered = false;
+  bool _isScrollable = false;
 
   @override
   void initState() {
@@ -123,33 +126,56 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
       if (progress >= 0.99 &&
           previousScale < 0.99 &&
           !_popController.isAnimating) {
-        _triggerTransitionSequence();
+        _triggerTransitionSequence(isButtonClick: false);
       }
 
       _actionZoneController.value = 1.0;
     }
   }
 
-  Future<void> _triggerTransitionSequence() async {
+  Future<void> _triggerTransitionSequence({bool isButtonClick = false}) async {
     final width = MediaQuery.of(context).size.width;
     final theme = AppTheme.of(context);
 
-    await _popController.forward(from: 0);
-    await _popController.reverse();
+    if (isButtonClick) {
+      // Fast parallel animation for button clicks
+      setState(() => _isExpanded = true);
+      widget.onExpansionChanged?.call(true);
 
-    setState(() => _isExpanded = true);
-    widget.onExpansionChanged?.call(true);
+      _actionZoneController.duration = const Duration(milliseconds: 200);
+      _actionWidthAnimation = Tween<double>(
+        begin: theme.sizes.s72,
+        end: width,
+      ).animate(CurvedAnimation(
+        parent: _actionZoneController,
+        curve: Curves.easeInOut,
+      ));
 
-    _actionZoneController.duration = const Duration(milliseconds: 250);
-    _actionWidthAnimation = Tween<double>(
-      begin: theme.sizes.s72,
-      end: width,
-    ).animate(CurvedAnimation(
-      parent: _actionZoneController,
-      curve: Curves.easeInOut,
-    ));
+      await Future.wait([
+        _popController.forward(from: 0),
+        _actionZoneController.forward(from: 0),
+      ]);
 
-    await _actionZoneController.forward(from: 0);
+      await _popController.reverse();
+    } else {
+      // Original sequential animation for drag/swipe
+      await _popController.forward(from: 0);
+      await _popController.reverse();
+
+      setState(() => _isExpanded = true);
+      widget.onExpansionChanged?.call(true);
+
+      _actionZoneController.duration = const Duration(milliseconds: 250);
+      _actionWidthAnimation = Tween<double>(
+        begin: theme.sizes.s72,
+        end: width,
+      ).animate(CurvedAnimation(
+        parent: _actionZoneController,
+        curve: Curves.easeInOut,
+      ));
+
+      await _actionZoneController.forward(from: 0);
+    }
   }
 
   void scrollToTab(int index) {
@@ -210,90 +236,287 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const AppDivider(),
-        SizedBox(
-          width: double.infinity,
-          child: Stack(
-            children: [
-              // Tab buttons
-              AnimatedBuilder(
-                animation: _actionWidthAnimation,
-                builder: (context, child) => Transform.translate(
-                  offset: Offset(
-                      _isExpanded
-                          ? _actionWidthAnimation.value + theme.sizes.s16
-                          : 0,
-                      0),
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    clipBehavior: Clip.none,
-                    physics: _isExpanded
-                        ? const NeverScrollableScrollPhysics()
-                        : const ScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    dragStartBehavior: DragStartBehavior.down,
-                    child: AppContainer(
-                      padding: const AppEdgeInsets.symmetric(
-                        horizontal: AppGapSize.s12,
-                        vertical: AppGapSize.s12,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          for (var i = 0; i < widget.tabs.length; i++) ...[
-                            AppTabButton(
-                              key: _tabKeys[i],
-                              label: widget.tabs[i].label,
-                              count: widget.tabs[i].count,
-                              icon: widget.tabs[i].icon,
-                              isSelected: i == widget.selectedIndex,
-                              onTap: () => widget.onTabSelected(i),
-                              onLongPress:
-                                  widget.tabs[i].settingsContent != null
-                                      ? () => widget.onTabLongPress(i)
-                                      : null,
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const AppDivider(),
+          SizedBox(
+            width: double.infinity,
+            child: Stack(
+              children: [
+                // Tab buttons
+                AnimatedBuilder(
+                  animation: _actionWidthAnimation,
+                  builder: (context, child) => Transform.translate(
+                    offset: Offset(
+                        _isExpanded
+                            ? _actionWidthAnimation.value + theme.sizes.s16
+                            : 0,
+                        0),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          final isScrollable =
+                              _scrollController.position.maxScrollExtent > 0;
+                          if (isScrollable != _isScrollable) {
+                            setState(() => _isScrollable = isScrollable);
+                          }
+                        });
+                        return SingleChildScrollView(
+                          controller: _scrollController,
+                          clipBehavior: Clip.none,
+                          physics: _isExpanded
+                              ? const NeverScrollableScrollPhysics()
+                              : const ScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          dragStartBehavior: DragStartBehavior.down,
+                          child: AppContainer(
+                            padding: const AppEdgeInsets.symmetric(
+                              horizontal: AppGapSize.s12,
+                              vertical: AppGapSize.s12,
                             ),
-                            if (i < widget.tabs.length - 1) const AppGap.s12(),
-                          ],
-                        ],
-                      ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                for (var i = 0;
+                                    i < widget.tabs.length;
+                                    i++) ...[
+                                  AppTabButton(
+                                    key: _tabKeys[i],
+                                    label: widget.tabs[i].label,
+                                    count: widget.tabs[i].count,
+                                    icon: widget.tabs[i].icon,
+                                    isSelected: i == widget.selectedIndex,
+                                    onTap: () => widget.onTabSelected(i),
+                                    onLongPress:
+                                        widget.tabs[i].settingsContent != null
+                                            ? () => widget.onTabLongPress(i)
+                                            : null,
+                                  ),
+                                  if (i < widget.tabs.length - 1)
+                                    const AppGap.s12(),
+                                ],
+                              ],
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
-              ),
-              // Action zone
-              Positioned(
-                left: 0,
-                top: 0,
-                bottom: 0,
-                child: AnimatedBuilder(
-                  animation: _actionWidthAnimation,
-                  builder: (context, child) => SizedBox(
-                    width: _actionWidthAnimation.value,
-                    child: AppContainer(
-                      decoration: BoxDecoration(
-                        color: theme.colors.white16,
-                      ),
-                      child: Center(
-                        child: ScaleTransition(
-                          scale: _actionScaleAnimation,
-                          child: ScaleTransition(
-                            scale: Tween<double>(begin: 1.0, end: 1.33).animate(
-                              CurvedAnimation(
-                                parent: _popController,
-                                curve: Curves.easeOut,
-                              ),
+                // Left hover zone
+                if (!AppPlatformUtils.isMobile && _isHovered && _isScrollable)
+                  AnimatedBuilder(
+                    animation: Listenable.merge(
+                        [_actionWidthAnimation, _scrollController]),
+                    builder: (context, child) => _actionWidthAnimation.value > 2
+                        ? const SizedBox.shrink()
+                        : Positioned(
+                            left: 0,
+                            top: 0,
+                            bottom: 0,
+                            child: Stack(
+                              children: [
+                                ShaderMask(
+                                  shaderCallback: (Rect bounds) {
+                                    return ui.Gradient.linear(
+                                      Offset(0, bounds.center.dy),
+                                      Offset(theme.sizes.s64, bounds.center.dy),
+                                      [
+                                        Color(0xFFFFFFFF),
+                                        Color(0x00000000),
+                                      ],
+                                      [0.0, 1.0],
+                                    );
+                                  },
+                                  blendMode: BlendMode.dstIn,
+                                  child: AppContainer(
+                                    width: theme.sizes.s64,
+                                    decoration: BoxDecoration(
+                                      color: ModalScope.of(context)
+                                          ? theme.colors.gray66
+                                          : theme.colors.black,
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  left: 0,
+                                  right: 12,
+                                  top: 0,
+                                  bottom: 0,
+                                  child: Center(
+                                    child: ClipOval(
+                                      child: BackdropFilter(
+                                        filter: ui.ImageFilter.blur(
+                                            sigmaX: 24, sigmaY: 24),
+                                        child: AppSmallButton(
+                                          rounded: true,
+                                          square: true,
+                                          inactiveColor: theme.colors.white16,
+                                          onTap: _scrollController
+                                                      .position.pixels <=
+                                                  0
+                                              ? () =>
+                                                  _triggerTransitionSequence(
+                                                      isButtonClick: true)
+                                              : () {
+                                                  _scrollController.animateTo(
+                                                    _scrollController
+                                                            .position.pixels -
+                                                        theme.sizes.s104 * 2,
+                                                    duration: AppDurationsData
+                                                            .normal()
+                                                        .normal,
+                                                    curve: Curves.easeInOut,
+                                                  );
+                                                },
+                                          children: [
+                                            AppIcon.s12(
+                                              _scrollController
+                                                          .position.pixels <=
+                                                      0
+                                                  ? theme
+                                                      .icons.characters.expand
+                                                  : theme.icons.characters
+                                                      .chevronLeft,
+                                              outlineColor: theme.colors.white,
+                                              outlineThickness:
+                                                  AppLineThicknessData.normal()
+                                                      .medium,
+                                            ),
+                                            if (_scrollController
+                                                    .position.pixels >=
+                                                0)
+                                              const AppGap.s2(),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            child: AppIcon.s16(
-                              theme.icons.characters.expand,
-                              color: theme.colors.white66,
-                              outlineColor: theme.colors.white66,
-                              outlineThickness:
-                                  AppLineThicknessData.normal().medium,
+                          ),
+                  ),
+                // Right hover zone
+                if (!AppPlatformUtils.isMobile && _isHovered && _isScrollable)
+                  AnimatedBuilder(
+                    animation: Listenable.merge(
+                        [_actionWidthAnimation, _scrollController]),
+                    builder: (context, child) => _actionWidthAnimation.value >
+                                2 ||
+                            _scrollController.position.pixels >=
+                                _scrollController.position.maxScrollExtent
+                        ? const SizedBox.shrink()
+                        : Positioned(
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            child: Stack(
+                              children: [
+                                ShaderMask(
+                                  shaderCallback: (Rect bounds) {
+                                    return ui.Gradient.linear(
+                                      Offset(bounds.width - theme.sizes.s64,
+                                          bounds.center.dy),
+                                      Offset(bounds.width, bounds.center.dy),
+                                      [
+                                        Color(0x00000000),
+                                        Color(0xFFFFFFFF),
+                                      ],
+                                      [0.0, 1.0],
+                                    );
+                                  },
+                                  blendMode: BlendMode.dstIn,
+                                  child: AppContainer(
+                                    width: theme.sizes.s64,
+                                    decoration: BoxDecoration(
+                                      color: ModalScope.of(context)
+                                          ? theme.colors.gray66
+                                          : theme.colors.black,
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  left: 12,
+                                  right: 0,
+                                  top: 0,
+                                  bottom: 0,
+                                  child: Center(
+                                    child: ClipOval(
+                                      child: BackdropFilter(
+                                        filter: ui.ImageFilter.blur(
+                                            sigmaX: 24, sigmaY: 24),
+                                        child: AppSmallButton(
+                                          rounded: true,
+                                          square: true,
+                                          inactiveColor: theme.colors.white16,
+                                          onTap: () {
+                                            _scrollController.animateTo(
+                                              _scrollController
+                                                      .position.pixels +
+                                                  theme.sizes.s104 * 2,
+                                              duration:
+                                                  AppDurationsData.normal()
+                                                      .normal,
+                                              curve: Curves.easeInOut,
+                                            );
+                                          },
+                                          children: [
+                                            const AppGap.s2(),
+                                            AppIcon.s12(
+                                              theme.icons.characters
+                                                  .chevronRight,
+                                              outlineColor: theme.colors.white,
+                                              outlineThickness:
+                                                  AppLineThicknessData.normal()
+                                                      .medium,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                  ),
+                // Action zone
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: AnimatedBuilder(
+                    animation: _actionWidthAnimation,
+                    builder: (context, child) => SizedBox(
+                      width: _actionWidthAnimation.value,
+                      child: AppContainer(
+                        decoration: BoxDecoration(
+                          color: theme.colors.white16,
+                        ),
+                        child: Center(
+                          child: ScaleTransition(
+                            scale: _actionScaleAnimation,
+                            child: ScaleTransition(
+                              scale:
+                                  Tween<double>(begin: 1.0, end: 1.33).animate(
+                                CurvedAnimation(
+                                  parent: _popController,
+                                  curve: Curves.easeOut,
+                                ),
+                              ),
+                              child: AppIcon.s16(
+                                theme.icons.characters.expand,
+                                color: theme.colors.white66,
+                                outlineColor: theme.colors.white66,
+                                outlineThickness:
+                                    AppLineThicknessData.normal().medium,
+                              ),
                             ),
                           ),
                         ),
@@ -301,13 +524,13 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        // Grid View should go here
-        const AppDivider(),
-      ],
+          // Grid View should go here
+          const AppDivider(),
+        ],
+      ),
     );
   }
 

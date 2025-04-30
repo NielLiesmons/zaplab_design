@@ -80,7 +80,8 @@ class AppCommunityStack extends StatelessWidget {
                           children: [
                             for (int i = 0; i < _visibleCommunities.length; i++)
                               Positioned(
-                                left: i * 16.0,
+                                left:
+                                    (_visibleCommunities.length - 1 - i) * 16.0,
                                 child: AppContainer(
                                   decoration: BoxDecoration(
                                     borderRadius:

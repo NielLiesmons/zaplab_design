@@ -84,6 +84,7 @@ export 'labels/label.dart';
 export 'loading/loading_bar.dart';
 export 'loading/loading_dots.dart';
 export 'loading/loading_feed.dart';
+export 'loading/progress_bar.dart';
 
 // Notifications
 export 'notifications/notification_card.dart';

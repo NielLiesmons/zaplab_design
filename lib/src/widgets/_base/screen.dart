@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:zaplab_design/src/notifications/scroll_progress_notification.dart';
 
 class HistoryItem {
   const HistoryItem({
@@ -150,6 +151,12 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
       _showTopBarContent =
           widget.alwaysShowTopBar || _scrollController.offset > 2;
     });
+
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    if (maxScroll > 0) {
+      final progress = _scrollController.offset / maxScroll;
+      ScrollProgressNotification(progress, context).dispatch();
+    }
   }
 
   void _openMenu() {

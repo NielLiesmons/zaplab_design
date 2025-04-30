@@ -26,6 +26,7 @@ class AppMessageBubble extends StatefulWidget {
   final bool showHeader;
   final bool isLastInStack;
   final bool isOutgoing;
+  final Function(Model)? onSendAgain;
   final Function(Model) onActions;
   final Function(Model) onReply;
   final Function(Reaction)? onReactionTap;
@@ -43,6 +44,7 @@ class AppMessageBubble extends StatefulWidget {
     this.showHeader = false,
     this.isLastInStack = false,
     this.isOutgoing = false,
+    this.onSendAgain,
     required this.onActions,
     required this.onReply,
     this.onReactionTap,
@@ -254,6 +256,73 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                   : const SizedBox.shrink(),
                             ],
                             */
+                            if (widget.onSendAgain != null) ...[
+                              AppContainer(
+                                padding: const AppEdgeInsets.symmetric(
+                                  horizontal: AppGapSize.s4,
+                                  vertical: AppGapSize.s8,
+                                ),
+                                child: Row(
+                                  children: [
+                                    AppIcon.s20(
+                                      theme.icons.characters.info,
+                                      outlineColor: theme.colors.white33,
+                                      outlineThickness:
+                                          AppLineThicknessData.normal().medium,
+                                    ),
+                                    const AppGap.s8(),
+                                    AppText.reg12(
+                                      'Sending Failed',
+                                      color: theme.colors.white66,
+                                    ),
+                                    const AppGap.s4(),
+                                    Spacer(),
+                                    AppSmallButton(
+                                      onTap: () =>
+                                          widget.onSendAgain!(widget.message),
+                                      rounded: true,
+                                      inactiveColor: theme.colors.white16,
+                                      children: [
+                                        AppIcon.s12(
+                                          theme.icons.characters.send,
+                                          outlineColor: theme.colors.white66,
+                                          outlineThickness:
+                                              AppLineThicknessData.normal()
+                                                  .medium,
+                                        ),
+                                        const AppGap.s8(),
+                                        AppText.reg12(
+                                          'Send Again',
+                                          color: theme.colors.white66,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                            if (widget.onSendAgain != null)
+                              AppContainer(
+                                padding: const AppEdgeInsets.symmetric(
+                                  horizontal: AppGapSize.s4,
+                                  vertical: AppGapSize.s8,
+                                ),
+                                child: Row(
+                                  children: [
+                                    AppIcon.s20(
+                                      theme.icons.characters.send,
+                                      outlineColor: theme.colors.white66,
+                                      outlineThickness:
+                                          AppLineThicknessData.normal().medium,
+                                    ),
+                                    const AppGap.s4(),
+                                    AppText.reg14(
+                                      'Send again',
+                                      color: theme.colors.white66,
+                                    ),
+                                  ],
+                                ),
+                              ),
                           ],
                         ),
                       ),
