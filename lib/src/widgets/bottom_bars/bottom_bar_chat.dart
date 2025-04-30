@@ -34,17 +34,15 @@ class AppBottomBarChat extends StatelessWidget {
       child: Row(
         children: [
           AppButton(
-            inactiveGradient: theme.colors.blurple,
+            inactiveColor: theme.colors.white16,
+            square: true,
             onTap: () => onAddTap(model),
             children: [
               AppIcon.s12(
                 theme.icons.characters.plus,
                 outlineThickness: AppLineThicknessData.normal().thick,
-                outlineColor: theme.colors.whiteEnforced,
+                outlineColor: theme.colors.white66,
               ),
-              const AppGap.s8(),
-              AppText.med14('Add', color: theme.colors.whiteEnforced),
-              const AppGap.s4(),
             ],
           ),
           const AppGap.s12(),
