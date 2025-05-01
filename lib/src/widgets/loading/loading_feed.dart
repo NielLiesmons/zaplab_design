@@ -3,7 +3,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 enum LoadingFeedType {
   content,
   chat,
-  post,
+  thread,
 }
 
 class AppLoadingFeed extends StatefulWidget {
@@ -131,7 +131,7 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
             ],
           ),
         );
-      case LoadingFeedType.post:
+      case LoadingFeedType.thread:
         return Column(
           children: [
             for (var i = 0; i < 21; i++) ...[

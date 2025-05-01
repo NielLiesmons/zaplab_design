@@ -1,8 +1,8 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppPost extends StatelessWidget {
-  final Note post;
+class AppThread extends StatelessWidget {
+  final Note thread;
   // TODO: Implement reactions, zaps, and communities once HasMany is available
   // final List<ReplaceReaction> reactions;
   // final List<ReplaceZap> zaps;
@@ -13,9 +13,9 @@ class AppPost extends StatelessWidget {
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
 
-  const AppPost({
+  const AppThread({
     super.key,
-    required this.post,
+    required this.thread,
     // TODO: Implement reactions, zaps, and communities once HasMany is available
     // this.reactions = const [],
     // this.zaps = const [],
@@ -44,7 +44,7 @@ class AppPost extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppProfilePic.s48(post.author.value?.pictureUrl ?? ''),
+              AppProfilePic.s48(thread.author.value?.pictureUrl ?? ''),
               const AppGap.s12(),
               Expanded(
                 child: Column(
@@ -54,10 +54,10 @@ class AppPost extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        AppText.bold14(post.author.value?.name ??
-                            formatNpub(post.author.value?.pubkey ?? '')),
+                        AppText.bold14(thread.author.value?.name ??
+                            formatNpub(thread.author.value?.pubkey ?? '')),
                         AppText.reg12(
-                          TimestampFormatter.format(post.createdAt,
+                          TimestampFormatter.format(thread.createdAt,
                               format: TimestampFormat.relative),
                           color: theme.colors.white33,
                         ),
@@ -79,7 +79,7 @@ class AppPost extends StatelessWidget {
               horizontal: AppGapSize.s4,
             ),
             child: AppShortTextRenderer(
-              content: post.content,
+              content: thread.content,
               onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,
               onResolveEmoji: onResolveEmoji,

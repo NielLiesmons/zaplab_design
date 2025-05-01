@@ -1,16 +1,16 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppPostCard extends StatelessWidget {
-  final Note post;
+class AppThreadCard extends StatelessWidget {
+  final Note thread;
   final VoidCallback? onTap;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
 
-  const AppPostCard({
+  const AppThreadCard({
     super.key,
-    required this.post,
+    required this.thread,
     this.onTap,
     required this.onResolveEvent,
     required this.onResolveProfile,
@@ -35,16 +35,16 @@ class AppPostCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppProfilePic.s18(post.author.value?.pictureUrl ?? ''),
+                AppProfilePic.s18(thread.author.value?.pictureUrl ?? ''),
                 const AppGap.s8(),
                 Expanded(
                   child: AppText.bold12(
-                    post.author.value?.name ??
-                        formatNpub(post.author.value?.pubkey ?? ''),
+                    thread.author.value?.name ??
+                        formatNpub(thread.author.value?.pubkey ?? ''),
                   ),
                 ),
                 AppText.reg12(
-                  TimestampFormatter.format(post.createdAt,
+                  TimestampFormatter.format(thread.createdAt,
                       format: TimestampFormat.relative),
                   color: theme.colors.white33,
                 ),
@@ -54,7 +54,7 @@ class AppPostCard extends StatelessWidget {
           const AppGap.s6(),
           AppContainer(
             child: AppCompactTextRenderer(
-              content: post.content,
+              content: thread.content,
               onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,
               onResolveEmoji: onResolveEmoji,

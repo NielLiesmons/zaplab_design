@@ -1,8 +1,8 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppFeedPost extends StatelessWidget {
-  final Note post;
+class AppFeedThread extends StatelessWidget {
+  final Note thread;
   final Function(Model) onTap;
   final List<Reply> topReplies;
   final int totalReplies;
@@ -17,9 +17,9 @@ class AppFeedPost extends StatelessWidget {
   final LinkTapHandler onLinkTap;
   final bool isUnread;
 
-  const AppFeedPost({
+  const AppFeedThread({
     super.key,
-    required this.post,
+    required this.thread,
     required this.onTap,
     this.topReplies = const [],
     this.totalReplies = 0,
@@ -42,7 +42,7 @@ class AppFeedPost extends StatelessWidget {
     return Column(
       children: [
         AppSwipeContainer(
-          onTap: () => onTap(post),
+          onTap: () => onTap(thread),
           padding: const AppEdgeInsets.all(AppGapSize.s12),
           leftContent: AppIcon.s16(
             theme.icons.characters.reply,
@@ -54,8 +54,8 @@ class AppFeedPost extends StatelessWidget {
             outlineColor: theme.colors.white66,
             outlineThickness: AppLineThicknessData.normal().medium,
           ),
-          onSwipeLeft: () => onReply(post),
-          onSwipeRight: () => onActions(post),
+          onSwipeLeft: () => onReply(thread),
+          onSwipeRight: () => onActions(thread),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -65,7 +65,8 @@ class AppFeedPost extends StatelessWidget {
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        AppProfilePic.s38(post.author.value?.pictureUrl ?? ''),
+                        AppProfilePic.s38(
+                            thread.author.value?.pictureUrl ?? ''),
                         if (topReplies.isNotEmpty)
                           Expanded(
                             child: AppDivider.vertical(
@@ -84,10 +85,11 @@ class AppFeedPost extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              AppText.bold14(post.author.value?.name ??
-                                  formatNpub(post.author.value?.pubkey ?? '')),
+                              AppText.bold14(thread.author.value?.name ??
+                                  formatNpub(
+                                      thread.author.value?.pubkey ?? '')),
                               AppText.reg12(
-                                TimestampFormatter.format(post.createdAt,
+                                TimestampFormatter.format(thread.createdAt,
                                     format: TimestampFormat.relative),
                                 color: theme.colors.white33,
                               ),
@@ -104,7 +106,7 @@ class AppFeedPost extends StatelessWidget {
                           ),
                           const AppGap.s2(),
                           AppShortTextRenderer(
-                            content: post.content,
+                            content: thread.content,
                             onResolveEvent: onResolveEvent,
                             onResolveProfile: onResolveProfile,
                             onResolveEmoji: onResolveEmoji,

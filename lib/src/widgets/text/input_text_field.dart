@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:flutter/services.dart';
 
 class AppInputTextField extends StatefulWidget {
   final List<Widget>? placeholder;
@@ -8,6 +9,8 @@ class AppInputTextField extends StatefulWidget {
   final TextStyle? style;
   final List<AppTextSelectionMenuItem>? contextMenuItems;
   final Color? backgroundColor;
+  final bool singleLine;
+  final bool autoCapitalize;
 
   const AppInputTextField({
     super.key,
@@ -18,6 +21,8 @@ class AppInputTextField extends StatefulWidget {
     this.style,
     this.contextMenuItems,
     this.backgroundColor,
+    this.singleLine = false,
+    this.autoCapitalize = true,
   });
 
   AppInputTextField copyWith({
@@ -28,6 +33,8 @@ class AppInputTextField extends StatefulWidget {
     TextStyle? style,
     List<AppTextSelectionMenuItem>? contextMenuItems,
     Color? backgroundColor,
+    bool? singleLine,
+    bool? autoCapitalize,
   }) {
     return AppInputTextField(
       placeholder: placeholder ?? this.placeholder,
@@ -37,6 +44,8 @@ class AppInputTextField extends StatefulWidget {
       style: style ?? this.style,
       contextMenuItems: contextMenuItems ?? this.contextMenuItems,
       backgroundColor: backgroundColor ?? this.backgroundColor,
+      singleLine: singleLine ?? this.singleLine,
+      autoCapitalize: autoCapitalize ?? this.autoCapitalize,
     );
   }
 
@@ -101,6 +110,16 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
                 onChanged: widget.onChanged,
                 contextMenuItems: widget.contextMenuItems,
                 placeholder: widget.placeholder,
+                maxLines: widget.singleLine ? 1 : null,
+                minLines: widget.singleLine ? 1 : null,
+                textCapitalization: widget.autoCapitalize
+                    ? TextCapitalization.sentences
+                    : TextCapitalization.none,
+                inputFormatters: widget.singleLine
+                    ? [
+                        FilteringTextInputFormatter.singleLineFormatter,
+                      ]
+                    : null,
               ),
             ),
           ),

@@ -1,96 +1,82 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:models/models.dart';
+import 'package:tap_builder/tap_builder.dart';
+// import 'package:models/models.dart';
 
-// class AppBookCard extends StatelessWidget {
-//   final Book book;
-//   final VoidCallback? onTap;
+class AppBookCard extends StatelessWidget {
+  final Book book;
+  final VoidCallback? onTap;
 
-//   const AppBookCard({
-//     super.key,
-//     required this.book,
-//     this.onTap,
-//   });
+  const AppBookCard({
+    super.key,
+    required this.book,
+    this.onTap,
+  });
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final theme = AppTheme.of(context);
-//     // TODO: Get image URL from article model once implemented
-//     final imageUrl = null;
+  @override
+  Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
 
-//     return AppPanelButton(
-//       padding: const AppEdgeInsets.all(AppGapSize.none),
-//       onTap: onTap,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           ConstrainedBox(
-//             constraints: const BoxConstraints(
-//               maxHeight: 240,
-//             ),
-//             child: AppContainer(
-//               padding: const AppEdgeInsets.all(AppGapSize.s8),
-//               width: double.infinity,
-//               child: AspectRatio(
-//                 aspectRatio: 9 / 16,
-//                 child: AppContainer(
-//                   clipBehavior: Clip.hardEdge,
-//                   decoration: BoxDecoration(
-//                     color: theme.colors.grey33,
-//                     borderRadius: const BorderRadius.only(
-//                       topLeft: Radius.circular(14.6),
-//                       topRight: Radius.circular(14.6),
-//                     ),
-//                   ),
-//                   child: Image.network(
-//                     imageUrl,
-//                     fit: BoxFit.cover,
-//                     loadingBuilder: (context, child, loadingProgress) {
-//                       if (loadingProgress == null) return child;
-//                       return const AppSkeletonLoader();
-//                     },
-//                     errorBuilder: (context, error, stackTrace) {
-//                       print('Error loading asset: $error');
-//                       return AppContainer(
-//                         decoration: BoxDecoration(
-//                           color: theme.colors.grey33,
-//                         ),
-//                       );
-//                     },
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ),
+    return TapBuilder(
+      onTap: onTap,
+      builder: (context, state, hasFocus) {
+        double scaleFactor = 1.0;
+        if (state == TapState.pressed) {
+          scaleFactor = 0.99;
+        } else if (state == TapState.hover) {
+          scaleFactor = 1.005;
+        }
 
-//           // Model info section
-//           AppContainer(
-//             padding: const AppEdgeInsets.only(
-//               left: AppGapSize.s12,
-//               right: AppGapSize.s12,
-//               top: AppGapSize.s8,
-//               bottom: AppGapSize.s10,
-//             ),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 AppText.med14(
-//                   book.title ?? '',
-//                   color: theme.colors.white,
-//                   maxLines: 1,
-//                   textOverflow: TextOverflow.ellipsis,
-//                 ),
-//                 const AppGap.s2(),
-//                 AppText.reg12(
-//                   book.writer.value?.name ?? book.author.value?.name ?? '',
-//                   color: theme.colors.white66,
-//                   maxLines: 1,
-//                   textOverflow: TextOverflow.ellipsis,
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+        return Transform.scale(
+          scale: scaleFactor,
+          child: AppContainer(
+            width: 160,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                AppContainer(
+                  clipBehavior: Clip.hardEdge,
+                  width: 144,
+                  height: 216,
+                  decoration: BoxDecoration(
+                    color: theme.colors.gray33,
+                    borderRadius: theme.radius.asBorderRadius().rad8,
+                  ),
+                  child: Image.network(
+                    book.imageUrl ?? '',
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const AppSkeletonLoader();
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      print('Error loading asset: $error');
+                      return AppContainer(
+                        decoration: BoxDecoration(
+                          color: theme.colors.gray33,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const AppGap.s12(),
+                AppText.med14(
+                  book.title ?? '',
+                  color: theme.colors.white,
+                  maxLines: 1,
+                  textOverflow: TextOverflow.ellipsis,
+                ),
+                const AppGap.s4(),
+                AppText.reg12(
+                  book.writer ?? 'Writer not specified',
+                  color: theme.colors.white66,
+                  maxLines: 1,
+                  textOverflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

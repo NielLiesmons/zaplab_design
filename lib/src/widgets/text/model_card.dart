@@ -94,8 +94,8 @@ class AppModelCard extends StatelessWidget {
     if (model is Note) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
-        child: AppPostCard(
-          post: model as Note,
+        child: AppThreadCard(
+          thread: model as Note,
           onTap: onTap,
           onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),

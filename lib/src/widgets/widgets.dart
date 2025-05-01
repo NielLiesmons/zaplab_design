@@ -93,10 +93,10 @@ export 'notifications/notification_card.dart';
 export 'onboarding/welcome_modal.dart';
 export 'onboarding/slot_machine_modal.dart';
 
-// Posts
-export 'posts/feed_post.dart';
-export 'posts/post.dart';
-export 'posts/post_card.dart';
+// Threads
+export 'threads/feed_thread.dart';
+export 'threads/thread.dart';
+export 'threads/thread_card.dart';
 
 // Profiles
 export 'profiles/add_profile_modal.dart';

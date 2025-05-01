@@ -12,6 +12,10 @@ class AppEditableInputText extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final List<AppTextSelectionMenuItem>? contextMenuItems;
   final List<Widget>? placeholder;
+  final int? maxLines;
+  final int? minLines;
+  final TextCapitalization textCapitalization;
+  final List<TextInputFormatter>? inputFormatters;
 
   const AppEditableInputText({
     super.key,
@@ -22,6 +26,10 @@ class AppEditableInputText extends StatefulWidget {
     this.onChanged,
     this.contextMenuItems,
     this.placeholder,
+    this.maxLines,
+    this.minLines,
+    this.textCapitalization = TextCapitalization.none,
+    this.inputFormatters,
   });
 
   @override
@@ -181,8 +189,8 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
                       editableTextKey.currentState?.hideToolbar();
                     }
                   },
-                  maxLines: null,
-                  minLines: 1,
+                  maxLines: widget.maxLines,
+                  minLines: widget.minLines,
                   textAlign: TextAlign.left,
                   selectionControls: AppTextSelectionControls(),
                   enableInteractiveSelection: true,
@@ -191,6 +199,8 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
                   rendererIgnoresPointer: false,
                   enableSuggestions: true,
                   readOnly: false,
+                  textCapitalization: widget.textCapitalization,
+                  inputFormatters: widget.inputFormatters,
                   selectionColor:
                       theme.colors.blurpleLightColor.withValues(alpha: 0.33),
                   contextMenuBuilder: widget.contextMenuItems == null

@@ -60,6 +60,7 @@ class _AppAddProfileModalState extends State<AppAddProfileModal> {
               AppInputTextField(
                 controller: _controller,
                 focusNode: _focusNode,
+                singleLine: true,
                 placeholder: [
                   AppText.reg16(
                     'Profile Name',
