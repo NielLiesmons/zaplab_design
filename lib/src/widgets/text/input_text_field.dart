@@ -80,18 +80,18 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ShaderMask(
-            shaderCallback: (bounds) => LinearGradient(
+            shaderCallback: (bounds) => const LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                const Color(0x00FFFFFF),
-                const Color(0x99FFFFFF),
-                const Color(0xFFFFFFFF),
-                const Color(0xFFFFFFFF),
-                const Color(0x99FFFFFF),
-                const Color(0x00FFFFFF),
+                Color(0x00FFFFFF),
+                Color(0x99FFFFFF),
+                Color(0xFFFFFFFF),
+                Color(0xFFFFFFFF),
+                Color(0x99FFFFFF),
+                Color(0x00FFFFFF),
               ],
-              stops: const [0.00, 0.03, 0.06, 0.94, 0.97, 1.00],
+              stops: [0.00, 0.03, 0.06, 0.94, 0.97, 1.00],
             ).createShader(bounds),
             child: AppContainer(
               clipBehavior: Clip.hardEdge,

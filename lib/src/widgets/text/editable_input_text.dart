@@ -65,6 +65,7 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
     _gestureDetectorBuilder = custom.TextSelectionGestureDetectorBuilder(
       delegate: this,
     );
+    _hasSelection = !_controller.selection.isCollapsed;
     _controller.addListener(_handleTextChanged);
     if (widget.controller != null) {
       widget.controller!.addListener(_handleExternalControllerChange);
@@ -83,6 +84,7 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
   void _handleExternalControllerChange() {
     if (_controller.text != widget.controller!.text) {
       _controller.text = widget.controller!.text;
+      _hasSelection = !_controller.selection.isCollapsed;
     }
   }
 
@@ -182,7 +184,10 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
                   onChanged: widget.onChanged,
                   onSelectionChanged: (selection, cause) {
                     isEditingInputText = !selection.isCollapsed;
-                    _hasSelection = !selection.isCollapsed;
+                    _hasSelection = !selection.isCollapsed &&
+                        selection.baseOffset != selection.extentOffset;
+                    print(
+                        'Selection changed: isCollapsed=${selection.isCollapsed}, base=${selection.baseOffset}, extent=${selection.extentOffset}, _hasSelection=$_hasSelection');
                     if (!selection.isCollapsed && isEditingInputText) {
                       editableTextKey.currentState?.showToolbar();
                     } else {

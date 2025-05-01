@@ -1,31 +1,32 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
+import 'dart:ui';
 
-class AppCommunityHomePanel extends StatelessWidget {
-  final Community community;
+class AppGroupHomePanel extends StatelessWidget {
+  final Group group;
   final Model? lastModel;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final Map<String, int> contentCounts;
   final int? mainCount;
-  final Function(Community) onNavigateToCommunity;
-  final Function(Community, String contentType)? onNavigateToContent;
-  final Function(Community)? onNavigateToNotifications;
-  final Function(Community)? onCreateNewPublication;
-  final Function(Community)? onActions;
+  final Function(Group) onNavigateToGroup;
+  final Function(Group, String contentType)? onNavigateToContent;
+  final Function(Group)? onNavigateToNotifications;
+  final Function(Group)? onCreateNewPublication;
+  final Function(Group)? onActions;
 
-  const AppCommunityHomePanel({
+  const AppGroupHomePanel({
     super.key,
-    required this.community,
+    required this.group,
     this.lastModel,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     this.contentCounts = const {},
     this.mainCount,
-    required this.onNavigateToCommunity,
+    required this.onNavigateToGroup,
     this.onNavigateToContent,
     this.onNavigateToNotifications,
     this.onCreateNewPublication,
@@ -45,7 +46,7 @@ class AppCommunityHomePanel extends StatelessWidget {
     final (displayCount, containerWidth) = _getCountDisplay(mainCount!);
 
     return TapBuilder(
-      onTap: () => onNavigateToCommunity(community),
+      onTap: () => onNavigateToGroup(group),
       builder: (context, state, hasFocus) {
         return Column(children: [
           AppSwipeContainer(
@@ -59,8 +60,8 @@ class AppCommunityHomePanel extends StatelessWidget {
               outlineColor: theme.colors.white66,
               outlineThickness: AppLineThicknessData.normal().medium,
             ),
-            onSwipeLeft: () => onCreateNewPublication!(community),
-            onSwipeRight: () => onActions!(community),
+            onSwipeLeft: () => onCreateNewPublication!(group),
+            onSwipeRight: () => onActions!(group),
             padding: const AppEdgeInsets.symmetric(
               horizontal: AppGapSize.s12,
               vertical: AppGapSize.s12,
@@ -70,9 +71,37 @@ class AppCommunityHomePanel extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    AppProfilePic.s48(
-                      community.author.value?.pictureUrl ?? '',
-                      onTap: () => onNavigateToCommunity(community),
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        AppProfilePic.s48(
+                          group.author.value?.pictureUrl ?? '',
+                          onTap: () => onNavigateToGroup(group),
+                        ),
+                        Positioned(
+                          right: -4,
+                          bottom: -4,
+                          child: ClipOval(
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                              child: AppContainer(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  gradient: theme.colors.gold16,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Center(
+                                  child: AppIcon.s12(
+                                    theme.icons.characters.star,
+                                    gradient: theme.colors.gold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     Expanded(
                       child: Column(
@@ -86,10 +115,9 @@ class AppCommunityHomePanel extends StatelessWidget {
                                 const AppGap.s12(),
                                 Expanded(
                                   child: AppText.bold14(
-                                    community.author.value?.name ??
+                                    group.author.value?.name ??
                                         formatNpub(
-                                            community.author.value?.pubkey ??
-                                                ''),
+                                            group.author.value?.pubkey ?? ''),
                                     color: theme.colors.white,
                                   ),
                                 ),
@@ -228,7 +256,7 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                                   TapBuilder(
                                                                 onTap: () =>
                                                                     onNavigateToContent?.call(
-                                                                        community,
+                                                                        group,
                                                                         entry
                                                                             .key),
                                                                 builder: (context,
@@ -311,8 +339,7 @@ class AppCommunityHomePanel extends StatelessWidget {
                                   child: (mainCount ?? 0) > 0
                                       ? TapBuilder(
                                           onTap: () =>
-                                              onNavigateToNotifications!(
-                                                  community),
+                                              onNavigateToNotifications!(group),
                                           builder: (context, state, hasFocus) {
                                             return AppContainer(
                                               height: 26,

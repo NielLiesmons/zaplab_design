@@ -86,6 +86,9 @@ export 'loading/loading_dots.dart';
 export 'loading/loading_feed.dart';
 export 'loading/progress_bar.dart';
 
+// Groups
+export 'groups/group_home_panel.dart';
+
 // Notifications
 export 'notifications/notification_card.dart';
 
@@ -146,6 +149,7 @@ export 'text/editable_input_text.dart';
 export 'text/input_modal.dart';
 export 'text/input_text_field.dart';
 export 'text/model_card.dart';
+export 'text/search_field.dart';
 export 'text/section_title.dart';
 
 export 'text/text.dart';

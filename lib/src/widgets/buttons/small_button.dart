@@ -16,6 +16,7 @@ class AppSmallButton extends StatelessWidget {
     this.pressedColor,
     this.square = false,
     this.rounded = false,
+    this.padding,
   });
 
   final List<Widget> children;
@@ -30,6 +31,7 @@ class AppSmallButton extends StatelessWidget {
   final Color? pressedColor;
   final bool square;
   final bool rounded;
+  final AppEdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +84,7 @@ class AppSmallButton extends StatelessWidget {
                   : state == TapState.pressed
                       ? effectivePressedColor
                       : effectiveInactiveColor,
+              padding: padding,
             ),
           ),
         );
@@ -99,6 +102,7 @@ class AppSmallButtonLayout extends StatelessWidget {
     this.onChevronTap,
     this.square = false,
     this.rounded = false,
+    this.padding,
   });
 
   final List<Widget> content;
@@ -107,6 +111,7 @@ class AppSmallButtonLayout extends StatelessWidget {
   final VoidCallback? onChevronTap;
   final bool square;
   final bool rounded;
+  final AppEdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -125,15 +130,18 @@ class AppSmallButtonLayout extends StatelessWidget {
       width: square ? buttonHeight : null,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           AppContainer(
-            padding: square
-                ? null
-                : const AppEdgeInsets.symmetric(
-                    horizontal: AppGapSize.s12,
-                  ),
+            padding: padding ??
+                (square
+                    ? null
+                    : const AppEdgeInsets.symmetric(
+                        horizontal: AppGapSize.s12,
+                      )),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: content,
             ),
           ),

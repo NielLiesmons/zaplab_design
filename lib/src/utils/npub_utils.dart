@@ -5,7 +5,6 @@ import 'package:hex/hex.dart';
 String profileToColor(Profile profile) {
   final hex = profile.pubkey;
   final color = '#${hex.substring(0, 6)}';
-  print('NPub: $profile -> Hex: $hex -> Color: $color'); // Debug print
   return color;
 }
 

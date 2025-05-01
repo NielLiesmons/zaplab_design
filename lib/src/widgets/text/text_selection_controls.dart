@@ -33,7 +33,9 @@ class AppTextSelectionControls extends TextSelectionControls {
               width: _lineThickness,
               height: textLineHeight,
               decoration: BoxDecoration(
-                color: theme.colors.blurpleLightColor,
+                color: type == TextSelectionHandleType.collapsed
+                    ? null
+                    : theme.colors.blurpleLightColor,
                 borderRadius: BorderRadius.circular(10000),
               ),
             ),
