@@ -1,12 +1,12 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppWelcomeModal extends StatefulWidget {
+class AppStartModal extends StatefulWidget {
   final String logoImageUrl;
   final String title;
   final void Function(String profileName) onStart;
   final VoidCallback onAlreadyHaveKey;
 
-  const AppWelcomeModal({
+  const AppStartModal({
     super.key,
     required this.logoImageUrl,
     required this.title,
@@ -15,10 +15,10 @@ class AppWelcomeModal extends StatefulWidget {
   });
 
   @override
-  State<AppWelcomeModal> createState() => _AppWelcomeModalState();
+  State<AppStartModal> createState() => _AppStartModalState();
 }
 
-class _AppWelcomeModalState extends State<AppWelcomeModal> {
+class _AppStartModalState extends State<AppStartModal> {
   late TextEditingController _controller;
   late FocusNode _focusNode;
 

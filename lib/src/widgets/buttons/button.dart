@@ -4,7 +4,8 @@ import 'package:zaplab_design/zaplab_design.dart';
 class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
-    required this.children,
+    this.children,
+    this.text,
     this.onTap,
     this.onLongPress,
     this.inactiveGradient,
@@ -14,9 +15,11 @@ class AppButton extends StatelessWidget {
     this.hoveredColor,
     this.pressedColor,
     this.square = false,
-  });
+  }) : assert(children != null || text != null,
+            'Either children or text must be provided');
 
-  final List<Widget> children;
+  final List<Widget>? children;
+  final String? text;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
   final Gradient? inactiveGradient;
@@ -64,7 +67,13 @@ class AppButton extends StatelessWidget {
             enabled: true,
             selected: true,
             child: AppButtonLayout(
-              content: children,
+              content: children ??
+                  [
+                    AppText.med14(
+                      text!,
+                      color: theme.colors.whiteEnforced,
+                    ),
+                  ],
               square: square,
               gradient: state == TapState.hover
                   ? effectiveHoveredGradient
@@ -114,7 +123,7 @@ class AppButtonLayout extends StatelessWidget {
       padding: square
           ? null
           : const AppEdgeInsets.symmetric(
-              horizontal: AppGapSize.s12,
+              horizontal: AppGapSize.s16,
             ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

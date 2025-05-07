@@ -4,7 +4,7 @@ import 'package:tap_builder/tap_builder.dart';
 
 class AppFeedArticle extends StatelessWidget {
   final Article article;
-  final List<Reply> topReplies;
+  final List<Comment> topReplies;
   final int totalReplies;
   final Function(Model) onTap;
   final bool isUnread;

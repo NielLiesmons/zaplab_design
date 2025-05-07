@@ -4,7 +4,7 @@ import 'package:models/models.dart';
 class AppFeedThread extends StatelessWidget {
   final Note thread;
   final Function(Model) onTap;
-  final List<Reply> topReplies;
+  final List<Comment> topReplies;
   final int totalReplies;
   final Function(Model) onActions;
   final Function(Model) onReply;

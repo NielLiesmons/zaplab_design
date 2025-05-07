@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppSlotMachineModal extends StatelessWidget {
+class AppSpinUpKeyAgainModal extends StatelessWidget {
   final String profileName;
   final String? initialNsec;
   final VoidCallback? onSecretKeyTap;
 
-  const AppSlotMachineModal({
+  const AppSpinUpKeyAgainModal({
     super.key,
     required this.profileName,
     this.initialNsec,
@@ -54,9 +54,25 @@ class AppSlotMachineModal extends StatelessWidget {
                   ],
                 ),
               ),
-              const AppGap.s32(),
+              const AppGap.s24(),
               AppSlotMachine(initialNsec: initialNsec),
               const AppGap.s16(),
+              AppContainer(
+                width: 344,
+                child: Column(
+                  children: [
+                    AppPanel(
+                      child: Row(
+                        children: [
+                          AppProfilePic.s48("profilePicUrl"),
+                          const AppGap.s8(),
+                          AppText.h1("Hey $profileName!"),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

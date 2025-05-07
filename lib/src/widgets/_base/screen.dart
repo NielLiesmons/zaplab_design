@@ -516,6 +516,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                   Transform.translate(
                     offset: Offset(0, _currentDrag),
                     child: AppContainer(
+                      width: double.infinity,
                       clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
                         color: theme.colors.black,

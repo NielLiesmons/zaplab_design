@@ -36,16 +36,16 @@ typedef NostrProfileSearch = Future<List<Profile>> Function(String query);
 typedef NostrEmojiResolver = Future<String> Function(String identifier);
 typedef NostrEmojiSearch = Future<List<Emoji>> Function(String query);
 
-// Reply
-class Reply extends RegularModel<Reply> {
-  Reply.fromMap(super.map, super.ref) : super.fromMap();
-}
+// // Reply
+// class Reply extends RegularModel<Reply> {
+//   Reply.fromMap(super.map, super.ref) : super.fromMap();
+// }
 
-class PartialReply extends RegularPartialModel<Reply> {
-  PartialReply(String content) {
-    event.content = content;
-  }
-}
+// class PartialReply extends RegularPartialModel<Reply> {
+//   PartialReply(String content) {
+//     event.content = content;
+//   }
+// }
 
 // Hashtag
 typedef NostrHashtagResolver = Future<void Function()?> Function(

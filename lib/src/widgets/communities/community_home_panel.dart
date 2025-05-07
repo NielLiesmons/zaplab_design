@@ -15,7 +15,7 @@ class AppCommunityHomePanel extends StatelessWidget {
   final Function(Community)? onNavigateToNotifications;
   final Function(Community)? onCreateNewPublication;
   final Function(Community)? onActions;
-
+  final bool isPinned;
   const AppCommunityHomePanel({
     super.key,
     required this.community,
@@ -30,6 +30,7 @@ class AppCommunityHomePanel extends StatelessWidget {
     this.onNavigateToNotifications,
     this.onCreateNewPublication,
     this.onActions,
+    this.isPinned = false,
   });
 
   (String, double) _getCountDisplay(int count) {
@@ -102,6 +103,14 @@ class AppCommunityHomePanel extends StatelessWidget {
                                       : ' ',
                                   color: theme.colors.white33,
                                 ),
+                                const AppGap.s8(),
+                                if (isPinned)
+                                  AppIcon.s12(
+                                    theme.icons.characters.pin,
+                                    outlineColor: theme.colors.white33,
+                                    outlineThickness:
+                                        AppLineThicknessData.normal().medium,
+                                  ),
                               ],
                             ),
                           ),

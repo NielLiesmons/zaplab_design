@@ -1,17 +1,41 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:math';
-import 'package:zaplab_design/src/utils/emoji_list.dart';
 
 class AppSlotMachine extends StatefulWidget {
   final String? initialNsec; // Optional initial nsec to display
+  final bool showSelector; // Controls visibility of the mode selector
+  final void Function(String secretKey, String mode)? onSpinComplete;
 
   const AppSlotMachine({
     super.key,
     this.initialNsec,
+    this.showSelector = true, // Default to true to maintain existing behavior
+    this.onSpinComplete,
   });
 
   @override
   State<AppSlotMachine> createState() => _AppSlotMachineState();
+}
+
+class SlotSpinCurve extends Curve {
+  @override
+  double transform(double t) {
+    // First 60%: Fast spinning
+    if (t < 0.6) {
+      return t * 1.4; // Accelerated speed
+    }
+    // Next 30%: Heavy deceleration
+    else if (t < 0.9) {
+      final slowT = (t - 0.6) / 0.3;
+      return 0.84 + (0.14 * (1 - pow(1 - slowT, 3)));
+    }
+    // Final 10%: Overshoot and settle
+    else {
+      final settleT = (t - 0.9) / 0.1;
+      // Create overshoot that settles back
+      return 0.98 + (sin(settleT * pi) * 0.04);
+    }
+  }
 }
 
 class SlotMachineCurve extends Curve {
@@ -236,6 +260,12 @@ class _AppSlotMachineState extends State<AppSlotMachine>
             // Update the disk indices to start with the current emoji for next spin
             _diskIndices[i] = [emojis.indexOf(_currentEmojis[i])];
           });
+
+          // Check if this was the last disk to finish spinning
+          if (i == _controllers.length - 1) {
+            // All disks have finished spinning
+            widget.onSpinComplete?.call(targetNsec, _currentMode);
+          }
         });
       });
     }
@@ -782,88 +812,68 @@ class _AppSlotMachineState extends State<AppSlotMachine>
             _buildHandle(theme, totalHeight),
           ],
         ),
-        const AppGap.s32(),
-        AppContainer(
-          width: 344,
-          child: AppSelector(
-            children: [
-              AppSelectorButton(
-                selectedContent: const [
-                  AppText.reg14("Emoji"),
-                ],
-                unselectedContent: [
-                  AppText.reg14("Emoji", color: theme.colors.white66),
-                ],
-                isSelected: _currentMode == 'Emoji',
-              ),
-              AppSelectorButton(
-                selectedContent: const [
-                  AppText.reg14("Words"),
-                ],
-                unselectedContent: [
-                  AppText.reg14("Words", color: theme.colors.white66),
-                ],
-                isSelected: _currentMode == 'Words',
-              ),
-              AppSelectorButton(
-                selectedContent: const [
-                  AppText.reg14("Nsec"),
-                ],
-                unselectedContent: [
-                  AppText.reg14("Nsec", color: theme.colors.white66),
-                ],
-                isSelected: _currentMode == 'Nsec',
-              ),
-            ],
-            onChanged: (index) {
-              setState(() {
-                switch (index) {
-                  case 0:
-                    _currentMode = 'Emoji';
-                    break;
-                  case 1:
-                    _currentMode = 'Words';
-                    // If we have a nsec but no mnemonic, generate the mnemonic
-                    if (targetNsec.isNotEmpty && targetMnemonic.isEmpty) {
-                      targetMnemonic =
-                          AppKeyGenerator.nsecToMnemonic(targetNsec) ?? '';
-                    }
-                    break;
-                  case 2:
-                    _currentMode = 'Nsec';
-                    break;
-                }
-                // Only reset current emojis if we don't have a valid nsec
-                if (targetNsec.isEmpty) {
-                  _currentEmojis.fillRange(0, _currentEmojis.length, '-');
-                }
-              });
-            },
+        if (widget.showSelector) ...[
+          const AppGap.s32(),
+          AppContainer(
+            width: 344,
+            child: AppSelector(
+              children: [
+                AppSelectorButton(
+                  selectedContent: const [
+                    AppText.reg14("Emoji"),
+                  ],
+                  unselectedContent: [
+                    AppText.reg14("Emoji", color: theme.colors.white66),
+                  ],
+                  isSelected: _currentMode == 'Emoji',
+                ),
+                AppSelectorButton(
+                  selectedContent: const [
+                    AppText.reg14("Words"),
+                  ],
+                  unselectedContent: [
+                    AppText.reg14("Words", color: theme.colors.white66),
+                  ],
+                  isSelected: _currentMode == 'Words',
+                ),
+                AppSelectorButton(
+                  selectedContent: const [
+                    AppText.reg14("Nsec"),
+                  ],
+                  unselectedContent: [
+                    AppText.reg14("Nsec", color: theme.colors.white66),
+                  ],
+                  isSelected: _currentMode == 'Nsec',
+                ),
+              ],
+              onChanged: (index) {
+                setState(() {
+                  switch (index) {
+                    case 0:
+                      _currentMode = 'Emoji';
+                      break;
+                    case 1:
+                      _currentMode = 'Words';
+                      // If we have a nsec but no mnemonic, generate the mnemonic
+                      if (targetNsec.isNotEmpty && targetMnemonic.isEmpty) {
+                        targetMnemonic =
+                            AppKeyGenerator.nsecToMnemonic(targetNsec) ?? '';
+                      }
+                      break;
+                    case 2:
+                      _currentMode = 'Nsec';
+                      break;
+                  }
+                  // Only reset current emojis if we don't have a valid nsec
+                  if (targetNsec.isEmpty) {
+                    _currentEmojis.fillRange(0, _currentEmojis.length, '-');
+                  }
+                });
+              },
+            ),
           ),
-        ),
+        ],
       ],
     );
-  }
-}
-
-// New spin curve for the precise control we need
-class SlotSpinCurve extends Curve {
-  @override
-  double transform(double t) {
-    // First 60%: Fast spinning
-    if (t < 0.6) {
-      return t * 1.4; // Accelerated speed
-    }
-    // Next 30%: Heavy deceleration
-    else if (t < 0.9) {
-      final slowT = (t - 0.6) / 0.3;
-      return 0.84 + (0.14 * (1 - pow(1 - slowT, 3)));
-    }
-    // Final 10%: Overshoot and settle
-    else {
-      final settleT = (t - 0.9) / 0.1;
-      // Create overshoot that settles back
-      return 0.98 + (sin(settleT * pi) * 0.04);
-    }
   }
 }

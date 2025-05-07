@@ -93,14 +93,10 @@ export 'groups/group_home_panel.dart';
 export 'notifications/notification_card.dart';
 
 // Onboarding
-export 'onboarding/welcome_modal.dart';
-export 'onboarding/slot_machine_modal.dart';
-
-// Threads
-export 'threads/feed_thread.dart';
-export 'threads/thread.dart';
-export 'threads/thread_card.dart';
-
+export 'onboarding/start_modal.dart';
+export 'onboarding/spin_up_key_modal.dart';
+export 'onboarding/spin_up_key_again_modal.dart';
+export 'onboarding/your_key_modal.dart';
 // Profiles
 export 'profiles/add_profile_modal.dart';
 export 'profiles/current_profile_card.dart';
@@ -128,8 +124,14 @@ export 'selector/selector_button.dart';
 export 'settings/settings_screen.dart';
 export 'settings/setting_section.dart';
 
-// Text
+// Tabs
+export 'tabs/tab_bar.dart';
+export 'tabs/tab_button.dart';
+export 'tabs/tab_controller.dart';
+export 'tabs/tab_grid.dart';
+export 'tabs/tab_view.dart';
 
+// Text
 export 'text/long_text/long_text_element.dart';
 export 'text/long_text/long_text_renderer.dart';
 export 'text/long_text/ndown_parser.dart';
@@ -159,12 +161,10 @@ export 'text/selectable_text.dart';
 export 'text/text_selection_controls.dart';
 export 'text/text_selection_menu.dart';
 
-// Tabs
-export 'tabs/tab_bar.dart';
-export 'tabs/tab_button.dart';
-export 'tabs/tab_controller.dart';
-export 'tabs/tab_grid.dart';
-export 'tabs/tab_view.dart';
+// Threads
+export 'threads/feed_thread.dart';
+export 'threads/thread.dart';
+export 'threads/thread_card.dart';
 
 // Toasts
 export 'toasts/toast.dart';
@@ -177,7 +177,6 @@ export 'transitions/slide_in_screen.dart';
 export 'transitions/slide_in_modal.dart';
 
 // Zaps
-
 export 'zaps/supporters_stage.dart';
 export 'zaps/zap_amount_modal.dart';
 export 'zaps/zap_card.dart';

@@ -40,6 +40,7 @@ class _AppSearchFieldState extends State<AppSearchField> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+    final isInsideModal = ModalScope.of(context);
 
     final defaultTextStyle = theme.typography.reg16.copyWith(
       color: theme.colors.white,
@@ -52,7 +53,8 @@ class _AppSearchFieldState extends State<AppSearchField> {
 
     return AppContainer(
       decoration: BoxDecoration(
-        color: widget.backgroundColor ?? theme.colors.black33,
+        color: widget.backgroundColor ??
+            (isInsideModal ? theme.colors.black33 : theme.colors.gray33),
         borderRadius: theme.radius.asBorderRadius().rad16,
         border: Border.all(
           color: theme.colors.white33,
