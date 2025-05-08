@@ -2,7 +2,25 @@ import 'dart:ui';
 
 import 'package:zaplab_design/zaplab_design.dart';
 
-final _needsCompactMode = ValueNotifier<bool>(false);
+class ModalScope extends InheritedWidget {
+  const ModalScope({
+    super.key,
+    required super.child,
+    required this.isInsideModal,
+  });
+
+  final bool isInsideModal;
+
+  static bool of(BuildContext context) {
+    final scope = context.dependOnInheritedWidgetOfExactType<ModalScope>();
+    return scope?.isInsideModal ?? false;
+  }
+
+  @override
+  bool updateShouldNotify(ModalScope oldWidget) {
+    return oldWidget.isInsideModal != isInsideModal;
+  }
+}
 
 class AppModal extends StatelessWidget {
   final Widget? topBar;
@@ -15,8 +33,9 @@ class AppModal extends StatelessWidget {
   final Color? barrierColor;
   final bool handleNavigation;
   final double initialChildSize;
+  final ValueNotifier<bool> _needsCompactMode = ValueNotifier<bool>(false);
 
-  const AppModal({
+  AppModal({
     super.key,
     this.topBar,
     this.bottomBar,
@@ -257,13 +276,25 @@ class AppModal extends StatelessWidget {
         measuringWidget,
         Builder(
           builder: (context) {
+            print('Modal Debug: Starting measurement setup');
             WidgetsBinding.instance.addPostFrameCallback((_) {
+              print('Modal Debug: Post frame callback triggered');
               final RenderBox? box =
                   contentKey.currentContext?.findRenderObject() as RenderBox?;
               if (box != null) {
                 final contentHeight = box.size.height;
                 final maxAllowedHeight = screenHeight * 0.8;
+                print('Modal Debug:');
+                print('- Screen height: $screenHeight');
+                print('- Content height: $contentHeight');
+                print('- Max allowed height: $maxAllowedHeight');
+                print(
+                    '- Needs compact mode: ${contentHeight > maxAllowedHeight}');
+                print(
+                    '- Current compact mode value: ${_needsCompactMode.value}');
                 _needsCompactMode.value = contentHeight > maxAllowedHeight;
+              } else {
+                print('Modal Debug: Could not find render box for measurement');
               }
             });
             return modalContent;
@@ -304,6 +335,7 @@ class AppModal extends StatelessWidget {
                 }
               },
               child: AppContainer(
+                width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.vertical(
                     top: const AppRadiusData.normal().rad32,
@@ -329,6 +361,7 @@ class AppModal extends StatelessWidget {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                     child: AppContainer(
+                      width: double.infinity,
                       decoration: BoxDecoration(color: theme.colors.gray66),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -443,6 +476,7 @@ class AppModal extends StatelessWidget {
                     maxChildSize: 1.0,
                     builder: (context, scrollController) {
                       return AppContainer(
+                        width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.vertical(
                             top: const AppRadiusData.normal().rad32,
@@ -468,6 +502,7 @@ class AppModal extends StatelessWidget {
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                             child: AppContainer(
+                              width: double.infinity,
                               decoration:
                                   BoxDecoration(color: theme.colors.gray66),
                               child: ListView(
@@ -627,25 +662,5 @@ class AppModal extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class ModalScope extends InheritedWidget {
-  const ModalScope({
-    super.key,
-    required super.child,
-    required this.isInsideModal,
-  });
-
-  final bool isInsideModal;
-
-  static bool of(BuildContext context) {
-    final scope = context.dependOnInheritedWidgetOfExactType<ModalScope>();
-    return scope?.isInsideModal ?? false;
-  }
-
-  @override
-  bool updateShouldNotify(ModalScope oldWidget) {
-    return oldWidget.isInsideModal != isInsideModal;
   }
 }
