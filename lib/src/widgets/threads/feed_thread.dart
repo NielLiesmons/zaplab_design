@@ -65,8 +65,7 @@ class AppFeedThread extends StatelessWidget {
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        AppProfilePic.s38(
-                            thread.author.value?.pictureUrl ?? ''),
+                        AppProfilePic.s38(thread.author.value),
                         if (topReplies.isNotEmpty)
                           Expanded(
                             child: AppDivider.vertical(
@@ -128,21 +127,16 @@ class AppFeedThread extends StatelessWidget {
                       height: 38,
                       child: Column(
                         children: [
-                          AppProfilePic.s20(
-                              topReplies[0].author.value?.pictureUrl ?? ''),
+                          AppProfilePic.s20(topReplies[0].author.value),
                           const AppGap.s2(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               if (topReplies.length > 1)
-                                AppProfilePic.s16(
-                                    topReplies[1].author.value?.pictureUrl ??
-                                        ''),
+                                AppProfilePic.s16(topReplies[1].author.value),
                               const Spacer(),
                               if (topReplies.length > 2)
-                                AppProfilePic.s12(
-                                    topReplies[2].author.value?.pictureUrl ??
-                                        ''),
+                                AppProfilePic.s12(topReplies[2].author.value),
                               const AppGap.s2()
                             ],
                           ),

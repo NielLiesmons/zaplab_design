@@ -28,7 +28,7 @@ class AppArticleHeader extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppProfilePic.s48(article.author.value?.pictureUrl ?? ''),
+              AppProfilePic.s48(article.author.value),
               const AppGap.s12(),
               Expanded(
                 child: Column(

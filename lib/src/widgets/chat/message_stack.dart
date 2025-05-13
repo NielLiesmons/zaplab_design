@@ -41,8 +41,7 @@ class AppMessageStack extends StatelessWidget {
       children: [
         if (!isOutgoing) ...[
           AppContainer(
-            child: AppProfilePic.s32(
-                messages.first.author.value?.pictureUrl ?? ''),
+            child: AppProfilePic.s32(messages.first.author.value),
           ),
           const AppGap.s4(),
         ] else ...[

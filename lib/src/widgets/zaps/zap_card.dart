@@ -35,7 +35,7 @@ class AppZapCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppProfilePic.s18(zap.author.value?.pictureUrl ?? ''),
+                AppProfilePic.s18(zap.author.value),
                 const AppGap.s10(),
                 Expanded(
                   child: AppText.bold14(

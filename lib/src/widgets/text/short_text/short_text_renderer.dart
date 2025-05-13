@@ -254,6 +254,98 @@ class AppShortTextRenderer extends StatelessWidget {
         );
 
       case AppShortTextElementType.listItem:
+      case AppShortTextElementType.orderedListItem:
+        final String number = element.attributes?['number'] ?? '•';
+        final String displayNumber =
+            element.type == AppShortTextElementType.orderedListItem
+                ? '$number.'
+                : number;
+        return Padding(
+          padding: EdgeInsets.only(
+            left: (int.tryParse(element.attributes?['level'] ?? '0') ?? 0) * 12,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppContainer(
+                padding: const AppEdgeInsets.only(
+                  right: AppGapSize.s8,
+                ),
+                child: AppText.reg14(
+                  displayNumber,
+                  color: theme.colors.white66,
+                ),
+              ),
+              Expanded(
+                child: element.children != null
+                    ? AppSelectableText.rich(
+                        TextSpan(
+                          children:
+                              _buildInlineElements(context, element.children!),
+                        ),
+                        style: theme.typography.reg14.copyWith(
+                          color: theme.colors.white,
+                        ),
+                        showContextMenu: true,
+                        selectionControls: AppTextSelectionControls(),
+                        contextMenuItems: [
+                          AppTextSelectionMenuItem(
+                            label: 'Copy',
+                            onTap: (state) =>
+                                state.copySelection(SelectionChangedCause.tap),
+                          ),
+                        ],
+                      )
+                    : AppText.reg14(
+                        element.content,
+                        color: theme.colors.white,
+                      ),
+              ),
+            ],
+          ),
+        );
+      case AppShortTextElementType.checkListItem:
+        return Padding(
+          padding: EdgeInsets.only(
+            left: (int.tryParse(element.attributes?['level'] ?? '0') ?? 0) * 16,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppCheckBox(
+                value: element.checked ?? false,
+                onChanged: null,
+              ),
+              const AppGap.s8(),
+              Expanded(
+                child: element.children != null
+                    ? AppSelectableText.rich(
+                        TextSpan(
+                          children:
+                              _buildInlineElements(context, element.children!),
+                        ),
+                        style: theme.typography.reg14.copyWith(
+                          color: theme.colors.white,
+                        ),
+                        showContextMenu: true,
+                        selectionControls: AppTextSelectionControls(),
+                        contextMenuItems: [
+                          AppTextSelectionMenuItem(
+                            label: 'Copy',
+                            onTap: (state) =>
+                                state.copySelection(SelectionChangedCause.tap),
+                          ),
+                        ],
+                      )
+                    : AppText.reg14(
+                        element.content,
+                        color: theme.colors.white,
+                      ),
+              ),
+            ],
+          ),
+        );
+
       case AppShortTextElementType.paragraph:
         if (element.children != null) {
           final List<Widget> paragraphPieces = [];
@@ -317,7 +409,9 @@ class AppShortTextRenderer extends StatelessWidget {
                 );
                 currentSpans.clear();
               }
-              paragraphPieces.add(const AppGap.s2());
+              paragraphPieces.add(isInsideMessageBubble
+                  ? const AppGap.s2()
+                  : const AppGap.s8());
               paragraphPieces.add(
                 FutureBuilder<({Model model, VoidCallback? onTap})>(
                   future: onResolveEvent(child.content),
@@ -336,7 +430,9 @@ class AppShortTextRenderer extends StatelessWidget {
                   },
                 ),
               );
-              paragraphPieces.add(const AppGap.s2());
+              paragraphPieces.add(isInsideMessageBubble
+                  ? const AppGap.s4()
+                  : const AppGap.s8());
             } else if (child.type == AppShortTextElementType.audio) {
               if (currentSpans.isNotEmpty) {
                 paragraphPieces.add(
@@ -503,9 +599,15 @@ class AppShortTextRenderer extends StatelessWidget {
                           ({Profile profile, VoidCallback? onTap})>(
                         future: onResolveProfile(child.content),
                         builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return AppText.reg12(
+                              '@${child.content}',
+                              color: theme.colors.blurpleLightColor,
+                            );
+                          }
                           return AppProfileInline(
                             profile: snapshot.data!.profile,
-                            onTap: snapshot.data!.onTap,
+                            onTap: snapshot.data?.onTap,
                           );
                         },
                       ),
@@ -564,7 +666,8 @@ class AppShortTextRenderer extends StatelessWidget {
                     color: theme.colors.blurpleLightColor,
                   ),
                   recognizer: TapGestureRecognizer()
-                    ..onTap = () => onLinkTap(child.content),
+                    ..onTap = () =>
+                        onLinkTap(child.attributes?['url'] ?? child.content),
                 ));
               } else if (child.type == AppShortTextElementType.monospace) {
                 currentSpans.add(TextSpan(
@@ -632,7 +735,7 @@ class AppShortTextRenderer extends StatelessWidget {
                     imageUrls: urls,
                   ),
                 );
-                paragraphPieces.add(const AppGap.s2());
+                paragraphPieces.add(const AppGap.s4());
               } else {
                 currentSpans.add(TextSpan(
                   text: child.content,
@@ -719,6 +822,20 @@ class AppShortTextRenderer extends StatelessWidget {
           ),
         );
 
+      case AppShortTextElementType.heading1:
+        return AppContainer(
+          padding: const AppEdgeInsets.only(top: AppGapSize.s8),
+          child: AppText.bold16(element.content),
+        );
+      case AppShortTextElementType.heading2:
+        return AppText.bold16(element.content, color: theme.colors.white66);
+      case AppShortTextElementType.heading3:
+        return AppText.bold12(element.content);
+      case AppShortTextElementType.heading4:
+        return AppText.bold12(element.content, color: theme.colors.white66);
+      case AppShortTextElementType.heading5:
+        return AppText.bold12(element.content);
+
       case AppShortTextElementType.blockQuote:
         return IntrinsicHeight(
           child: Row(
@@ -762,6 +879,194 @@ class AppShortTextRenderer extends StatelessWidget {
       default:
         return AppText.reg14(element.content);
     }
+  }
+
+  List<InlineSpan> _buildInlineElements(
+      BuildContext context, List<AppShortTextElement> children) {
+    final theme = AppTheme.of(context);
+    return children.map((child) {
+      if (child.type == AppShortTextElementType.nostrProfile) {
+        return TextSpan(
+          children: [
+            TextSpan(
+              text: '@${child.content}',
+              style: const TextStyle(
+                color: Color(0xFF000000),
+                fontSize: 0,
+                height: 0,
+                letterSpacing: 0,
+                wordSpacing: 0,
+              ),
+            ),
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: FutureBuilder<({Profile profile, VoidCallback? onTap})>(
+                future: onResolveProfile(child.content),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return AppText.reg12(
+                      '@${child.content}',
+                      color: theme.colors.blurpleLightColor,
+                    );
+                  }
+                  return AppProfileInline(
+                    profile: snapshot.data!.profile,
+                    onTap: snapshot.data?.onTap,
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      } else if (child.type == AppShortTextElementType.emoji) {
+        return TextSpan(
+          children: [
+            TextSpan(
+              text: ':${child.content}:',
+              style: const TextStyle(
+                color: Color(0xFF000000),
+                fontSize: 0,
+                height: 0,
+                letterSpacing: 0,
+                wordSpacing: 0,
+              ),
+            ),
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: FutureBuilder<String>(
+                future: onResolveEmoji(child.content),
+                builder: (context, snapshot) {
+                  return AppContainer(
+                    padding: const AppEdgeInsets.symmetric(
+                        horizontal: AppGapSize.s2),
+                    child: AppEmojiImage(
+                      emojiUrl: snapshot.data ?? '',
+                      emojiName: snapshot.data ?? '',
+                      size: 17,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      } else if (child.type == AppShortTextElementType.monospace) {
+        return TextSpan(
+          children: [
+            TextSpan(
+              text: '`${child.content}`',
+              style: const TextStyle(
+                color: Color(0xFF000000),
+                fontSize: 0,
+                height: 0,
+                letterSpacing: 0,
+                wordSpacing: 0,
+              ),
+            ),
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const AppGap.s2(),
+                  AppContainer(
+                    height: 20,
+                    padding: const AppEdgeInsets.only(
+                      left: AppGapSize.s4,
+                      right: AppGapSize.s4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: theme.colors.white16,
+                      borderRadius: theme.radius.asBorderRadius().rad4,
+                    ),
+                    child: AppText.code(
+                      child.content,
+                      color: theme.colors.white66,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      } else if (child.type == AppShortTextElementType.hashtag) {
+        return TextSpan(
+          children: [
+            TextSpan(
+              text: '#${child.content}',
+              style: const TextStyle(
+                color: Color(0xFF000000),
+                fontSize: 0,
+                height: 0,
+                letterSpacing: 0,
+                wordSpacing: 0,
+              ),
+            ),
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: FutureBuilder<void Function()?>(
+                future: onResolveHashtag(child.content),
+                builder: (context, snapshot) {
+                  return TapBuilder(
+                    onTap: snapshot.data,
+                    builder: (context, state, hasFocus) {
+                      double scaleFactor = 1.0;
+                      if (state == TapState.pressed) {
+                        scaleFactor = 0.99;
+                      } else if (state == TapState.hover) {
+                        scaleFactor = 1.01;
+                      }
+
+                      return Transform.scale(
+                        scale: scaleFactor,
+                        child: Text(
+                          '#${child.content}',
+                          style: theme.typography.reg14.copyWith(
+                            color: theme.colors.blurpleLightColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      } else if (child.type == AppShortTextElementType.link) {
+        return TextSpan(
+          text: child.attributes?['text'] ?? child.content,
+          style: theme.typography.reg14.copyWith(
+            color: theme.colors.blurpleLightColor,
+          ),
+          recognizer: TapGestureRecognizer()
+            ..onTap =
+                () => onLinkTap(child.attributes?['url'] ?? child.content),
+        );
+      } else {
+        return TextSpan(
+          text: child.content,
+          style: theme.typography.reg14.copyWith(
+            color: theme.colors.white,
+            fontWeight: (child.attributes?['style'] == 'bold' ||
+                    child.attributes?['style'] == 'bold-italic')
+                ? FontWeight.bold
+                : null,
+            fontStyle: (child.attributes?['style'] == 'italic' ||
+                    child.attributes?['style'] == 'bold-italic')
+                ? FontStyle.italic
+                : null,
+            decoration: switch (child.attributes?['style']) {
+              'underline' => TextDecoration.underline,
+              'line-through' => TextDecoration.lineThrough,
+              _ => null,
+            },
+          ),
+        );
+      }
+    }).toList();
   }
 
   List<InlineSpan> _buildStyledTextSpans(

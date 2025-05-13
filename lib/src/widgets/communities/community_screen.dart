@@ -99,8 +99,6 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
 
   Widget _buildTopBar(
     BuildContext context,
-    String profileName,
-    String profilePicUrl,
     int mainCount,
   ) {
     final theme = AppTheme.of(context);
@@ -118,7 +116,8 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
           ),
           child: Row(
             children: [
-              AppProfilePic.s32(profilePicUrl, onTap: widget.onProfileTap),
+              AppProfilePic.s32(widget.community.author.value,
+                  onTap: widget.onProfileTap),
               Expanded(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,7 +128,7 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
                         onTap: widget.onProfileTap,
                         builder: (context, state, hasFocus) {
                           return AppText.bold14(
-                            profileName,
+                            widget.community.author.value?.name ?? '',
                           );
                         },
                       ),
@@ -238,8 +237,6 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
       bottomBarContent: _buildBottomBar(),
       topBarContent: _buildTopBar(
         context,
-        widget.community.author.value?.name ?? '',
-        widget.community.author.value?.pictureUrl ?? '',
         widget.mainCount ?? 0,
       ),
       onHomeTap: widget.onHomeTap ?? () {},

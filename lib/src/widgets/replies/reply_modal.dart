@@ -72,9 +72,7 @@ class _AppReplyModalState extends State<AppReplyModal> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        AppProfilePic.s40(
-                          widget.model.author.value?.pictureUrl ?? '',
-                        ),
+                        AppProfilePic.s40(widget.model.author.value),
                         const AppGap.s12(),
                         Expanded(
                           child: Column(

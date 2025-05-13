@@ -48,13 +48,7 @@ class _AppNpubDisplayState extends State<AppNpubDisplay> {
           height: theme.sizes.s8,
           width: theme.sizes.s8,
           decoration: BoxDecoration(
-            color: Color(
-              int.parse(
-                    profileToColor(widget.profile).substring(1),
-                    radix: 16,
-                  ) +
-                  0xFF000000,
-            ),
+            color: Color(profileToColor(widget.profile)),
             borderRadius: BorderRadius.circular(100),
             border: Border.all(
               color: theme.colors.white16,
@@ -97,13 +91,7 @@ class _AppNpubDisplayState extends State<AppNpubDisplay> {
               height: theme.sizes.s8,
               width: theme.sizes.s8,
               decoration: BoxDecoration(
-                color: Color(
-                  int.parse(
-                        profileToColor(widget.profile).substring(1),
-                        radix: 16,
-                      ) +
-                      0xFF000000,
-                ),
+                color: Color(profileToColor(widget.profile)),
                 borderRadius: BorderRadius.circular(100),
                 border: Border.all(
                   color: theme.colors.white16,

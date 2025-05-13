@@ -40,7 +40,7 @@ class AppOtherProfileCard extends StatelessWidget {
                   height: theme.sizes.s56,
                   child: Center(
                     child: AppProfilePic.s48(
-                      profile.author.value?.pictureUrl ?? '',
+                      profile.author.value,
                       onTap: onView,
                     ),
                   ),

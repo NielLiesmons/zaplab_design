@@ -134,7 +134,7 @@ class AppModal extends StatelessWidget {
       if (profilePicUrl != null) {
         headerWidgets.addAll([
           const AppGap.s8(),
-          AppProfilePic.s80(profilePicUrl!),
+          AppProfilePic.fromUrl(profilePicUrl!, size: AppProfilePicSize.s80),
         ]);
       }
 

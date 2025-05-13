@@ -39,16 +39,24 @@ class _SpinUpKeyModalState extends State<AppSpinUpKeyModal> {
     final theme = AppTheme.of(context);
 
     return AppModal(
+      title: "Hey ${widget.profileName}!",
+      bottomBar: AppButton(
+        onTap: widget.onSecretKeyTap,
+        inactiveColor: theme.colors.black33,
+        children: [
+          AppIcon.s16(
+            theme.icons.characters.nostr,
+            color: AppColorsData.dark().blurpleLightColor,
+          ),
+          const AppGap.s12(),
+          AppText.reg14("Already have a Nostr key?",
+              color: theme.colors.white66),
+        ],
+      ),
       children: [
         AppContainer(
           child: Column(
             children: [
-              const AppGap.s12(),
-              AppText.h1(
-                "Hey ${widget.profileName}!",
-                color: AppTheme.of(context).colors.white,
-              ),
-              const AppGap.s8(),
               AppContainer(
                 width: 344,
                 child: RichText(
@@ -81,24 +89,12 @@ class _SpinUpKeyModalState extends State<AppSpinUpKeyModal> {
                 ),
               ),
               const AppGap.s24(),
+              const AppGap.s4(),
               AppSlotMachine(
                 showSelector: false,
                 onSpinComplete: _handleSpinComplete,
               ),
-              const AppGap.s32(),
-              AppButton(
-                onTap: widget.onSecretKeyTap,
-                inactiveColor: theme.colors.black33,
-                children: [
-                  AppIcon.s16(
-                    theme.icons.characters.nostr,
-                    color: AppColorsData.dark().blurpleLightColor,
-                  ),
-                  const AppGap.s12(),
-                  AppText.reg14("Already have a Nostr key?",
-                      color: theme.colors.white66),
-                ],
-              ),
+              const AppGap.s16(),
             ],
           ),
         ),

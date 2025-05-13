@@ -166,7 +166,8 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                             widget.message.author.value!.name ??
                                                 formatNpub(widget.message.author
                                                     .value!.pubkey),
-                                            color: theme.colors.white66,
+                                            color: Color(npubToColor(widget
+                                                .message.author.value!.pubkey)),
                                             textOverflow: TextOverflow.ellipsis,
                                           ),
                                         AppText.reg12(

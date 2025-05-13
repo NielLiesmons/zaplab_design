@@ -38,6 +38,7 @@ export 'bottom_bars/bottom_bar_chat.dart';
 export 'bottom_bars/bottom_bar_long_text.dart';
 export 'bottom_bars/bottom_bar_content_feed.dart';
 export 'bottom_bars/bottom_bar_home.dart';
+export 'bottom_bars/bottom_bar_mail.dart';
 export 'bottom_bars/bottom_bar_profile.dart';
 export 'bottom_bars/bottom_bar_welcome.dart';
 
@@ -76,9 +77,11 @@ export 'interactions/zap_pill.dart';
 
 // Keys
 export 'keys/slot_machine.dart';
+export 'keys/key_display.dart';
 
 // Labels
 export 'labels/label.dart';
+export 'labels/small_label.dart';
 
 // Loading
 export 'loading/loading_bar.dart';
@@ -88,6 +91,14 @@ export 'loading/progress_bar.dart';
 
 // Groups
 export 'groups/group_home_panel.dart';
+
+// Mail
+export 'mail/feed_mail.dart';
+export 'mail/mail.dart';
+
+// Models
+export 'models/model_button.dart';
+export 'models/model_card.dart';
 
 // Notifications
 export 'notifications/notification_card.dart';
@@ -112,6 +123,7 @@ export 'profile_pics/profile_pic_live.dart';
 export 'profile_pics/profile_pic_square.dart';
 export 'profile_pics/profile_pic.dart';
 export 'profile_pics/profile_stack.dart';
+export 'profile_pics/small_profile_stack.dart';
 
 // Replies
 export 'replies/reply_modal.dart';
@@ -130,6 +142,10 @@ export 'tabs/tab_button.dart';
 export 'tabs/tab_controller.dart';
 export 'tabs/tab_grid.dart';
 export 'tabs/tab_view.dart';
+
+// Tasks
+export 'tasks/feed_task.dart';
+export 'tasks/task_box.dart';
 
 // Text
 export 'text/long_text/long_text_element.dart';
@@ -150,7 +166,6 @@ export 'text/code_block.dart';
 export 'text/editable_input_text.dart';
 export 'text/input_modal.dart';
 export 'text/input_text_field.dart';
-export 'text/model_card.dart';
 export 'text/search_field.dart';
 export 'text/section_title.dart';
 

@@ -65,7 +65,7 @@ class AppArticleCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppProfilePic.s40(article.author.value?.pictureUrl ?? ''),
+                AppProfilePic.s40(article.author.value),
                 const AppGap.s12(),
                 Expanded(
                   child: Column(

@@ -51,7 +51,7 @@ class AppNotificationCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const AppGap.s2(),
-                      AppProfilePic.s20("dummy"), //TODO: Implement
+                      AppProfilePic.s20(null), //TODO: Implement
                       Expanded(
                         child: AppDivider.vertical(
                           color: theme.colors.white33,
@@ -103,7 +103,7 @@ class AppNotificationCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppProfilePic.s38("dummy"),
+                AppProfilePic.s38(null),
                 const AppGap.s12(),
                 Expanded(
                   child: Column(

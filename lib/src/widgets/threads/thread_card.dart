@@ -35,7 +35,7 @@ class AppThreadCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppProfilePic.s18(thread.author.value?.pictureUrl ?? ''),
+                AppProfilePic.s18(thread.author.value),
                 const AppGap.s8(),
                 Expanded(
                   child: AppText.bold12(

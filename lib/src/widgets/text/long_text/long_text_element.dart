@@ -1,13 +1,13 @@
 enum LongTextElementType {
-  heading1, // = Heading
-  heading2, // == Heading
-  heading3, // === Heading
-  heading4, // ==== Heading
-  heading5, // ===== Heading
+  heading1, // = or # Heading
+  heading2, // == or ## Heading
+  heading3, // === or ### Heading
+  heading4, // ==== or #### Heading
+  heading5, // ===== or ##### Heading
   paragraph, // Regular text
   codeBlock, // [source,language]
-  listItem, // * List items
-  orderedListItem, // . List items
+  listItem, // * or - or + List items
+  orderedListItem, //. List Item OR . List items
   checkListItem, // [x] List items
   descriptionListItem, // : List items
   qandaListItem, // ? List items

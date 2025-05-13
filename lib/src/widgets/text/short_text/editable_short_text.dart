@@ -289,7 +289,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  AppProfilePic.s24('none'),
+                  AppProfilePic.s24(null),
                   const AppGap.s4(),
                 ],
               ),

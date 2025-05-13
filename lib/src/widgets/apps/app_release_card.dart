@@ -178,7 +178,7 @@ class AppAppReleaseCard extends StatelessWidget {
                   color: theme.colors.white66,
                 ),
                 const Spacer(),
-                AppProfilePic.s24(app.author.value?.pictureUrl ?? ''),
+                AppProfilePic.s24(app.author.value),
                 const AppGap.s8(),
                 AppText.bold14(app.author.value?.name ??
                     formatNpub(app.author.value?.pubkey ?? '')),

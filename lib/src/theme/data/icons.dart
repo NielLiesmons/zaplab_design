@@ -51,6 +51,8 @@ class AppIconCharactersData extends Equatable {
     required this.chevronLeft,
     required this.chevronRight,
     required this.chevronUp,
+    required this.circle50,
+    required this.circle75,
     required this.clock,
     required this.code,
     required this.copy,
@@ -66,6 +68,7 @@ class AppIconCharactersData extends Equatable {
     required this.emojiFill,
     required this.emojiLine,
     required this.expand,
+    required this.filter,
     required this.flip,
     required this.focus,
     required this.footnote,
@@ -121,6 +124,7 @@ class AppIconCharactersData extends Equatable {
     required this.underline,
     required this.video,
     required this.voice,
+    required this.wifi,
     required this.zap,
   });
 
@@ -142,6 +146,8 @@ class AppIconCharactersData extends Equatable {
         chevronLeft: String.fromCharCodes([57344, 59309, 60404, 57375]),
         chevronRight: String.fromCharCodes([57883, 58353, 57506]),
         chevronUp: String.fromCharCodes([58250, 60663, 57399]),
+        circle50: String.fromCharCodes([57344, 58773, 61233, 57494]),
+        circle75: String.fromCharCodes([57344, 58773, 61233, 57427]),
         clock: String.fromCharCodes([58790, 60865, 57359]),
         code: String.fromCharCodes([58091, 60910]),
         copy: String.fromCharCodes([58091, 61302]),
@@ -157,6 +163,7 @@ class AppIconCharactersData extends Equatable {
         expand: String.fromCharCodes([57344, 58574, 59170, 57447]),
         emojiFill: String.fromCharCodes([58952, 61015, 57578]),
         emojiLine: String.fromCharCodes([58953, 57618, 57435]),
+        filter: String.fromCharCodes([57344, 58560, 59189, 57481]),
         flip: String.fromCharCodes([58113, 57454]),
         focus: String.fromCharCodes([58834, 58702, 57353]),
         footnote: String.fromCharCodes([57721, 60374, 57441]),
@@ -212,6 +219,7 @@ class AppIconCharactersData extends Equatable {
         underline: String.fromCharCodes([57344, 58324, 58938, 57397]),
         video: String.fromCharCodes([59057, 57672, 57356]),
         voice: String.fromCharCodes([59059, 60948, 57347]),
+        wifi: String.fromCharCodes([58235, 61206]),
         zap: String.fromCharCodes([57815, 57386]),
       );
 
@@ -231,6 +239,8 @@ class AppIconCharactersData extends Equatable {
   final String chevronLeft;
   final String chevronRight;
   final String chevronUp;
+  final String circle50;
+  final String circle75;
   final String clock;
   final String code;
   final String copy;
@@ -246,6 +256,7 @@ class AppIconCharactersData extends Equatable {
   final String expand;
   final String emojiFill;
   final String emojiLine;
+  final String filter;
   final String flip;
   final String focus;
   final String footnote;
@@ -301,6 +312,7 @@ class AppIconCharactersData extends Equatable {
   final String underline;
   final String video;
   final String voice;
+  final String wifi;
   final String zap;
 
   @override
@@ -321,6 +333,8 @@ class AppIconCharactersData extends Equatable {
         chevronLeft.named('chevronLeft'),
         chevronRight.named('chevronRight'),
         chevronUp.named('chevronUp'),
+        circle50.named('circle50'),
+        circle75.named('circle75'),
         clock.named('clock'),
         code.named('code'),
         copy.named('copy'),
@@ -336,6 +350,7 @@ class AppIconCharactersData extends Equatable {
         expand.named('expand'),
         emojiFill.named('emojiFill'),
         emojiLine.named('emojiLine'),
+        filter.named('filter'),
         flip.named('flip'),
         focus.named('focus'),
         footnote.named('footnote'),
@@ -391,6 +406,7 @@ class AppIconCharactersData extends Equatable {
         underline.named('underline'),
         video.named('video'),
         voice.named('voice'),
+        wifi.named('wifi'),
         zap.named('zap'),
       ];
 }

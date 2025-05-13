@@ -281,8 +281,7 @@ class AppActionsModal extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            AppProfilePic.s40(
-                                model.author.value?.pictureUrl ?? ''),
+                            AppProfilePic.s40(model.author.value),
                             const AppGap.s12(),
                             Expanded(
                               child: Column(

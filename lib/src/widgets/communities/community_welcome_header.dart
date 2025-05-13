@@ -6,14 +6,14 @@ import 'package:models/models.dart';
 class AppCommunityWelcomeHeader extends StatefulWidget {
   final Community community;
   final VoidCallback? onProfileTap;
-  final List<String>? profileImageUrls;
+  final List<Profile>? profiles;
   final List<String>? emojiImageUrls;
 
   const AppCommunityWelcomeHeader({
     super.key,
     required this.community,
     this.onProfileTap,
-    this.profileImageUrls,
+    this.profiles,
     this.emojiImageUrls,
   });
 
@@ -96,7 +96,7 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
                               child: _CircleItems(
                                 diameter: diameter,
                                 circleIndex: index,
-                                profileImageUrls: widget.profileImageUrls,
+                                profiles: widget.profiles,
                                 emojiImageUrls: widget.emojiImageUrls,
                                 rotationAngle: rotationAngle,
                               ),
@@ -108,8 +108,7 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
                   },
                 ),
                 // Community image
-                AppProfilePic.s104(
-                    widget.community.author.value?.pictureUrl ?? '',
+                AppProfilePic.s104(widget.community.author.value,
                     onTap: widget.onProfileTap),
               ],
             ),
@@ -191,14 +190,14 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
 class _CircleItems extends StatelessWidget {
   final double diameter;
   final int circleIndex;
-  final List<String>? profileImageUrls;
+  final List<Profile>? profiles;
   final List<String>? emojiImageUrls;
   final double rotationAngle;
 
   const _CircleItems({
     required this.diameter,
     required this.circleIndex,
-    this.profileImageUrls,
+    this.profiles,
     this.emojiImageUrls,
     required this.rotationAngle,
   });
@@ -206,7 +205,7 @@ class _CircleItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final radius = diameter / 2;
-    final profileUrls = profileImageUrls ?? [];
+    final _profiles = profiles ?? [];
     final emojiUrls = emojiImageUrls ?? [];
 
     // Calculate item sizes based on circle index
@@ -246,16 +245,16 @@ class _CircleItems extends StatelessWidget {
 
     // Add profile pictures
     for (var i = 0; i < 2; i++) {
-      if (profileUrls.isNotEmpty) {
-        final profileIndex = (circleIndex * 2 + i) % profileUrls.length;
+      if (_profiles.isNotEmpty) {
+        final profileIndex = (circleIndex * 2 + i) % _profiles.length;
         final angle = angleStep * (i + 1); // Offset from emoji
         final x = radius + (radius * math.cos(angle));
         final y = radius + (radius * math.sin(angle));
         final profilePic = circleIndex < 2
-            ? AppProfilePic.s18(profileUrls[profileIndex])
+            ? AppProfilePic.s18(_profiles[profileIndex])
             : (circleIndex < 4
-                ? AppProfilePic.s16(profileUrls[profileIndex])
-                : AppProfilePic.s12(profileUrls[profileIndex]));
+                ? AppProfilePic.s16(_profiles[profileIndex])
+                : AppProfilePic.s12(_profiles[profileIndex]));
         items.add(
           Positioned(
             left: x - emojiSize / 2,

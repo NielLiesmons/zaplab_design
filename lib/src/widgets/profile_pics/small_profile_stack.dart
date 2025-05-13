@@ -2,19 +2,47 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppProfileStack extends StatelessWidget {
-  AppProfileStack({
+class AppSmallProfileStack extends StatelessWidget {
+  final List<Profile> profiles;
+  final Profile? currentProfile;
+  final VoidCallback onTap;
+  AppSmallProfileStack({
     super.key,
     required this.profiles,
-    this.description,
+    this.currentProfile,
     VoidCallback? onTap,
   }) : onTap = onTap ?? (() {});
 
-  final List<Profile> profiles;
-  final String? description;
-  final VoidCallback onTap;
+  List<Profile> get _visibleProfiles {
+    final list = profiles.toList();
+    if (currentProfile != null && list.contains(currentProfile)) {}
+    return list.take(5).toList().reversed.toList();
+  }
 
-  List<Profile> get _visibleProfiles => profiles.take(3).toList();
+  String _getDisplayText() {
+    if (profiles.isEmpty) return 'No Recipients';
+
+    final isCurrentProfileFirst = currentProfile != null &&
+        profiles.isNotEmpty &&
+        profiles.first.pubkey == currentProfile!.pubkey;
+
+    if (profiles.length == 1) {
+      return isCurrentProfileFirst
+          ? 'You'
+          : profiles.first.name ?? formatNpub(profiles.first.npub);
+    }
+
+    if (profiles.length == 2) {
+      final secondName = profiles[1].name ?? formatNpub(profiles[1].npub);
+      return isCurrentProfileFirst
+          ? 'You & $secondName'
+          : '${profiles.first.name ?? formatNpub(profiles.first.npub)} & $secondName';
+    }
+
+    return isCurrentProfileFirst
+        ? 'You & ${profiles.length - 1} others'
+        : '${profiles.first.name ?? formatNpub(profiles.first.npub)} & ${profiles.length - 1} others';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,59 +72,35 @@ class AppProfileStack extends StatelessWidget {
                     children: [
                       Transform.translate(
                         offset: Offset(
-                            theme.sizes.s16 +
-                                (_visibleProfiles.length - 1) * 24,
+                            theme.sizes.s8 + (_visibleProfiles.length - 1) * 16,
                             0),
-                        child: Row(
-                          children: [
-                            AppContainer(
-                              height: theme.sizes.s32,
-                              padding: const AppEdgeInsets.only(
-                                left: AppGapSize.s24,
-                                right: AppGapSize.s12,
-                              ),
-                              decoration: BoxDecoration(
-                                color: theme.colors.white16,
-                                borderRadius:
-                                    theme.radius.asBorderRadius().rad24,
-                              ),
-                              child: Center(
-                                child: AppText.med12(
-                                  '${profiles.length}',
-                                  color: theme.colors.white66,
-                                  textOverflow: TextOverflow.ellipsis,
-                                ),
-                              ),
+                        child: AppContainer(
+                          height: theme.sizes.s20,
+                          padding: const AppEdgeInsets.only(
+                            left: AppGapSize.s20,
+                            right: AppGapSize.s12,
+                          ),
+                          child: Center(
+                            child: AppText.reg12(
+                              _getDisplayText(),
+                              color: theme.colors.white66,
+                              textOverflow: TextOverflow.ellipsis,
                             ),
-                            if (description != null) ...[
-                              const AppGap.s8(),
-                              SizedBox(
-                                width: 120,
-                                child: AppText.reg10(
-                                  description!,
-                                  color: theme.colors.white33,
-                                  maxLines: 2,
-                                  textOverflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ],
+                          ),
                         ),
                       ),
                       SizedBox(
                         width: _visibleProfiles.isEmpty
                             ? 0
-                            : theme.sizes.s32 +
-                                (_visibleProfiles.length - 1) * 24,
-                        height: theme.sizes.s32,
+                            : theme.sizes.s20 +
+                                (_visibleProfiles.length - 1) * 16,
+                        height: theme.sizes.s20,
                         child: Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            for (int i = _visibleProfiles.length - 1;
-                                i >= 0;
-                                i--)
+                            for (int i = 0; i < _visibleProfiles.length; i++)
                               Positioned(
-                                left: i * 24.0,
+                                left: (_visibleProfiles.length - 1 - i) * 16.0,
                                 child: AppContainer(
                                   decoration: BoxDecoration(
                                     borderRadius:
@@ -109,7 +113,7 @@ class AppProfileStack extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  child: AppProfilePic.s32(
+                                  child: AppProfilePic.s20(
                                     _visibleProfiles[i],
                                     onTap: onTap,
                                   ),

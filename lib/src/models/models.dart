@@ -12,6 +12,8 @@ String getModelContentType(Model? model) {
     Model<Note>() => 'thread',
     Model<App>() => 'app',
     Model<Book>() => 'book',
+    Model<Task>() => 'task',
+    Model<Repository>() => 'repo',
     _ => 'nostr',
   };
 }
@@ -19,10 +21,11 @@ String getModelContentType(Model? model) {
 String getModelDisplayText(Model<dynamic>? model) {
   return switch (model) {
     Model<Article>() => (model as Article).title ?? '',
-    Model<ChatMessage>() => (model as ChatMessage).content ?? '',
-    Model<Note>() => (model as Note).content ?? '',
+    Model<ChatMessage>() => (model as ChatMessage).content,
+    Model<Note>() => (model as Note).content,
     Model<App>() => (model as App).name ?? 'App Name',
-    Model<Book>() => (model as Book).title ?? '',
+    Model<Book>() => (model as Book).title ?? 'Book Title',
+    Model<Repository>() => (model as Repository).name ?? 'Repo Name',
     _ => '',
   };
 }
@@ -81,6 +84,18 @@ class PartialBook extends RegularPartialModel<Book> {
       event.addTagValue('published_at', publishedAt.toSeconds().toString());
     }
   }
+}
+
+// Emoj
+
+class Emoji {
+  final String emojiUrl;
+  final String emojiName;
+
+  const Emoji({
+    required this.emojiUrl,
+    required this.emojiName,
+  });
 }
 
 // Group
@@ -203,14 +218,103 @@ class GroupContentSection {
       {required this.content, required this.kinds, this.feeInSats});
 }
 
-// Emoj
+// Mail
 
-class Emoji {
-  final String emojiUrl;
-  final String emojiName;
+class Mail extends RegularModel<Mail> {
+  Mail.fromMap(super.map, super.ref) : super.fromMap();
 
-  const Emoji({
-    required this.emojiUrl,
-    required this.emojiName,
-  });
+  String? get title => event.getFirstTagValue('title');
+  String get content => event.content;
+  Set<String> get recipientPubkeys => event.getTagSetValues('p');
+}
+
+class PartialMail extends RegularPartialModel<Mail> {
+  PartialMail(String title, String content, {Set<String>? recipientPubkeys}) {
+    event.content = content;
+    event.addTagValue('title', title);
+    if (recipientPubkeys != null) {
+      for (final pubkey in recipientPubkeys) {
+        event.addTagValue('p', pubkey);
+      }
+    }
+  }
+}
+
+// Repository
+
+class Repository extends ParameterizableReplaceableModel<Repository> {
+  Repository.fromMap(super.map, super.ref) : super.fromMap();
+  String? get name => event.getFirstTagValue('name');
+  String? get description => event.getFirstTagValue('description');
+  String? get slug => event.getFirstTagValue('d');
+  DateTime? get publishedAt =>
+      event.getFirstTagValue('published_at')?.toInt()?.toDate();
+
+  PartialRepository copyWith({
+    String? name,
+    String? description,
+    DateTime? publishedAt,
+  }) {
+    return PartialRepository(
+      name ?? this.name ?? '',
+      description ?? event.content,
+      publishedAt: publishedAt ?? this.publishedAt,
+    );
+  }
+}
+
+class PartialRepository
+    extends ParameterizableReplaceablePartialEvent<Repository> {
+  PartialRepository(String name, String description,
+      {DateTime? publishedAt, String? slug}) {
+    this.name = name;
+    this.description = description;
+    this.publishedAt = publishedAt;
+    this.slug = slug ?? Utils.generateRandomHex64();
+    event.content = description;
+  }
+  set name(String value) => event.addTagValue('name', value);
+  set description(String value) => event.addTagValue('description', value);
+  set slug(String value) => event.addTagValue('d', value);
+  set content(String value) => event.content = value;
+  set publishedAt(DateTime? value) =>
+      event.addTagValue('published_at', value?.toSeconds().toString());
+}
+
+// Task
+
+class Task extends ParameterizableReplaceableModel<Task> {
+  Task.fromMap(super.map, super.ref) : super.fromMap();
+  String? get title => event.getFirstTagValue('title');
+  String get content => event.content;
+  String get slug => event.getFirstTagValue('d')!;
+  DateTime? get publishedAt =>
+      event.getFirstTagValue('published_at')?.toInt()?.toDate();
+
+  PartialTask copyWith({
+    String? title,
+    String? content,
+    DateTime? publishedAt,
+  }) {
+    return PartialTask(
+      title ?? this.title ?? '',
+      content ?? event.content,
+      publishedAt: publishedAt ?? this.publishedAt,
+    );
+  }
+}
+
+class PartialTask extends ParameterizableReplaceablePartialEvent<Task> {
+  PartialTask(String title, String content,
+      {DateTime? publishedAt, String? slug}) {
+    this.title = title;
+    this.publishedAt = publishedAt;
+    this.slug = slug ?? Utils.generateRandomHex64();
+    event.content = content;
+  }
+  set title(String value) => event.addTagValue('title', value);
+  set slug(String value) => event.addTagValue('d', value);
+  set content(String value) => event.content = value;
+  set publishedAt(DateTime? value) =>
+      event.addTagValue('published_at', value?.toSeconds().toString());
 }

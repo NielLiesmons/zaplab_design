@@ -64,7 +64,10 @@ class AppSpinUpKeyAgainModal extends StatelessWidget {
                     AppPanel(
                       child: Row(
                         children: [
-                          AppProfilePic.s48("profilePicUrl"),
+                          AppProfilePic.fromUrl(
+                            "profilePicUrl",
+                            size: AppProfilePicSize.s48,
+                          ),
                           const AppGap.s8(),
                           AppText.h1("Hey $profileName!"),
                         ],

@@ -3,6 +3,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 class AppStartModal extends StatefulWidget {
   final String logoImageUrl;
   final String title;
+  final String? description;
   final void Function(String profileName) onStart;
   final VoidCallback onAlreadyHaveKey;
 
@@ -10,6 +11,7 @@ class AppStartModal extends StatefulWidget {
     super.key,
     required this.logoImageUrl,
     required this.title,
+    this.description,
     required this.onStart,
     required this.onAlreadyHaveKey,
   });
@@ -57,7 +59,14 @@ class _AppStartModalState extends State<AppStartModal> {
               ),
               const AppGap.s12(),
               AppText.h1(widget.title),
-              const AppGap.s24(),
+              if (widget.description != null) const AppGap.s8(),
+              if (widget.description != null)
+                AppText.reg16(
+                  widget.description!,
+                  color: theme.colors.white66,
+                  textAlign: TextAlign.center,
+                ),
+              const AppGap.s32(),
               Row(
                 children: [
                   const AppGap.s16(),
@@ -70,6 +79,7 @@ class _AppStartModalState extends State<AppStartModal> {
               AppInputTextField(
                 controller: _controller,
                 focusNode: _focusNode,
+                singleLine: true,
                 placeholder: [
                   AppText.reg16(
                     'Profile Name',

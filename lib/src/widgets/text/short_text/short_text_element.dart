@@ -2,7 +2,6 @@ enum AppShortTextElementType {
   paragraph, // Regular text
   blockQuote, // > quote
   codeBlock, // ``` ``` or ```language```
-  listItem, // * List items
   link, // https://...
   monospace, // `text`
   styledText, //
@@ -13,6 +12,14 @@ enum AppShortTextElementType {
   emoji, // :emoji:
   utfEmoji, // Unicode emoji characters
   hashtag, // #hashtag
+  heading1, // # Heading
+  heading2, // ## Heading
+  heading3, // ### Heading
+  heading4, // #### Heading
+  heading5, // ##### Heading
+  listItem, // * or - or + List items
+  orderedListItem, // 1. or 2. or 3. List items
+  checkListItem, // [x] or [ ] List items
 }
 
 class AppShortTextElement {

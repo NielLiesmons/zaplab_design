@@ -1,15 +1,16 @@
 import 'dart:math' as math;
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:models/models.dart';
 
-typedef ZapRecord = ({double amount, String profileImageUrl});
+typedef ZapRecord = ({double amount, Profile profile});
 
 class AppZapSlider extends StatefulWidget {
-  final String profileImageUrl;
+  final Profile? profile;
   final double initialValue;
   final ValueChanged<double>? onValueChanged;
   final List<double>? recentAmounts;
-  final List<({double amount, String profileImageUrl})> otherZaps;
+  final List<({double amount, Profile profile})> otherZaps;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -22,7 +23,7 @@ class AppZapSlider extends StatefulWidget {
 
   const AppZapSlider({
     super.key,
-    required this.profileImageUrl,
+    this.profile,
     this.initialValue = 100,
     this.onValueChanged,
     this.recentAmounts,
@@ -158,14 +159,13 @@ class _AppZapSliderState extends State<AppZapSlider> {
                                 top: 160 +
                                     (outerRadius + 9) * math.sin(angle) -
                                     9,
-                                child:
-                                    AppProfilePic.s18(zapData.profileImageUrl),
+                                child: AppProfilePic.s18(zapData.profile),
                               );
                             }),
                             Positioned(
                               left: 108,
                               top: 108,
-                              child: AppProfilePic.s104(widget.profileImageUrl),
+                              child: AppProfilePic.s104(widget.profile),
                             ),
                           ],
                         ),
@@ -376,7 +376,7 @@ class AppZapSliderPainter extends CustomPainter {
   final TextStyle labelStyle;
   final Color labelColor;
   final double markerToLabelGap;
-  final List<({double amount, String profileImageUrl})> otherZaps;
+  final List<({double amount, Profile profile})> otherZaps;
 
   final double backgroundThickness;
   final double valueThickness;
@@ -406,7 +406,7 @@ class AppZapSliderPainter extends CustomPainter {
   });
 
   void _drawZapMarker(Canvas canvas, Offset center,
-      ({double amount, String profileImageUrl}) zapData) {
+      ({double amount, Profile profile}) zapData) {
     final percentage = zapData.amount <= 0
         ? 0.0
         : math.log(zapData.amount + 1) / math.log(_maxValue + 1);

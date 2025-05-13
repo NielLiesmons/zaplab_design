@@ -307,9 +307,7 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                     const Spacer(),
                                     if (widget.onProfilesTap != null &&
                                         widget.currentProfile != null)
-                                      AppProfilePic.s38(
-                                          widget.currentProfile!.pictureUrl ??
-                                              '',
+                                      AppProfilePic.s38(widget.currentProfile!,
                                           onTap: widget.onProfilesTap!),
                                     const AppGap.s12(),
                                   ],

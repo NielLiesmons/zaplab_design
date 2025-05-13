@@ -3,6 +3,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 class AppSelector extends StatefulWidget {
   final List<AppSelectorButton> children;
   final bool emphasized;
+  final bool small;
   final ValueChanged<int>? onChanged;
   final int? initialIndex;
 
@@ -10,6 +11,7 @@ class AppSelector extends StatefulWidget {
     super.key,
     required this.children,
     this.emphasized = false,
+    this.small = false,
     this.onChanged,
     this.initialIndex,
   });
@@ -54,6 +56,7 @@ class _AppSelectorState extends State<AppSelector> {
                 unselectedContent: widget.children[i].unselectedContent,
                 isSelected: i == selectedIndex,
                 emphasized: widget.emphasized,
+                small: widget.small,
                 onTap: () => _handleSelection(i),
               ),
             ),

@@ -31,7 +31,8 @@ class AppQuotedMessage extends StatelessWidget {
             AppContainer(
               width: AppLineThicknessData.normal().thick,
               decoration: BoxDecoration(
-                color: theme.colors.white66,
+                color:
+                    Color(npubToColor(chatMessage.author.value?.pubkey ?? '')),
               ),
             ),
             Expanded(
@@ -47,8 +48,7 @@ class AppQuotedMessage extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        AppProfilePic.s18(
-                            chatMessage.author.value?.pictureUrl ?? ''),
+                        AppProfilePic.s18(chatMessage.author.value),
                         const AppGap.s6(),
                         AppText.bold12(
                           chatMessage.author.value?.name ??

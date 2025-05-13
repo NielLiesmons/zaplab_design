@@ -35,8 +35,7 @@ class AppCurrentProfileCard extends StatelessWidget {
                   width: theme.sizes.s56,
                   height: theme.sizes.s56,
                   child: Center(
-                    child: AppProfilePic.s48(
-                        profile.author.value?.pictureUrl ?? ''),
+                    child: AppProfilePic.s48(profile.author.value),
                   ),
                 ),
                 const AppGap.s12(),

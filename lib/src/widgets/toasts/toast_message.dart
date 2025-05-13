@@ -1,28 +1,20 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:zaplab_design/src/utils/timestamp_formatter.dart';
+import 'package:models/models.dart';
 
 class AppToastMessage extends StatelessWidget {
-  final String message;
-  final String profilePicUrl;
-  final String? profileName;
-  final DateTime? timestamp;
+  final ChatMessage message;
   final VoidCallback? onTap;
 
   const AppToastMessage({
     super.key,
     required this.message,
-    required this.profilePicUrl,
-    this.profileName,
-    this.timestamp,
     this.onTap,
   });
 
   static void show(
     BuildContext context, {
-    required String message,
-    required String profilePicUrl,
-    String? profileName,
-    DateTime? timestamp,
+    required ChatMessage message,
     Duration? duration,
     VoidCallback? onTap,
   }) {
@@ -33,9 +25,6 @@ class AppToastMessage extends StatelessWidget {
       children: [
         AppToastMessage(
           message: message,
-          profilePicUrl: profilePicUrl,
-          profileName: profileName,
-          timestamp: timestamp,
         ),
       ],
     );
@@ -48,7 +37,7 @@ class AppToastMessage extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppProfilePic.s32(profilePicUrl),
+        AppProfilePic.s32(message.author.value),
         const AppGap.s8(),
         Expanded(
           child: AppContainer(
@@ -72,27 +61,25 @@ class AppToastMessage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    if (profileName != null)
-                      Flexible(
-                        child: AppText.bold12(
-                          profileName!,
-                          color: theme.colors.white66,
-                          maxLines: 1,
-                          textOverflow: TextOverflow.ellipsis,
-                        ),
+                    Flexible(
+                      child: AppText.bold12(
+                        message.author.value?.name ??
+                            formatNpub(message.author.value?.npub ?? ''),
+                        color: theme.colors.white66,
+                        maxLines: 1,
+                        textOverflow: TextOverflow.ellipsis,
                       ),
-                    if (timestamp != null) ...[
-                      const AppGap.s8(),
-                      AppText.reg12(
-                        TimestampFormatter.format(timestamp!,
-                            format: TimestampFormat.relative),
-                        color: theme.colors.white33,
-                      ),
-                    ],
+                    ),
+                    const AppGap.s8(),
+                    AppText.reg12(
+                      TimestampFormatter.format(message.createdAt,
+                          format: TimestampFormat.relative),
+                      color: theme.colors.white33,
+                    ),
                   ],
                 ),
                 AppText.reg14(
-                  message,
+                  message.content,
                   maxLines: 1,
                   textOverflow: TextOverflow.ellipsis,
                 ),

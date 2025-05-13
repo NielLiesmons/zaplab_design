@@ -60,9 +60,9 @@ class AppNDownParser {
       }
 
       // Unordered lists
-      if (line.startsWith('-') ||
-          line.startsWith('*') ||
-          line.startsWith('+')) {
+      if ((line.startsWith('- ') ||
+          line.startsWith('* ') ||
+          line.startsWith('+ '))) {
         final int level = _countLeadingIndent(line);
         final String content = line.replaceAll(RegExp(r'^[-*+]\s*'), '').trim();
 
@@ -245,8 +245,8 @@ class AppNDownParser {
       if (linkMatch != null) {
         elements.add(LongTextElement(
           type: LongTextElementType.link,
-          content: linkMatch.group(2)!,
-          attributes: {'text': linkMatch.group(1)!},
+          content: linkMatch.group(1)!,
+          attributes: {'url': linkMatch.group(2)!},
         ));
         currentPos = linkMatch.end;
         continue;

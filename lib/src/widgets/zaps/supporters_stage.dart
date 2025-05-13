@@ -21,8 +21,7 @@ class AppSupportersStage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              AppProfilePic.s56(
-                  topThreeSupporters[0].author.value?.pictureUrl ?? ''),
+              AppProfilePic.s56(topThreeSupporters[0].author.value),
               const SizedBox(height: 8),
               SizedBox(
                 width: double.infinity,
@@ -71,8 +70,7 @@ class AppSupportersStage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              AppProfilePic.s56(
-                  topThreeSupporters[1].author.value?.pictureUrl ?? ''),
+              AppProfilePic.s56(topThreeSupporters[1].author.value),
               const SizedBox(height: 8),
               SizedBox(
                 width: double.infinity,
@@ -121,8 +119,7 @@ class AppSupportersStage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              AppProfilePic.s56(
-                  topThreeSupporters[2].author.value?.pictureUrl ?? ''),
+              AppProfilePic.s56(topThreeSupporters[2].author.value),
               const SizedBox(height: 8),
               SizedBox(
                 width: double.infinity,

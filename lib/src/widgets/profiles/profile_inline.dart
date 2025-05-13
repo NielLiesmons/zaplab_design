@@ -29,8 +29,10 @@ class AppProfileInline extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 160),
           child: IntrinsicWidth(
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
+                const AppGap.s2(),
                 if (profile.pictureUrl != null &&
                     profile.pictureUrl!.isNotEmpty)
                   Transform.translate(
@@ -38,20 +40,18 @@ class AppProfileInline extends StatelessWidget {
                         ? const Offset(0, -0.1)
                         : const Offset(0, 0.2),
                     child: isCompact
-                        ? AppProfilePic.s16(profile.pictureUrl ?? '',
-                            onTap: onTap)
-                        : AppProfilePic.s20(profile.pictureUrl ?? '',
-                            onTap: onTap),
+                        ? AppProfilePic.s16(profile, onTap: onTap)
+                        : AppProfilePic.s20(profile, onTap: onTap),
                   )
                 else
                   isCompact
-                      ? AppProfilePic.s16('non-functional url', onTap: onTap)
-                      : AppProfilePic.s20('non-functional url', onTap: onTap),
+                      ? AppProfilePic.s16(null, onTap: onTap)
+                      : AppProfilePic.s20(null, onTap: onTap),
                 const AppGap.s4(),
-                Flexible(
-                  child: Transform.translate(
-                    offset: const Offset(0, -0.2),
-                    child: profile.name!.isNotEmpty
+                Column(
+                  children: [
+                    isCompact ? const AppGap.s2() : const SizedBox.shrink(),
+                    profile.name!.isNotEmpty
                         ? (isArticle == false)
                             ? isEditableText == true
                                 ? AppText.med16(
@@ -106,7 +106,7 @@ class AppProfileInline extends StatelessWidget {
                                 maxLines: 1,
                                 textOverflow: TextOverflow.ellipsis,
                               ),
-                  ),
+                  ],
                 ),
               ],
             ),

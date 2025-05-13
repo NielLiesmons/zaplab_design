@@ -10,6 +10,7 @@ class AppCompactTextRenderer extends StatelessWidget {
   final bool shouldTruncate;
   final bool isMedium;
   final bool isWhite;
+  final Color? textColor;
 
   const AppCompactTextRenderer({
     super.key,
@@ -21,18 +22,20 @@ class AppCompactTextRenderer extends StatelessWidget {
     this.shouldTruncate = true,
     this.isMedium = false,
     this.isWhite = false,
+    this.textColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final parser = AppShortTextParser();
-    final elements = parser.parse(content);
+    final elements = parser.parse(content.replaceAll('\n', ' '));
     final theme = AppTheme.of(context);
 
     final textStyle =
         isMedium ? theme.typography.reg14 : theme.typography.reg12;
     final emojiSize = isMedium ? 18.0 : 16.0;
-    final textColor = isWhite ? theme.colors.white : theme.colors.white66;
+    final derivedTextColor =
+        isWhite ? theme.colors.white : (textColor ?? theme.colors.white66);
 
     final List<InlineSpan> spans = [];
     for (final element in elements) {
@@ -47,7 +50,7 @@ class AppCompactTextRenderer extends StatelessWidget {
           spans.add(TextSpan(
             text: '',
             style: textStyle.copyWith(
-              color: textColor,
+              color: derivedTextColor,
             ),
           ));
 
@@ -69,11 +72,11 @@ class AppCompactTextRenderer extends StatelessWidget {
                 isMedium
                     ? AppText.reg14(
                         urls.length > 1 ? '${urls.length} Images  ' : 'Image  ',
-                        color: textColor,
+                        color: derivedTextColor.withValues(alpha: 0.44),
                       )
                     : AppText.reg12(
                         urls.length > 1 ? '${urls.length} Images  ' : 'Image  ',
-                        color: textColor,
+                        color: derivedTextColor.withValues(alpha: 0.44),
                       ),
               ],
             ),
@@ -143,26 +146,36 @@ class AppCompactTextRenderer extends StatelessWidget {
                                           'nostr'
                                       ? 'Nostr Publication  '
                                       : getModelContentType(
-                                                  snapshot.data?.model)[0]
-                                              .toUpperCase() +
-                                          getModelContentType(
-                                                  snapshot.data?.model)
-                                              .substring(1) +
-                                          ("  "),
-                                  color: textColor,
+                                                  snapshot.data?.model) ==
+                                              'chat'
+                                          ? 'Message  '
+                                          : getModelContentType(
+                                                      snapshot.data?.model)[0]
+                                                  .toUpperCase() +
+                                              getModelContentType(
+                                                      snapshot.data?.model)
+                                                  .substring(1) +
+                                              ("  "),
+                                  color:
+                                      derivedTextColor.withValues(alpha: 0.44),
                                 )
                               : AppText.reg12(
                                   getModelContentType(snapshot.data?.model) ==
                                           'nostr'
                                       ? 'Nostr Publication  '
                                       : getModelContentType(
-                                                  snapshot.data?.model)[0]
-                                              .toUpperCase() +
-                                          getModelContentType(
-                                                  snapshot.data?.model)
-                                              .substring(1) +
-                                          ("  "),
-                                  color: textColor,
+                                                  snapshot.data?.model) ==
+                                              'chat'
+                                          ? 'Message  '
+                                          : getModelContentType(
+                                                      snapshot.data?.model)[0]
+                                                  .toUpperCase() +
+                                              getModelContentType(
+                                                      snapshot.data?.model)
+                                                  .substring(1) +
+                                              ("  "),
+                                  color:
+                                      derivedTextColor.withValues(alpha: 0.44),
                                 ),
                         ],
                       );
@@ -202,11 +215,11 @@ class AppCompactTextRenderer extends StatelessWidget {
                       isMedium
                           ? AppText.reg14(
                               'Audio Message  ',
-                              color: textColor,
+                              color: derivedTextColor.withValues(alpha: 0.44),
                             )
                           : AppText.reg12(
                               'Audio Message  ',
-                              color: textColor,
+                              color: derivedTextColor.withValues(alpha: 0.44),
                             ),
                     ],
                   ),
@@ -224,7 +237,7 @@ class AppCompactTextRenderer extends StatelessWidget {
               spans.add(TextSpan(
                 text: '',
                 style: textStyle.copyWith(
-                  color: textColor,
+                  color: derivedTextColor,
                 ),
               ));
 
@@ -248,13 +261,13 @@ class AppCompactTextRenderer extends StatelessWidget {
                             urls.length > 1
                                 ? '${urls.length} Images  '
                                 : 'Image  ',
-                            color: textColor,
+                            color: derivedTextColor.withValues(alpha: 0.44),
                           )
                         : AppText.reg12(
                             urls.length > 1
                                 ? '${urls.length} Images  '
                                 : 'Image  ',
-                            color: textColor,
+                            color: derivedTextColor.withValues(alpha: 0.44),
                           ),
                   ],
                 ),
@@ -279,9 +292,16 @@ class AppCompactTextRenderer extends StatelessWidget {
                       FutureBuilder<({Profile profile, VoidCallback? onTap})>(
                     future: onResolveProfile(child.content),
                     builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return AppText.reg12(
+                          '@${child.content}',
+                          color: theme.colors.blurpleLightColor,
+                        );
+                      }
                       return AppProfileInline(
                         profile: snapshot.data!.profile,
                         onTap: snapshot.data?.onTap,
+                        isCompact: true,
                       );
                     },
                   ),
@@ -319,7 +339,9 @@ class AppCompactTextRenderer extends StatelessWidget {
             spans.add(TextSpan(
               text: child.content,
               style: textStyle.copyWith(
-                color: theme.colors.blurpleLightColor,
+                color: isWhite
+                    ? theme.colors.blurpleLightColor
+                    : theme.colors.blurpleLightColor66,
               ),
             ));
           } else if (child.type == AppShortTextElementType.monospace) {
@@ -349,7 +371,7 @@ class AppCompactTextRenderer extends StatelessWidget {
                     ),
                     child: AppText.code(
                       child.content,
-                      color: textColor,
+                      color: derivedTextColor,
                       fontSize: 12,
                     ),
                   ),
@@ -360,7 +382,7 @@ class AppCompactTextRenderer extends StatelessWidget {
             spans.add(TextSpan(
               text: child.content,
               style: textStyle.copyWith(
-                color: textColor,
+                color: derivedTextColor,
               ),
             ));
           } else if (child.type == AppShortTextElementType.emoji) {
@@ -394,7 +416,7 @@ class AppCompactTextRenderer extends StatelessWidget {
             spans.add(TextSpan(
               text: child.content,
               style: textStyle.copyWith(
-                color: textColor,
+                color: derivedTextColor,
                 fontWeight: (child.attributes?['style'] == 'bold' ||
                         child.attributes?['style'] == 'bold-italic')
                     ? FontWeight.bold
@@ -417,7 +439,7 @@ class AppCompactTextRenderer extends StatelessWidget {
         spans.add(TextSpan(
           text: element.content,
           style: textStyle.copyWith(
-            color: textColor,
+            color: derivedTextColor,
           ),
         ));
       }

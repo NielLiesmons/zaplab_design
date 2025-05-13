@@ -41,7 +41,7 @@ class AppCommunityCard extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  AppProfilePic.s18(profile!.pictureUrl ?? ''),
+                  AppProfilePic.s18(profile!),
                   const AppGap.s8(),
                   AppText.reg12(
                       "${profile!.name ?? formatNpub(profile!.npub)} is $profileLabel",
@@ -57,7 +57,7 @@ class AppCommunityCard extends StatelessWidget {
             ),
             child: Row(
               children: [
-                AppProfilePic.s56(community.author.value?.pictureUrl ?? ''),
+                AppProfilePic.s56(community.author.value),
                 const AppGap.s12(),
                 Flexible(
                   child: Column(

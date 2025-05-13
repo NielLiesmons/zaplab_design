@@ -6,6 +6,7 @@ class AppSelectorButton extends StatelessWidget {
   final List<Widget> unselectedContent;
   final bool isSelected;
   final bool emphasized;
+  final bool small;
   final VoidCallback? onTap;
 
   const AppSelectorButton({
@@ -15,6 +16,7 @@ class AppSelectorButton extends StatelessWidget {
     required this.isSelected,
     this.onTap,
     this.emphasized = false,
+    this.small = false,
   });
 
   @override
@@ -32,7 +34,7 @@ class AppSelectorButton extends StatelessWidget {
         return Transform.scale(
           scale: scaleFactor,
           child: AppContainer(
-            height: theme.sizes.s38,
+            height: small ? theme.sizes.s28 : theme.sizes.s38,
             decoration: BoxDecoration(
               gradient: isSelected && emphasized ? theme.colors.blurple : null,
               color: isSelected && !emphasized ? theme.colors.white16 : null,

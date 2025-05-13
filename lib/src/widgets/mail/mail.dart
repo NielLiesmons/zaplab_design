@@ -1,25 +1,28 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppThread extends StatelessWidget {
-  final Note thread;
+class AppMail extends StatelessWidget {
+  final Mail mail;
   // TODO: Implement reactions, zaps, and communities once HasMany is available
   // final List<ReplaceReaction> reactions;
   // final List<ReplaceZap> zaps;
-  final List<Community> communities;
+  final List<Profile> recipients;
+  final Profile? currentProfile;
+  final Function(Mail) onSwipeLeft;
+  final Function(Mail) onSwipeRight;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
 
-  const AppThread({
+  const AppMail({
     super.key,
-    required this.thread,
-    // TODO: Implement reactions, zaps, and communities once HasMany is available
-    // this.reactions = const [],
-    // this.zaps = const [],
-    this.communities = const [],
+    required this.mail,
+    required this.recipients,
+    required this.currentProfile,
+    required this.onSwipeLeft,
+    required this.onSwipeRight,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -31,20 +34,28 @@ class AppThread extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    return AppContainer(
-      padding: const AppEdgeInsets.only(
-        top: AppGapSize.s4,
-        left: AppGapSize.s12,
-        right: AppGapSize.s12,
-        bottom: AppGapSize.s12,
+    return AppSwipePanel(
+      leftContent: AppIcon.s16(
+        theme.icons.characters.reply,
+        outlineColor: theme.colors.white66,
+        outlineThickness: AppLineThicknessData.normal().medium,
       ),
+      rightContent: AppIcon.s10(
+        theme.icons.characters.chevronUp,
+        outlineColor: theme.colors.white66,
+        outlineThickness: AppLineThicknessData.normal().medium,
+      ),
+      onSwipeLeft: () => onSwipeLeft(mail),
+      onSwipeRight: () => onSwipeRight(mail),
+      padding: const AppEdgeInsets.all(AppGapSize.s12),
+      color: theme.colors.gray33,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppProfilePic.s48(thread.author.value),
+              AppProfilePic.s48(mail.author.value),
               const AppGap.s12(),
               Expanded(
                 child: Column(
@@ -54,32 +65,42 @@ class AppThread extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        AppText.bold14(thread.author.value?.name ??
-                            formatNpub(thread.author.value?.pubkey ?? '')),
+                        AppText.bold14(mail.author.value?.name ??
+                            formatNpub(mail.author.value?.pubkey ?? '')),
                         AppText.reg12(
-                          TimestampFormatter.format(thread.createdAt,
+                          TimestampFormatter.format(mail.createdAt,
                               format: TimestampFormat.relative),
                           color: theme.colors.white33,
                         ),
                       ],
                     ),
                     const AppGap.s6(),
-                    AppCommunityStack(
-                      communities: communities,
+                    Row(
+                      children: [
+                        AppText.reg12(
+                          'To:',
+                          color: theme.colors.white66,
+                        ),
+                        const AppGap.s6(),
+                        AppSmallProfileStack(
+                          profiles: recipients,
+                          currentProfile: currentProfile,
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          const AppGap.s12(),
+          const AppGap.s8(),
           AppContainer(
             padding: const AppEdgeInsets.symmetric(
               vertical: AppGapSize.none,
               horizontal: AppGapSize.s4,
             ),
             child: AppShortTextRenderer(
-              content: thread.content,
+              content: mail.content,
               onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,
               onResolveEmoji: onResolveEmoji,

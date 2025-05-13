@@ -76,7 +76,7 @@ class AppZapPill extends StatelessWidget {
                   ],
                 ),
                 const AppGap.s6(),
-                AppProfilePic.s18(zap.author.value?.pictureUrl ?? ''),
+                AppProfilePic.s18(zap.author.value),
               ],
             ),
           ),

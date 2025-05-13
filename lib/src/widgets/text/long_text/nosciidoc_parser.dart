@@ -57,7 +57,13 @@ class AppNosciiDocParser {
       }
 
       // Reset counters only when we hit a non-list item
-      if (!line.startsWith('.')) {
+      if (!line.startsWith('=') &&
+          !RegExp(r'^\*+\s')
+              .hasMatch(line) && // Match one or more * followed by space
+          !line.startsWith('.') &&
+          !line.startsWith('-') &&
+          !line.startsWith('+') &&
+          !line.startsWith(RegExp(r'^\d+\.'))) {
         _listCounter.reset();
         lastListLevel = null;
       }
@@ -98,9 +104,9 @@ class AppNosciiDocParser {
         }
       }
 
-      // Unordered lists
-      if (line.startsWith('*')) {
-        final int level = _countLeadingAsterisk(line);
+      // Unordered lists (including AsciiDoc's multiple asterisks)
+      if (RegExp(r'^\*+\s').hasMatch(line)) {
+        final int level = _countLeadingAsterisks(line);
         final String content = line.replaceAll(RegExp(r'^\*+\s*'), '').trim();
 
         // Check if it's a checklist item
@@ -110,9 +116,8 @@ class AppNosciiDocParser {
             elements.add(LongTextElement(
               type: LongTextElementType.checkListItem,
               content: content.substring(4).trim(), // Remove checkbox
-              level: level - 1,
+              level: level,
               checked: checked,
-              children: _parseStyledText(content.substring(4).trim()),
             ));
             continue;
           }
@@ -121,9 +126,10 @@ class AppNosciiDocParser {
         elements.add(LongTextElement(
           type: LongTextElementType.listItem,
           content: content,
-          level: level - 1,
-          children: _parseStyledText(content),
+          level: level,
+          children: _parseInlineContent(content),
         ));
+        continue;
       }
 
       // Ordered lists
@@ -309,7 +315,7 @@ class AppNosciiDocParser {
     return elements;
   }
 
-  int _countLeadingAsterisk(String line) {
+  int _countLeadingAsterisks(String line) {
     int count = 0;
     for (int i = 0; i < line.length; i++) {
       if (line[i] == '*') {
@@ -506,6 +512,113 @@ class AppNosciiDocParser {
     }
 
     return styledElements;
+  }
+
+  List<LongTextElement> _parseInlineContent(String text) {
+    final elements = <LongTextElement>[];
+    var currentPos = 0;
+
+    while (currentPos < text.length) {
+      // Handle bold
+      if (text.startsWith('**', currentPos)) {
+        final endPos = text.indexOf('**', currentPos + 2);
+        if (endPos != -1) {
+          elements.add(LongTextElement(
+            type: LongTextElementType.styledText,
+            content: text.substring(currentPos + 2, endPos),
+            attributes: {'style': 'bold'},
+          ));
+          currentPos = endPos + 2;
+          continue;
+        }
+      }
+
+      // Handle italic
+      if (text.startsWith('_', currentPos)) {
+        final endPos = text.indexOf('_', currentPos + 1);
+        if (endPos != -1) {
+          elements.add(LongTextElement(
+            type: LongTextElementType.styledText,
+            content: text.substring(currentPos + 1, endPos),
+            attributes: {'style': 'italic'},
+          ));
+          currentPos = endPos + 1;
+          continue;
+        }
+      }
+
+      // Handle monospace
+      if (text.startsWith('`', currentPos)) {
+        final endPos = text.indexOf('`', currentPos + 1);
+        if (endPos != -1) {
+          elements.add(LongTextElement(
+            type: LongTextElementType.monospace,
+            content: text.substring(currentPos + 1, endPos),
+          ));
+          currentPos = endPos + 1;
+          continue;
+        }
+      }
+
+      // Handle links
+      final linkMatch =
+          RegExp(r'\[(.*?)\]\((.*?)\)').matchAsPrefix(text, currentPos);
+      if (linkMatch != null) {
+        elements.add(LongTextElement(
+          type: LongTextElementType.link,
+          content: linkMatch.group(1)!,
+          attributes: {'url': linkMatch.group(2)!},
+        ));
+        currentPos = linkMatch.end;
+        continue;
+      }
+
+      // Handle plain URLs
+      final urlMatch = RegExp(
+        r'(?:https?:\/\/|www\.)([-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*))',
+        caseSensitive: false,
+      ).matchAsPrefix(text, currentPos);
+      if (urlMatch != null) {
+        elements.add(LongTextElement(
+          type: LongTextElementType.link,
+          content: urlMatch.group(0)!,
+        ));
+        currentPos = urlMatch.end;
+        continue;
+      }
+
+      // Handle plain text
+      final nextSpecial = _findNextSpecial(text, currentPos);
+      if (nextSpecial != -1) {
+        elements.add(LongTextElement(
+          type: LongTextElementType.styledText,
+          content: text.substring(currentPos, nextSpecial),
+        ));
+        currentPos = nextSpecial;
+      } else {
+        elements.add(LongTextElement(
+          type: LongTextElementType.styledText,
+          content: text.substring(currentPos),
+        ));
+        break;
+      }
+    }
+
+    return elements;
+  }
+
+  int _findNextSpecial(String text, int startPos) {
+    final specials = ['**', '_', '[', '`', 'http', 'www'];
+    var earliestPos = text.length;
+
+    for (final special in specials) {
+      final pos = text.indexOf(special, startPos);
+      if (pos != -1 && pos < earliestPos) {
+        earliestPos = pos;
+      }
+    }
+
+    return earliestPos < text.length ? earliestPos : -1;
   }
 }
 

@@ -5,7 +5,7 @@ typedef ZapResult = ({double amount, String message});
 
 class AppZapModal extends StatefulWidget {
   final Model model;
-  final List<({double amount, String profileImageUrl})> otherZaps;
+  final List<({double amount, Profile profile})> otherZaps;
   final List<double> recentAmounts;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
@@ -36,7 +36,7 @@ class AppZapModal extends StatefulWidget {
   static Future<({double amount, String message})?> show(
     BuildContext context, {
     required Model model,
-    List<({double amount, String profileImageUrl})> otherZaps = const [],
+    List<({double amount, Profile profile})> otherZaps = const [],
     List<double> recentAmounts = const [],
     required NostrEventResolver onResolveEvent,
     required NostrProfileResolver onResolveProfile,
@@ -66,7 +66,7 @@ class AppZapModal extends StatefulWidget {
                   AppZapSlider(
                     initialValue: amount,
                     otherZaps: otherZaps,
-                    profileImageUrl: model.author.value?.pictureUrl ?? '',
+                    profile: model.author.value,
                     recentAmounts: recentAmounts,
                     onValueChanged: (value) {
                       setState(() => amount = value);
@@ -149,7 +149,7 @@ class _AppZapModalState extends State<AppZapModal> {
               AppZapSlider(
                 initialValue: amount,
                 otherZaps: widget.otherZaps,
-                profileImageUrl: widget.model.author.value?.pictureUrl ?? '',
+                profile: widget.model.author.value,
                 recentAmounts: widget.recentAmounts,
                 onValueChanged: (value) {
                   setState(() => amount = value);

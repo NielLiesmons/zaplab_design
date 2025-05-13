@@ -21,7 +21,7 @@ class AppAppSmallCard extends StatelessWidget {
       padding: const AppEdgeInsets.all(AppGapSize.s12),
       child: Row(
         children: [
-          AppProfilePic.s38(app.icons.first),
+          AppProfilePic.s38(app.author.value),
           const AppGap.s12(),
           Expanded(
             child: Column(

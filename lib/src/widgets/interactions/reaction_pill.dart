@@ -66,7 +66,7 @@ class AppReactionPill extends StatelessWidget {
                     reaction.event.content,
                   ),
                 const AppGap.s6(),
-                AppProfilePic.s18(reaction.author.value?.pictureUrl ?? ''),
+                AppProfilePic.s18(reaction.author.value),
               ],
             ),
           ),

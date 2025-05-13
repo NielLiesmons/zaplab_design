@@ -11,19 +11,62 @@ class AppShortTextParser {
     for (int i = 0; i < lines.length; i++) {
       String line = lines[i].trim();
 
-      // Handle empty lines by creating empty paragraphs
+      // Handle empty lines
       if (line.isEmpty) {
-        elements.add(const AppShortTextElement(
-          type: AppShortTextElementType.paragraph,
-          content: '',
-          children: [
-            AppShortTextElement(
-              type: AppShortTextElementType.styledText,
-              content: '',
-            ),
-          ],
+        continue;
+      }
+
+      // Handle unordered lists
+      if (line.startsWith('- ') ||
+          line.startsWith('* ') ||
+          line.startsWith('+ ')) {
+        final int level = _countLeadingIndent(line);
+        final String content = line.replaceAll(RegExp(r'^[-*+]\s*'), '').trim();
+
+        elements.add(AppShortTextElement(
+          type: AppShortTextElementType.listItem,
+          content: content,
+          level: level,
+          children: _parseInlineContent(content),
         ));
         continue;
+      }
+
+      // Handle ordered lists
+      final orderedListMatch = RegExp(r'^\d+\.\s').firstMatch(line);
+      if (orderedListMatch != null) {
+        final int level = _countLeadingIndent(line);
+        final String content = line.replaceAll(RegExp(r'^\d+\.\s*'), '').trim();
+
+        elements.add(AppShortTextElement(
+          type: AppShortTextElementType.orderedListItem,
+          content: content,
+          level: level,
+          children: _parseInlineContent(content),
+        ));
+        continue;
+      }
+
+      // Handle headings
+      if (line.startsWith('#')) {
+        final int level = _countLeadingHashes(line);
+        print('Found heading with level $level: $line');
+        if (level >= 1 && level <= 5) {
+          final String content = line.replaceAll(RegExp(r'^#+\s*'), '').trim();
+          print('Creating heading element with content: $content');
+          elements.add(AppShortTextElement(
+            type: switch (level) {
+              1 => AppShortTextElementType.heading1,
+              2 => AppShortTextElementType.heading2,
+              3 => AppShortTextElementType.heading3,
+              4 => AppShortTextElementType.heading4,
+              5 => AppShortTextElementType.heading5,
+              _ => AppShortTextElementType.paragraph,
+            },
+            content: content,
+          ));
+          continue;
+        }
       }
 
       // Reset counters only when we hit a non-list item
@@ -241,6 +284,7 @@ class AppShortTextParser {
     final RegExp nostrModelPattern = RegExp(r'nostr:nevent1\w+');
     final RegExp nostrProfilePattern = RegExp(r'nostr:n(?:pub1|profile1)\w+');
     final RegExp emojiPattern = RegExp(r':([a-zA-Z0-9_-]+):');
+    final RegExp markdownLinkPattern = RegExp(r'\[([^\]]+)\]\(([^)]+)\)');
     final RegExp utfEmojiPattern = RegExp(
         r'[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F000}-\u{1F02F}]|[\u{1F0A0}-\u{1F0FF}]|[\u{1F100}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F1E6}-\u{1F1FF}]',
         unicode: true);
@@ -302,6 +346,8 @@ class AppShortTextParser {
           nostrProfilePattern.matchAsPrefix(text, currentPosition);
       final Match? emojiMatch =
           emojiPattern.matchAsPrefix(text, currentPosition);
+      final Match? markdownLinkMatch =
+          markdownLinkPattern.matchAsPrefix(text, currentPosition);
       final Match? hashtagMatch =
           hashtagPattern.matchAsPrefix(text, currentPosition);
       final Match? urlMatch = urlPattern.matchAsPrefix(text, currentPosition);
@@ -319,6 +365,7 @@ class AppShortTextParser {
         nostrModelMatch,
         nostrProfileMatch,
         emojiMatch,
+        markdownLinkMatch,
         urlMatch,
       ].where((m) => m != null).toList();
 
@@ -462,6 +509,12 @@ class AppShortTextParser {
         }
         currentPosition = nextPosition;
         continue;
+      } else if (firstMatch == markdownLinkMatch) {
+        styledElements.add(AppShortTextElement(
+          type: AppShortTextElementType.link,
+          content: firstMatch.group(1)!, // The link text
+          attributes: {'url': firstMatch.group(2)!}, // The URL
+        ));
       } else if (firstMatch == urlMatch) {
         styledElements.add(AppShortTextElement(
           type: AppShortTextElementType.link,
@@ -473,6 +526,40 @@ class AppShortTextParser {
     }
 
     return styledElements;
+  }
+
+  int _countLeadingHashes(String line) {
+    int count = 0;
+    for (int i = 0; i < line.length; i++) {
+      if (line[i] == '#') {
+        count++;
+      } else {
+        break;
+      }
+    }
+    return count;
+  }
+
+  int _countLeadingIndent(String line) {
+    int count = 0;
+    for (int i = 0; i < line.length; i++) {
+      if (line[i] == ' ') {
+        count++;
+      } else {
+        break;
+      }
+    }
+    return count;
+  }
+
+  List<AppShortTextElement> _parseInlineContent(String content) {
+    // For now, just return a single styled text element with the content
+    return [
+      AppShortTextElement(
+        type: AppShortTextElementType.styledText,
+        content: content,
+      ),
+    ];
   }
 }
 

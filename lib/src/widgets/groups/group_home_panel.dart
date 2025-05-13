@@ -75,7 +75,7 @@ class AppGroupHomePanel extends StatelessWidget {
                       clipBehavior: Clip.none,
                       children: [
                         AppProfilePic.s48(
-                          group.author.value?.pictureUrl ?? '',
+                          group.author.value,
                           onTap: () => onNavigateToGroup(group),
                         ),
                         Positioned(

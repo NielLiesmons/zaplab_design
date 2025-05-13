@@ -82,8 +82,7 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
           ),
           child: Row(
             children: [
-              AppProfilePic(item.profile.pictureUrl ?? '',
-                  size: AppProfilePicSize.s24),
+              AppProfilePic.s24(item.profile),
               const AppGap.s8(),
               Expanded(
                 child: AppText.med14(

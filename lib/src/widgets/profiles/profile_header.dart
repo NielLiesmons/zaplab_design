@@ -54,9 +54,7 @@ class AppProfileHeader extends StatelessWidget {
                     ),
                     Positioned(
                       top: -40,
-                      child: AppProfilePic.s80(
-                        profile.pictureUrl ?? '',
-                      ),
+                      child: AppProfilePic.s80(profile),
                     ),
                   ],
                 ),

@@ -12,7 +12,8 @@ class AppCommunityStack extends StatelessWidget {
   final List<Community> communities;
   final VoidCallback onTap;
 
-  List<Community> get _visibleCommunities => communities.take(5).toList();
+  List<Community> get _visibleCommunities =>
+      communities.take(5).toList().reversed.toList();
 
   @override
   Widget build(BuildContext context) {
@@ -95,11 +96,7 @@ class AppCommunityStack extends StatelessWidget {
                                     ],
                                   ),
                                   child: AppProfilePic.s20(
-                                    _visibleCommunities[i]
-                                            .author
-                                            .value
-                                            ?.pictureUrl ??
-                                        '',
+                                    _visibleCommunities[i].author.value!,
                                     onTap: onTap,
                                   ),
                                 ),

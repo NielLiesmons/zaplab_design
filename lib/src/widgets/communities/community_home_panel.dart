@@ -72,7 +72,7 @@ class AppCommunityHomePanel extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     AppProfilePic.s48(
-                      community.author.value?.pictureUrl ?? '',
+                      community.author.value,
                       onTap: () => onNavigateToCommunity(community),
                     ),
                     Expanded(
