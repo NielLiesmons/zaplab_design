@@ -23,7 +23,7 @@ class AppModelButton extends StatelessWidget {
       builder: (context, state, hasFocus) {
         double scaleFactor = 1.0;
         if (state == TapState.pressed) {
-          scaleFactor = 0.97;
+          scaleFactor = 0.99;
         } else if (state == TapState.hover) {
           scaleFactor = 1.01;
         }
@@ -31,6 +31,9 @@ class AppModelButton extends StatelessWidget {
         return Transform.scale(
           scale: scaleFactor,
           child: AppContainer(
+            constraints: const BoxConstraints(
+              maxWidth: 180,
+            ),
             padding: const AppEdgeInsets.symmetric(
               horizontal: AppGapSize.s8,
               vertical: AppGapSize.s6,
@@ -40,15 +43,20 @@ class AppModelButton extends StatelessWidget {
               borderRadius: theme.radius.asBorderRadius().rad8,
             ),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 AppEmojiContentType(
                   contentType: contentType,
-                  size: theme.sizes.s16,
+                  size: 16,
+                  opacity: 0.66,
                 ),
                 const AppGap.s8(),
-                AppText.reg12(
-                  displayText,
-                  color: theme.colors.white66,
+                Flexible(
+                  child: AppText.reg12(
+                    displayText,
+                    color: theme.colors.white66,
+                    textOverflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),

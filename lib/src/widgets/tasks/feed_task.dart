@@ -1,24 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:flutter/material.dart';
-
-enum TaskStatus {
-  open,
-  closed,
-  inProgress,
-  inReview,
-}
-
-extension TaskStatusExtension on TaskStatus {
-  TaskBoxState toTaskBoxState() {
-    return switch (this) {
-      TaskStatus.open => TaskBoxState.open,
-      TaskStatus.closed => TaskBoxState.closed,
-      TaskStatus.inProgress => TaskBoxState.inProgress,
-      TaskStatus.inReview => TaskBoxState.inReview,
-    };
-  }
-}
+import 'package:zaplab_design/src/widgets/tasks/task_box.dart';
 
 class LShapePainter extends CustomPainter {
   final Color color;
@@ -62,7 +45,6 @@ class AppFeedTask extends StatelessWidget {
   final Task task;
   final Function(Model) onTap;
   final bool isUnread;
-  final TaskStatus state;
   final List<Model>? taggedModels;
   final Function(Model)? onTaggedModelTap;
   final List<Task>? subTasks;
@@ -74,7 +56,6 @@ class AppFeedTask extends StatelessWidget {
     required this.task,
     required this.onTap,
     this.isUnread = false,
-    required this.state,
     this.taggedModels,
     this.onTaggedModelTap,
     this.subTasks,
@@ -118,7 +99,15 @@ class AppFeedTask extends StatelessWidget {
                       padding: const AppEdgeInsets.only(
                         right: AppGapSize.s12,
                       ),
-                      child: AppTaskBox(state: state.toTaskBoxState()),
+                      child: AppTaskBox(
+                        state: switch (task.status) {
+                          'closed' => TaskBoxState.closed,
+                          'open' => TaskBoxState.open,
+                          'inReview' => TaskBoxState.inReview,
+                          'inProgress' => TaskBoxState.inProgress,
+                          _ => TaskBoxState.open,
+                        },
+                      ),
                     ),
                     AppContainer(
                       width: 37,
@@ -126,12 +115,15 @@ class AppFeedTask extends StatelessWidget {
                       padding: const AppEdgeInsets.only(
                         left: AppGapSize.s12,
                       ),
-                      child: CustomPaint(
-                        painter: LShapePainter(
-                          color: theme.colors.white33,
-                          strokeWidth: AppLineThicknessData.normal().medium,
-                        ),
-                      ),
+                      child: (subTasks != null || taggedModels != null)
+                          ? CustomPaint(
+                              painter: LShapePainter(
+                                color: theme.colors.white33,
+                                strokeWidth:
+                                    AppLineThicknessData.normal().medium,
+                              ),
+                            )
+                          : null,
                     ),
                   ],
                 ),
@@ -158,7 +150,7 @@ class AppFeedTask extends StatelessWidget {
                               child: AppText.bold16(
                                 task.title ?? '',
                                 textOverflow: TextOverflow.ellipsis,
-                                maxLines: 1,
+                                maxLines: 2,
                               ),
                             ),
                           ),
@@ -177,29 +169,42 @@ class AppFeedTask extends StatelessWidget {
                       if (taggedModels != null || subTasks != null)
                         const AppGap.s8(),
                       if (taggedModels != null || subTasks != null)
-                        Row(
-                          children: [
-                            for (final model in taggedModels ?? [])
-                              AppModelButton(
-                                model: model,
-                                onTap: () => onTaggedModelTap!(model),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              for (final model in taggedModels ?? [])
+                                Row(
+                                  children: [
+                                    AppModelButton(
+                                      model: model,
+                                      onTap: () => onTaggedModelTap!(model),
+                                    ),
+                                    const AppGap.s8(),
+                                  ],
+                                ),
+                              Row(
+                                children: [
+                                  AppContainer(
+                                    padding: const AppEdgeInsets.symmetric(
+                                      horizontal: AppGapSize.s8,
+                                      vertical: AppGapSize.s6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: theme.colors.gray33,
+                                      borderRadius:
+                                          theme.radius.asBorderRadius().rad8,
+                                    ),
+                                    child: AppText.reg12(
+                                      '${subTasks?.length} Subtasks',
+                                      color: theme.colors.white33,
+                                    ),
+                                  ),
+                                  const AppGap.s8(),
+                                ],
                               ),
-                            for (final subTask in subTasks ?? [])
-                              AppContainer(
-                                padding: const AppEdgeInsets.symmetric(
-                                  horizontal: AppGapSize.s8,
-                                  vertical: AppGapSize.s6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: theme.colors.gray66,
-                                  borderRadius:
-                                      theme.radius.asBorderRadius().rad8,
-                                ),
-                                child: AppText.reg12(
-                                  '${subTasks?.length} Subtasks',
-                                ),
-                              ),
-                          ],
+                            ],
+                          ),
                         ),
                       const AppGap.s8(),
                       Row(

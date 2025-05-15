@@ -426,6 +426,12 @@ class AppIconSizesData extends Equatable {
     required this.s32,
     required this.s38,
     required this.s40,
+    required this.s48,
+    required this.s56,
+    required this.s64,
+    required this.s72,
+    required this.s80,
+    required this.s96,
   });
 
   factory AppIconSizesData.normal() => const AppIconSizesData(
@@ -442,6 +448,12 @@ class AppIconSizesData extends Equatable {
         s32: 32.0,
         s38: 38.0,
         s40: 40.0,
+        s48: 48.0,
+        s56: 56.0,
+        s64: 64.0,
+        s72: 72.0,
+        s80: 80.0,
+        s96: 96.0,
       );
 
   final double s4;
@@ -457,6 +469,12 @@ class AppIconSizesData extends Equatable {
   final double s32;
   final double s38;
   final double s40;
+  final double s48;
+  final double s56;
+  final double s64;
+  final double s72;
+  final double s80;
+  final double s96;
 
   @override
   List<Object?> get props => [
@@ -473,5 +491,11 @@ class AppIconSizesData extends Equatable {
         s32.named('s32'),
         s38.named('s38'),
         s40.named('s40'),
+        s48.named('s48'),
+        s56.named('s56'),
+        s64.named('s64'),
+        s72.named('s72'),
+        s80.named('s80'),
+        s96.named('s96'),
       ];
 }

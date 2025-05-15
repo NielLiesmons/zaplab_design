@@ -9,12 +9,18 @@ class AppShortTextParser {
     int? lastListLevel;
 
     for (int i = 0; i < lines.length; i++) {
-      String line = lines[i].trim();
+      String line = lines[i];
 
-      // Handle empty lines
+      // Handle empty lines by adding a line break
       if (line.isEmpty) {
+        elements.add(AppShortTextElement(
+          type: AppShortTextElementType.styledText,
+          content: '',
+        ));
         continue;
       }
+
+      line = line.trim();
 
       // Handle unordered lists
       if (line.startsWith('- ') ||

@@ -39,15 +39,15 @@ class AppSmallLabel extends StatelessWidget {
                 height: theme.sizes.s24,
                 constraints: const BoxConstraints(maxWidth: 200),
                 padding: const AppEdgeInsets.only(
-                  left: AppGapSize.s12,
+                  left: AppGapSize.s8,
                 ),
                 decoration: BoxDecoration(
                   color: isSelected || isEmphasized
                       ? theme.colors.blurpleColor33
                       : theme.colors.white8,
                   borderRadius: BorderRadius.only(
-                    topLeft: theme.radius.rad12,
-                    bottomLeft: theme.radius.rad12,
+                    topLeft: theme.radius.rad8,
+                    bottomLeft: theme.radius.rad8,
                   ),
                 ),
                 child: Row(
@@ -76,7 +76,7 @@ class AppSmallLabel extends StatelessWidget {
               ),
               // House shape
               CustomPaint(
-                size: const Size(22, 24),
+                size: const Size(20, 24),
                 painter: HouseShapePainter2(
                   color: isSelected || isEmphasized
                       ? theme.colors.blurpleColor33
@@ -108,15 +108,15 @@ class HouseShapePainter2 extends CustomPainter {
       ..moveTo(0, 0)
       ..lineTo(4, 0)
       ..arcToPoint(
-        Offset(14, 4),
+        Offset(12, 4),
         radius: const Radius.circular(16),
       )
-      ..lineTo(20, 10)
+      ..lineTo(18, 10)
       ..arcToPoint(
-        Offset(20, 14),
+        Offset(18, 14),
         radius: const Radius.circular(4),
       )
-      ..lineTo(14, 20)
+      ..lineTo(12, 20)
       ..arcToPoint(
         Offset(4, 24),
         radius: const Radius.circular(16),

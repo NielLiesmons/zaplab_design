@@ -137,6 +137,7 @@ class AppFeedArticle extends StatelessWidget {
                                           textOverflow: TextOverflow.ellipsis,
                                         ),
                                       ),
+                                      const AppGap.s4(),
                                       if (isUnread)
                                         AppContainer(
                                           margin: const AppEdgeInsets.only(

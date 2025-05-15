@@ -218,6 +218,72 @@ class GroupContentSection {
       {required this.content, required this.kinds, this.feeInSats});
 }
 
+// Job
+
+class Job extends ParameterizableReplaceableModel<Job> {
+  Job.fromMap(super.map, super.ref) : super.fromMap();
+  String? get title => event.getFirstTagValue('title');
+  String get content => event.content;
+  String? get location => event.getFirstTagValue('location');
+  String? get employmentType => event.getFirstTagValue('employment_type');
+  String get slug => event.getFirstTagValue('d')!;
+  DateTime? get publishedAt =>
+      event.getFirstTagValue('published_at')?.toInt()?.toDate();
+  Set<String> get labels => event.tags
+      .where((tag) => tag.length > 1 && tag[0] == 't')
+      .map((tag) => tag[1])
+      .toSet();
+
+  PartialJob copyWith({
+    String? title,
+    String? content,
+    String? location,
+    String? employmentType,
+    DateTime? publishedAt,
+  }) {
+    return PartialJob(
+      title ?? this.title ?? '',
+      content ?? event.content,
+      location: location ?? this.location,
+      employment: employmentType ?? this.employmentType,
+      publishedAt: publishedAt ?? this.publishedAt,
+    );
+  }
+}
+
+class PartialJob extends ParameterizableReplaceablePartialEvent<Job> {
+  PartialJob(String title, String content,
+      {DateTime? publishedAt,
+      String? slug,
+      Set<String>? labels,
+      String? location,
+      String? employment}) {
+    this.title = title;
+    this.publishedAt = publishedAt;
+    this.location = location;
+    this.employment = employment;
+    this.slug = slug ?? Utils.generateRandomHex64();
+    event.content = content;
+    if (labels != null) {
+      for (final label in labels) {
+        event.addTagValue('t', label);
+      }
+    }
+  }
+  set title(String value) => event.addTagValue('title', value);
+  set slug(String value) => event.addTagValue('d', value);
+  set content(String value) => event.content = value;
+  set location(String? value) => event.addTagValue('location', value);
+  set employment(String? value) => event.addTagValue('employment_type', value);
+  set publishedAt(DateTime? value) =>
+      event.addTagValue('published_at', value?.toSeconds().toString());
+  set labels(Set<String> value) {
+    for (final label in value) {
+      event.addTagValue('t', label);
+    }
+  }
+}
+
 // Mail
 
 class Mail extends RegularModel<Mail> {
@@ -287,6 +353,7 @@ class Task extends ParameterizableReplaceableModel<Task> {
   Task.fromMap(super.map, super.ref) : super.fromMap();
   String? get title => event.getFirstTagValue('title');
   String get content => event.content;
+  String? get status => event.getFirstTagValue('status');
   String get slug => event.getFirstTagValue('d')!;
   DateTime? get publishedAt =>
       event.getFirstTagValue('published_at')?.toInt()?.toDate();
@@ -294,11 +361,13 @@ class Task extends ParameterizableReplaceableModel<Task> {
   PartialTask copyWith({
     String? title,
     String? content,
+    String? status,
     DateTime? publishedAt,
   }) {
     return PartialTask(
       title ?? this.title ?? '',
       content ?? event.content,
+      status: status ?? this.status,
       publishedAt: publishedAt ?? this.publishedAt,
     );
   }
@@ -306,15 +375,18 @@ class Task extends ParameterizableReplaceableModel<Task> {
 
 class PartialTask extends ParameterizableReplaceablePartialEvent<Task> {
   PartialTask(String title, String content,
-      {DateTime? publishedAt, String? slug}) {
+      {DateTime? publishedAt, String? slug, String? status}) {
     this.title = title;
     this.publishedAt = publishedAt;
     this.slug = slug ?? Utils.generateRandomHex64();
+    this.status = status;
     event.content = content;
   }
   set title(String value) => event.addTagValue('title', value);
   set slug(String value) => event.addTagValue('d', value);
   set content(String value) => event.content = value;
+  set status(String? value) => event.addTagValue('status',
+      value); // This data should actually come from a separate event, not as part of the kind 35000
   set publishedAt(DateTime? value) =>
       event.addTagValue('published_at', value?.toSeconds().toString());
 }

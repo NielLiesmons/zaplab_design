@@ -75,6 +75,9 @@ export 'interactions/interaction_bar.dart';
 export 'interactions/reaction_pill.dart';
 export 'interactions/zap_pill.dart';
 
+// Jobs
+export 'jobs/feed_job.dart';
+
 // Keys
 export 'keys/slot_machine.dart';
 export 'keys/key_display.dart';

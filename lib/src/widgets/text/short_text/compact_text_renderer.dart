@@ -28,7 +28,7 @@ class AppCompactTextRenderer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final parser = AppShortTextParser();
-    final elements = parser.parse(content.replaceAll('\n', ' '));
+    final elements = parser.parse(content);
     final theme = AppTheme.of(context);
 
     final textStyle =
@@ -38,7 +38,32 @@ class AppCompactTextRenderer extends StatelessWidget {
         isWhite ? theme.colors.white : (textColor ?? theme.colors.white66);
 
     final List<InlineSpan> spans = [];
+    bool isFirstElement = true;
     for (final element in elements) {
+      if (element.type == AppShortTextElementType.heading1 ||
+          element.type == AppShortTextElementType.heading2 ||
+          element.type == AppShortTextElementType.heading3 ||
+          element.type == AppShortTextElementType.heading4 ||
+          element.type == AppShortTextElementType.heading5) {
+        if (!isFirstElement) {
+          spans.add(TextSpan(
+            text: ' ',
+            style: textStyle.copyWith(
+              color: derivedTextColor,
+            ),
+          ));
+        }
+        spans.add(TextSpan(
+          text: '${element.content} ',
+          style: textStyle.copyWith(
+            color: derivedTextColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ));
+        isFirstElement = false;
+        continue;
+      }
+      isFirstElement = false;
       if (element.type == AppShortTextElementType.images) {
         // Split by newlines and filter out any non-URL content
         final urls = element.content

@@ -61,12 +61,7 @@ class _AppAddProfileModalState extends State<AppAddProfileModal> {
                 controller: _controller,
                 focusNode: _focusNode,
                 singleLine: true,
-                placeholder: [
-                  AppText.reg16(
-                    'Profile Name',
-                    color: theme.colors.white33,
-                  ),
-                ],
+                placeholder: 'Profile Name',
               ),
               const AppGap.s16(),
               AppButton(

@@ -80,12 +80,12 @@ class AppFeedMail extends StatelessWidget {
                                 top: AppGapSize.s2,
                               ),
                               child: isUnread
-                                  ? AppText.bold14(
+                                  ? AppText.bold12(
                                       mail.author.value?.name ??
                                           formatNpub(
                                               mail.author.value?.pubkey ?? ''),
                                     )
-                                  : AppText.med14(
+                                  : AppText.med12(
                                       mail.author.value?.name ??
                                           formatNpub(
                                               mail.author.value?.pubkey ?? ''),
@@ -114,15 +114,15 @@ class AppFeedMail extends StatelessWidget {
                       ),
                       const AppGap.s2(),
                       isUnread
-                          ? AppText.med14(
+                          ? AppText.reg14(
                               mail.title ?? 'No Title',
-                              color: theme.colors.white66,
+                              color: theme.colors.white,
                               textOverflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             )
                           : AppText.reg14(
                               mail.title ?? 'No Title',
-                              color: theme.colors.white66,
+                              color: theme.colors.white,
                               textOverflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             ),
@@ -133,7 +133,6 @@ class AppFeedMail extends StatelessWidget {
                         onResolveProfile: onResolveProfile,
                         onResolveEmoji: onResolveEmoji,
                         maxLines: 1,
-                        textColor: theme.colors.white33,
                       ),
                     ],
                   ),
