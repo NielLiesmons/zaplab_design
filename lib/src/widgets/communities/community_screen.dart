@@ -37,6 +37,8 @@ class AppCommunityScreen extends StatefulWidget {
   final Function(Zap) onZapTap;
   // Initial tab
   final int? initialTab;
+  // History
+  final List<HistoryItem> history;
 
   const AppCommunityScreen({
     super.key,
@@ -65,6 +67,8 @@ class AppCommunityScreen extends StatefulWidget {
     required this.onZapTap,
     // Initial tab
     this.initialTab,
+    // History
+    this.history = const [],
   });
 
   @override
@@ -231,6 +235,8 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(
+        'AppCommunityScreen: History items: ${widget.history.map((i) => '${i.modelType} (${i.modelId})').join(', ')}');
     return AppScreen(
       alwaysShowTopBar: true,
       customTopBar: true,
@@ -240,6 +246,7 @@ class _AppCommunityScreenState extends State<AppCommunityScreen> {
         widget.mainCount ?? 0,
       ),
       onHomeTap: widget.onHomeTap ?? () {},
+      history: widget.history,
       child: AppContainer(
         width: double.infinity,
         child: Column(

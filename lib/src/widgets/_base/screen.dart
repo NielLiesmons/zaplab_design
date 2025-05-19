@@ -6,14 +6,18 @@ import 'package:zaplab_design/src/notifications/scroll_progress_notification.dar
 
 class HistoryItem {
   const HistoryItem({
-    required this.contentType,
-    required this.title,
-    // TODO: add callback and replace with Models
+    required this.modelType,
+    required this.modelId,
+    required this.displayText,
+    required this.timestamp,
+    this.onTap,
   });
 
-  final String contentType;
-  final String title;
-  // TODO: add callback and replace with Models
+  final String modelType;
+  final String modelId;
+  final String displayText;
+  final DateTime timestamp;
+  final VoidCallback? onTap;
 }
 
 class AppScreen extends StatefulWidget {
@@ -145,6 +149,9 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
     return baseHeight + historyHeight;
   }
 
+  bool get _shouldTreatAsEmpty =>
+      widget.history.isEmpty || !AppPlatformUtils.isMobile;
+
   void _handleScroll() {
     setState(() {
       _isAtTop = _scrollController.offset <= 0;
@@ -216,7 +223,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   void _handleDrag(double delta) {
     setState(() {
       // Check for empty history pop condition first
-      if (widget.history.isEmpty && _currentDrag + delta > 0) {
+      if (_shouldTreatAsEmpty && _currentDrag + delta > 0) {
         _currentDrag = (_currentDrag + delta).clamp(0, 40.0).toDouble();
         if (_currentDrag >= 40.0 && Navigator.canPop(context)) {
           // Only pop if we're not already in the process of popping
@@ -237,7 +244,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
   void _handleDragEnd(DragEndDetails details) {
     final velocity = details.velocity.pixelsPerSecond.dy;
 
-    if (widget.history.isEmpty && _currentDrag > 0) {
+    if (_shouldTreatAsEmpty && _currentDrag > 0) {
       _closeMenu();
       return;
     }
@@ -299,7 +306,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
               child: Stack(
                 children: [
                   // History menu
-                  if (widget.history.isNotEmpty)
+                  if (widget.history.isNotEmpty && AppPlatformUtils.isMobile)
                     Positioned(
                       left: 0,
                       right: 0,
@@ -456,49 +463,70 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                           child: BackdropFilter(
                                             filter: ImageFilter.blur(
                                                 sigmaX: 24, sigmaY: 24),
-                                            child: AppContainer(
-                                              decoration: BoxDecoration(
-                                                color: theme.colors.white8,
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft: theme.radius.rad16,
-                                                  topRight: theme.radius.rad16,
-                                                ),
-                                                border: Border(
-                                                  top: BorderSide(
-                                                    color: AppColorsData.dark()
-                                                        .white16,
-                                                    width: AppLineThicknessData
-                                                            .normal()
-                                                        .thin,
+                                            child: TapBuilder(
+                                              onTap: () {
+                                                widget.history[index].onTap
+                                                    ?.call();
+                                              },
+                                              builder:
+                                                  (context, state, hasFocus) {
+                                                return AppContainer(
+                                                  decoration: BoxDecoration(
+                                                    color: theme.colors.white8,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      topLeft:
+                                                          theme.radius.rad16,
+                                                      topRight:
+                                                          theme.radius.rad16,
+                                                    ),
+                                                    border: Border(
+                                                      top: BorderSide(
+                                                        color:
+                                                            AppColorsData.dark()
+                                                                .white16,
+                                                        width:
+                                                            AppLineThicknessData
+                                                                    .normal()
+                                                                .thin,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
-                                              padding:
-                                                  const AppEdgeInsets.symmetric(
-                                                horizontal: AppGapSize.s16,
-                                              ),
-                                              child: Center(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    AppText.reg12(
-                                                      widget.history[index]
-                                                          .contentType,
-                                                      color:
-                                                          theme.colors.white66,
+                                                  padding: const AppEdgeInsets
+                                                      .symmetric(
+                                                    horizontal: AppGapSize.s16,
+                                                  ),
+                                                  child: Center(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        AppText.reg12(
+                                                          widget.history[index]
+                                                              .modelType,
+                                                          color: theme
+                                                              .colors.white66,
+                                                        ),
+                                                        const AppGap.s8(),
+                                                        Expanded(
+                                                          child: AppText.reg12(
+                                                            widget
+                                                                .history[index]
+                                                                .displayText,
+                                                            color: theme
+                                                                .colors.white,
+                                                            maxLines: 1,
+                                                            textOverflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                    const AppGap.s8(),
-                                                    AppText.reg12(
-                                                      widget
-                                                          .history[index].title,
-                                                      color: theme.colors.white,
-                                                      textOverflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ),
                                         ),

@@ -156,11 +156,9 @@ class _AppSlotMachineState extends State<AppSlotMachine>
   void _generateNewKey() {
     // Generate a new mnemonic
     final mnemonic = AppKeyGenerator.generateMnemonic();
-    print('Generated mnemonic: $mnemonic');
 
     // Convert mnemonic to nsec
     final nsec = AppKeyGenerator.mnemonicToNsec(mnemonic);
-    print('Generated nsec: $nsec');
 
     // Verify the checksum
     final isValid = AppKeyGenerator.verifyNsecChecksum(nsec);
@@ -170,7 +168,6 @@ class _AppSlotMachineState extends State<AppSlotMachine>
     if (emojis == null) {
       throw Exception('Failed to generate emojis from nsec');
     }
-    print('Generated emojis: $emojis');
 
     setState(() {
       targetMnemonic = mnemonic;

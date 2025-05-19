@@ -14,6 +14,8 @@ String getModelContentType(Model? model) {
     Model<Book>() => 'book',
     Model<Task>() => 'task',
     Model<Repository>() => 'repo',
+    Model<Mail>() => 'mail',
+    Model<Job>() => 'job',
     _ => 'nostr',
   };
 }
@@ -26,7 +28,11 @@ String getModelDisplayText(Model<dynamic>? model) {
     Model<App>() => (model as App).name ?? 'App Name',
     Model<Book>() => (model as Book).title ?? 'Book Title',
     Model<Repository>() => (model as Repository).name ?? 'Repo Name',
-    _ => '',
+    Model<Community>() => (model as Community).name,
+    Model<Job>() => (model as Job).title ?? 'Job Title',
+    Model<Mail>() => (model as Mail).title ?? 'Mail Title',
+    Model<Task>() => (model as Task).title ?? 'Task Title',
+    _ => 'Nostr Publication',
   };
 }
 

@@ -63,6 +63,9 @@ export 'communities/community_home_panel.dart';
 export 'communities/community_screen.dart';
 export 'communities/community_welcome_header.dart';
 
+// History
+export 'history/history_card.dart';
+
 // Images
 export 'images/emoji_image.dart';
 export 'images/full_width_image.dart';

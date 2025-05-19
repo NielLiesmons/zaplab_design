@@ -41,6 +41,7 @@ class AppIconCharactersData extends Equatable {
     required this.arrowDown,
     required this.arrowUp,
     required this.at,
+    required this.attachment,
     required this.backup,
     required this.backspace,
     required this.bell,
@@ -88,6 +89,7 @@ class AppIconCharactersData extends Equatable {
     required this.list,
     required this.location,
     required this.magic,
+    required this.mail,
     required this.mic,
     required this.mints,
     required this.music,
@@ -136,6 +138,7 @@ class AppIconCharactersData extends Equatable {
         arrowDown: String.fromCharCodes([57344, 58323, 60960, 57526]),
         arrowUp: String.fromCharCodes([57344, 58045, 57440, 57469]),
         at: String.fromCharCodes([60468]),
+        attachment: String.fromCharCodes([57344, 59217, 59559, 57566]),
         backspace: String.fromCharCodes([58635, 60645, 57472]),
         backup: String.fromCharCodes([57344, 58676, 61323, 57407]),
         bold: String.fromCharCodes([58084, 60038]),
@@ -183,6 +186,7 @@ class AppIconCharactersData extends Equatable {
         list: String.fromCharCodes([58156, 57503]),
         location: String.fromCharCodes([59157, 61344, 57526]),
         magic: String.fromCharCodes([58926, 60059, 57358]),
+        mail: String.fromCharCodes([58161, 58808]),
         mic: String.fromCharCodes([57767, 57416]),
         mints: String.fromCharCodes([58930, 59014, 57346]),
         music: String.fromCharCodes([58935, 61155, 57350]),
@@ -229,6 +233,7 @@ class AppIconCharactersData extends Equatable {
   final String arrowDown;
   final String arrowUp;
   final String at;
+  final String attachment;
   final String backspace;
   final String backup;
   final String bell;
@@ -276,6 +281,7 @@ class AppIconCharactersData extends Equatable {
   final String list;
   final String location;
   final String magic;
+  final String mail;
   final String mic;
   final String mints;
   final String music;
@@ -323,6 +329,7 @@ class AppIconCharactersData extends Equatable {
         arrowDown.named('arrowDown'),
         arrowUp.named('arrowUp'),
         at.named('at'),
+        attachment.named('attachment'),
         backspace.named('backspace'),
         backup.named('backup'),
         bold.named('bold'),
@@ -370,6 +377,7 @@ class AppIconCharactersData extends Equatable {
         list.named('list'),
         location.named('location'),
         magic.named('magic'),
+        mail.named('mail'),
         mic.named('mic'),
         mints.named('mints'),
         music.named('music'),

@@ -64,7 +64,6 @@ RGBColor hexToColor(String hex) {
   final blue = ((b + m) * 255).round();
 
   final color = RGBColor(red, green, blue);
-  print('Generated color: ${color.toHex()}');
 
   return color;
 }

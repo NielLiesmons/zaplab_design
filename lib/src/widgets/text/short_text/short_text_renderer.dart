@@ -107,30 +107,22 @@ class AppShortTextRenderer extends StatelessWidget {
         elements[0].type == AppShortTextElementType.paragraph &&
         elements[0].children != null) {
       final children = elements[0].children!;
-      print('Analyzing paragraph with ${children.length} children');
       // Filter out whitespace and check if all remaining children are either emoji or utfEmoji
       final nonWhitespaceChildren = children.where((child) {
-        print('Child type: ${child.type}, content: ${child.content}');
         return child.type != AppShortTextElementType.styledText ||
             child.content.trim().isNotEmpty;
       }).toList();
-      print('Non-whitespace children count: ${nonWhitespaceChildren.length}');
 
       // Check if all non-whitespace children are either emoji or utfEmoji, and there are 1-2 of them
       if (nonWhitespaceChildren.length <= 2 &&
           nonWhitespaceChildren.every((child) =>
               child.type == AppShortTextElementType.emoji ||
               child.type == AppShortTextElementType.utfEmoji)) {
-        print('Detected singleEmoji content type');
         return ShortTextContentType.singleEmoji;
-      } else {
-        print(
-            'Not singleEmoji: ${nonWhitespaceChildren.length} children, types: ${nonWhitespaceChildren.map((c) => c.type).join(', ')}');
-      }
+      } else {}
     }
 
     // Mixed content
-    print('Falling back to mixed content type');
     return ShortTextContentType.mixed;
   }
 

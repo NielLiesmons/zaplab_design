@@ -28,6 +28,7 @@ class AppBase extends StatelessWidget {
   final VoidCallback? onHomeTap;
   final VoidCallback? onBackTap;
   final VoidCallback? onSearchTap;
+  final VoidCallback? onMailTap;
   final VoidCallback? onAddTap;
   final VoidCallback? onProfilesTap;
   final Widget? historyMenu;
@@ -49,6 +50,7 @@ class AppBase extends StatelessWidget {
     this.onHomeTap,
     this.onBackTap,
     this.onSearchTap,
+    this.onMailTap,
     this.onAddTap,
     this.onProfilesTap,
     this.historyMenu,
@@ -94,6 +96,7 @@ class AppBase extends StatelessWidget {
           colorMode: colorMode,
           onHomeTap: onHomeTap,
           onBackTap: onBackTap,
+          onMailTap: onMailTap,
           onSearchTap: onSearchTap,
           onAddTap: onAddTap,
           onProfilesTap: onProfilesTap,
@@ -119,6 +122,7 @@ class _AppBaseContent extends StatefulWidget {
   final VoidCallback? onHomeTap;
   final VoidCallback? onBackTap;
   final VoidCallback? onSearchTap;
+  final VoidCallback? onMailTap;
   final VoidCallback? onAddTap;
   final VoidCallback? onProfilesTap;
   final Widget? historyWidget;
@@ -137,6 +141,7 @@ class _AppBaseContent extends StatefulWidget {
     this.onHomeTap,
     this.onBackTap,
     this.onSearchTap,
+    this.onMailTap,
     this.onAddTap,
     this.onProfilesTap,
     this.historyWidget,
@@ -270,6 +275,23 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                         ),
                                         onTap: widget.onHomeTap!,
                                       ),
+                                    if (widget.onMailTap != null)
+                                      _buildSidebarItem(
+                                        context,
+                                        icon: AppIcon.s20(
+                                          AppTheme.of(context)
+                                              .icons
+                                              .characters
+                                              .mail,
+                                          outlineColor: AppTheme.of(context)
+                                              .colors
+                                              .white66,
+                                          outlineThickness:
+                                              AppLineThicknessData.normal()
+                                                  .medium,
+                                        ),
+                                        onTap: widget.onMailTap!,
+                                      ),
                                     if (widget.onSearchTap != null)
                                       _buildSidebarItem(
                                         context,
@@ -372,7 +394,7 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                         0,
                                       ),
                                       child: AppContainer(
-                                        width: 240,
+                                        width: 320,
                                         decoration: BoxDecoration(
                                           color: AppTheme.of(context)
                                               .colors
@@ -388,16 +410,22 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                             ),
                                           ),
                                         ),
-                                        child: Column(
-                                          children: [
-                                            const AppGap.s20(),
-                                            AppContainer(
-                                              padding: const AppEdgeInsets.all(
-                                                  AppGapSize.s12),
-                                              child: widget.historyWidget!,
-                                            ),
-                                            const Spacer(),
-                                          ],
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const AppGap.s20(),
+                                              AppContainer(
+                                                padding:
+                                                    const AppEdgeInsets.all(
+                                                        AppGapSize.s12),
+                                                child: AppScope(
+                                                  isInsideScope: true,
+                                                  child: widget.historyWidget!,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     );

@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:tap_builder/tap_builder.dart';
 
 class AppSearchField extends StatefulWidget {
-  final List<Widget>? placeholder;
+  final List<Widget>? placeholderWidget;
+  final String? placeholder;
   final void Function(String)? onChanged;
   final TextEditingController? controller;
   final FocusNode? focusNode;
@@ -15,6 +16,7 @@ class AppSearchField extends StatefulWidget {
 
   const AppSearchField({
     super.key,
+    this.placeholderWidget,
     this.placeholder,
     this.onChanged,
     this.controller,
@@ -41,6 +43,7 @@ class _AppSearchFieldState extends State<AppSearchField> {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final isInsideModal = ModalScope.of(context);
+    final isInsideScope = AppScope.of(context);
 
     final defaultTextStyle = theme.typography.reg16.copyWith(
       color: theme.colors.white,
@@ -54,7 +57,9 @@ class _AppSearchFieldState extends State<AppSearchField> {
     return AppContainer(
       decoration: BoxDecoration(
         color: widget.backgroundColor ??
-            (isInsideModal ? theme.colors.black33 : theme.colors.gray33),
+            (isInsideModal || isInsideScope
+                ? theme.colors.black33
+                : theme.colors.gray33),
         borderRadius: theme.radius.asBorderRadius().rad16,
         border: Border.all(
           color: theme.colors.white33,
@@ -103,7 +108,12 @@ class _AppSearchFieldState extends State<AppSearchField> {
                       focusNode: widget.focusNode,
                       onChanged: widget.onChanged,
                       contextMenuItems: widget.contextMenuItems,
-                      placeholder: widget.placeholder,
+                      placeholder: widget.placeholder != null
+                          ? [
+                              AppText.reg16(widget.placeholder!,
+                                  color: theme.colors.white33)
+                            ]
+                          : widget.placeholderWidget,
                       maxLines: widget.singleLine ? 1 : null,
                       minLines: widget.singleLine ? 1 : null,
                       textCapitalization: widget.autoCapitalize

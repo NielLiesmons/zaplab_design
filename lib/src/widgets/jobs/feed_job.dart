@@ -1,22 +1,16 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
 class AppJobCard extends StatelessWidget {
   final Job job;
   final void Function(Job) onTap;
   final bool? isUnread;
-  final NostrEventResolver onResolveEvent;
-  final NostrProfileResolver onResolveProfile;
-  final NostrEmojiResolver onResolveEmoji;
+
   const AppJobCard({
     super.key,
     required this.job,
     required this.onTap,
     this.isUnread = false,
-    required this.onResolveEvent,
-    required this.onResolveProfile,
-    required this.onResolveEmoji,
   });
   @override
   Widget build(BuildContext context) {

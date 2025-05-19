@@ -81,7 +81,6 @@ class _AppStartModalState extends State<AppStartModal> {
                 focusNode: _focusNode,
                 singleLine: true,
                 placeholder: 'Profile Name',
-                ,
               ),
               const AppGap.s16(),
               AppButton(

@@ -276,26 +276,15 @@ class AppModal extends StatelessWidget {
         measuringWidget,
         Builder(
           builder: (context) {
-            print('Modal Debug: Starting measurement setup');
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              print('Modal Debug: Post frame callback triggered');
               final RenderBox? box =
                   contentKey.currentContext?.findRenderObject() as RenderBox?;
               if (box != null) {
                 final contentHeight = box.size.height;
                 final maxAllowedHeight = screenHeight * 0.8;
-                print('Modal Debug:');
-                print('- Screen height: $screenHeight');
-                print('- Content height: $contentHeight');
-                print('- Max allowed height: $maxAllowedHeight');
-                print(
-                    '- Needs compact mode: ${contentHeight > maxAllowedHeight}');
-                print(
-                    '- Current compact mode value: ${_needsCompactMode.value}');
+
                 _needsCompactMode.value = contentHeight > maxAllowedHeight;
-              } else {
-                print('Modal Debug: Could not find render box for measurement');
-              }
+              } else {}
             });
             return modalContent;
           },
