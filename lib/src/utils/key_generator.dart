@@ -191,6 +191,14 @@ class AppKeyGenerator {
     return bech32;
   }
 
+  /// Converts a Nostr private key (nsec) to a hex-encoded private key
+  static String nsecToHex(String nsec) {
+    // Decode Bech32
+    final decoded = const Bech32Codec().decode(nsec);
+    final privateKeyBytes = _convertBits(decoded.data, 5, 8, false);
+    return HEX.encode(privateKeyBytes);
+  }
+
   /// Generates a new random key pair with mnemonic and emojis
   static KeyGeneratorResult generateNewKeys() {
     // Generate random 16 bytes (128 bits) for the first half

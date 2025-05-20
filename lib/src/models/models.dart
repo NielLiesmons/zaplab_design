@@ -16,8 +16,17 @@ String getModelContentType(Model? model) {
     Model<Repository>() => 'repo',
     Model<Mail>() => 'mail',
     Model<Job>() => 'job',
+    Model<Group>() => 'group',
+    Model<Community>() => 'community',
+    Model<Book>() => 'book',
     _ => 'nostr',
   };
+}
+
+String getModelName(Model? model) {
+  final type = getModelContentType(model);
+  if (type == 'nostr') return 'Nostr Publication';
+  return type[0].toUpperCase() + type.substring(1);
 }
 
 String getModelDisplayText(Model<dynamic>? model) {
@@ -32,7 +41,7 @@ String getModelDisplayText(Model<dynamic>? model) {
     Model<Job>() => (model as Job).title ?? 'Job Title',
     Model<Mail>() => (model as Mail).title ?? 'Mail Title',
     Model<Task>() => (model as Task).title ?? 'Task Title',
-    _ => 'Nostr Publication',
+    _ => model?.event.content ?? '',
   };
 }
 

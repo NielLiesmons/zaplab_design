@@ -29,7 +29,7 @@ class AppBookCard extends StatelessWidget {
         return Transform.scale(
           scale: scaleFactor,
           child: AppContainer(
-            width: 160,
+            width: 148,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
