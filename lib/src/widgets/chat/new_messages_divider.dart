@@ -13,11 +13,13 @@ class AppNewMessagesDivider extends StatelessWidget {
     final theme = AppTheme.of(context);
     return AppContainer(
       padding: const AppEdgeInsets.symmetric(vertical: AppGapSize.s16),
-      child: Stack(
-        alignment: Alignment.center,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
         children: [
           // Divider that spans the full width
-          const AppDivider(),
+          Expanded(
+            child: const AppDivider(),
+          ),
           // Centered text container
           AppContainer(
             padding: const AppEdgeInsets.symmetric(
@@ -32,6 +34,9 @@ class AppNewMessagesDivider extends StatelessWidget {
               text,
               color: theme.colors.white,
             ),
+          ),
+          Expanded(
+            child: const AppDivider(),
           ),
         ],
       ),

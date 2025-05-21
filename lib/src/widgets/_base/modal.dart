@@ -169,7 +169,8 @@ class AppModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final screenHeight = MediaQuery.of(context).size.height;
+    final screenHeight =
+        MediaQuery.of(context).size.height / theme.system.scale;
     final topBarVisible = ValueNotifier<bool>(false);
     final modalOffset = ValueNotifier<double>(0.0);
 
