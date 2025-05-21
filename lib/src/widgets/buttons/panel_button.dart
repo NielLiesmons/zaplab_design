@@ -11,6 +11,7 @@ class AppPanelButton extends StatelessWidget {
     this.color,
     this.gradient,
     this.padding,
+    this.radius,
     this.count,
     this.isLight = false,
   });
@@ -21,6 +22,7 @@ class AppPanelButton extends StatelessWidget {
   final Color? color;
   final Gradient? gradient;
   final AppEdgeInsets? padding;
+  final BorderRadius? radius;
   final int? count;
   final bool isLight;
 
@@ -48,6 +50,7 @@ class AppPanelButton extends StatelessWidget {
                 color: color,
                 gradient: gradient,
                 padding: padding,
+                radius: radius,
                 isLight: isLight,
                 child: child,
               ),

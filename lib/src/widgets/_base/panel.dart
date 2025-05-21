@@ -5,6 +5,7 @@ class AppPanel extends StatelessWidget {
   final AppEdgeInsets? padding;
   final Color? color;
   final Gradient? gradient;
+  final BorderRadius? radius;
   final bool isLight;
 
   const AppPanel({
@@ -13,6 +14,7 @@ class AppPanel extends StatelessWidget {
     this.padding,
     this.color,
     this.gradient,
+    this.radius,
     this.isLight = false,
   });
 
@@ -39,7 +41,7 @@ class AppPanel extends StatelessWidget {
                             : theme.colors.gray66))))
             : null,
         gradient: gradient,
-        borderRadius: theme.radius.asBorderRadius().rad16,
+        borderRadius: radius ?? theme.radius.asBorderRadius().rad16,
       ),
       child: child,
     );

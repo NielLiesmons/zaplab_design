@@ -10,6 +10,7 @@ class AppShortTextField extends StatefulWidget {
   final List<AppTextSelectionMenuItem>? contextMenuItems;
   final Color? backgroundColor;
   final ChatMessage? quotedChatMessage;
+  final CashuZap? quotedCashuZap;
   final Zap? quotedZap;
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
@@ -34,6 +35,7 @@ class AppShortTextField extends StatefulWidget {
     this.contextMenuItems,
     this.backgroundColor,
     this.quotedChatMessage,
+    this.quotedCashuZap,
     this.quotedZap,
     required this.onResolveEvent,
     required this.onResolveProfile,
@@ -127,7 +129,7 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (widget.quotedZap != null)
+          if (widget.quotedZap != null || widget.quotedCashuZap != null)
             AppContainer(
               padding: const AppEdgeInsets.only(
                 left: AppGapSize.s8,
@@ -135,12 +137,19 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
                 top: AppGapSize.s8,
                 bottom: AppGapSize.s2,
               ),
-              child: AppZapCard(
-                zap: widget.quotedZap!,
-                onResolveEvent: widget.onResolveEvent,
-                onResolveProfile: widget.onResolveProfile,
-                onResolveEmoji: widget.onResolveEmoji,
-              ),
+              child: widget.quotedZap != null
+                  ? AppZapCard(
+                      zap: widget.quotedZap!,
+                      onResolveEvent: widget.onResolveEvent,
+                      onResolveProfile: widget.onResolveProfile,
+                      onResolveEmoji: widget.onResolveEmoji,
+                    )
+                  : AppZapCard(
+                      cashuZap: widget.quotedCashuZap!,
+                      onResolveEvent: widget.onResolveEvent,
+                      onResolveProfile: widget.onResolveProfile,
+                      onResolveEmoji: widget.onResolveEmoji,
+                    ),
             ),
           if (widget.quotedChatMessage != null)
             AppContainer(

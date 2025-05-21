@@ -2,28 +2,35 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
 class AppZapCard extends StatelessWidget {
-  final Zap zap;
+  final Zap? zap;
+  final CashuZap? cashuZap;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
-  final Function(Zap)? onTap;
+  final Function(Model)? onTap;
 
   const AppZapCard({
     super.key,
-    required this.zap,
+    this.zap,
+    this.cashuZap,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
     this.onTap,
-  });
+  }) : assert(zap != null || cashuZap != null,
+            'Either zap or cashuZap must be provided');
 
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+    final isCashuZap = cashuZap != null;
+    final model = isCashuZap ? cashuZap! : zap!;
 
     return AppPanelButton(
       padding: const AppEdgeInsets.all(AppGapSize.none),
-      onTap: onTap!(zap),
+      gradient: theme.colors.graydient16,
+      radius: theme.radius.asBorderRadius().rad12,
+      onTap: onTap != null ? () => onTap!(model as Model) : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,12 +42,16 @@ class AppZapCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppProfilePic.s18(zap.author.value),
+                AppProfilePic.s18(
+                    isCashuZap ? cashuZap!.author.value : zap!.author.value),
                 const AppGap.s10(),
                 Expanded(
                   child: AppText.bold14(
-                    zap.author.value?.name ??
-                        formatNpub(zap.author.value?.pubkey ?? ''),
+                    isCashuZap
+                        ? cashuZap!.author.value?.name ??
+                            formatNpub(cashuZap!.author.value?.pubkey ?? '')
+                        : zap!.author.value?.name ??
+                            formatNpub(zap!.author.value?.pubkey ?? ''),
                   ),
                 ),
                 Row(
@@ -51,7 +62,9 @@ class AppZapCard extends StatelessWidget {
                     ),
                     const AppGap.s4(),
                     AppAmount(
-                      zap.amount.toDouble(),
+                      isCashuZap
+                          ? cashuZap!.amount.toDouble()
+                          : zap!.amount.toDouble(),
                       level: AppTextLevel.bold14,
                       color: theme.colors.white,
                     ),
@@ -60,7 +73,8 @@ class AppZapCard extends StatelessWidget {
               ],
             ),
           ),
-          if (zap.event.content.isNotEmpty) ...[
+          if ((isCashuZap ? cashuZap!.content : zap!.event.content)
+              .isNotEmpty) ...[
             const AppDivider.horizontal(),
             AppContainer(
               padding: const AppEdgeInsets.symmetric(
@@ -68,7 +82,7 @@ class AppZapCard extends StatelessWidget {
                 vertical: AppGapSize.s8,
               ),
               child: AppCompactTextRenderer(
-                content: zap.event.content,
+                content: isCashuZap ? cashuZap!.content : zap!.event.content,
                 onResolveEvent: onResolveEvent,
                 onResolveProfile: onResolveProfile,
                 onResolveEmoji: onResolveEmoji,

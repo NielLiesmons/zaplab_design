@@ -20,6 +20,7 @@ String getModelContentType(Model? model) {
     Model<Job>() => 'job',
     Model<Group>() => 'group',
     Model<Community>() => 'community',
+    Model<CashuZap>() => 'zap',
     _ => 'nostr',
   };
 }

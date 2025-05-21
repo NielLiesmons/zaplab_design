@@ -228,7 +228,7 @@ class AppActionsModal extends StatelessWidget {
               scale: scaleFactor,
               duration: AppDurationsData.normal().fast,
               curve: Curves.easeInOut,
-              child: model is ChatMessage
+              child: model is ChatMessage || model is CashuZap || model is Zap
                   ? TapBuilder(
                       onTap: () => onReplyTap(model),
                       builder: (context, state, hasFocus) {
@@ -244,12 +244,21 @@ class AppActionsModal extends StatelessWidget {
                           padding: const AppEdgeInsets.all(AppGapSize.s8),
                           child: Column(
                             children: [
-                              AppQuotedMessage(
-                                chatMessage: model,
-                                onResolveEvent: onResolveEvent,
-                                onResolveProfile: onResolveProfile,
-                                onResolveEmoji: onResolveEmoji,
-                              ),
+                              model is CashuZap || model is Zap
+                                  ? AppZapCard(
+                                      zap: model is Zap ? model : null,
+                                      cashuZap:
+                                          model is CashuZap ? model : null,
+                                      onResolveEvent: onResolveEvent,
+                                      onResolveProfile: onResolveProfile,
+                                      onResolveEmoji: onResolveEmoji,
+                                    )
+                                  : AppQuotedMessage(
+                                      chatMessage: model as ChatMessage,
+                                      onResolveEvent: onResolveEvent,
+                                      onResolveProfile: onResolveProfile,
+                                      onResolveEmoji: onResolveEmoji,
+                                    ),
                               AppContainer(
                                 padding: const AppEdgeInsets.only(
                                   left: AppGapSize.s8,
