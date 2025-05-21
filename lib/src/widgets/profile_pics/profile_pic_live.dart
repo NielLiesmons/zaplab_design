@@ -1,5 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:models/models.dart';
 
 enum AppProfilePicLiveSize {
   s38,
@@ -14,44 +15,65 @@ enum AppProfilePicLiveSize {
 }
 
 class AppProfilePicLive extends StatelessWidget {
+  final String? profilePicUrl;
+  final Profile? profile;
+  final AppProfilePicLiveSize size;
+  final VoidCallback onTap;
+
   AppProfilePicLive(
+    this.profile, {
+    super.key,
+    this.size = AppProfilePicLiveSize.s38,
+    VoidCallback? onTap,
+  })  : onTap = onTap ?? (() {}),
+        profilePicUrl = null;
+
+  AppProfilePicLive.fromUrl(
     this.profilePicUrl, {
     super.key,
     this.size = AppProfilePicLiveSize.s38,
     VoidCallback? onTap,
-  }) : onTap = onTap ?? (() {});
+  })  : onTap = onTap ?? (() {}),
+        profile = null;
 
-  AppProfilePicLive.s38(this.profilePicUrl, {super.key, VoidCallback? onTap})
+  AppProfilePicLive.s38(this.profile, {super.key, VoidCallback? onTap})
       : size = AppProfilePicLiveSize.s38,
-        onTap = onTap ?? (() {});
-  AppProfilePicLive.s40(this.profilePicUrl, {super.key, VoidCallback? onTap})
+        onTap = onTap ?? (() {}),
+        profilePicUrl = null;
+  AppProfilePicLive.s40(this.profile, {super.key, VoidCallback? onTap})
       : size = AppProfilePicLiveSize.s40,
-        onTap = onTap ?? (() {});
-  AppProfilePicLive.s48(this.profilePicUrl, {super.key, VoidCallback? onTap})
+        onTap = onTap ?? (() {}),
+        profilePicUrl = null;
+  AppProfilePicLive.s48(this.profile, {super.key, VoidCallback? onTap})
       : size = AppProfilePicLiveSize.s48,
-        onTap = onTap ?? (() {});
-  AppProfilePicLive.s56(this.profilePicUrl, {super.key, VoidCallback? onTap})
+        onTap = onTap ?? (() {}),
+        profilePicUrl = null;
+  AppProfilePicLive.s56(this.profile, {super.key, VoidCallback? onTap})
       : size = AppProfilePicLiveSize.s56,
-        onTap = onTap ?? (() {});
-  AppProfilePicLive.s64(this.profilePicUrl, {super.key, VoidCallback? onTap})
+        onTap = onTap ?? (() {}),
+        profilePicUrl = null;
+  AppProfilePicLive.s64(this.profile, {super.key, VoidCallback? onTap})
       : size = AppProfilePicLiveSize.s64,
-        onTap = onTap ?? (() {});
-  AppProfilePicLive.s72(this.profilePicUrl, {super.key, VoidCallback? onTap})
+        onTap = onTap ?? (() {}),
+        profilePicUrl = null;
+  AppProfilePicLive.s72(this.profile, {super.key, VoidCallback? onTap})
       : size = AppProfilePicLiveSize.s72,
-        onTap = onTap ?? (() {});
-  AppProfilePicLive.s80(this.profilePicUrl, {super.key, VoidCallback? onTap})
+        onTap = onTap ?? (() {}),
+        profilePicUrl = null;
+  AppProfilePicLive.s80(this.profile, {super.key, VoidCallback? onTap})
       : size = AppProfilePicLiveSize.s80,
-        onTap = onTap ?? (() {});
-  AppProfilePicLive.s96(this.profilePicUrl, {super.key, VoidCallback? onTap})
+        onTap = onTap ?? (() {}),
+        profilePicUrl = null;
+  AppProfilePicLive.s96(this.profile, {super.key, VoidCallback? onTap})
       : size = AppProfilePicLiveSize.s96,
-        onTap = onTap ?? (() {});
-  AppProfilePicLive.s104(this.profilePicUrl, {super.key, VoidCallback? onTap})
+        onTap = onTap ?? (() {}),
+        profilePicUrl = null;
+  AppProfilePicLive.s104(this.profile, {super.key, VoidCallback? onTap})
       : size = AppProfilePicLiveSize.s104,
-        onTap = onTap ?? (() {});
+        onTap = onTap ?? (() {}),
+        profilePicUrl = null;
 
-  final String profilePicUrl;
-  final AppProfilePicLiveSize size;
-  final VoidCallback onTap;
+  String? get _effectiveUrl => profilePicUrl ?? profile?.pictureUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -105,28 +127,74 @@ class AppProfilePicLive extends StatelessWidget {
                   ),
                 ),
                 child: ClipOval(
-                  child: Image.network(
-                    profilePicUrl,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return const AppSkeletonLoader();
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      final fallbackIconSize = adjustedInnerSize2 * 0.6;
-                      return Center(
-                        child: Text(
-                          theme.icons.characters.profile,
-                          style: TextStyle(
-                            fontFamily: theme.icons.fontFamily,
-                            package: theme.icons.fontPackage,
-                            fontSize: fallbackIconSize,
-                            color: theme.colors.white33,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  child: _effectiveUrl != null && _effectiveUrl!.isNotEmpty
+                      ? Image.network(
+                          _effectiveUrl!,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return const AppSkeletonLoader();
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            if (profile != null) {
+                              return Container(
+                                color: Color(profileToColor(profile!))
+                                    .withValues(alpha: 0.66),
+                                child: profile!.name?.isNotEmpty == true
+                                    ? Center(
+                                        child: Text(
+                                          profile!.name![0].toUpperCase(),
+                                          style: TextStyle(
+                                            color: theme.colors.white66,
+                                            fontSize: adjustedInnerSize2 * 0.56,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                              );
+                            }
+                            final fallbackIconSize = adjustedInnerSize2 * 0.6;
+                            return Center(
+                              child: Text(
+                                theme.icons.characters.profile,
+                                style: TextStyle(
+                                  fontFamily: theme.icons.fontFamily,
+                                  package: theme.icons.fontPackage,
+                                  fontSize: fallbackIconSize,
+                                  color: theme.colors.white33,
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : profile != null
+                          ? Container(
+                              color: Color(profileToColor(profile!)),
+                              child: profile!.name?.isNotEmpty == true
+                                  ? Center(
+                                      child: Text(
+                                        profile!.name![0].toUpperCase(),
+                                        style: TextStyle(
+                                          color: theme.colors.white66,
+                                          fontSize: adjustedInnerSize2 * 0.56,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                            )
+                          : Center(
+                              child: Text(
+                                theme.icons.characters.profile,
+                                style: TextStyle(
+                                  fontFamily: theme.icons.fontFamily,
+                                  package: theme.icons.fontPackage,
+                                  fontSize: adjustedInnerSize2 * 0.6,
+                                  color: theme.colors.white33,
+                                ),
+                              ),
+                            ),
                 ),
               ),
             ],

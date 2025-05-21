@@ -171,7 +171,8 @@ class AppProfilePic extends StatelessWidget {
                       errorBuilder: (context, error, stackTrace) {
                         if (profile != null) {
                           return Container(
-                            color: Color(profileToColor(profile!)),
+                            color: Color(profileToColor(profile!))
+                                .withValues(alpha: 0.66),
                             child: profile!.name?.isNotEmpty == true
                                 ? Center(
                                     child: Text(

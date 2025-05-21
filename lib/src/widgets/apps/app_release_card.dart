@@ -33,7 +33,10 @@ class AppAppReleaseCard extends StatelessWidget {
           // App info header
           Row(
             children: [
-              AppProfilePicSquare.s56(app.icons.first),
+              AppProfilePicSquare.fromUrl(
+                app.icons.first,
+                size: AppProfilePicSquareSize.s56,
+              ),
               const AppGap.s16(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

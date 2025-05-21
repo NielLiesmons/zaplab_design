@@ -61,7 +61,7 @@ class AppSmallProfileStack extends StatelessWidget {
         return Transform.scale(
           scale: scaleFactor,
           child: AppContainer(
-            width: 240,
+            width: 210,
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
               child: Row(
