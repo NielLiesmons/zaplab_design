@@ -412,7 +412,9 @@ class AppShortTextRenderer extends StatelessWidget {
                       constraints: const BoxConstraints(maxWidth: 320),
                       child: AppModelCard(
                         model: snapshot.data?.model,
-                        onTap: snapshot.data?.onTap,
+                        onTap: snapshot.data?.onTap == null
+                            ? null
+                            : (model) => snapshot.data!.onTap!(),
                         onResolveEvent: onResolveEvent,
                         onResolveProfile: onResolveProfile,
                         onResolveEmoji: onResolveEmoji,

@@ -29,6 +29,7 @@ class AppScreen extends StatefulWidget {
   final bool alwaysShowTopBar;
   final bool customTopBar;
   final bool noTopGap;
+  final ScrollController? scrollController;
 
   const AppScreen({
     super.key,
@@ -40,6 +41,7 @@ class AppScreen extends StatefulWidget {
     this.alwaysShowTopBar = false,
     this.customTopBar = false,
     this.noTopGap = false,
+    this.scrollController,
   });
 
   static Future<T?> show<T>({
@@ -603,7 +605,8 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                   return false;
                                 },
                                 child: SingleChildScrollView(
-                                  controller: _scrollController,
+                                  controller: widget.scrollController ??
+                                      _scrollController,
                                   physics: const AlwaysScrollableScrollPhysics(
                                     parent: BouncingScrollPhysics(),
                                   ),

@@ -7,7 +7,7 @@ class AppModelCard extends StatelessWidget {
   final NostrProfileResolver? onResolveProfile;
   final NostrEmojiResolver? onResolveEmoji;
   final NostrHashtagResolver? onResolveHashtag;
-  final VoidCallback? onTap;
+  final Function(Model)? onTap;
 
   const AppModelCard({
     super.key,
@@ -74,6 +74,13 @@ class AppModelCard extends StatelessWidget {
           onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
           onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
+          onTap: onTap == null
+              ? null
+              : (message) {
+                  print(
+                      'AppModelCard: onTap called with message: ${message.id}');
+                  onTap!(message);
+                },
         ),
       );
     }
@@ -111,7 +118,7 @@ class AppModelCard extends StatelessWidget {
           horizontal: AppGapSize.s12,
           vertical: AppGapSize.s10,
         ),
-        onTap: onTap,
+        onTap: onTap!(model!),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

@@ -3,7 +3,7 @@ import 'package:models/models.dart';
 
 class AppThreadCard extends StatelessWidget {
   final Note thread;
-  final VoidCallback? onTap;
+  final Function(Note)? onTap;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -27,7 +27,7 @@ class AppThreadCard extends StatelessWidget {
           bottom: AppGapSize.s8,
           left: AppGapSize.s12,
           right: AppGapSize.s12),
-      onTap: onTap,
+      onTap: onTap!(thread),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

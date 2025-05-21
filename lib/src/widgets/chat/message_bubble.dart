@@ -36,7 +36,6 @@ class AppMessageBubble extends StatefulWidget {
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
-  final bool isTyping;
 
   const AppMessageBubble({
     super.key,
@@ -54,7 +53,6 @@ class AppMessageBubble extends StatefulWidget {
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
-    this.isTyping = false,
   });
 
   @override
@@ -113,10 +111,8 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
               outlineColor: theme.colors.white66,
               outlineThickness: AppLineThicknessData.normal().medium,
             ),
-            onSwipeLeft:
-                widget.isTyping ? null : () => widget.onReply(widget.message),
-            onSwipeRight:
-                widget.isTyping ? null : () => widget.onActions(widget.message),
+            onSwipeLeft: () => widget.onReply(widget.message),
+            onSwipeRight: () => widget.onActions(widget.message),
             child: MessageBubbleScope(
               isOutgoing: widget.isOutgoing,
               child: LayoutBuilder(
@@ -146,8 +142,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 if (widget.showHeader &&
-                                    !widget.isOutgoing &&
-                                    !widget.isTyping) ...[
+                                    !widget.isOutgoing) ...[
                                   AppContainer(
                                     padding: const AppEdgeInsets.only(
                                       left: AppGapSize.s4,
@@ -187,25 +182,14 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                 if (!widget.showHeader) const AppGap.s2(),
                                 if (contentType.isSingleContent)
                                   const AppGap.s4(),
-                                widget.isTyping
-                                    ? AppContainer(
-                                        height: theme.sizes.s38,
-                                        child: AppLoadingDots(
-                                          color: widget.isOutgoing
-                                              ? theme.colors.white
-                                              : theme.colors.white66,
-                                        ),
-                                      )
-                                    : AppShortTextRenderer(
-                                        content: widget.message.content,
-                                        onResolveEvent: widget.onResolveEvent,
-                                        onResolveProfile:
-                                            widget.onResolveProfile,
-                                        onResolveEmoji: widget.onResolveEmoji,
-                                        onResolveHashtag:
-                                            widget.onResolveHashtag,
-                                        onLinkTap: widget.onLinkTap,
-                                      ),
+                                AppShortTextRenderer(
+                                  content: widget.message.content,
+                                  onResolveEvent: widget.onResolveEvent,
+                                  onResolveProfile: widget.onResolveProfile,
+                                  onResolveEmoji: widget.onResolveEmoji,
+                                  onResolveHashtag: widget.onResolveHashtag,
+                                  onLinkTap: widget.onLinkTap,
+                                ),
                               ],
                             ),
                             // TODO: Uncomment and implement once HasMany is available

@@ -3,7 +3,7 @@ import 'package:models/models.dart';
 
 class AppArticleCard extends StatelessWidget {
   final Article article;
-  final VoidCallback? onTap;
+  final Function(Article)? onTap;
 
   const AppArticleCard({
     super.key,
@@ -18,7 +18,7 @@ class AppArticleCard extends StatelessWidget {
     return AppPanelButton(
       padding: const AppEdgeInsets.all(AppGapSize.none),
       isLight: true,
-      onTap: onTap,
+      onTap: () => onTap?.call(article),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

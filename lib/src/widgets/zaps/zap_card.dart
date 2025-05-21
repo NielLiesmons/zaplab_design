@@ -6,7 +6,7 @@ class AppZapCard extends StatelessWidget {
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
-  final VoidCallback? onTap;
+  final Function(Zap)? onTap;
 
   const AppZapCard({
     super.key,
@@ -23,7 +23,7 @@ class AppZapCard extends StatelessWidget {
 
     return AppPanelButton(
       padding: const AppEdgeInsets.all(AppGapSize.none),
-      onTap: onTap,
+      onTap: onTap!(zap),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

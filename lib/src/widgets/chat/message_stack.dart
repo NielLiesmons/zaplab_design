@@ -13,11 +13,10 @@ class AppMessageStack extends StatelessWidget {
   final Function(Model) onReply;
   final Function(Reaction) onReactionTap;
   final Function(Zap) onZapTap;
-  final bool isTyping;
 
   const AppMessageStack({
     super.key,
-    required this.messages,
+    this.messages = const [],
     this.isOutgoing = false,
     required this.onResolveEvent,
     required this.onResolveProfile,
@@ -28,7 +27,6 @@ class AppMessageStack extends StatelessWidget {
     required this.onReply,
     required this.onReactionTap,
     required this.onZapTap,
-    this.isTyping = false,
   });
 
   @override
@@ -67,7 +65,6 @@ class AppMessageStack extends StatelessWidget {
                         i == 0 && !isOutgoing, // Only show header for incoming
                     isLastInStack: i == messages.length - 1,
                     isOutgoing: isOutgoing,
-                    isTyping: isTyping && i == messages.length - 1,
                     onActions: onActions,
                     onReply: onReply,
                     onReactionTap: onReactionTap,

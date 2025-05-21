@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:models/models.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'dart:convert';
 
 // Model
 typedef NostrEventResolver = Future<({Model model, VoidCallback? onTap})>
@@ -18,7 +20,6 @@ String getModelContentType(Model? model) {
     Model<Job>() => 'job',
     Model<Group>() => 'group',
     Model<Community>() => 'community',
-    Model<Book>() => 'book',
     _ => 'nostr',
   };
 }
@@ -317,6 +318,48 @@ class PartialMail extends RegularPartialModel<Mail> {
       for (final pubkey in recipientPubkeys) {
         event.addTagValue('p', pubkey);
       }
+    }
+  }
+}
+
+// CashuZap
+
+class CashuZap extends RegularModel<CashuZap> {
+  CashuZap.fromMap(super.map, super.ref) : super.fromMap();
+
+  String get content => event.content;
+  String get proof => event.getFirstTagValue('proof') ?? '';
+  String get url => event.getFirstTagValue('u') ?? '';
+  String get zappedEventId => event.getFirstTagValue('e') ?? '';
+  String get recipientPubkey => event.getFirstTagValue('p') ?? '';
+
+  // Parse the proof JSON to get amount
+  int get amount {
+    try {
+      final proofJson = jsonDecode(proof);
+      return proofJson['amount'] as int? ?? 0;
+    } catch (_) {
+      return 0;
+    }
+  }
+}
+
+class PartialCashuZap extends RegularPartialModel<CashuZap> {
+  PartialCashuZap(
+    String content, {
+    required String proof,
+    required String url,
+    required String zappedEventId,
+    required String recipientPubkey,
+    DateTime? createdAt,
+  }) {
+    event.content = content;
+    event.addTagValue('proof', proof);
+    event.addTagValue('u', url);
+    event.addTagValue('e', zappedEventId);
+    event.addTagValue('p', recipientPubkey);
+    if (createdAt != null) {
+      event.createdAt = createdAt;
     }
   }
 }

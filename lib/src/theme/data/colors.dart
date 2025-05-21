@@ -193,8 +193,8 @@ class AppColorsData extends Equatable {
         ),
         gold16: LinearGradient(
           colors: [
-            const Color(0xFFFFC736).withValues(alpha: 0.16),
-            const Color(0xFFFFAD31).withValues(alpha: 0.16)
+            const Color(0xFFFFC736).withValues(alpha: 0.20),
+            const Color(0xFFFFAD31).withValues(alpha: 0.20)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -223,8 +223,8 @@ class AppColorsData extends Equatable {
         ),
         graydient16: LinearGradient(
           colors: [
-            const Color(0xFFFFFFFF).withValues(alpha: 0.16),
-            const Color(0xFFDBDBFF).withValues(alpha: 0.16)
+            const Color(0xFFFFFFFF).withValues(alpha: 0.20),
+            const Color(0xFFDBDBFF).withValues(alpha: 0.20)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -372,8 +372,8 @@ class AppColorsData extends Equatable {
         ),
         graydient16: LinearGradient(
           colors: [
-            const Color(0xFFFFFFFF).withValues(alpha: 0.16),
-            const Color(0xFFDBDBFF).withValues(alpha: 0.16)
+            const Color(0xFF535367).withValues(alpha: 0.20),
+            const Color(0xFF232323).withValues(alpha: 0.20)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
