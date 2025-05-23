@@ -43,7 +43,7 @@ class AppMessageStack extends StatelessWidget {
           ),
           const AppGap.s4(),
         ] else ...[
-          if (!isOutgoing &&
+          if (isOutgoing &&
               AppShortTextRenderer.analyzeContent(messages.first.content) !=
                   ShortTextContentType.singleImageStack)
             const AppGap.s64(),

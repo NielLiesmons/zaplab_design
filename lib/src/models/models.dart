@@ -406,6 +406,49 @@ class PartialRepository
       event.addTagValue('published_at', value?.toSeconds().toString());
 }
 
+// Service
+
+class Service extends ParameterizableReplaceableModel<Service> {
+  Service.fromMap(super.map, super.ref) : super.fromMap();
+  String? get title => event.getFirstTagValue('title');
+  String get content => event.content;
+  String? get imageUrl => event.getFirstTagValue('image_url');
+  String get slug => event.getFirstTagValue('d')!;
+  DateTime? get publishedAt =>
+      event.getFirstTagValue('published_at')?.toInt()?.toDate();
+
+  PartialService copyWith({
+    String? title,
+    String? content,
+    String? imageUrl,
+    DateTime? publishedAt,
+  }) {
+    return PartialService(
+      title ?? this.title ?? '',
+      content ?? event.content,
+      imageUrl: imageUrl ?? this.imageUrl,
+      publishedAt: publishedAt ?? this.publishedAt,
+    );
+  }
+}
+
+class PartialService extends ParameterizableReplaceablePartialEvent<Service> {
+  PartialService(String title, String content,
+      {DateTime? publishedAt, String? slug, String? imageUrl}) {
+    this.title = title;
+    this.imageUrl = imageUrl;
+    this.publishedAt = publishedAt;
+    this.slug = slug ?? Utils.generateRandomHex64();
+    event.content = content;
+  }
+  set title(String value) => event.addTagValue('title', value);
+  set imageUrl(String? value) => event.addTagValue('image_url', value);
+  set slug(String value) => event.addTagValue('d', value);
+  set content(String value) => event.content = value;
+  set publishedAt(DateTime? value) =>
+      event.addTagValue('published_at', value?.toSeconds().toString());
+}
+
 // Task
 
 class Task extends ParameterizableReplaceableModel<Task> {

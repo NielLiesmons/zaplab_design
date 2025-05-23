@@ -955,6 +955,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
                   maxLines: null,
                   minLines: 1,
                   textAlign: TextAlign.left,
+                  textCapitalization: TextCapitalization.sentences,
                   selectionControls: AppTextSelectionControls(),
                   enableInteractiveSelection: true,
                   showSelectionHandles: true,

@@ -17,9 +17,6 @@ export '_base/swipe_container.dart';
 export '_base/swipe_panel.dart';
 export '_base/switch.dart';
 
-// Actions
-export 'actions/actions_modal.dart';
-
 // Apps
 export 'apps/app_release_card.dart';
 export 'apps/app_small_card.dart';
@@ -135,6 +132,10 @@ export 'profile_pics/small_profile_stack.dart';
 // Selectors
 export 'selector/selector.dart';
 export 'selector/selector_button.dart';
+
+// Services
+export 'services/feed_service.dart';
+export 'services/service_card.dart';
 
 // Settings
 export 'settings/settings_screen.dart';
