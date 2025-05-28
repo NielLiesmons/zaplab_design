@@ -4,6 +4,11 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 class AppTabBar extends StatefulWidget {
+  final List<TabData> tabs;
+  final int selectedIndex;
+  final ValueChanged<int> onTabSelected;
+  final ValueChanged<int> onTabLongPress;
+  final ValueChanged<bool>? onExpansionChanged;
   const AppTabBar({
     super.key,
     required this.tabs,
@@ -12,12 +17,6 @@ class AppTabBar extends StatefulWidget {
     required this.onTabLongPress,
     this.onExpansionChanged,
   });
-
-  final List<TabData> tabs;
-  final int selectedIndex;
-  final ValueChanged<int> onTabSelected;
-  final ValueChanged<int> onTabLongPress;
-  final ValueChanged<bool>? onExpansionChanged;
 
   @override
   State<AppTabBar> createState() => AppTabBarState();
@@ -31,6 +30,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
   final _initialScrollPosition = 0;
   late Animation<double> _actionWidthAnimation;
   late Animation<double> _actionScaleAnimation;
+  // ignore: unused_field
   late Animation<double> _fullWidthAnimation;
   final Map<int, GlobalKey> _tabKeys = {};
   bool _isExpanded = false;
@@ -306,7 +306,14 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                                 count: widget.tabs[i].count,
                                 icon: widget.tabs[i].icon,
                                 isSelected: i == widget.selectedIndex,
-                                onTap: () => widget.onTabSelected(i),
+                                onTap: () {
+                                  if (i == widget.selectedIndex &&
+                                      widget.tabs[i].settingsContent != null) {
+                                    widget.onTabLongPress(i);
+                                  } else {
+                                    widget.onTabSelected(i);
+                                  }
+                                },
                                 onLongPress:
                                     widget.tabs[i].settingsContent != null
                                         ? () => widget.onTabLongPress(i)
@@ -340,8 +347,8 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                                       Offset(0, bounds.center.dy),
                                       Offset(theme.sizes.s64, bounds.center.dy),
                                       [
-                                        Color(0xFFFFFFFF),
-                                        Color(0x00000000),
+                                        const Color(0xFFFFFFFF),
+                                        const Color(0x00000000),
                                       ],
                                       [0.0, 1.0],
                                     );
@@ -438,8 +445,8 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                                           bounds.center.dy),
                                       Offset(bounds.width, bounds.center.dy),
                                       [
-                                        Color(0x00000000),
-                                        Color(0xFFFFFFFF),
+                                        const Color(0x00000000),
+                                        const Color(0xFFFFFFFF),
                                       ],
                                       [0.0, 1.0],
                                     );

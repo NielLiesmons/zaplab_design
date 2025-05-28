@@ -32,7 +32,7 @@ class AppBase extends StatelessWidget {
   final VoidCallback? onAddTap;
   final VoidCallback? onProfilesTap;
   final Widget? historyMenu;
-  final Profile? currentProfile;
+  final Profile? activeProfile;
 
   AppBase({
     super.key,
@@ -54,7 +54,7 @@ class AppBase extends StatelessWidget {
     this.onAddTap,
     this.onProfilesTap,
     this.historyMenu,
-    this.currentProfile,
+    this.activeProfile,
   }) {
     // Initialize window settings for desktop platforms
     if (AppPlatformUtils.isDesktop) {
@@ -101,7 +101,7 @@ class AppBase extends StatelessWidget {
           onAddTap: onAddTap,
           onProfilesTap: onProfilesTap,
           historyWidget: historyMenu,
-          currentProfile: currentProfile,
+          activeProfile: activeProfile,
         ),
       ),
     );
@@ -126,7 +126,7 @@ class _AppBaseContent extends StatefulWidget {
   final VoidCallback? onAddTap;
   final VoidCallback? onProfilesTap;
   final Widget? historyWidget;
-  final Profile? currentProfile;
+  final Profile? activeProfile;
 
   const _AppBaseContent({
     required this.title,
@@ -145,7 +145,7 @@ class _AppBaseContent extends StatefulWidget {
     this.onAddTap,
     this.onProfilesTap,
     this.historyWidget,
-    this.currentProfile,
+    this.activeProfile,
   });
 
   @override
@@ -328,8 +328,8 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                       ),
                                     const Spacer(),
                                     if (widget.onProfilesTap != null &&
-                                        widget.currentProfile != null)
-                                      AppProfilePic.s38(widget.currentProfile!,
+                                        widget.activeProfile != null)
+                                      AppProfilePic.s38(widget.activeProfile!,
                                           onTap: widget.onProfilesTap!),
                                     const AppGap.s12(),
                                   ],

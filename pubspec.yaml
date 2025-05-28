@@ -21,8 +21,8 @@ dependencies:
   just_waveform: ^0.0.6
   models:
     git:
-      url: https://github.com/purplebase/models.git
-      ref: "6d096b1"
+      url: https://github.com/purplebase/models
+      ref: 833faa
 
   crypto: ^3.0.3
   hex: ^0.2.0

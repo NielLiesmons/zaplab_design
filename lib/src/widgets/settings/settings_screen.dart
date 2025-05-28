@@ -10,7 +10,7 @@ class AppSettingsScreen extends StatefulWidget {
   final Function(Profile)? onViewProfile;
 
   // Current profile
-  final Profile currentProfile;
+  final Profile activeProfile;
 
   // Settings sections
   // IF: you want to specify custom sections and/or widgets THEN: use this list
@@ -22,14 +22,13 @@ class AppSettingsScreen extends StatefulWidget {
   final String? draftsDescription;
   final VoidCallback? onLabelsTap;
   final String? labelsDescription;
-  final VoidCallback? onAppearanceTap;
-  final String? appearanceDescription;
+  final VoidCallback? onPreferencesTap;
+  final String? preferencesDescription;
   final VoidCallback? onHostingTap;
   final String? hostingDescription;
-  final VoidCallback? onSecurityTap;
-  final String? securityDescription;
-  final VoidCallback? onOtherDevicesTap;
-  final String? otherDevicesDescription;
+  final List<HostingStatus>? hostingStatuses;
+  final VoidCallback? onSignerTap;
+  final String? signerDescription;
   final VoidCallback? onInviteTap;
   final VoidCallback? onDisconnectTap;
 
@@ -42,7 +41,7 @@ class AppSettingsScreen extends StatefulWidget {
     required this.onSelect,
     this.onAddProfile,
     this.onViewProfile,
-    required this.currentProfile,
+    required this.activeProfile,
     this.settingSections,
     this.onHistoryTap,
     this.historyDescription,
@@ -50,14 +49,13 @@ class AppSettingsScreen extends StatefulWidget {
     this.draftsDescription,
     this.onLabelsTap,
     this.labelsDescription,
-    this.onAppearanceTap,
-    this.appearanceDescription,
+    this.onPreferencesTap,
+    this.preferencesDescription,
     this.onHostingTap,
     this.hostingDescription,
-    this.onSecurityTap,
-    this.securityDescription,
-    this.onOtherDevicesTap,
-    this.otherDevicesDescription,
+    this.hostingStatuses,
+    this.onSignerTap,
+    this.signerDescription,
     this.onInviteTap,
     this.onDisconnectTap,
     this.onHomeTap,
@@ -71,6 +69,8 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
     with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   late final AnimationController _scaleController;
+  Profile? _visuallyActiveProfile;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -79,6 +79,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
       vsync: this,
       duration: const Duration(milliseconds: 100),
     );
+    _visuallyActiveProfile = widget.activeProfile;
   }
 
   @override
@@ -88,7 +89,15 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
     super.dispose();
   }
 
-  Future<void> _animateProfileChange() async {
+  @override
+  void didUpdateWidget(AppSettingsScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.activeProfile != oldWidget.activeProfile) {
+      _visuallyActiveProfile = widget.activeProfile;
+    }
+  }
+
+  Future<void> _animateProfileChange(VoidCallback onComplete) async {
     final theme = AppTheme.of(context);
 
     // First scroll to start
@@ -101,6 +110,11 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
     // Then pop the current profile card
     await _scaleController.forward();
     await _scaleController.reverse();
+
+    // Add a longer delay to ensure animations are complete
+    await Future.delayed(const Duration(milliseconds: 1000));
+
+    onComplete();
   }
 
   Widget _buildTopBar(BuildContext context) {
@@ -134,11 +148,11 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
 
   Widget _buildContent(BuildContext context) {
     final theme = AppTheme.of(context);
-    final currentProfile = widget.profiles.firstWhere(
-      (p) => p == widget.currentProfile,
-      orElse: () =>
-          widget.profiles.first, // Fallback to first profile if not found
-    );
+    final activeProfile = _visuallyActiveProfile;
+
+    if (activeProfile == null) {
+      return const SizedBox.shrink();
+    }
 
     // Use custom sections if provided, otherwise build preset sections
     final sectionWidgets =
@@ -164,10 +178,10 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                     parent: _scaleController,
                     curve: Curves.easeOut,
                   )),
-                  child: AppCurrentProfileCard(
-                    profile: currentProfile,
+                  child: AppactiveProfileCard(
+                    profile: activeProfile,
                     onView: () {
-                      widget.onViewProfile?.call(currentProfile);
+                      widget.onViewProfile?.call(activeProfile);
                     },
                     onEdit: () {
                       // TODO: Implement edit profile
@@ -179,7 +193,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                 ),
                 // Other profiles
                 ...widget.profiles
-                    .where((p) => p.npub != currentProfile.npub)
+                    .where((p) => p.npub != activeProfile.npub)
                     .map(
                       (profile) => Row(
                         children: [
@@ -190,8 +204,16 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                               widget.onViewProfile?.call(profile);
                             },
                             onSelect: () {
-                              widget.onSelect(profile);
-                              _animateProfileChange();
+                              setState(() {
+                                _visuallyActiveProfile = profile;
+                                _isLoading = true;
+                              });
+                              _animateProfileChange(() {
+                                widget.onSelect(profile);
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              });
                             },
                             onShare: () {
                               // TODO: Implement share profile
@@ -259,7 +281,22 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
           ),
         ),
         const AppDivider(),
-        ...sectionWidgets,
+        if (_isLoading)
+          AppContainer(
+            padding: const AppEdgeInsets.all(AppGapSize.s32),
+            child: Column(
+              children: [
+                AppContainer(
+                  height: theme.sizes.s48,
+                  child: AppLoadingDots(color: theme.colors.white66),
+                ),
+                AppText.med14('Loading Profile...',
+                    color: theme.colors.white33),
+              ],
+            ),
+          )
+        else
+          ...sectionWidgets,
       ],
     );
   }
@@ -298,7 +335,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
               if (widget.onHistoryTap != null || widget.onDraftsTap != null)
                 const AppGap.s12(),
               AppSettingSection(
-                icon: AppIcon.s20(theme.icons.characters.label,
+                icon: AppIcon.s24(theme.icons.characters.label,
                     gradient: theme.colors.graydient66),
                 title: 'Labels',
                 description: widget.labelsDescription ?? '',
@@ -312,91 +349,83 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
 
     sections.add(const AppDivider());
 
-    // Second group
-    if (widget.onAppearanceTap != null ||
-        widget.onHostingTap != null ||
-        widget.onSecurityTap != null ||
-        widget.onOtherDevicesTap != null) {
+    if (widget.onPreferencesTap != null) {
       sections.add(AppContainer(
         padding: const AppEdgeInsets.all(AppGapSize.s16),
-        child: Column(
-          children: [
-            if (widget.onAppearanceTap != null)
-              AppSettingSection(
-                icon: AppIcon.s24(theme.icons.characters.appearance,
-                    gradient: theme.colors.blurple),
-                title: 'Appearance',
-                description: widget.appearanceDescription ?? '',
-                onTap: widget.onAppearanceTap,
-              ),
-            if (widget.onHostingTap != null) ...[
-              if (widget.onAppearanceTap != null) const AppGap.s12(),
-              AppSettingSection(
-                icon: AppIcon.s20(theme.icons.characters.hosting,
-                    gradient: theme.colors.blurple),
-                title: 'Hosting',
-                description: widget.hostingDescription ?? '',
-                onTap: widget.onHostingTap,
-              ),
-            ],
-            if (widget.onSecurityTap != null) ...[
-              if (widget.onAppearanceTap != null || widget.onHostingTap != null)
-                const AppGap.s12(),
-              AppSettingSection(
-                icon: AppIcon.s28(theme.icons.characters.security,
-                    gradient: theme.colors.blurple),
-                title: 'Security',
-                description: widget.securityDescription ?? '',
-                onTap: widget.onSecurityTap,
-              ),
-            ],
-            if (widget.onOtherDevicesTap != null) ...[
-              if (widget.onAppearanceTap != null ||
-                  widget.onHostingTap != null ||
-                  widget.onSecurityTap != null)
-                const AppGap.s12(),
-              AppSettingSection(
-                icon: AppIcon.s20(theme.icons.characters.devices,
-                    gradient: theme.colors.blurple),
-                title: 'Other Devices',
-                description: widget.otherDevicesDescription ?? '',
-                onTap: widget.onOtherDevicesTap,
-              ),
-            ],
-          ],
+        child: AppSettingSection(
+          icon: AppIcon.s24(theme.icons.characters.appearance,
+              gradient: theme.colors.gold),
+          title: 'Preferences',
+          description: widget.preferencesDescription ?? '',
+          onTap: widget.onPreferencesTap,
         ),
       ));
     }
 
     sections.add(const AppDivider());
 
-    // Invite group
+    if (widget.onSignerTap != null) {
+      sections.add(AppContainer(
+        padding: const AppEdgeInsets.all(AppGapSize.s16),
+        child: AppSettingSection(
+          title: 'Signer & Secret Key',
+          icon: AppIcon.s32(theme.icons.characters.security,
+              gradient: theme.colors.blurple),
+          description: widget.signerDescription ?? '',
+          onTap: widget.onSignerTap,
+        ),
+      ));
+    }
+
+    sections.add(const AppDivider());
+
+    // Invite group0
     if (widget.onInviteTap != null) {
+      sections.add(
+        AppContainer(
+          padding: const AppEdgeInsets.all(AppGapSize.s16),
+          child: AppSettingSection(
+            icon: AppIcon.s20(theme.icons.characters.heart,
+                gradient: theme.colors.rouge),
+            title: 'Invite Someone',
+            description: 'To a Community, a Group or this App',
+            onTap: widget.onInviteTap,
+          ),
+        ),
+      );
+    }
+
+    sections.add(const AppDivider());
+
+    if (widget.onHostingTap != null) {
       sections.add(AppContainer(
         padding: const AppEdgeInsets.all(AppGapSize.s16),
         child: AppSettingSection(
-          icon: AppIcon.s20(theme.icons.characters.heart,
-              gradient: theme.colors.rouge),
-          title: 'Invite Someone',
-          onTap: widget.onInviteTap,
+          icon: AppIcon.s20(theme.icons.characters.hosting,
+              gradient: theme.colors.blurple),
+          title: 'Hosting',
+          description: widget.hostingDescription ?? '',
+          hostingStatuses: widget.hostingStatuses,
+          onTap: widget.onHostingTap,
         ),
       ));
     }
 
     sections.add(const AppDivider());
 
-    // Disconnect group
     if (widget.onDisconnectTap != null) {
-      sections.add(AppContainer(
-        padding: const AppEdgeInsets.all(AppGapSize.s16),
-        child: AppSettingSection(
-          icon: AppIcon.s12(theme.icons.characters.cross,
-              outlineColor: theme.colors.white33,
-              outlineThickness: AppLineThicknessData.normal().thick),
-          title: 'Disconnect Profile',
-          onTap: widget.onDisconnectTap,
+      sections.add(
+        AppContainer(
+          padding: const AppEdgeInsets.all(AppGapSize.s16),
+          child: AppButton(
+            onTap: widget.onDisconnectTap,
+            inactiveColor: theme.colors.gray66,
+            children: [
+              AppText.med14('Disconnect Profile', color: theme.colors.white66)
+            ],
+          ),
         ),
-      ));
+      );
     }
 
     return sections;

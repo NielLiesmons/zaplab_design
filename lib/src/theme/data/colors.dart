@@ -25,6 +25,8 @@ class AppColorsData extends Equatable {
   final Color blurpleColor33;
   final Color goldColor;
   final Color goldColor66;
+  final Color greenColor;
+  final Color greenColor66;
 
   /// Linear Gradients
   final Gradient blurple;
@@ -39,6 +41,10 @@ class AppColorsData extends Equatable {
   final Gradient gold66;
   final Gradient gold33;
   final Gradient gold16;
+  final Gradient green;
+  final Gradient green66;
+  final Gradient green33;
+  final Gradient green16;
   final Gradient graydient;
   final Gradient graydient66;
   final Gradient graydient33;
@@ -66,6 +72,8 @@ class AppColorsData extends Equatable {
     required this.blurpleColor33,
     required this.goldColor,
     required this.goldColor66,
+    required this.greenColor,
+    required this.greenColor66,
     required this.blurple,
     required this.blurple66,
     required this.blurple33,
@@ -78,6 +86,10 @@ class AppColorsData extends Equatable {
     required this.gold66,
     required this.gold33,
     required this.gold16,
+    required this.green,
+    required this.green66,
+    required this.green33,
+    required this.green16,
     required this.graydient,
     required this.graydient66,
     required this.graydient33,
@@ -108,6 +120,8 @@ class AppColorsData extends Equatable {
         blurpleColor33: const Color(0xFF5C5AFE).withValues(alpha: 0.33),
         goldColor: const Color(0xFFF5C763),
         goldColor66: const Color(0xFFF5C763).withValues(alpha: 0.66),
+        greenColor: const Color(0xFF45E076),
+        greenColor66: const Color(0xFF45E076).withValues(alpha: 0.66),
 
         /// Linear Gradients (top-left to bottom-right alignment)
         blurple: const LinearGradient(
@@ -200,6 +214,30 @@ class AppColorsData extends Equatable {
           end: Alignment.bottomRight,
         ),
 
+        green: const LinearGradient(
+          colors: [Color(0xFF59F372), Color(0xFF30CB78)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        green66: LinearGradient(
+          colors: [
+            const Color(0xFF59F372).withValues(alpha: 0.66),
+            const Color(0xFF30CB78).withValues(alpha: 0.66)
+          ],
+        ),
+        green33: LinearGradient(
+          colors: [
+            const Color(0xFF59F372).withValues(alpha: 0.33),
+            const Color(0xFF30CB78).withValues(alpha: 0.33)
+          ],
+        ),
+        green16: LinearGradient(
+          colors: [
+            const Color(0xFF59F372).withValues(alpha: 0.16),
+            const Color(0xFF30CB78).withValues(alpha: 0.16)
+          ],
+        ),
+
         graydient: const LinearGradient(
           colors: [Color(0xFFFFFFFF), Color(0xFFDBDBFF)],
           begin: Alignment.topLeft,
@@ -257,6 +295,8 @@ class AppColorsData extends Equatable {
         goldColor: const Color.fromARGB(255, 233, 173, 44),
         goldColor66:
             const Color.fromARGB(255, 233, 173, 44).withValues(alpha: 0.66),
+        greenColor: const Color(0xFF45E076),
+        greenColor66: const Color(0xFF45E076).withValues(alpha: 0.66),
 
         /// Linear Gradients (top-left to bottom-right alignment)
         blurple: const LinearGradient(
@@ -347,6 +387,30 @@ class AppColorsData extends Equatable {
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
+        ),
+
+        green: const LinearGradient(
+          colors: [Color(0xFF59F372), Color(0xFF30CB78)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        green66: LinearGradient(
+          colors: [
+            const Color(0xFF59F372).withValues(alpha: 0.66),
+            const Color(0xFF30CB78).withValues(alpha: 0.66)
+          ],
+        ),
+        green33: LinearGradient(
+          colors: [
+            const Color(0xFF59F372).withValues(alpha: 0.33),
+            const Color(0xFF30CB78).withValues(alpha: 0.33)
+          ],
+        ),
+        green16: LinearGradient(
+          colors: [
+            const Color(0xFF59F372).withValues(alpha: 0.16),
+            const Color(0xFF30CB78).withValues(alpha: 0.16)
+          ],
         ),
 
         graydient: const LinearGradient(
@@ -404,6 +468,8 @@ class AppColorsData extends Equatable {
         blurpleColor33: const Color(0xFF5C5AFE).withValues(alpha: 0.33),
         goldColor: const Color(0xFFF5C763),
         goldColor66: const Color(0xFFF5C763).withValues(alpha: 0.66),
+        greenColor: const Color(0xFF45E076),
+        greenColor66: const Color(0xFF45E076).withValues(alpha: 0.66),
 
         /// Linear Gradients (top-left to bottom-right alignment)
         blurple: const LinearGradient(
@@ -496,6 +562,30 @@ class AppColorsData extends Equatable {
           end: Alignment.bottomRight,
         ),
 
+        green: const LinearGradient(
+          colors: [Color(0xFF59F372), Color(0xFF30CB78)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        green66: LinearGradient(
+          colors: [
+            const Color(0xFF59F372).withValues(alpha: 0.66),
+            const Color(0xFF30CB78).withValues(alpha: 0.66)
+          ],
+        ),
+        green33: LinearGradient(
+          colors: [
+            const Color(0xFF59F372).withValues(alpha: 0.33),
+            const Color(0xFF30CB78).withValues(alpha: 0.33)
+          ],
+        ),
+        green16: LinearGradient(
+          colors: [
+            const Color(0xFF59F372).withValues(alpha: 0.16),
+            const Color(0xFF30CB78).withValues(alpha: 0.16)
+          ],
+        ),
+
         graydient: const LinearGradient(
           colors: [Color(0xFFFFFFFF), Color(0xFFDBDBFF)],
           begin: Alignment.topLeft,
@@ -547,6 +637,8 @@ class AppColorsData extends Equatable {
         blurpleLightColor66.named('blurpleLightColor66'),
         goldColor.named('goldColor'),
         goldColor66.named('goldColor66'),
+        greenColor.named('greenColor'),
+        greenColor66.named('greenColor66'),
         blurple.named('blurple'),
         blurple66.named('blurple66'),
         blurple33.named('blurple33'),
@@ -559,6 +651,10 @@ class AppColorsData extends Equatable {
         gold66.named('gold66'),
         gold33.named('gold33'),
         gold16.named('gold16'),
+        green.named('green'),
+        green66.named('green66'),
+        green33.named('green33'),
+        green16.named('green16'),
         graydient.named('graydient'),
         graydient66.named('graydient66'),
         graydient33.named('graydient33'),

@@ -1,14 +1,15 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppProgressBar extends StatelessWidget {
+  final double progress; // Progress value (0.0 to 1.0)
+  final double height;
+  final bool isLight;
   const AppProgressBar({
     super.key,
     required this.progress,
     this.height = 4,
+    this.isLight = true,
   });
-
-  final double progress; // Progress value (0.0 to 1.0)
-  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class AppProgressBar extends StatelessWidget {
             height: height,
             decoration: BoxDecoration(
               borderRadius: theme.radius.asBorderRadius().rad16,
-              color: theme.colors.white8,
+              color: isLight ? theme.colors.white8 : theme.colors.black33,
             ),
           ),
           // Progress bar

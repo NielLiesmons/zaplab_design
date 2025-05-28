@@ -4,42 +4,42 @@ import 'package:models/models.dart';
 
 class AppSmallProfileStack extends StatelessWidget {
   final List<Profile> profiles;
-  final Profile? currentProfile;
+  final Profile? activeProfile;
   final VoidCallback onTap;
   AppSmallProfileStack({
     super.key,
     required this.profiles,
-    this.currentProfile,
+    this.activeProfile,
     VoidCallback? onTap,
   }) : onTap = onTap ?? (() {});
 
   List<Profile> get _visibleProfiles {
     final list = profiles.toList();
-    if (currentProfile != null && list.contains(currentProfile)) {}
+    if (activeProfile != null && list.contains(activeProfile)) {}
     return list.take(5).toList().reversed.toList();
   }
 
   String _getDisplayText() {
     if (profiles.isEmpty) return 'No Recipients';
 
-    final isCurrentProfileFirst = currentProfile != null &&
+    final isactiveProfileFirst = activeProfile != null &&
         profiles.isNotEmpty &&
-        profiles.first.pubkey == currentProfile!.pubkey;
+        profiles.first.pubkey == activeProfile!.pubkey;
 
     if (profiles.length == 1) {
-      return isCurrentProfileFirst
+      return isactiveProfileFirst
           ? 'You'
           : profiles.first.name ?? formatNpub(profiles.first.npub);
     }
 
     if (profiles.length == 2) {
       final secondName = profiles[1].name ?? formatNpub(profiles[1].npub);
-      return isCurrentProfileFirst
+      return isactiveProfileFirst
           ? 'You & $secondName'
           : '${profiles.first.name ?? formatNpub(profiles.first.npub)} & $secondName';
     }
 
-    return isCurrentProfileFirst
+    return isactiveProfileFirst
         ? 'You & ${profiles.length - 1} others'
         : '${profiles.first.name ?? formatNpub(profiles.first.npub)} & ${profiles.length - 1} others';
   }

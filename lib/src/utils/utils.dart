@@ -8,5 +8,6 @@ export 'npub_formatter.dart';
 export 'platform.dart';
 export 'platform_wrapper.dart';
 export 'scope.dart';
+export 'string_extension.dart';
 export 'system_ui_wrapper.dart';
 export 'timestamp_formatter.dart';

@@ -1,13 +1,13 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppCurrentProfileCard extends StatelessWidget {
+class AppactiveProfileCard extends StatelessWidget {
   final Profile profile;
   final VoidCallback? onEdit;
   final VoidCallback? onView;
   final VoidCallback? onShare;
 
-  const AppCurrentProfileCard({
+  const AppactiveProfileCard({
     super.key,
     required this.profile,
     this.onEdit,

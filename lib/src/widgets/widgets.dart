@@ -45,6 +45,8 @@ export 'books/book_card.dart';
 // Buttons
 export 'buttons/button.dart';
 export 'buttons/cross_button.dart';
+export 'buttons/floating_button.dart';
+export 'buttons/input_button.dart';
 export 'buttons/panel_button.dart';
 export 'buttons/small_button.dart';
 
@@ -63,6 +65,10 @@ export 'communities/community_welcome_header.dart';
 
 // History
 export 'history/history_card.dart';
+
+// Hosting
+export 'hosting/hosting_card.dart';
+export 'hosting/hosting_icon.dart';
 
 // Images
 export 'images/emoji_image.dart';
@@ -111,7 +117,7 @@ export 'notifications/notification_card.dart';
 export 'onboarding/start_modal.dart';
 export 'onboarding/spin_up_key_modal.dart';
 export 'onboarding/spin_up_key_again_modal.dart';
-export 'onboarding/your_key_modal.dart';
+
 // Profiles
 export 'profiles/add_profile_modal.dart';
 export 'profiles/current_profile_card.dart';
@@ -167,6 +173,7 @@ export 'text/short_text/short_text_renderer.dart';
 
 export 'text/admonition.dart';
 export 'text/amount.dart';
+export 'text/big_section_title.dart';
 export 'text/code_block.dart';
 export 'text/editable_input_text.dart';
 export 'text/input_modal.dart';

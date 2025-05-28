@@ -7,7 +7,7 @@ class AppMail extends StatelessWidget {
   // final List<ReplaceReaction> reactions;
   // final List<ReplaceZap> zaps;
   final List<Profile> recipients;
-  final Profile? currentProfile;
+  final Profile? activeProfile;
   final Function(Mail) onSwipeLeft;
   final Function(Mail) onSwipeRight;
   final NostrEventResolver onResolveEvent;
@@ -20,7 +20,7 @@ class AppMail extends StatelessWidget {
     super.key,
     required this.mail,
     required this.recipients,
-    required this.currentProfile,
+    required this.activeProfile,
     required this.onSwipeLeft,
     required this.onSwipeRight,
     required this.onResolveEvent,
@@ -84,7 +84,7 @@ class AppMail extends StatelessWidget {
                         const AppGap.s6(),
                         AppSmallProfileStack(
                           profiles: recipients,
-                          currentProfile: currentProfile,
+                          activeProfile: activeProfile,
                         ),
                       ],
                     ),

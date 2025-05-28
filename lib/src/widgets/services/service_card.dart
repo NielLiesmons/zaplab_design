@@ -6,12 +6,14 @@ class AppServiceCard extends StatelessWidget {
   final Service service;
   final Function(Model) onTap;
   final bool isUnread;
+  final bool noPadding;
 
   const AppServiceCard({
     super.key,
     required this.service,
     required this.onTap,
     this.isUnread = false,
+    this.noPadding = false,
   });
 
   @override
@@ -22,12 +24,16 @@ class AppServiceCard extends StatelessWidget {
       onTap: () => onTap(service),
       builder: (context, state, hasFocus) {
         return AppContainer(
-          padding: AppEdgeInsets.only(
-            top: service.imageUrl == null ? AppGapSize.none : AppGapSize.s12,
-            bottom: AppGapSize.s8,
-            left: AppGapSize.s12,
-            right: AppGapSize.s12,
-          ),
+          padding: noPadding
+              ? const AppEdgeInsets.all(AppGapSize.none)
+              : AppEdgeInsets.only(
+                  top: service.imageUrl == null
+                      ? AppGapSize.none
+                      : AppGapSize.s12,
+                  bottom: AppGapSize.s8,
+                  left: AppGapSize.s12,
+                  right: AppGapSize.s12,
+                ),
           child: Column(
             children: [
               // Image container with 16:9 aspect ratio
@@ -117,7 +123,7 @@ class AppServiceCard extends StatelessWidget {
                                   Expanded(
                                     child: AppText.bold16(
                                       service.title ?? 'No Title',
-                                      maxLines: 2,
+                                      maxLines: 1,
                                       textOverflow: TextOverflow.ellipsis,
                                     ),
                                   ),

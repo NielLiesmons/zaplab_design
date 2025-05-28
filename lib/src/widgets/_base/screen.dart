@@ -294,7 +294,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
               child: AppContainer(
                 height: AppPlatformUtils.isMobile
                     ? MediaQuery.of(context).padding.top + 2
-                    : 23,
+                    : 22,
                 decoration: BoxDecoration(
                   color: _currentDrag < 5
                       ? theme.colors.black

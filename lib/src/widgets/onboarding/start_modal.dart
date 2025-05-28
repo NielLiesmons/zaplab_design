@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppStartModal extends StatefulWidget {
@@ -21,23 +22,30 @@ class AppStartModal extends StatefulWidget {
 }
 
 class _AppStartModalState extends State<AppStartModal> {
-  late TextEditingController _controller;
-  late FocusNode _focusNode;
+  final _focusNode = FocusNode();
+  final _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
-    _focusNode = FocusNode();
-
-    // Request focus after modal is built
-    Future.microtask(() => _focusNode.requestFocus());
+    _focusNode.requestFocus();
+    _focusNode.onKeyEvent = (node, event) {
+      if (event.logicalKey == LogicalKeyboardKey.enter &&
+          (HardwareKeyboard.instance.isMetaPressed ||
+              HardwareKeyboard.instance.isControlPressed)) {
+        if (_controller.text.isNotEmpty) {
+          widget.onStart(_controller.text);
+        }
+        return KeyEventResult.handled;
+      }
+      return KeyEventResult.ignored;
+    };
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     _focusNode.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
