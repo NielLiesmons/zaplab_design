@@ -2,6 +2,8 @@ import 'package:zaplab_design/zaplab_design.dart';
 
 class AppPanel extends StatelessWidget {
   final Widget child;
+  final double? width;
+  final double? height;
   final AppEdgeInsets? padding;
   final Color? color;
   final Gradient? gradient;
@@ -11,6 +13,8 @@ class AppPanel extends StatelessWidget {
   const AppPanel({
     super.key,
     required this.child,
+    this.width,
+    this.height,
     this.padding,
     this.color,
     this.gradient,
@@ -27,7 +31,8 @@ class AppPanel extends StatelessWidget {
 
     return AppContainer(
       padding: padding ?? const AppEdgeInsets.all(AppGapSize.s16),
-      width: double.infinity,
+      width: width ?? double.infinity,
+      height: height,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         color: gradient == null

@@ -21,6 +21,7 @@ String getModelContentType(Model? model) {
     Model<Group>() => 'group',
     Model<Community>() => 'community',
     Model<CashuZap>() => 'zap',
+    Model<ForumPost>() => 'forum',
     _ => 'nostr',
   };
 }
@@ -43,6 +44,7 @@ String getModelDisplayText(Model<dynamic>? model) {
     Model<Job>() => (model as Job).title ?? 'Job Title',
     Model<Mail>() => (model as Mail).title ?? 'Mail Title',
     Model<Task>() => (model as Task).title ?? 'Task Title',
+    Model<ForumPost>() => (model as ForumPost).title ?? 'Forum Post Title',
     _ => model?.event.content ?? '',
   };
 }
@@ -55,17 +57,6 @@ typedef NostrProfileSearch = Future<List<Profile>> Function(String query);
 // Emoji
 typedef NostrEmojiResolver = Future<String> Function(String identifier);
 typedef NostrEmojiSearch = Future<List<Emoji>> Function(String query);
-
-// // Reply
-// class Reply extends RegularModel<Reply> {
-//   Reply.fromMap(super.map, super.ref) : super.fromMap();
-// }
-
-// class PartialReply extends RegularPartialModel<Reply> {
-//   PartialReply(String content) {
-//     event.content = content;
-//   }
-// }
 
 // Hashtag
 typedef NostrHashtagResolver = Future<void Function()?> Function(
@@ -113,6 +104,22 @@ class Emoji {
     required this.emojiUrl,
     required this.emojiName,
   });
+}
+
+// Forum Post
+
+class ForumPost extends RegularModel<ForumPost> {
+  ForumPost.fromMap(super.map, super.ref) : super.fromMap();
+
+  String? get title => event.getFirstTagValue('title');
+  String get content => event.content;
+}
+
+class PartialForumPost extends RegularPartialModel<ForumPost> {
+  PartialForumPost(String title, String content) {
+    event.addTagValue('title', title);
+    event.content = content;
+  }
 }
 
 // Group

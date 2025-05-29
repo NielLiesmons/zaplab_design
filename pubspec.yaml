@@ -22,7 +22,7 @@ dependencies:
   models:
     git:
       url: https://github.com/purplebase/models
-      ref: 833faa
+      ref: 217fdc3
 
   crypto: ^3.0.3
   hex: ^0.2.0

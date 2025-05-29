@@ -3,6 +3,8 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
 enum AppProfilePicSquareSize {
+  s32,
+  s38,
   s48,
   s56,
   s64,
@@ -34,6 +36,14 @@ class AppProfilePicSquare extends StatelessWidget {
   })  : onTap = onTap ?? (() {}),
         profile = null;
 
+  AppProfilePicSquare.s32(this.profile, {super.key, VoidCallback? onTap})
+      : size = AppProfilePicSquareSize.s32,
+        onTap = onTap ?? (() {}),
+        profilePicUrl = null;
+  AppProfilePicSquare.s38(this.profile, {super.key, VoidCallback? onTap})
+      : size = AppProfilePicSquareSize.s38,
+        onTap = onTap ?? (() {}),
+        profilePicUrl = null;
   AppProfilePicSquare.s48(this.profile, {super.key, VoidCallback? onTap})
       : size = AppProfilePicSquareSize.s48,
         onTap = onTap ?? (() {}),
@@ -74,7 +84,9 @@ class AppProfilePicSquare extends StatelessWidget {
     final thickness = AppLineThicknessData.normal().thin;
     final borderRadius = resolvedSize >= sizes.s72
         ? theme.radius.asBorderRadius().rad24
-        : theme.radius.asBorderRadius().rad16;
+        : resolvedSize >= sizes.s48
+            ? theme.radius.asBorderRadius().rad16
+            : theme.radius.asBorderRadius().rad8;
 
     return TapBuilder(
       onTap: onTap,
@@ -178,6 +190,10 @@ class AppProfilePicSquare extends StatelessWidget {
 
   double _resolveSize(AppProfilePicSquareSize size, AppSizesData sizes) {
     switch (size) {
+      case AppProfilePicSquareSize.s32:
+        return sizes.s32;
+      case AppProfilePicSquareSize.s38:
+        return sizes.s38;
       case AppProfilePicSquareSize.s48:
         return sizes.s48;
       case AppProfilePicSquareSize.s56:

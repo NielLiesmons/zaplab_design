@@ -24,12 +24,14 @@ class AppTabView extends StatefulWidget {
   final AppTabController controller;
   final bool scrollableContent;
   final void Function(double)? onScroll;
+  final double? scrollOffsetHeight;
   const AppTabView({
     super.key,
     required this.tabs,
     required this.controller,
     this.scrollableContent = false,
     this.onScroll,
+    this.scrollOffsetHeight,
   });
 
   @override
@@ -138,7 +140,9 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
     final theme = AppTheme.of(context);
     final bottomPadding = MediaQuery.of(context).padding.bottom;
     final currentTab = widget.tabs[_selectedIndex];
-    final floatingButtonBottom = currentTab.bottomBar != null ? 84 : 16;
+    final floatingButtonBottom = currentTab.bottomBar != null
+        ? (currentTab.bottomBar is AppBottomBarSafeArea ? 16 : 84)
+        : 16;
 
     return Stack(
       children: [
@@ -146,9 +150,12 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
         SlideTransition(
           position: _slideAnimation,
           child: SizedBox(
-            height: MediaQuery.of(context).size.height /
-                AppTheme.of(context).system.scale,
+            height: widget.scrollableContent
+                ? MediaQuery.of(context).size.height /
+                    AppTheme.of(context).system.scale
+                : null,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 AppTabBar(
                   key: _tabBarKey,
@@ -174,7 +181,20 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
                   Expanded(
                     child: SingleChildScrollView(
                       controller: _scrollController,
-                      child: widget.tabs[_selectedIndex].content,
+                      child: Column(
+                        children: [
+                          if (widget.scrollOffsetHeight != null)
+                            SizedBox(
+                              height: widget.scrollOffsetHeight! *
+                                  (_scrollController.hasClients
+                                          ? _scrollController.position.pixels /
+                                              widget.scrollOffsetHeight!
+                                          : 0)
+                                      .clamp(0, 1),
+                            ),
+                          widget.tabs[_selectedIndex].content,
+                        ],
+                      ),
                     ),
                   )
                 else
