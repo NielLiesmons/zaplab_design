@@ -20,6 +20,7 @@ class AppZapSlider extends StatefulWidget {
   final VoidCallback onEmojiTap;
   final VoidCallback onGifTap;
   final VoidCallback onAddTap;
+  final Function(Profile) onProfileTap;
 
   const AppZapSlider({
     super.key,
@@ -37,6 +38,7 @@ class AppZapSlider extends StatefulWidget {
     required this.onEmojiTap,
     required this.onGifTap,
     required this.onAddTap,
+    required this.onProfileTap,
   });
 
   @override
@@ -341,6 +343,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
           onEmojiTap: widget.onEmojiTap,
           onGifTap: widget.onGifTap,
           onAddTap: widget.onAddTap,
+          onProfileTap: (profile) => widget.onProfileTap(profile),
           onDoneTap: () {
             Navigator.pop(context);
           },

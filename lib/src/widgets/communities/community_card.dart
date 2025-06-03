@@ -56,6 +56,7 @@ class AppCommunityCard extends StatelessWidget {
               horizontal: AppGapSize.s12,
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppProfilePic.s56(community.author.value),
                 const AppGap.s12(),

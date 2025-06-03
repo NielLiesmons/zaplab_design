@@ -6,6 +6,7 @@ class AppFeedForumPost extends StatelessWidget {
   final List<Comment> topReplies;
   final int totalReplies;
   final Function(Model) onTap;
+  final Function(Profile) onProfileTap;
   final bool isUnread;
   final Function(Model) onReply;
   final Function(Model) onActions;
@@ -23,6 +24,7 @@ class AppFeedForumPost extends StatelessWidget {
     this.topReplies = const [],
     this.totalReplies = 0,
     required this.onTap,
+    required this.onProfileTap,
     this.isUnread = false,
     required this.onReply,
     required this.onActions,
@@ -71,7 +73,9 @@ class AppFeedForumPost extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         const AppGap.s4(),
-                        AppProfilePic.s38(forumPost.author.value),
+                        AppProfilePic.s38(forumPost.author.value,
+                            onTap: () => onProfileTap(
+                                forumPost.author.value as Profile)),
                         if (topReplies.isNotEmpty)
                           Expanded(
                             child: AppDivider.vertical(
@@ -135,6 +139,7 @@ class AppFeedForumPost extends StatelessWidget {
                             onResolveEmoji: onResolveEmoji,
                             onResolveHashtag: onResolveHashtag,
                             onLinkTap: onLinkTap,
+                            onProfileTap: onProfileTap,
                           ),
                           // TODO: Implement Zaps and Reactions once HasMany is available
                         ],

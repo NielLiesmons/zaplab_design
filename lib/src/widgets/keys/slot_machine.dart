@@ -9,7 +9,7 @@ class AppSlotMachine extends StatefulWidget {
   const AppSlotMachine({
     super.key,
     this.initialNsec,
-    this.showSelector = true, // Default to true to maintain existing behavior
+    this.showSelector = false,
     this.onSpinComplete,
   });
 

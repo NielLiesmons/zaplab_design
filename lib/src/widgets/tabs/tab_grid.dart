@@ -40,6 +40,8 @@ class AppTabGrid extends StatelessWidget {
                       padding: const AppEdgeInsets.only(
                         top: AppGapSize.s20,
                         bottom: AppGapSize.s14,
+                        left: AppGapSize.s12,
+                        right: AppGapSize.s12,
                       ),
                       onTap: () => _handleTabSelection(row * 3 + col),
                       gradient: row * 3 + col == selectedIndex
@@ -58,6 +60,8 @@ class AppTabGrid extends StatelessWidget {
                             color: row * 3 + col == selectedIndex
                                 ? theme.colors.whiteEnforced
                                 : null,
+                            maxLines: 1,
+                            textOverflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),

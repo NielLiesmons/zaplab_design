@@ -17,6 +17,7 @@ class AppShortTextField extends StatefulWidget {
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
+  final Function(Profile) onProfileTap;
   final VoidCallback onCameraTap;
   final VoidCallback onEmojiTap;
   final VoidCallback onGifTap;
@@ -46,6 +47,7 @@ class AppShortTextField extends StatefulWidget {
     required this.onEmojiTap,
     required this.onGifTap,
     required this.onAddTap,
+    required this.onProfileTap,
     this.onSendTap,
     this.onDoneTap,
     this.onChevronTap,
@@ -70,6 +72,7 @@ class AppShortTextField extends StatefulWidget {
     VoidCallback? onEmojiTap,
     VoidCallback? onGifTap,
     VoidCallback? onAddTap,
+    Function(Profile)? onProfileTap,
     VoidCallback? onSendTap,
     VoidCallback? onDoneTap,
     VoidCallback? onChevronTap,
@@ -93,6 +96,7 @@ class AppShortTextField extends StatefulWidget {
       onEmojiTap: onEmojiTap ?? this.onEmojiTap,
       onGifTap: onGifTap ?? this.onGifTap,
       onAddTap: onAddTap ?? this.onAddTap,
+      onProfileTap: onProfileTap ?? this.onProfileTap,
       onSendTap: onSendTap ?? this.onSendTap,
       onDoneTap: onDoneTap ?? this.onDoneTap,
       onChevronTap: onChevronTap ?? this.onChevronTap,
@@ -143,12 +147,14 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
                       onResolveEvent: widget.onResolveEvent,
                       onResolveProfile: widget.onResolveProfile,
                       onResolveEmoji: widget.onResolveEmoji,
+                      onProfileTap: widget.onProfileTap,
                     )
                   : AppZapCard(
                       cashuZap: widget.quotedCashuZap!,
                       onResolveEvent: widget.onResolveEvent,
                       onResolveProfile: widget.onResolveProfile,
                       onResolveEmoji: widget.onResolveEmoji,
+                      onProfileTap: widget.onProfileTap,
                     ),
             ),
           if (widget.quotedChatMessage != null)

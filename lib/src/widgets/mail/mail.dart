@@ -15,6 +15,7 @@ class AppMail extends StatelessWidget {
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
+  final Function(Profile) onProfileTap;
 
   const AppMail({
     super.key,
@@ -28,6 +29,7 @@ class AppMail extends StatelessWidget {
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
+    required this.onProfileTap,
   });
 
   @override
@@ -106,6 +108,7 @@ class AppMail extends StatelessWidget {
               onResolveEmoji: onResolveEmoji,
               onResolveHashtag: onResolveHashtag,
               onLinkTap: onLinkTap,
+              onProfileTap: onProfileTap,
             ),
           ),
         ],

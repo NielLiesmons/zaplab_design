@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class AppImageStack extends StatefulWidget {
-  final List<String> imageUrls;
+  final List<String> images;
   final VoidCallback? onTap;
   static const double _maxWidth = 220.0;
   static const double _maxHeight = 280.0;
@@ -14,36 +14,12 @@ class AppImageStack extends StatefulWidget {
 
   const AppImageStack({
     super.key,
-    required this.imageUrls,
+    required this.images,
     this.onTap,
   });
 
-  static void _showFullScreen(BuildContext context, List<String> imageUrls) {
-    final theme = AppTheme.of(context);
-
-    AppScreen.show(
-      context: context,
-      alwaysShowTopBar: true,
-      topBarContent: AppContainer(
-        height: theme.sizes.s32,
-        padding: const AppEdgeInsets.only(
-          top: AppGapSize.s8,
-        ),
-        child: AppText.med14('${imageUrls.length} Images',
-            color: theme.colors.white66),
-      ),
-      child: Column(
-        children: [
-          const AppGap.s40(),
-          for (final url in imageUrls) ...[
-            AppFullWidthImage(
-              url: url,
-            ),
-            const AppGap.s16(),
-          ],
-        ],
-      ),
-    );
+  static void _showFullScreen(BuildContext context, List<String> images) {
+    AppOpenedImages.show(context, images);
   }
 
   @override
@@ -72,7 +48,7 @@ class _AppImageStackState extends State<AppImageStack> {
   }
 
   void _resolveImage() {
-    final ImageProvider imageProvider = NetworkImage(widget.imageUrls[0]);
+    final ImageProvider imageProvider = NetworkImage(widget.images[0]);
     _imageStream = imageProvider.resolve(const ImageConfiguration());
     _imageStreamListener = ImageStreamListener((ImageInfo info, bool _) {
       if (!mounted) return;
@@ -121,7 +97,7 @@ class _AppImageStackState extends State<AppImageStack> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    if (widget.imageUrls.isEmpty) return const SizedBox.shrink();
+    if (widget.images.isEmpty) return const SizedBox.shrink();
 
     final containerSize = _calculateContainerSize();
     final (_, isOutgoing) = MessageBubbleScope.of(context);
@@ -136,7 +112,7 @@ class _AppImageStackState extends State<AppImageStack> {
       onExit: (_) => setState(() => _isHovered = false),
       child: GestureDetector(
         onTap: widget.onTap ??
-            () => AppImageStack._showFullScreen(context, widget.imageUrls),
+            () => AppImageStack._showFullScreen(context, widget.images),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -145,7 +121,7 @@ class _AppImageStackState extends State<AppImageStack> {
               clipBehavior: Clip.none,
               children: [
                 // Third image (behind)
-                if (widget.imageUrls.length > 2)
+                if (widget.images.length > 2)
                   Positioned(
                     right: isOutgoing ? null : 0,
                     left: isOutgoing ? 0 : null,
@@ -175,7 +151,7 @@ class _AppImageStackState extends State<AppImageStack> {
                         child: Opacity(
                           opacity: 0.6,
                           child: Image.network(
-                            widget.imageUrls[2],
+                            widget.images[2],
                             fit: BoxFit.cover,
                             width: containerSize.width - 80,
                             height: containerSize.height - 80,
@@ -193,7 +169,7 @@ class _AppImageStackState extends State<AppImageStack> {
                     ),
                   ),
                 // Second image (behind)
-                if (widget.imageUrls.length > 1)
+                if (widget.images.length > 1)
                   Positioned(
                     right: isOutgoing ? null : 0,
                     left: isOutgoing ? 0 : null,
@@ -229,7 +205,7 @@ class _AppImageStackState extends State<AppImageStack> {
                         child: Opacity(
                           opacity: 0.8,
                           child: Image.network(
-                            widget.imageUrls[1],
+                            widget.images[1],
                             fit: BoxFit.cover,
                             width: containerSize.width - 40,
                             height: containerSize.height - 40,
@@ -274,7 +250,7 @@ class _AppImageStackState extends State<AppImageStack> {
                     child: Stack(
                       children: [
                         Image.network(
-                          widget.imageUrls[0],
+                          widget.images[0],
                           fit: BoxFit.cover,
                           width: containerSize.width,
                           height: containerSize.height,
@@ -288,7 +264,7 @@ class _AppImageStackState extends State<AppImageStack> {
                           },
                         ),
                         // Counter for additional images
-                        if (widget.imageUrls.length > 1)
+                        if (widget.images.length > 1)
                           Positioned(
                             right: isOutgoing ? null : 12,
                             left: isOutgoing ? 12 : null,
@@ -308,7 +284,7 @@ class _AppImageStackState extends State<AppImageStack> {
                                   ),
                                   child: Center(
                                     child: AppText.med14(
-                                      '${widget.imageUrls.length}',
+                                      '${widget.images.length}',
                                       color: theme.colors.white66,
                                     ),
                                   ),

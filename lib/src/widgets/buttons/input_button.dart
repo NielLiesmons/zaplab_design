@@ -4,13 +4,17 @@ import 'package:tap_builder/tap_builder.dart';
 class AppInputButton extends StatelessWidget {
   final VoidCallback? onTap;
   final List<Widget> children;
-  final Color? backgroundColor;
+  final Color? color;
+  final double? height;
+  final bool? topAlignment;
 
   const AppInputButton({
     super.key,
     this.onTap,
     required this.children,
-    this.backgroundColor,
+    this.color,
+    this.height,
+    this.topAlignment = false,
   });
 
   @override
@@ -35,9 +39,9 @@ class AppInputButton extends StatelessWidget {
             enabled: true,
             selected: true,
             child: AppContainer(
-              height: theme.sizes.s38,
+              height: height ?? theme.sizes.s38,
               decoration: BoxDecoration(
-                color: backgroundColor ??
+                color: color ??
                     (isInsideModal || isInsideScope
                         ? theme.colors.black33
                         : theme.colors.gray33),
@@ -47,16 +51,26 @@ class AppInputButton extends StatelessWidget {
                   width: AppLineThicknessData.normal().thin,
                 ),
               ),
-              padding: const AppEdgeInsets.only(
+              padding: AppEdgeInsets.only(
                 left: AppGapSize.s12,
-                right: AppGapSize.s8,
+                right: AppGapSize.s12,
+                top: topAlignment == true ? AppGapSize.s8 : AppGapSize.none,
+                bottom: topAlignment == true ? AppGapSize.s8 : AppGapSize.none,
               ),
-              child: Center(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: children,
-                ),
-              ),
+              child: topAlignment == true
+                  ? Align(
+                      alignment: Alignment.topLeft,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: children,
+                      ),
+                    )
+                  : Center(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: children,
+                      ),
+                    ),
             ),
           ),
         );

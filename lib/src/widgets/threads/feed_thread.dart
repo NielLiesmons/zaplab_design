@@ -15,6 +15,7 @@ class AppFeedThread extends StatelessWidget {
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
+  final Function(Profile) onProfileTap;
   final bool isUnread;
 
   const AppFeedThread({
@@ -32,6 +33,7 @@ class AppFeedThread extends StatelessWidget {
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
+    required this.onProfileTap,
     this.isUnread = false,
   });
 
@@ -111,6 +113,7 @@ class AppFeedThread extends StatelessWidget {
                             onResolveEmoji: onResolveEmoji,
                             onResolveHashtag: onResolveHashtag,
                             onLinkTap: onLinkTap,
+                            onProfileTap: onProfileTap,
                           ),
                           // TODO: Implement Zaps and Reactions once HasMany is available
                         ],

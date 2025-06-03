@@ -12,6 +12,7 @@ class AppThread extends StatelessWidget {
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
+  final Function(Profile) onProfileTap;
 
   const AppThread({
     super.key,
@@ -25,6 +26,7 @@ class AppThread extends StatelessWidget {
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
+    required this.onProfileTap,
   });
 
   @override
@@ -44,7 +46,8 @@ class AppThread extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppProfilePic.s48(thread.author.value),
+              AppProfilePic.s48(thread.author.value,
+                  onTap: () => onProfileTap(thread.author.value as Profile)),
               const AppGap.s12(),
               Expanded(
                 child: Column(
@@ -85,6 +88,7 @@ class AppThread extends StatelessWidget {
               onResolveEmoji: onResolveEmoji,
               onResolveHashtag: onResolveHashtag,
               onLinkTap: onLinkTap,
+              onProfileTap: onProfileTap,
             ),
           ),
         ],

@@ -18,6 +18,7 @@ String getModelContentType(Model? model) {
     Model<Repository>() => 'repo',
     Model<Mail>() => 'mail',
     Model<Job>() => 'job',
+    Model<Service>() => 'service',
     Model<Group>() => 'group',
     Model<Community>() => 'community',
     Model<CashuZap>() => 'zap',
@@ -42,6 +43,7 @@ String getModelDisplayText(Model<dynamic>? model) {
     Model<Repository>() => (model as Repository).name ?? 'Repo Name',
     Model<Community>() => (model as Community).name,
     Model<Job>() => (model as Job).title ?? 'Job Title',
+    Model<Service>() => (model as Service).title ?? 'Service Title',
     Model<Mail>() => (model as Mail).title ?? 'Mail Title',
     Model<Task>() => (model as Task).title ?? 'Task Title',
     Model<ForumPost>() => (model as ForumPost).title ?? 'Forum Post Title',
@@ -419,7 +421,8 @@ class Service extends ParameterizableReplaceableModel<Service> {
   Service.fromMap(super.map, super.ref) : super.fromMap();
   String? get title => event.getFirstTagValue('title');
   String get content => event.content;
-  String? get imageUrl => event.getFirstTagValue('image_url');
+  String? get summary => event.getFirstTagValue('summary');
+  Set<String> get images => event.getTagSetValues('images');
   String get slug => event.getFirstTagValue('d')!;
   DateTime? get publishedAt =>
       event.getFirstTagValue('published_at')?.toInt()?.toDate();
@@ -427,13 +430,15 @@ class Service extends ParameterizableReplaceableModel<Service> {
   PartialService copyWith({
     String? title,
     String? content,
-    String? imageUrl,
+    String? summary,
+    Set<String>? images,
     DateTime? publishedAt,
   }) {
     return PartialService(
       title ?? this.title ?? '',
       content ?? event.content,
-      imageUrl: imageUrl ?? this.imageUrl,
+      summary: summary ?? this.summary,
+      images: images ?? this.images,
       publishedAt: publishedAt ?? this.publishedAt,
     );
   }
@@ -441,17 +446,29 @@ class Service extends ParameterizableReplaceableModel<Service> {
 
 class PartialService extends ParameterizableReplaceablePartialEvent<Service> {
   PartialService(String title, String content,
-      {DateTime? publishedAt, String? slug, String? imageUrl}) {
+      {DateTime? publishedAt,
+      String? slug,
+      String? summary,
+      Set<String>? images}) {
     this.title = title;
-    this.imageUrl = imageUrl;
+    this.summary = summary;
     this.publishedAt = publishedAt;
     this.slug = slug ?? Utils.generateRandomHex64();
     event.content = content;
+    if (images != null) {
+      this.images = images;
+    }
   }
   set title(String value) => event.addTagValue('title', value);
-  set imageUrl(String? value) => event.addTagValue('image_url', value);
+  set summary(String? value) => event.addTagValue('summary', value);
   set slug(String value) => event.addTagValue('d', value);
   set content(String value) => event.content = value;
+  set images(Set<String> value) {
+    for (final url in value) {
+      event.addTagValue('images', url);
+    }
+  }
+
   set publishedAt(DateTime? value) =>
       event.addTagValue('published_at', value?.toSeconds().toString());
 }

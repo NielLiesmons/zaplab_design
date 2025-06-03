@@ -8,6 +8,8 @@ class AppPanelButton extends StatelessWidget {
     required this.child,
     this.onTap,
     this.onLongPress,
+    this.width,
+    this.height,
     this.color,
     this.gradient,
     this.padding,
@@ -19,6 +21,8 @@ class AppPanelButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
+  final double? width;
+  final double? height;
   final Color? color;
   final Gradient? gradient;
   final AppEdgeInsets? padding;
@@ -47,6 +51,8 @@ class AppPanelButton extends StatelessWidget {
             return Transform.scale(
               scale: scaleFactor,
               child: AppPanel(
+                width: width,
+                height: height,
                 color: color,
                 gradient: gradient,
                 padding: padding,

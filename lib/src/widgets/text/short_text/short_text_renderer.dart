@@ -48,6 +48,7 @@ class AppShortTextRenderer extends StatelessWidget {
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
+  final Function(Profile) onProfileTap;
 
   const AppShortTextRenderer({
     super.key,
@@ -57,6 +58,7 @@ class AppShortTextRenderer extends StatelessWidget {
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
+    required this.onProfileTap,
   });
 
   static ShortTextContentType analyzeContent(String content) {
@@ -194,7 +196,7 @@ class AppShortTextRenderer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const AppGap.s2(),
-            AppImageStack(imageUrls: urls),
+            AppImageStack(images: urls),
             const AppGap.s2(),
           ],
         );
@@ -415,6 +417,7 @@ class AppShortTextRenderer extends StatelessWidget {
                         onTap: snapshot.data?.onTap == null
                             ? null
                             : (model) => snapshot.data!.onTap!(),
+                        onProfileTap: (profile) => onProfileTap(profile),
                         onResolveEvent: onResolveEvent,
                         onResolveProfile: onResolveProfile,
                         onResolveEmoji: onResolveEmoji,
@@ -726,7 +729,7 @@ class AppShortTextRenderer extends StatelessWidget {
                 paragraphPieces.add(const AppGap.s2());
                 paragraphPieces.add(
                   AppImageStack(
-                    imageUrls: urls,
+                    images: urls,
                   ),
                 );
                 paragraphPieces.add(const AppGap.s4());

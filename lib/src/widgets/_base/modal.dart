@@ -144,6 +144,7 @@ class AppModal extends StatelessWidget {
           AppText.h1(
             title!,
             color: theme.colors.white,
+            textAlign: TextAlign.center,
           ),
         ]);
       }

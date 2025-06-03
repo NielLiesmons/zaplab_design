@@ -11,6 +11,7 @@ class AppLongTextRenderer extends StatelessWidget {
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
+  final Function(Profile) onProfileTap;
 
   const AppLongTextRenderer({
     super.key,
@@ -21,6 +22,7 @@ class AppLongTextRenderer extends StatelessWidget {
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
+    required this.onProfileTap,
   });
 
   @override
@@ -533,6 +535,7 @@ class AppLongTextRenderer extends StatelessWidget {
                           onTap: snapshot.data?.onTap == null
                               ? null
                               : (model) => snapshot.data!.onTap!(),
+                          onProfileTap: (profile) => onProfileTap(profile),
                         ),
                       );
                     },

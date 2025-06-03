@@ -2,20 +2,20 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
-class AppBottomBarProfile extends StatelessWidget {
-  final Function(Profile) onAddLabelTap;
-  final Function(Profile) onMailTap;
-  final Function(Profile) onVoiceTap;
-  final Function(Profile) onActions;
-  final Profile profile;
+class AppBottomBarService extends StatelessWidget {
+  final Function(Service) onAddLabelTap;
+  final Function(Service) onMailTap;
+  final Function(Service) onVoiceTap;
+  final Function(Service) onActions;
+  final Service service;
 
-  const AppBottomBarProfile({
+  const AppBottomBarService({
     super.key,
     required this.onAddLabelTap,
     required this.onMailTap,
     required this.onVoiceTap,
     required this.onActions,
-    required this.profile,
+    required this.service,
   });
 
   @override
@@ -26,23 +26,20 @@ class AppBottomBarProfile extends StatelessWidget {
       child: Row(
         children: [
           AppButton(
-            inactiveGradient: theme.colors.blurple,
-            onTap: () => onAddLabelTap(profile),
+            inactiveColor: theme.colors.white16,
+            square: true,
+            onTap: () => onAddLabelTap(service),
             children: [
-              AppIcon.s12(
-                theme.icons.characters.plus,
-                outlineThickness: AppLineThicknessData.normal().thick,
-                outlineColor: theme.colors.whiteEnforced,
+              AppIcon.s20(
+                theme.icons.characters.label,
+                color: theme.colors.white33,
               ),
-              const AppGap.s8(),
-              AppText.med14('Add', color: theme.colors.whiteEnforced),
-              const AppGap.s4(),
             ],
           ),
           const AppGap.s12(),
           Expanded(
             child: TapBuilder(
-              onTap: () => onMailTap(profile),
+              onTap: () => onMailTap(service),
               builder: (context, state, hasFocus) {
                 double scaleFactor = 1.0;
                 if (state == TapState.pressed) {
@@ -79,7 +76,7 @@ class AppBottomBarProfile extends StatelessWidget {
                           ),
                           const AppGap.s12(),
                           AppText.med14(
-                              'Mail ${profile.name ?? formatNpub(profile.npub)}',
+                              'Mail ${service.author.value?.name ?? formatNpub(service.author.value?.npub ?? '')}',
                               color: theme.colors.white33),
                           const Spacer(),
                         ],
@@ -94,7 +91,7 @@ class AppBottomBarProfile extends StatelessWidget {
           AppButton(
             square: true,
             inactiveColor: theme.colors.black33,
-            onTap: () => onActions(profile),
+            onTap: () => onActions(service),
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,

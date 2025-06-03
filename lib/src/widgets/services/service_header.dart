@@ -1,14 +1,14 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppArticleHeader extends StatelessWidget {
-  final Article article;
+class AppServiceHeader extends StatelessWidget {
+  final Service service;
   final List<Community> communities;
   final Function(Profile) onProfileTap;
 
-  const AppArticleHeader({
+  const AppServiceHeader({
     super.key,
-    required this.article,
+    required this.service,
     required this.communities,
     required this.onProfileTap,
   });
@@ -30,8 +30,8 @@ class AppArticleHeader extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppProfilePic.s48(article.author.value,
-                  onTap: () => onProfileTap(article.author.value as Profile)),
+              AppProfilePic.s48(service.author.value,
+                  onTap: () => onProfileTap(service.author.value as Profile)),
               const AppGap.s12(),
               Expanded(
                 child: Column(
@@ -41,10 +41,10 @@ class AppArticleHeader extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        AppText.bold14(article.author.value?.name ??
-                            formatNpub(article.author.value?.pubkey ?? '')),
+                        AppText.bold14(service.author.value?.name ??
+                            formatNpub(service.author.value?.pubkey ?? '')),
                         AppText.reg12(
-                          TimestampFormatter.format(article.createdAt,
+                          TimestampFormatter.format(service.createdAt,
                               format: TimestampFormat.relative),
                           color: theme.colors.white33,
                         ),
@@ -60,10 +60,14 @@ class AppArticleHeader extends StatelessWidget {
             ],
           ),
         ),
-        if (article.imageUrl != null) AppFullWidthImage(url: article.imageUrl!),
+        const AppDivider(),
+        if (service.images.isNotEmpty) ...[
+          AppImageSlider(images: service.images.toList()),
+          const AppDivider(),
+        ],
         AppContainer(
           padding: AppEdgeInsets.only(
-            top: article.imageUrl == null ? AppGapSize.none : AppGapSize.s8,
+            top: service.images.isEmpty ? AppGapSize.none : AppGapSize.s8,
             bottom: AppGapSize.s8,
             left: AppGapSize.s12,
             right: AppGapSize.s12,
@@ -71,11 +75,10 @@ class AppArticleHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppText.h2(article.title ?? ''),
+              AppText.h2(service.title ?? ''),
               const AppGap.s4(),
-              if (article.summary != null)
-                AppText.regArticle(article.summary!,
-                    color: theme.colors.white66, fontSize: 14),
+              if (service.summary != null)
+                AppText.reg14(service.summary!, color: theme.colors.white66),
             ],
           ),
         ),

@@ -4,11 +4,13 @@ import 'package:models/models.dart';
 class AppArticleCard extends StatelessWidget {
   final Article article;
   final Function(Article)? onTap;
+  final Function(Profile) onProfileTap;
 
   const AppArticleCard({
     super.key,
     required this.article,
     this.onTap,
+    required this.onProfileTap,
   });
 
   @override
@@ -65,7 +67,8 @@ class AppArticleCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppProfilePic.s40(article.author.value),
+                AppProfilePic.s40(article.author.value,
+                    onTap: () => onProfileTap(article.author.value as Profile)),
                 const AppGap.s12(),
                 Expanded(
                   child: Column(

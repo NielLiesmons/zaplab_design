@@ -4,6 +4,7 @@ import 'package:models/models.dart';
 class AppThreadCard extends StatelessWidget {
   final Note thread;
   final Function(Note)? onTap;
+  final Function(Profile) onProfileTap;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -12,6 +13,7 @@ class AppThreadCard extends StatelessWidget {
     super.key,
     required this.thread,
     this.onTap,
+    required this.onProfileTap,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -35,7 +37,8 @@ class AppThreadCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppProfilePic.s18(thread.author.value),
+                AppProfilePic.s18(thread.author.value,
+                    onTap: () => onProfileTap(thread.author.value as Profile)),
                 const AppGap.s8(),
                 Expanded(
                   child: AppText.bold12(

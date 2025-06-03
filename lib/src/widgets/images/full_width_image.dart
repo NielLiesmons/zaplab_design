@@ -99,8 +99,16 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
                         fit: useMaxHeight ? BoxFit.contain : BoxFit.cover,
                         width: constraints.maxWidth,
                         height: useMaxHeight ? maxHeight : height,
-                        errorBuilder: (context, error, stackTrace) {
+                        loadingBuilder: (context, error, stackTrace) {
                           return const AppSkeletonLoader();
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return Center(
+                            child: AppText(
+                              "Image not found",
+                              color: theme.colors.white33,
+                            ),
+                          );
                         },
                       ),
                     ),

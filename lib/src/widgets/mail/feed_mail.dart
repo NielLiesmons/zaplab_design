@@ -5,6 +5,7 @@ import 'package:tap_builder/tap_builder.dart';
 class AppFeedMail extends StatelessWidget {
   final Mail mail;
   final Function(Model) onTap;
+  final Function(Profile) onProfileTap;
   final bool isUnread;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
@@ -16,6 +17,7 @@ class AppFeedMail extends StatelessWidget {
     super.key,
     required this.mail,
     required this.onTap,
+    required this.onProfileTap,
     this.isUnread = false,
     required this.onResolveEvent,
     required this.onResolveProfile,
@@ -61,7 +63,9 @@ class AppFeedMail extends StatelessWidget {
                       margin: const AppEdgeInsets.only(
                         top: AppGapSize.s4,
                       ),
-                      child: AppProfilePic.s38(mail.author.value),
+                      child: AppProfilePic.s38(mail.author.value,
+                          onTap: () =>
+                              onProfileTap(mail.author.value as Profile)),
                     ),
                   ],
                 ),

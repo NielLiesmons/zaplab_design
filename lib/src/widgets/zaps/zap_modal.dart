@@ -16,6 +16,7 @@ class AppZapModal extends StatefulWidget {
   final VoidCallback onEmojiTap;
   final VoidCallback onGifTap;
   final VoidCallback onAddTap;
+  final Function(Profile) onProfileTap;
 
   const AppZapModal({
     super.key,
@@ -31,6 +32,7 @@ class AppZapModal extends StatefulWidget {
     required this.onEmojiTap,
     required this.onGifTap,
     required this.onAddTap,
+    required this.onProfileTap,
   });
 
   static Future<({double amount, String message})?> show(
@@ -47,6 +49,7 @@ class AppZapModal extends StatefulWidget {
     required VoidCallback onEmojiTap,
     required VoidCallback onGifTap,
     required VoidCallback onAddTap,
+    required Function(Profile) onProfileTap,
   }) {
     double amount = recentAmounts.isNotEmpty ? recentAmounts.first : 100;
     String message = '';
@@ -80,6 +83,7 @@ class AppZapModal extends StatefulWidget {
                     onEmojiTap: onEmojiTap,
                     onGifTap: onGifTap,
                     onAddTap: onAddTap,
+                    onProfileTap: onProfileTap,
                   ),
                 ],
               ),
@@ -163,6 +167,7 @@ class _AppZapModalState extends State<AppZapModal> {
                 onEmojiTap: widget.onEmojiTap,
                 onGifTap: widget.onGifTap,
                 onAddTap: widget.onAddTap,
+                onProfileTap: widget.onProfileTap,
               ),
             ],
           ),

@@ -36,6 +36,7 @@ class AppMessageBubble extends StatefulWidget {
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
+  final Function(Profile) onProfileTap;
 
   const AppMessageBubble({
     super.key,
@@ -53,6 +54,7 @@ class AppMessageBubble extends StatefulWidget {
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
+    required this.onProfileTap,
   });
 
   @override
@@ -189,6 +191,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                   onResolveEmoji: widget.onResolveEmoji,
                                   onResolveHashtag: widget.onResolveHashtag,
                                   onLinkTap: widget.onLinkTap,
+                                  onProfileTap: widget.onProfileTap,
                                 ),
                               ],
                             ),

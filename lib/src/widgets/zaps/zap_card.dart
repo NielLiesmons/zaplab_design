@@ -8,6 +8,7 @@ class AppZapCard extends StatelessWidget {
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
   final Function(Model)? onTap;
+  final Function(Profile) onProfileTap;
 
   const AppZapCard({
     super.key,
@@ -17,6 +18,7 @@ class AppZapCard extends StatelessWidget {
     required this.onResolveProfile,
     required this.onResolveEmoji,
     this.onTap,
+    required this.onProfileTap,
   }) : assert(zap != null || cashuZap != null,
             'Either zap or cashuZap must be provided');
 
@@ -43,7 +45,10 @@ class AppZapCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 AppProfilePic.s18(
-                    isCashuZap ? cashuZap!.author.value : zap!.author.value),
+                    isCashuZap ? cashuZap!.author.value : zap!.author.value,
+                    onTap: () => onProfileTap(isCashuZap
+                        ? cashuZap!.author.value as Profile
+                        : zap!.author.value as Profile)),
                 const AppGap.s10(),
                 Expanded(
                   child: AppText.bold14(

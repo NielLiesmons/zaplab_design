@@ -7,6 +7,7 @@ class AppFeedArticle extends StatelessWidget {
   final List<Comment> topReplies;
   final int totalReplies;
   final Function(Model) onTap;
+  final Function(Profile) onProfileTap;
   final bool isUnread;
 
   const AppFeedArticle({
@@ -15,6 +16,7 @@ class AppFeedArticle extends StatelessWidget {
     this.topReplies = const [],
     this.totalReplies = 0,
     required this.onTap,
+    required this.onProfileTap,
     this.isUnread = false,
   });
 
@@ -111,7 +113,9 @@ class AppFeedArticle extends StatelessWidget {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 const AppGap.s4(),
-                                AppProfilePic.s38(article.author.value),
+                                AppProfilePic.s38(article.author.value,
+                                    onTap: () => onProfileTap(
+                                        article.author.value as Profile)),
                                 if (topReplies.isNotEmpty)
                                   Expanded(
                                     child: AppDivider.vertical(

@@ -236,6 +236,7 @@ class _AppBaseContentState extends State<_AppBaseContent>
                               AppContainer(
                                 padding: const AppEdgeInsets.all(AppGapSize.s4),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     const AppGap.s24(),
                                     if (widget.onBackTap != null)

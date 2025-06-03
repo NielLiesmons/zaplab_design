@@ -13,6 +13,7 @@ class AppZapBubble extends StatefulWidget {
   final NostrEmojiResolver onResolveEmoji;
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
+  final Function(Profile) onProfileTap;
 
   const AppZapBubble({
     super.key,
@@ -27,6 +28,7 @@ class AppZapBubble extends StatefulWidget {
     required this.onResolveEmoji,
     required this.onResolveHashtag,
     required this.onLinkTap,
+    required this.onProfileTap,
   });
 
   @override
@@ -47,7 +49,9 @@ class _AppZapBubbleState extends State<AppZapBubble> {
       children: [
         if (!widget.isOutgoing) ...[
           AppContainer(
-            child: AppProfilePic.s32(widget.cashuZap.author.value),
+            child: AppProfilePic.s32(widget.cashuZap.author.value,
+                onTap: () => widget
+                    .onProfileTap(widget.cashuZap.author.value as Profile)),
           ),
           const AppGap.s4(),
         ] else ...[
@@ -201,6 +205,7 @@ class _AppZapBubbleState extends State<AppZapBubble> {
                                     onResolveEmoji: widget.onResolveEmoji,
                                     onResolveHashtag: widget.onResolveHashtag,
                                     onLinkTap: widget.onLinkTap,
+                                    onProfileTap: widget.onProfileTap,
                                   ),
                                 ],
                               ),

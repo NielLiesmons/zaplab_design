@@ -13,6 +13,7 @@ class AppMessageStack extends StatelessWidget {
   final Function(Model) onReply;
   final Function(Reaction) onReactionTap;
   final Function(Zap) onZapTap;
+  final Function(Profile) onProfileTap;
 
   const AppMessageStack({
     super.key,
@@ -27,6 +28,7 @@ class AppMessageStack extends StatelessWidget {
     required this.onReply,
     required this.onReactionTap,
     required this.onZapTap,
+    required this.onProfileTap,
   });
 
   @override
@@ -39,7 +41,9 @@ class AppMessageStack extends StatelessWidget {
       children: [
         if (!isOutgoing) ...[
           AppContainer(
-            child: AppProfilePic.s32(messages.first.author.value),
+            child: AppProfilePic.s32(messages.first.author.value,
+                onTap: () =>
+                    onProfileTap(messages.first.author.value as Profile)),
           ),
           const AppGap.s4(),
         ] else ...[
@@ -74,6 +78,7 @@ class AppMessageStack extends StatelessWidget {
                     onResolveEmoji: onResolveEmoji,
                     onResolveHashtag: onResolveHashtag,
                     onLinkTap: onLinkTap,
+                    onProfileTap: onProfileTap,
                   ),
                 ],
               ],

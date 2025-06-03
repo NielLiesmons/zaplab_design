@@ -8,11 +8,13 @@ class AppModelCard extends StatelessWidget {
   final NostrEmojiResolver? onResolveEmoji;
   final NostrHashtagResolver? onResolveHashtag;
   final Function(Model)? onTap;
+  final Function(Profile) onProfileTap;
 
   const AppModelCard({
     super.key,
     required this.model,
     this.onTap,
+    required this.onProfileTap,
     this.onResolveEvent,
     this.onResolveProfile,
     this.onResolveEmoji,
@@ -62,6 +64,7 @@ class AppModelCard extends StatelessWidget {
         child: AppArticleCard(
           article: model as Article,
           onTap: onTap,
+          onProfileTap: onProfileTap,
         ),
       );
     }
@@ -94,6 +97,7 @@ class AppModelCard extends StatelessWidget {
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
           onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
           onTap: onTap,
+          onProfileTap: onProfileTap,
         ),
       );
     }
@@ -104,6 +108,7 @@ class AppModelCard extends StatelessWidget {
         child: AppThreadCard(
           thread: model as Note,
           onTap: onTap,
+          onProfileTap: onProfileTap,
           onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
           onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
@@ -122,7 +127,8 @@ class AppModelCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AppProfilePic.s40(model!.author.value),
+            AppProfilePic.s40(model!.author.value,
+                onTap: () => onProfileTap(model!.author.value as Profile)),
             const AppGap.s12(),
             Expanded(
               child: Column(

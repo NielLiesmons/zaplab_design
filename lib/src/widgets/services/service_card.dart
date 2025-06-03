@@ -5,6 +5,7 @@ import 'package:tap_builder/tap_builder.dart';
 class AppServiceCard extends StatelessWidget {
   final Service service;
   final Function(Model) onTap;
+  final Function(Profile) onProfileTap;
   final bool isUnread;
   final bool noPadding;
 
@@ -12,6 +13,7 @@ class AppServiceCard extends StatelessWidget {
     super.key,
     required this.service,
     required this.onTap,
+    required this.onProfileTap,
     this.isUnread = false,
     this.noPadding = false,
   });
@@ -27,9 +29,8 @@ class AppServiceCard extends StatelessWidget {
           padding: noPadding
               ? const AppEdgeInsets.all(AppGapSize.none)
               : AppEdgeInsets.only(
-                  top: service.imageUrl == null
-                      ? AppGapSize.none
-                      : AppGapSize.s12,
+                  top:
+                      service.images.isEmpty ? AppGapSize.none : AppGapSize.s12,
                   bottom: AppGapSize.s8,
                   left: AppGapSize.s12,
                   right: AppGapSize.s12,
@@ -37,7 +38,7 @@ class AppServiceCard extends StatelessWidget {
           child: Column(
             children: [
               // Image container with 16:9 aspect ratio
-              if (service.imageUrl != null && service.imageUrl!.isNotEmpty)
+              if (service.images.isNotEmpty)
                 LayoutBuilder(
                   builder: (context, constraints) {
                     final maxWidth = constraints.maxWidth;
@@ -55,7 +56,7 @@ class AppServiceCard extends StatelessWidget {
                           ),
                         ),
                         child: Image.network(
-                          service.imageUrl!,
+                          service.images.first,
                           fit: BoxFit.cover,
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
@@ -82,7 +83,7 @@ class AppServiceCard extends StatelessWidget {
                           ),
                         ),
                         child: Image.network(
-                          service.imageUrl!,
+                          service.images.first,
                           fit: BoxFit.cover,
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
@@ -108,7 +109,9 @@ class AppServiceCard extends StatelessWidget {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             const AppGap.s4(),
-                            AppProfilePic.s38(service.author.value),
+                            AppProfilePic.s38(service.author.value,
+                                onTap: () => onProfileTap(
+                                    service.author.value as Profile)),
                           ],
                         ),
                         const AppGap.s12(),
