@@ -14,6 +14,7 @@ class AppInputTextField extends StatefulWidget {
   final Color? backgroundColor;
   final bool singleLine;
   final bool autoCapitalize;
+  final bool obscureText;
 
   const AppInputTextField({
     super.key,
@@ -29,6 +30,7 @@ class AppInputTextField extends StatefulWidget {
     this.backgroundColor,
     this.singleLine = false,
     this.autoCapitalize = true,
+    this.obscureText = false,
   });
 
   AppInputTextField copyWith({
@@ -42,6 +44,7 @@ class AppInputTextField extends StatefulWidget {
     Color? backgroundColor,
     bool? singleLine,
     bool? autoCapitalize,
+    bool? obscureText,
   }) {
     return AppInputTextField(
       placeholderWidget: placeholder ?? placeholderWidget,
@@ -54,6 +57,7 @@ class AppInputTextField extends StatefulWidget {
       backgroundColor: backgroundColor ?? this.backgroundColor,
       singleLine: singleLine ?? this.singleLine,
       autoCapitalize: autoCapitalize ?? this.autoCapitalize,
+      obscureText: obscureText ?? this.obscureText,
     );
   }
 
@@ -150,6 +154,7 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
                             FilteringTextInputFormatter.singleLineFormatter,
                           ]
                         : null,
+                    obscureText: widget.obscureText,
                   ),
                 ),
               ),

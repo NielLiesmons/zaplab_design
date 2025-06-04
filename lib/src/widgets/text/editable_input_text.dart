@@ -16,6 +16,7 @@ class AppEditableInputText extends StatefulWidget {
   final int? minLines;
   final TextCapitalization textCapitalization;
   final List<TextInputFormatter>? inputFormatters;
+  final bool obscureText;
 
   const AppEditableInputText({
     super.key,
@@ -30,6 +31,7 @@ class AppEditableInputText extends StatefulWidget {
     this.minLines,
     this.textCapitalization = TextCapitalization.none,
     this.inputFormatters,
+    this.obscureText = false,
   });
 
   @override
@@ -206,6 +208,7 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
                   readOnly: false,
                   textCapitalization: widget.textCapitalization,
                   inputFormatters: widget.inputFormatters,
+                  obscureText: widget.obscureText,
                   selectionColor:
                       theme.colors.blurpleLightColor.withValues(alpha: 0.33),
                   contextMenuBuilder: widget.contextMenuItems == null
