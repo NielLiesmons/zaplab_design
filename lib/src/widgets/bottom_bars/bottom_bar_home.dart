@@ -22,25 +22,27 @@ class AppBottomBarHome extends StatelessWidget {
     return AppBottomBar(
       child: Row(
         children: [
-          AppButton(
-            square: true,
-            children: [
-              AppIcon.s20(theme.icons.characters.zap,
-                  color: theme.colors.whiteEnforced),
-            ],
-            onTap: onZapTap,
-          ),
-          const AppGap.s12(),
-          AppButton(
-            square: true,
-            children: [
-              AppIcon.s12(theme.icons.characters.plus,
-                  outlineThickness: AppLineThicknessData.normal().thick,
-                  outlineColor: theme.colors.white66),
-            ],
-            inactiveColor: theme.colors.white16,
-            onTap: onAddTap,
-          ),
+          if (onZapTap != null)
+            AppButton(
+              square: true,
+              onTap: onZapTap,
+              children: [
+                AppIcon.s20(theme.icons.characters.zap,
+                    color: theme.colors.whiteEnforced),
+              ],
+            ),
+          if (onZapTap != null) const AppGap.s12(),
+          if (onAddTap != null)
+            AppButton(
+              square: true,
+              inactiveColor: theme.colors.white16,
+              onTap: onAddTap,
+              children: [
+                AppIcon.s12(theme.icons.characters.plus,
+                    outlineThickness: AppLineThicknessData.normal().thick,
+                    outlineColor: theme.colors.white66),
+              ],
+            ),
           const AppGap.s12(),
           Expanded(
             child: TapBuilder(
@@ -95,6 +97,8 @@ class AppBottomBarHome extends StatelessWidget {
           const AppGap.s12(),
           AppButton(
             square: true,
+            inactiveColor: theme.colors.black33,
+            onTap: onActions,
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -106,8 +110,6 @@ class AppBottomBarHome extends StatelessWidget {
                 ],
               ),
             ],
-            inactiveColor: theme.colors.black33,
-            onTap: onActions,
           ),
         ],
       ),

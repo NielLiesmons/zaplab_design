@@ -2,11 +2,13 @@ import 'package:zaplab_design/zaplab_design.dart';
 
 class HostingService {
   final String name;
+  final String description;
   final HostingStatus status;
   final VoidCallback onAdjust;
 
   const HostingService({
     required this.name,
+    required this.description,
     required this.status,
     required this.onAdjust,
   });
@@ -14,6 +16,7 @@ class HostingService {
 
 class AppHostingCard extends StatelessWidget {
   final String name;
+  final String type;
   final List<HostingService> services;
   final double usedStorage;
   final double totalStorage;
@@ -21,6 +24,7 @@ class AppHostingCard extends StatelessWidget {
   const AppHostingCard({
     super.key,
     required this.name,
+    required this.type,
     required this.services,
     required this.usedStorage,
     required this.totalStorage,
@@ -56,16 +60,24 @@ class AppHostingCard extends StatelessWidget {
                 children: [
                   AppProfilePicSquare.fromUrl(
                     'https://cdn.satellite.earth/413ea918cfc60bdab6a205fd7cf65bc67067a63de3c4407eb23b18ae3479f0c5.png',
-                    size: AppProfilePicSquareSize.s56,
+                    size: AppProfilePicSquareSize.s64,
                   ),
                   const AppGap.s12(),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AppText.med14(
-                          name,
+                        Row(
+                          children: [
+                            AppText.med16(
+                              name,
+                            ),
+                            const AppGap.s4(),
+                            AppText.reg16(type,
+                                gradient: theme.colors.graydient66),
+                          ],
                         ),
+                        const AppGap.s2(),
                         Row(
                           children: [
                             AppText.reg12(
@@ -95,9 +107,10 @@ class AppHostingCard extends StatelessWidget {
             const AppDivider(),
             for (final service in services) ...[
               AppContainer(
+                height: theme.sizes.s38,
                 padding: const AppEdgeInsets.only(
                   left: AppGapSize.s16,
-                  right: AppGapSize.s6,
+                  right: AppGapSize.s16,
                   top: AppGapSize.s4,
                   bottom: AppGapSize.s4,
                 ),
@@ -118,18 +131,8 @@ class AppHostingCard extends StatelessWidget {
                       ),
                     ),
                     const AppGap.s12(),
-                    AppSmallButton(
-                      inactiveColor: Color(0x00000000),
-                      onTap: service.onAdjust,
-                      children: [
-                        AppIcon.s16(
-                          theme.icons.characters.adjust,
-                          outlineColor: theme.colors.white33,
-                          outlineThickness:
-                              AppLineThicknessData.normal().medium,
-                        ),
-                      ],
-                    ),
+                    AppText.reg12(service.description,
+                        color: theme.colors.white33),
                   ],
                 ),
               ),
