@@ -117,6 +117,7 @@ export 'mail/mail.dart';
 // Models
 export 'models/model_button.dart';
 export 'models/model_card.dart';
+export 'models/model_empty_state_card.dart';
 
 // Notifications
 export 'notifications/notification_card.dart';

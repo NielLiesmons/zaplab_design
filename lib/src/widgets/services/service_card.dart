@@ -166,7 +166,11 @@ class AppServiceCard extends StatelessWidget {
                   if (service.content.isNotEmpty)
                     AppContainer(
                       padding: const AppEdgeInsets.all(AppGapSize.s6),
-                      child: AppText.reg14(service.content),
+                      child: AppText.reg14(
+                        service.content,
+                        maxLines: 2,
+                        textOverflow: TextOverflow.ellipsis,
+                      ),
                     ),
                 ],
               ),

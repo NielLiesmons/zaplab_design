@@ -33,6 +33,11 @@ String getModelName(Model? model) {
   return type[0].toUpperCase() + type.substring(1);
 }
 
+String getModelNameFromContentType(String contenType) {
+  if (contenType == 'nostr') return 'Nostr Publication';
+  return contenType[0].toUpperCase() + contenType.substring(1);
+}
+
 String getModelDisplayText(Model<dynamic>? model) {
   return switch (model) {
     Model<Article>() => (model as Article).title ?? '',
