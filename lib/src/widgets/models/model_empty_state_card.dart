@@ -16,6 +16,7 @@ class AppModelEmptyStateCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     return AppPanelButton(
+      onTap: onCreateTap,
       color: theme.colors.gray33,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -29,18 +30,21 @@ class AppModelEmptyStateCard extends StatelessWidget {
           AppText.h2('No ${getModelNameFromContentType(contentType)}s yet',
               color: theme.colors.white33),
           const AppGap.s16(),
-          AppButton(inactiveColor: theme.colors.white16, children: [
-            AppIcon(
-              theme.icons.characters.plus,
-              outlineColor: theme.colors.white66,
-              outlineThickness: AppLineThicknessData.normal().thick,
-            ),
-            const AppGap.s12(),
-            AppText.med14(
-              "Create ${getModelNameFromContentType(contentType)}",
-              color: theme.colors.white66,
-            )
-          ])
+          AppButton(
+              onTap: onCreateTap,
+              inactiveColor: theme.colors.white16,
+              children: [
+                AppIcon(
+                  theme.icons.characters.plus,
+                  outlineColor: theme.colors.white66,
+                  outlineThickness: AppLineThicknessData.normal().thick,
+                ),
+                const AppGap.s12(),
+                AppText.med14(
+                  "Create ${getModelNameFromContentType(contentType)}",
+                  color: theme.colors.white66,
+                )
+              ])
         ],
       ),
     );

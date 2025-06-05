@@ -25,12 +25,18 @@ class AppProfileHeader extends StatelessWidget {
             aspectRatio: 3 / 1.2,
             child: AppContainer(
               decoration: BoxDecoration(
-                color: theme.colors.gray33,
+                color: Color(profileToColor(profile)).withValues(alpha: 0.16),
               ),
               child: profile.banner != null && profile.banner!.isNotEmpty
                   ? Image.network(
                       profile.banner!,
                       fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const SizedBox.shrink();
+                      },
+                      loadingBuilder: (context, error, stackTrace) {
+                        return const AppSkeletonLoader();
+                      },
                     )
                   : null,
             ),

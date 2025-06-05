@@ -112,7 +112,7 @@ class AppProfilePicStory extends StatelessWidget {
                 height: adjustedInnerSize,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: theme.colors.white16,
+                  color: theme.colors.gray,
                   border: Border.all(
                     color: theme.colors.white16,
                     width: innerBorderThickness,

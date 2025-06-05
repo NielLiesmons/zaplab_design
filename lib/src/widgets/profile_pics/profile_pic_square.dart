@@ -109,7 +109,7 @@ class AppProfilePicSquare extends StatelessWidget {
                 color: theme.colors.white16,
                 width: thickness,
               ),
-              color: theme.colors.gray66,
+              color: theme.colors.gray,
             ),
             child: ClipRRect(
               borderRadius: borderRadius,
