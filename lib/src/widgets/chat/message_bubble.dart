@@ -22,7 +22,8 @@ class MessageBubbleScope extends InheritedWidget {
 }
 
 class AppMessageBubble extends StatefulWidget {
-  final ChatMessage message;
+  final ChatMessage? message;
+  final Comment? comment;
   final bool showHeader;
   final bool isLastInStack;
   final bool isOutgoing;
@@ -40,7 +41,8 @@ class AppMessageBubble extends StatefulWidget {
 
   const AppMessageBubble({
     super.key,
-    required this.message,
+    this.message,
+    this.comment,
     this.showHeader = false,
     this.isLastInStack = false,
     this.isOutgoing = false,
@@ -68,8 +70,10 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
     final isInsideModal = ModalScope.of(context);
 
     // Analyze content type
-    final contentType =
-        AppShortTextRenderer.analyzeContent(widget.message.content);
+    final contentType = AppShortTextRenderer.analyzeContent(
+        widget.message != null
+            ? widget.message!.content
+            : widget.comment!.content);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -113,8 +117,10 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
               outlineColor: theme.colors.white66,
               outlineThickness: AppLineThicknessData.normal().medium,
             ),
-            onSwipeLeft: () => widget.onReply(widget.message),
-            onSwipeRight: () => widget.onActions(widget.message),
+            onSwipeLeft: () => widget.onReply(
+                widget.message != null ? widget.message! : widget.comment!),
+            onSwipeRight: () => widget.onActions(
+                widget.message != null ? widget.message! : widget.comment!),
             child: MessageBubbleScope(
               isOutgoing: widget.isOutgoing,
               child: LayoutBuilder(
@@ -158,18 +164,29 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        if (widget.message.author.value != null)
-                                          AppText.bold12(
-                                            widget.message.author.value!.name ??
-                                                formatNpub(widget.message.author
-                                                    .value!.pubkey),
-                                            color: Color(npubToColor(widget
-                                                .message.author.value!.pubkey)),
-                                            textOverflow: TextOverflow.ellipsis,
-                                          ),
+                                        AppText.bold12(
+                                          widget.message != null
+                                              ? widget.message!.author.value!
+                                                      .name ??
+                                                  formatNpub(widget.message!
+                                                      .author.value!.pubkey)
+                                              : widget.comment!.author.value!
+                                                      .name ??
+                                                  formatNpub(widget.comment!
+                                                      .author.value!.pubkey),
+                                          color: Color(npubToColor(
+                                              widget.message != null
+                                                  ? widget.message!.author
+                                                      .value!.pubkey
+                                                  : widget.comment!.author
+                                                      .value!.pubkey)),
+                                          textOverflow: TextOverflow.ellipsis,
+                                        ),
                                         AppText.reg12(
                                           TimestampFormatter.format(
-                                              widget.message.createdAt,
+                                              widget.message != null
+                                                  ? widget.message!.createdAt
+                                                  : widget.comment!.createdAt,
                                               format: TimestampFormat.relative),
                                           color: theme.colors.white33,
                                         ),
@@ -185,7 +202,9 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                 if (contentType.isSingleContent)
                                   const AppGap.s4(),
                                 AppShortTextRenderer(
-                                  content: widget.message.content,
+                                  content: widget.message != null
+                                      ? widget.message!.content
+                                      : widget.comment!.content,
                                   onResolveEvent: widget.onResolveEvent,
                                   onResolveProfile: widget.onResolveProfile,
                                   onResolveEmoji: widget.onResolveEmoji,
@@ -266,8 +285,10 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                     const AppGap.s4(),
                                     Spacer(),
                                     AppSmallButton(
-                                      onTap: () =>
-                                          widget.onSendAgain!(widget.message),
+                                      onTap: () => widget.onSendAgain!(
+                                          widget.message != null
+                                              ? widget.message!
+                                              : widget.comment!),
                                       rounded: true,
                                       inactiveColor: theme.colors.white16,
                                       children: [
