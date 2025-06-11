@@ -127,7 +127,6 @@ export 'models/model_empty_state_card.dart';
 export 'notifications/notification_card.dart';
 
 // Profiles
-export 'profiles/add_profile_modal.dart';
 export 'profiles/current_profile_card.dart';
 export 'profiles/npub_display.dart';
 export 'profiles/other_profile_card.dart';
