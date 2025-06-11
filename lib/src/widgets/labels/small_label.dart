@@ -125,20 +125,6 @@ class HouseShapePainter2 extends CustomPainter {
       ..lineTo(0, 24)
       ..close();
 
-    // // Draw the circular cutout
-    // final cutoutPath = Path()
-    //   ..addOval(Rect.fromCircle(
-    //     center: Offset(size.width / 2 + 1, size.height / 2),
-    //     radius: 3,
-    //   ));
-
-    // // Combine the paths using Path.combine with PathOperation.difference
-    // final finalPath = Path.combine(
-    //   PathOperation.difference,
-    //   path,
-    //   cutoutPath,
-    // );
-
     canvas.drawPath(path, paint);
   }
 

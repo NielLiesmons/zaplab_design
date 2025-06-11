@@ -120,7 +120,7 @@ class AppProfilePicLive extends StatelessWidget {
                 height: adjustedInnerSize2,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: theme.colors.white16,
+                  color: theme.colors.gray,
                   border: Border.all(
                     color: theme.colors.white16,
                     width: innerBorderThickness,

@@ -337,6 +337,131 @@ class PartialMail extends RegularPartialModel<Mail> {
   }
 }
 
+// Badge
+
+class Badge extends ParameterizableReplaceableModel<Badge> {
+  Badge.fromMap(super.map, super.ref) : super.fromMap();
+
+  String get slug => event.getFirstTagValue('d')!;
+  String? get name => event.getFirstTagValue('name');
+  String? get description => event.getFirstTagValue('description');
+  String? get imageUrl => event.getFirstTagValue('image');
+  String? get imageDimensions {
+    final imageTag = event.tags.firstWhere(
+      (tag) => tag[0] == 'image' && tag.length > 2,
+      orElse: () => ['image', '', ''],
+    );
+    return imageTag[2];
+  }
+
+  Map<String, String> get thumbnails {
+    final thumbs = <String, String>{};
+    for (final tag in event.tags.where((tag) => tag[0] == 'thumb')) {
+      if (tag.length > 1) {
+        final dimensions = tag.length > 2 ? tag[2] : 'default';
+        thumbs[dimensions] = tag[1];
+      }
+    }
+    return thumbs;
+  }
+}
+
+class PartialBadge extends ParameterizableReplaceablePartialEvent<Badge> {
+  PartialBadge({
+    required String slug,
+    String? name,
+    String? description,
+    String? imageUrl,
+    String? imageDimensions,
+    Map<String, String>? thumbnails,
+  }) {
+    this.slug = slug;
+    this.name = name;
+    this.description = description;
+    this.imageUrl = imageUrl;
+    this.imageDimensions = imageDimensions;
+    if (thumbnails != null) {
+      this.thumbnails = thumbnails;
+    }
+  }
+
+  set slug(String value) => event.addTagValue('d', value);
+  set name(String? value) => event.addTagValue('name', value);
+  set description(String? value) => event.addTagValue('description', value);
+  set imageUrl(String? value) => event.addTagValue('image', value);
+  set imageDimensions(String? value) {
+    final currentImageUrl = event.getFirstTagValue('image') ?? '';
+    event.addTag('image', [currentImageUrl, value ?? '']);
+  }
+
+  set thumbnails(Map<String, String> value) {
+    for (final entry in value.entries) {
+      event.addTag('thumb', [entry.value, entry.key]);
+    }
+  }
+}
+
+class BadgeAward extends RegularModel<BadgeAward> {
+  BadgeAward.fromMap(super.map, super.ref) : super.fromMap();
+
+  String get badgeDefinition => event.getFirstTagValue('a')!;
+  Set<String> get awardedPubkeys => event.getTagSetValues('p');
+}
+
+class PartialBadgeAward extends RegularPartialModel<BadgeAward> {
+  PartialBadgeAward({
+    required String badgeDefinition,
+    required Set<String> awardedPubkeys,
+  }) {
+    this.badgeDefinition = badgeDefinition;
+    this.awardedPubkeys = awardedPubkeys;
+  }
+
+  set badgeDefinition(String value) => event.addTagValue('a', value);
+  set awardedPubkeys(Set<String> value) {
+    for (final pubkey in value) {
+      event.addTagValue('p', pubkey);
+    }
+  }
+}
+
+class ProfileBadges extends ParameterizableReplaceableModel<ProfileBadges> {
+  ProfileBadges.fromMap(super.map, super.ref) : super.fromMap();
+
+  List<({String definition, String award})> get badges {
+    final badges = <({String definition, String award})>[];
+    final tags = event.tags;
+
+    for (var i = 0; i < tags.length - 1; i++) {
+      if (tags[i][0] == 'a' && tags[i + 1][0] == 'e') {
+        badges.add((
+          definition: tags[i][1],
+          award: tags[i + 1][1],
+        ));
+      }
+    }
+
+    return badges;
+  }
+}
+
+class PartialProfileBadges
+    extends ParameterizableReplaceablePartialEvent<ProfileBadges> {
+  PartialProfileBadges({
+    required List<({String definition, String award})> badges,
+  }) {
+    this.badges = badges;
+  }
+
+  set badges(List<({String definition, String award})> value) {
+    event.addTagValue('d', 'profile_badges');
+    for (final badge in value) {
+      event.addTagValue('a', badge.definition);
+      event.addTagValue('e', badge.award);
+    }
+  }
+}
+
 // CashuZap
 
 class CashuZap extends RegularModel<CashuZap> {

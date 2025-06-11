@@ -30,6 +30,10 @@ export 'articles/feed_article.dart';
 // Audio
 export 'audio/audio_message.dart';
 
+// Badges
+export 'badges/badge.dart';
+export 'badges/badge_stack.dart';
+
 // Bottom Bars
 export 'bottom_bars/bottom_bar.dart';
 export 'bottom_bars/bottom_bar_chat.dart';
