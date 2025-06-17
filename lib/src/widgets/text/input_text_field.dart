@@ -1,6 +1,12 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter/services.dart';
 
+enum AppInputTextFieldSize {
+  small,
+  medium,
+  large,
+}
+
 class AppInputTextField extends StatefulWidget {
   final List<Widget>? placeholderWidget;
   final String? placeholder;
@@ -15,6 +21,7 @@ class AppInputTextField extends StatefulWidget {
   final bool singleLine;
   final bool autoCapitalize;
   final bool obscureText;
+  final AppInputTextFieldSize size;
 
   const AppInputTextField({
     super.key,
@@ -31,6 +38,7 @@ class AppInputTextField extends StatefulWidget {
     this.singleLine = false,
     this.autoCapitalize = true,
     this.obscureText = false,
+    this.size = AppInputTextFieldSize.small,
   });
 
   AppInputTextField copyWith({
@@ -45,6 +53,7 @@ class AppInputTextField extends StatefulWidget {
     bool? singleLine,
     bool? autoCapitalize,
     bool? obscureText,
+    AppInputTextFieldSize? size,
   }) {
     return AppInputTextField(
       placeholderWidget: placeholder ?? placeholderWidget,
@@ -58,6 +67,7 @@ class AppInputTextField extends StatefulWidget {
       singleLine: singleLine ?? this.singleLine,
       autoCapitalize: autoCapitalize ?? this.autoCapitalize,
       obscureText: obscureText ?? this.obscureText,
+      size: size ?? this.size,
     );
   }
 
@@ -66,6 +76,61 @@ class AppInputTextField extends StatefulWidget {
 }
 
 class _AppInputTextFieldState extends State<AppInputTextField> {
+  late FocusNode _focusNode;
+  bool _hasHandledInitialFocus = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = widget.focusNode ?? FocusNode();
+    _focusNode.addListener(_handleFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_handleFocusChange);
+    if (widget.focusNode == null) {
+      _focusNode.dispose();
+    }
+    super.dispose();
+  }
+
+  void _handleFocusChange() {
+    if (_focusNode.hasFocus && !_hasHandledInitialFocus) {
+      _hasHandledInitialFocus = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && widget.controller != null) {
+          widget.controller!.selection = TextSelection.collapsed(
+            offset: widget.controller!.text.length,
+          );
+        }
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(AppInputTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.focusNode != widget.focusNode) {
+      oldWidget.focusNode?.removeListener(_handleFocusChange);
+      _focusNode = widget.focusNode ?? FocusNode();
+      _focusNode.addListener(_handleFocusChange);
+    }
+    // Reset the focus handling flag when the widget is updated
+    _hasHandledInitialFocus = false;
+  }
+
+  double get _minHeight {
+    switch (widget.size) {
+      case AppInputTextFieldSize.small:
+        return 40;
+      case AppInputTextFieldSize.medium:
+        return 80;
+      case AppInputTextFieldSize.large:
+        return 160;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
@@ -102,6 +167,9 @@ class _AppInputTextFieldState extends State<AppInputTextField> {
           ),
         if (widget.title != null) const AppGap.s8(),
         AppContainer(
+          constraints: BoxConstraints(
+            minHeight: _minHeight,
+          ),
           decoration: BoxDecoration(
             color: widget.backgroundColor ?? theme.colors.black33,
             borderRadius: theme.radius.asBorderRadius().rad16,

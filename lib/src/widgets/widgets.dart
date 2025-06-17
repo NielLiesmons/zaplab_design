@@ -42,6 +42,7 @@ export 'bottom_bars/bottom_bar_content_feed.dart';
 export 'bottom_bars/bottom_bar_home.dart';
 export 'bottom_bars/bottom_bar_mail.dart';
 export 'bottom_bars/bottom_bar_profile.dart';
+export 'bottom_bars/bottom_bar_reply.dart';
 export 'bottom_bars/bottom_bar_safe_area.dart';
 export 'bottom_bars/bottom_bar_service.dart';
 export 'bottom_bars/bottom_bar_welcome.dart';
@@ -142,6 +143,9 @@ export 'profile_pics/profile_pic.dart';
 export 'profile_pics/profile_stack.dart';
 export 'profile_pics/small_profile_stack.dart';
 
+// Replies
+export 'replies/reply.dart';
+
 // Selectors
 export 'selector/selector.dart';
 export 'selector/selector_button.dart';
@@ -184,6 +188,8 @@ export 'text/amount.dart';
 export 'text/big_section_title.dart';
 export 'text/code_block.dart';
 export 'text/editable_input_text.dart';
+export 'text/keyboard_submit_handler.dart';
+export 'text/input_text_modal.dart';
 export 'text/input_modal.dart';
 export 'text/input_text_field.dart';
 export 'text/search_field.dart';

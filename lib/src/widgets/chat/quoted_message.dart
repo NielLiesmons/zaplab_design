@@ -4,15 +4,17 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:flutter/gestures.dart';
 
 class AppQuotedMessage extends StatelessWidget {
-  final ChatMessage chatMessage;
+  final ChatMessage? chatMessage;
+  final Comment? reply;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
-  final Function(ChatMessage)? onTap;
+  final Function(dynamic)? onTap;
 
   const AppQuotedMessage({
     super.key,
-    required this.chatMessage,
+    this.chatMessage,
+    this.reply,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -28,14 +30,14 @@ class AppQuotedMessage extends StatelessWidget {
           ? null
           : () {
               print('AppQuotedMessage: GestureDetector onTap called');
-              onTap!(chatMessage);
+              onTap!(chatMessage != null ? chatMessage! : reply!);
             },
       child: TapBuilder(
         onTap: onTap == null
             ? null
             : () {
                 print('AppQuotedMessage: TapBuilder onTap called');
-                onTap!(chatMessage);
+                onTap!(chatMessage != null ? chatMessage! : reply!);
               },
         builder: (context, state, hasFocus) => AppContainer(
           decoration: BoxDecoration(
@@ -49,8 +51,9 @@ class AppQuotedMessage extends StatelessWidget {
                 AppContainer(
                   width: AppLineThicknessData.normal().thick,
                   decoration: BoxDecoration(
-                    color: Color(
-                        npubToColor(chatMessage.author.value?.pubkey ?? '')),
+                    color: Color(npubToColor(chatMessage != null
+                        ? chatMessage!.author.value?.pubkey ?? ''
+                        : reply!.author.value?.pubkey ?? '')),
                   ),
                 ),
                 Expanded(
@@ -66,17 +69,27 @@ class AppQuotedMessage extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            AppProfilePic.s18(chatMessage.author.value),
+                            AppProfilePic.s18(chatMessage != null
+                                ? chatMessage!.author.value
+                                : reply!.author.value),
                             const AppGap.s6(),
                             AppText.bold12(
-                              chatMessage.author.value?.name ??
-                                  formatNpub(
-                                      chatMessage.author.value?.pubkey ?? ''),
+                              chatMessage != null
+                                  ? chatMessage!.author.value?.name ??
+                                      formatNpub(
+                                          chatMessage!.author.value?.pubkey ??
+                                              '')
+                                  : reply!.author.value?.name ??
+                                      formatNpub(
+                                          reply!.author.value?.pubkey ?? ''),
                               color: theme.colors.white66,
                             ),
                             const Spacer(),
                             AppText.reg12(
-                              TimestampFormatter.format(chatMessage.createdAt,
+                              TimestampFormatter.format(
+                                  chatMessage != null
+                                      ? chatMessage!.createdAt
+                                      : reply!.createdAt,
                                   format: TimestampFormat.relative),
                               color: theme.colors.white33,
                             ),
@@ -88,7 +101,9 @@ class AppQuotedMessage extends StatelessWidget {
                             left: AppGapSize.s2,
                           ),
                           child: AppCompactTextRenderer(
-                            content: chatMessage.content,
+                            content: chatMessage != null
+                                ? chatMessage!.content
+                                : reply!.content,
                             maxLines: 1,
                             shouldTruncate: true,
                             onResolveEvent: onResolveEvent,

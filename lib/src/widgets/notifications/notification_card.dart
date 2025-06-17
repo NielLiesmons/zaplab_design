@@ -51,7 +51,17 @@ class AppNotificationCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const AppGap.s2(),
-                      AppProfilePic.s20(null), //TODO: Implement
+                      AppProfilePic.s20(model is Comment
+                          ? (model as Comment).parentModel.value!.author.value
+                          : model is Zap
+                              ? (model as Zap).zappedModel.value!.author.value
+                              : model is Reaction
+                                  ? (model as Reaction)
+                                      .reactedOn
+                                      .value!
+                                      .author
+                                      .value
+                                  : null),
                       Expanded(
                         child: AppDivider.vertical(
                           color: theme.colors.white33,
@@ -70,17 +80,31 @@ class AppNotificationCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           AppEmojiContentType(
-                            contentType: "article",
+                            contentType: getModelContentType(model is Comment
+                                ? (model as Comment).parentModel.value
+                                : model is Zap
+                                    ? (model as Zap).zappedModel.value
+                                    : model is Reaction
+                                        ? (model as Reaction).reactedOn.value!
+                                        : null),
                             size: theme.sizes.s16,
                           ),
                           const AppGap.s8(),
-                          AppText.reg14(
-                            "Title Of Your Article",
-                            color: theme.colors.white66,
-                            maxLines: 1,
-                            textOverflow: TextOverflow.ellipsis,
+                          Expanded(
+                            child: AppText.reg14(
+                              getModelDisplayText(model is Comment
+                                  ? (model as Comment).parentModel.value
+                                  : model is Zap
+                                      ? (model as Zap).zappedModel.value
+                                      : model is Reaction
+                                          ? (model as Reaction).reactedOn.value!
+                                          : null),
+                              color: theme.colors.white66,
+                              maxLines: 1,
+                              textOverflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                          const Spacer(),
+                          const AppGap.s12(),
                           if (isUnread)
                             AppContainer(
                               height: theme.sizes.s8,

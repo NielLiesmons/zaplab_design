@@ -23,7 +23,7 @@ class MessageBubbleScope extends InheritedWidget {
 
 class AppMessageBubble extends StatefulWidget {
   final ChatMessage? message;
-  final Comment? comment;
+  final Comment? reply;
   final bool showHeader;
   final bool isLastInStack;
   final bool isOutgoing;
@@ -42,7 +42,7 @@ class AppMessageBubble extends StatefulWidget {
   const AppMessageBubble({
     super.key,
     this.message,
-    this.comment,
+    this.reply,
     this.showHeader = false,
     this.isLastInStack = false,
     this.isOutgoing = false,
@@ -73,7 +73,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
     final contentType = AppShortTextRenderer.analyzeContent(
         widget.message != null
             ? widget.message!.content
-            : widget.comment!.content);
+            : widget.reply!.content);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -84,9 +84,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
             decoration: BoxDecoration(
               color: contentType.isSingleContent
                   ? null
-                  : (isInsideModal
-                      ? theme.colors.white16
-                      : theme.colors.gray66),
+                  : (isInsideModal ? theme.colors.white8 : theme.colors.gray66),
               gradient: contentType.isSingleContent
                   ? null
                   : widget.isOutgoing
@@ -118,9 +116,9 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
               outlineThickness: AppLineThicknessData.normal().medium,
             ),
             onSwipeLeft: () => widget.onReply(
-                widget.message != null ? widget.message! : widget.comment!),
+                widget.message != null ? widget.message! : widget.reply!),
             onSwipeRight: () => widget.onActions(
-                widget.message != null ? widget.message! : widget.comment!),
+                widget.message != null ? widget.message! : widget.reply!),
             child: MessageBubbleScope(
               isOutgoing: widget.isOutgoing,
               child: LayoutBuilder(
@@ -170,23 +168,23 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                                       .name ??
                                                   formatNpub(widget.message!
                                                       .author.value!.pubkey)
-                                              : widget.comment!.author.value!
+                                              : widget.reply!.author.value!
                                                       .name ??
-                                                  formatNpub(widget.comment!
+                                                  formatNpub(widget.reply!
                                                       .author.value!.pubkey),
                                           color: Color(npubToColor(
                                               widget.message != null
                                                   ? widget.message!.author
                                                       .value!.pubkey
-                                                  : widget.comment!.author
-                                                      .value!.pubkey)),
+                                                  : widget.reply!.author.value!
+                                                      .pubkey)),
                                           textOverflow: TextOverflow.ellipsis,
                                         ),
                                         AppText.reg12(
                                           TimestampFormatter.format(
                                               widget.message != null
                                                   ? widget.message!.createdAt
-                                                  : widget.comment!.createdAt,
+                                                  : widget.reply!.createdAt,
                                               format: TimestampFormat.relative),
                                           color: theme.colors.white33,
                                         ),
@@ -204,7 +202,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                 AppShortTextRenderer(
                                   content: widget.message != null
                                       ? widget.message!.content
-                                      : widget.comment!.content,
+                                      : widget.reply!.content,
                                   onResolveEvent: widget.onResolveEvent,
                                   onResolveProfile: widget.onResolveProfile,
                                   onResolveEmoji: widget.onResolveEmoji,
@@ -214,7 +212,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                 ),
                               ],
                             ),
-                            // TODO: Uncomment and implement once HasMany is available
+                            // TODO: Unreply and implement once HasMany is available
                             /*
                             if (widget.message.zaps.isNotEmpty ||
                                 widget.message.reactions.isNotEmpty) ...[
@@ -288,7 +286,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                       onTap: () => widget.onSendAgain!(
                                           widget.message != null
                                               ? widget.message!
-                                              : widget.comment!),
+                                              : widget.reply!),
                                       rounded: true,
                                       inactiveColor: theme.colors.white16,
                                       children: [

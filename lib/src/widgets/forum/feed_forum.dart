@@ -3,8 +3,8 @@ import 'package:models/models.dart';
 
 class AppFeedForumPost extends StatelessWidget {
   final ForumPost forumPost;
-  final List<Comment> topReplies;
-  final int totalReplies;
+  final List<Profile> topThreeReplyProfiles;
+  final int totalReplyProfiles;
   final Function(Model) onTap;
   final Function(Profile) onProfileTap;
   final bool isUnread;
@@ -21,8 +21,8 @@ class AppFeedForumPost extends StatelessWidget {
   const AppFeedForumPost({
     super.key,
     required this.forumPost,
-    this.topReplies = const [],
-    this.totalReplies = 0,
+    this.topThreeReplyProfiles = const [],
+    this.totalReplyProfiles = 0,
     required this.onTap,
     required this.onProfileTap,
     this.isUnread = false,
@@ -76,7 +76,7 @@ class AppFeedForumPost extends StatelessWidget {
                         AppProfilePic.s38(forumPost.author.value,
                             onTap: () => onProfileTap(
                                 forumPost.author.value as Profile)),
-                        if (topReplies.isNotEmpty)
+                        if (topThreeReplyProfiles.isNotEmpty)
                           Expanded(
                             child: AppDivider.vertical(
                               color: theme.colors.white33,
@@ -148,7 +148,7 @@ class AppFeedForumPost extends StatelessWidget {
                   ],
                 ),
               ),
-              if (topReplies.isNotEmpty) ...[
+              if (topThreeReplyProfiles.isNotEmpty) ...[
                 Row(
                   children: [
                     SizedBox(
@@ -156,16 +156,16 @@ class AppFeedForumPost extends StatelessWidget {
                       height: 38,
                       child: Column(
                         children: [
-                          AppProfilePic.s20(topReplies[0].author.value),
+                          AppProfilePic.s20(topThreeReplyProfiles[0]),
                           const AppGap.s2(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              if (topReplies.length > 1)
-                                AppProfilePic.s16(topReplies[1].author.value),
+                              if (topThreeReplyProfiles.length > 1)
+                                AppProfilePic.s16(topThreeReplyProfiles[1]),
                               const Spacer(),
-                              if (topReplies.length > 2)
-                                AppProfilePic.s12(topReplies[2].author.value),
+                              if (topThreeReplyProfiles.length > 2)
+                                AppProfilePic.s12(topThreeReplyProfiles[2]),
                               const AppGap.s2()
                             ],
                           ),
@@ -175,7 +175,7 @@ class AppFeedForumPost extends StatelessWidget {
                     const AppGap.s12(),
                     Expanded(
                       child: AppText.med14(
-                        '${topReplies[0].author.value?.name ?? formatNpub(topReplies[0].author.value?.npub ?? '')} & ${totalReplies - 1} others replied',
+                        '${topThreeReplyProfiles[0].name ?? formatNpub(topThreeReplyProfiles[0].author.value?.npub ?? '')} & ${totalReplyProfiles - 1} others replied',
                         color: theme.colors.white33,
                       ),
                     ),

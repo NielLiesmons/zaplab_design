@@ -3,7 +3,7 @@ import 'package:models/models.dart';
 
 class AppMessageStack extends StatelessWidget {
   final List<ChatMessage>? messages;
-  final List<Comment>? comments;
+  final List<Comment>? replies;
   final bool isOutgoing;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
@@ -19,7 +19,7 @@ class AppMessageStack extends StatelessWidget {
   const AppMessageStack({
     super.key,
     this.messages,
-    this.comments,
+    this.replies,
     this.isOutgoing = false,
     required this.onResolveEvent,
     required this.onResolveProfile,
@@ -46,17 +46,17 @@ class AppMessageStack extends StatelessWidget {
             child: AppProfilePic.s32(
                 messages != null
                     ? messages!.first.author.value
-                    : comments!.first.author.value,
+                    : replies!.first.author.value,
                 onTap: () => onProfileTap(messages != null
                     ? messages!.first.author.value as Profile
-                    : comments!.first.author.value as Profile)),
+                    : replies!.first.author.value as Profile)),
           ),
           const AppGap.s4(),
         ] else ...[
           if (isOutgoing &&
               AppShortTextRenderer.analyzeContent(messages != null
                       ? messages!.first.content
-                      : comments!.first.content) !=
+                      : replies!.first.content) !=
                   ShortTextContentType.singleImageStack)
             const AppGap.s64(),
           const AppGap.s4(),
@@ -70,21 +70,18 @@ class AppMessageStack extends StatelessWidget {
                   : CrossAxisAlignment.start,
               children: [
                 for (int i = 0;
-                    i <
-                        (messages != null
-                            ? messages!.length
-                            : comments!.length);
+                    i < (messages != null ? messages!.length : replies!.length);
                     i++) ...[
                   if (i > 0) const AppGap.s2(),
                   AppMessageBubble(
                     message: messages != null ? messages![i] : null,
-                    comment: comments != null ? comments![i] : null,
+                    reply: replies != null ? replies![i] : null,
                     showHeader:
                         i == 0 && !isOutgoing, // Only show header for incoming
                     isLastInStack: i ==
                         (messages != null
                                 ? messages!.length
-                                : comments!.length) -
+                                : replies!.length) -
                             1,
                     isOutgoing: isOutgoing,
                     onActions: onActions,
@@ -106,7 +103,7 @@ class AppMessageStack extends StatelessWidget {
         if (!isOutgoing &&
             AppShortTextRenderer.analyzeContent(messages != null
                     ? messages!.first.content
-                    : comments!.first.content) !=
+                    : replies!.first.content) !=
                 ShortTextContentType.singleImageStack)
           const AppGap.s32(),
       ],

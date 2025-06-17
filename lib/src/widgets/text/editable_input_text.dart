@@ -67,16 +67,25 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
     _gestureDetectorBuilder = custom.TextSelectionGestureDetectorBuilder(
       delegate: this,
     );
-    _hasSelection = !_controller.selection.isCollapsed;
+    _hasText = _controller.text.isNotEmpty;
+    _isEmpty.value = _controller.text.isEmpty;
+    _hasSelection = false;
     _controller.addListener(_handleTextChanged);
     if (widget.controller != null) {
       widget.controller!.addListener(_handleExternalControllerChange);
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _controller.selection =
+            TextSelection.collapsed(offset: _controller.text.length);
+      }
+    });
   }
 
   void _handleTextChanged() {
     _hasText = _controller.text.isNotEmpty;
     _isEmpty.value = _controller.text.isEmpty;
+    _hasSelection = false;
 
     if (widget.onChanged != null) {
       widget.onChanged!(_controller.text);
@@ -86,7 +95,9 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
   void _handleExternalControllerChange() {
     if (_controller.text != widget.controller!.text) {
       _controller.text = widget.controller!.text;
-      _hasSelection = !_controller.selection.isCollapsed;
+      _hasText = _controller.text.isNotEmpty;
+      _isEmpty.value = _controller.text.isEmpty;
+      _hasSelection = false;
     }
   }
 
@@ -185,12 +196,19 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
                   backgroundCursorColor: theme.colors.white33,
                   onChanged: widget.onChanged,
                   onSelectionChanged: (selection, cause) {
+                    print(
+                        'Selection changed: isCollapsed=${selection.isCollapsed}, base=${selection.baseOffset}, extent=${selection.extentOffset}, cause=$cause');
                     isEditingInputText = !selection.isCollapsed;
+                    // Show selection handles for any non-collapsed selection
                     _hasSelection = !selection.isCollapsed &&
                         selection.baseOffset != selection.extentOffset;
-                    print(
-                        'Selection changed: isCollapsed=${selection.isCollapsed}, base=${selection.baseOffset}, extent=${selection.extentOffset}, _hasSelection=$_hasSelection');
-                    if (!selection.isCollapsed && isEditingInputText) {
+                    print('_hasSelection: $_hasSelection');
+
+                    // Only show toolbar for user-initiated selections
+                    if (_hasSelection &&
+                        (cause == SelectionChangedCause.drag ||
+                            cause == SelectionChangedCause.longPress ||
+                            cause == SelectionChangedCause.tap)) {
                       editableTextKey.currentState?.showToolbar();
                     } else {
                       editableTextKey.currentState?.hideToolbar();
@@ -221,6 +239,7 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
                             menuItems: widget.contextMenuItems,
                           );
                         },
+                  autofocus: true,
                 ),
               ),
             ),

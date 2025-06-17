@@ -2,10 +2,11 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
 class AppFeedThread extends StatelessWidget {
-  final Note thread;
+  final Note? thread;
+  final Comment? reply;
   final Function(Model) onTap;
-  final List<Comment> topReplies;
-  final int totalReplies;
+  final List<Profile> topThreeReplyProfiles;
+  final int totalReplyProfiles;
   final Function(Model) onActions;
   final Function(Model) onReply;
   final Function(Reaction)? onReactionTap;
@@ -20,10 +21,11 @@ class AppFeedThread extends StatelessWidget {
 
   const AppFeedThread({
     super.key,
-    required this.thread,
+    this.thread,
+    this.reply,
     required this.onTap,
-    this.topReplies = const [],
-    this.totalReplies = 0,
+    this.topThreeReplyProfiles = const [],
+    this.totalReplyProfiles = 0,
     required this.onReply,
     required this.onActions,
     required this.onReactionTap,
@@ -44,7 +46,7 @@ class AppFeedThread extends StatelessWidget {
     return Column(
       children: [
         AppSwipeContainer(
-          onTap: () => onTap(thread),
+          onTap: () => onTap(thread ?? reply!),
           padding: const AppEdgeInsets.all(AppGapSize.s12),
           leftContent: AppIcon.s16(
             theme.icons.characters.reply,
@@ -56,8 +58,8 @@ class AppFeedThread extends StatelessWidget {
             outlineColor: theme.colors.white66,
             outlineThickness: AppLineThicknessData.normal().medium,
           ),
-          onSwipeLeft: () => onReply(thread),
-          onSwipeRight: () => onActions(thread),
+          onSwipeLeft: () => onReply(thread ?? reply!),
+          onSwipeRight: () => onActions(thread ?? reply!),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -67,8 +69,9 @@ class AppFeedThread extends StatelessWidget {
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        AppProfilePic.s38(thread.author.value),
-                        if (topReplies.isNotEmpty)
+                        AppProfilePic.s38(
+                            thread?.author.value ?? reply!.author.value),
+                        if (topThreeReplyProfiles.isNotEmpty)
                           Expanded(
                             child: AppDivider.vertical(
                               color: theme.colors.white33,
@@ -86,11 +89,18 @@ class AppFeedThread extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              AppText.bold14(thread.author.value?.name ??
-                                  formatNpub(
-                                      thread.author.value?.pubkey ?? '')),
+                              AppText.bold14(thread != null
+                                  ? thread!.author.value?.name ??
+                                      formatNpub(
+                                          thread!.author.value?.pubkey ?? '')
+                                  : reply!.author.value?.name ??
+                                      formatNpub(
+                                          reply!.author.value?.pubkey ?? '')),
                               AppText.reg12(
-                                TimestampFormatter.format(thread.createdAt,
+                                TimestampFormatter.format(
+                                    thread != null
+                                        ? thread!.createdAt
+                                        : reply!.createdAt,
                                     format: TimestampFormat.relative),
                                 color: theme.colors.white33,
                               ),
@@ -107,7 +117,9 @@ class AppFeedThread extends StatelessWidget {
                           ),
                           const AppGap.s2(),
                           AppShortTextRenderer(
-                            content: thread.content,
+                            content: thread != null
+                                ? thread!.content
+                                : reply!.content,
                             onResolveEvent: onResolveEvent,
                             onResolveProfile: onResolveProfile,
                             onResolveEmoji: onResolveEmoji,
@@ -122,7 +134,7 @@ class AppFeedThread extends StatelessWidget {
                   ],
                 ),
               ),
-              if (topReplies.isNotEmpty) ...[
+              if (topThreeReplyProfiles.isNotEmpty) ...[
                 Row(
                   children: [
                     SizedBox(
@@ -130,16 +142,16 @@ class AppFeedThread extends StatelessWidget {
                       height: 38,
                       child: Column(
                         children: [
-                          AppProfilePic.s20(topReplies[0].author.value),
+                          AppProfilePic.s20(topThreeReplyProfiles[0]),
                           const AppGap.s2(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              if (topReplies.length > 1)
-                                AppProfilePic.s16(topReplies[1].author.value),
+                              if (topThreeReplyProfiles.length > 1)
+                                AppProfilePic.s16(topThreeReplyProfiles[1]),
                               const Spacer(),
-                              if (topReplies.length > 2)
-                                AppProfilePic.s12(topReplies[2].author.value),
+                              if (topThreeReplyProfiles.length > 2)
+                                AppProfilePic.s12(topThreeReplyProfiles[2]),
                               const AppGap.s2()
                             ],
                           ),
@@ -149,7 +161,7 @@ class AppFeedThread extends StatelessWidget {
                     const AppGap.s12(),
                     Expanded(
                       child: AppText.med14(
-                        '${topReplies[0].author.value?.name ?? formatNpub(topReplies[0].author.value?.npub ?? '')} & ${totalReplies - 1} others replied',
+                        '${topThreeReplyProfiles[0].name ?? formatNpub(topThreeReplyProfiles[0].author.value?.npub ?? '')} & ${totalReplyProfiles - 1} others replied',
                         color: theme.colors.white33,
                       ),
                     ),
@@ -159,7 +171,7 @@ class AppFeedThread extends StatelessWidget {
             ],
           ),
         ),
-        const AppDivider.horizontal(),
+        const AppDivider(),
       ],
     );
   }

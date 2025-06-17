@@ -62,6 +62,7 @@ class _AppCodeBlockState extends State<AppCodeBlock>
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+    final isInsideModal = ModalScope.of(context);
 
     return SizedBox(
       width: double.infinity,
@@ -75,7 +76,7 @@ class _AppCodeBlockState extends State<AppCodeBlock>
               vertical: AppGapSize.s6,
             ),
             decoration: BoxDecoration(
-              color: theme.colors.gray33,
+              color: isInsideModal ? theme.colors.black33 : theme.colors.gray33,
               borderRadius: theme.radius.asBorderRadius().rad16,
               border: Border.all(
                 color: theme.colors.white16,
@@ -106,7 +107,9 @@ class _AppCodeBlockState extends State<AppCodeBlock>
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                 child: AppSmallButton(
-                  inactiveColor: theme.colors.white16,
+                  inactiveColor: isInsideModal
+                      ? theme.colors.white8
+                      : theme.colors.white16,
                   square: true,
                   onTap: _handleCopy,
                   children: [

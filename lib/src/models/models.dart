@@ -11,6 +11,7 @@ String getModelContentType(Model? model) {
   return switch (model) {
     Model<Article>() => 'article',
     Model<ChatMessage>() => 'chat',
+    Model<Comment>() => 'reply',
     Model<Note>() => 'thread',
     Model<App>() => 'app',
     Model<Book>() => 'book',
@@ -23,7 +24,7 @@ String getModelContentType(Model? model) {
     Model<Community>() => 'community',
     Model<CashuZap>() => 'zap',
     Model<ForumPost>() => 'forum',
-    _ => 'nostr',
+    _ => 'unknown',
   };
 }
 

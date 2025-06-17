@@ -29,7 +29,7 @@ class AppThreadCard extends StatelessWidget {
           bottom: AppGapSize.s8,
           left: AppGapSize.s12,
           right: AppGapSize.s12),
-      onTap: onTap!(thread),
+      onTap: onTap == null ? null : () => onTap!(thread),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

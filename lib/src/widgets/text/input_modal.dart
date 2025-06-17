@@ -22,8 +22,11 @@ class AppInputModal extends StatelessWidget {
         barrierColor: const Color(0x00000000),
         transitionDuration: theme.durations.fast,
         reverseTransitionDuration: theme.durations.fast,
-        pageBuilder: (_, __, ___) => AppInputModal(
-          children: children,
+        pageBuilder: (_, __, ___) => Focus(
+          autofocus: true,
+          child: AppInputModal(
+            children: children,
+          ),
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           final curvedAnimation = CurvedAnimation(
