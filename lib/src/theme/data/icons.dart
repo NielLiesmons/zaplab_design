@@ -2,8 +2,8 @@ import 'package:zaplab_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
 
 /// Main data class for icons.
-class AppIconsData extends Equatable {
-  const AppIconsData({
+class LabIconsData extends Equatable {
+  const LabIconsData({
     required this.fontFamily,
     required this.fontPackage,
     required this.characters,
@@ -11,17 +11,17 @@ class AppIconsData extends Equatable {
   });
 
   /// Initialize icons with font family, package, and characters.
-  factory AppIconsData.normal() => AppIconsData(
+  factory LabIconsData.normal() => LabIconsData(
         fontFamily: 'Zaplab-Icons',
         fontPackage: 'zaplab_design',
-        characters: AppIconCharactersData.normal(),
-        sizes: AppIconSizesData.normal(),
+        characters: LabIconCharactersData.normal(),
+        sizes: LabIconSizesData.normal(),
       );
 
   final String fontFamily;
   final String? fontPackage;
-  final AppIconCharactersData characters;
-  final AppIconSizesData sizes;
+  final LabIconCharactersData characters;
+  final LabIconSizesData sizes;
 
   @override
   List<Object?> get props => [
@@ -33,8 +33,8 @@ class AppIconsData extends Equatable {
 }
 
 /// Contains icon character mappings.
-class AppIconCharactersData extends Equatable {
-  const AppIconCharactersData({
+class LabIconCharactersData extends Equatable {
+  const LabIconCharactersData({
     required this.adjust,
     required this.alert,
     required this.appearance,
@@ -131,7 +131,7 @@ class AppIconCharactersData extends Equatable {
   });
 
   /// Factory constructor with alphabetically sorted icons.
-  factory AppIconCharactersData.normal() => AppIconCharactersData(
+  factory LabIconCharactersData.normal() => LabIconCharactersData(
         adjust: String.fromCharCodes([57344, 58701, 59081, 57458]),
         alert: String.fromCharCodes([58762, 59542, 57357]),
         appearance: String.fromCharCodes([59058, 59325, 57445]),
@@ -419,8 +419,8 @@ class AppIconCharactersData extends Equatable {
       ];
 }
 
-class AppIconSizesData extends Equatable {
-  const AppIconSizesData({
+class LabIconSizesData extends Equatable {
+  const LabIconSizesData({
     required this.s4,
     required this.s8,
     required this.s10,
@@ -442,7 +442,7 @@ class AppIconSizesData extends Equatable {
     required this.s96,
   });
 
-  factory AppIconSizesData.normal() => const AppIconSizesData(
+  factory LabIconSizesData.normal() => const LabIconSizesData(
         s4: 4.0,
         s8: 8.0,
         s10: 10.0,

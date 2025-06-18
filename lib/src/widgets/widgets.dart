@@ -71,6 +71,9 @@ export 'communities/community_card.dart';
 export 'communities/community_home_panel.dart';
 export 'communities/community_welcome_header.dart';
 
+// Events
+export 'events/date_picker.dart';
+
 // Forum
 export 'forum/feed_forum.dart';
 

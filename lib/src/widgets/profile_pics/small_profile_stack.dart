@@ -2,11 +2,11 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppSmallProfileStack extends StatelessWidget {
+class LabSmallProfileStack extends StatelessWidget {
   final List<Profile> profiles;
   final Profile? activeProfile;
   final VoidCallback onTap;
-  AppSmallProfileStack({
+  LabSmallProfileStack({
     super.key,
     required this.profiles,
     this.activeProfile,
@@ -46,7 +46,7 @@ class AppSmallProfileStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return TapBuilder(
       onTap: onTap,
@@ -60,7 +60,7 @@ class AppSmallProfileStack extends StatelessWidget {
 
         return Transform.scale(
           scale: scaleFactor,
-          child: AppContainer(
+          child: LabContainer(
             width: 210,
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
@@ -74,14 +74,14 @@ class AppSmallProfileStack extends StatelessWidget {
                         offset: Offset(
                             theme.sizes.s8 + (_visibleProfiles.length - 1) * 16,
                             0),
-                        child: AppContainer(
+                        child: LabContainer(
                           height: theme.sizes.s20,
-                          padding: const AppEdgeInsets.only(
-                            left: AppGapSize.s20,
-                            right: AppGapSize.s12,
+                          padding: const LabEdgeInsets.only(
+                            left: LabGapSize.s20,
+                            right: LabGapSize.s12,
                           ),
                           child: Center(
-                            child: AppText.reg12(
+                            child: LabText.reg12(
                               _getDisplayText(),
                               color: theme.colors.white66,
                               textOverflow: TextOverflow.ellipsis,
@@ -101,19 +101,19 @@ class AppSmallProfileStack extends StatelessWidget {
                             for (int i = 0; i < _visibleProfiles.length; i++)
                               Positioned(
                                 left: (_visibleProfiles.length - 1 - i) * 16.0,
-                                child: AppContainer(
+                                child: LabContainer(
                                   decoration: BoxDecoration(
                                     borderRadius:
                                         theme.radius.asBorderRadius().rad16,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppColorsData.dark().black33,
+                                        color: LabColorsData.dark().black33,
                                         blurRadius: 4,
                                         offset: const Offset(3, 0),
                                       ),
                                     ],
                                   ),
-                                  child: AppProfilePic.s20(
+                                  child: LabProfilePic.s20(
                                     _visibleProfiles[i],
                                     onTap: onTap,
                                   ),

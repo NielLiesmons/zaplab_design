@@ -6,7 +6,7 @@ enum HostingStatus {
   offline,
   none;
 
-  Gradient getGradient(AppThemeData theme) {
+  Gradient getGradient(LabThemeData theme) {
     switch (this) {
       case HostingStatus.online:
         return theme.colors.green;
@@ -25,19 +25,19 @@ enum HostingStatus {
   }
 }
 
-class AppHostingIcon extends StatelessWidget {
+class LabHostingIcon extends StatelessWidget {
   final List<HostingStatus>? hostingStatuses;
 
-  const AppHostingIcon({
+  const LabHostingIcon({
     super.key,
     this.hostingStatuses,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppContainer(
+    return LabContainer(
       width: theme.sizes.s48,
       decoration: BoxDecoration(
         gradient: theme.colors.graydient66,
@@ -57,14 +57,14 @@ class AppHostingIcon extends StatelessWidget {
           ),
         ),
       ),
-      child: AppContainer(
+      child: LabContainer(
         decoration: BoxDecoration(
           color: theme.colors.black33,
           borderRadius: theme.radius.asBorderRadius().rad12,
           border: Border(
             bottom: BorderSide(
               color: theme.colors.black8,
-              width: AppLineThicknessData.normal().medium,
+              width: LabLineThicknessData.normal().medium,
             ),
           ),
         ),
@@ -73,14 +73,14 @@ class AppHostingIcon extends StatelessWidget {
             for (var i = 0;
                 i < (hostingStatuses?.length ?? 0) && i < 5;
                 i++) ...[
-              AppContainer(
+              LabContainer(
                 height: theme.sizes.s20,
                 padding:
-                    const AppEdgeInsets.symmetric(horizontal: AppGapSize.s6),
+                    const LabEdgeInsets.symmetric(horizontal: LabGapSize.s6),
                 child: Center(
                   child: Row(
                     children: [
-                      AppContainer(
+                      LabContainer(
                         height: theme.sizes.s6,
                         width: theme.sizes.s8,
                         decoration: BoxDecoration(
@@ -88,9 +88,9 @@ class AppHostingIcon extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                       ),
-                      const AppGap.s4(),
+                      const LabGap.s4(),
                       Expanded(
-                        child: AppContainer(
+                        child: LabContainer(
                           height: theme.sizes.s6,
                           decoration: BoxDecoration(
                             color: theme.colors.black16,
@@ -105,16 +105,16 @@ class AppHostingIcon extends StatelessWidget {
               if (i < (hostingStatuses?.length ?? 0) - 1 && i < 4)
                 Column(
                   children: [
-                    AppContainer(
+                    LabContainer(
                       height: 2,
                       decoration: BoxDecoration(
-                        color: AppColorsData.dark().white8,
+                        color: LabColorsData.dark().white8,
                       ),
                     ),
-                    AppContainer(
+                    LabContainer(
                       height: 1,
                       decoration: BoxDecoration(
-                        color: AppColorsData.dark().black33,
+                        color: LabColorsData.dark().black33,
                       ),
                     )
                   ],

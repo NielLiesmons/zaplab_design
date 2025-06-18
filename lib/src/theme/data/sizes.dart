@@ -2,8 +2,8 @@ import 'package:zaplab_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
-class AppSizesData extends Equatable {
-  const AppSizesData({
+class LabSizesData extends Equatable {
+  const LabSizesData({
     required this.phi,
     required this.s2,
     required this.s4,
@@ -29,7 +29,7 @@ class AppSizesData extends Equatable {
     required this.s104,
   });
 
-  factory AppSizesData.normal() => const AppSizesData(
+  factory LabSizesData.normal() => const LabSizesData(
         phi: 1.618033988749895,
         s2: 2,
         s4: 4,
@@ -79,7 +79,7 @@ class AppSizesData extends Equatable {
   final double s96;
   final double s104;
 
-  AppEdgeInsetsSizesData asInsets() => AppEdgeInsetsSizesData(this);
+  LabEdgeInsetsSizesData asInsets() => LabEdgeInsetsSizesData(this);
 
   @override
   List<Object?> get props => [
@@ -109,8 +109,8 @@ class AppSizesData extends Equatable {
       ];
 }
 
-class AppEdgeInsetsSizesData extends Equatable {
-  const AppEdgeInsetsSizesData(this._sizes);
+class LabEdgeInsetsSizesData extends Equatable {
+  const LabEdgeInsetsSizesData(this._sizes);
 
   EdgeInsets get s2 => EdgeInsets.all(_sizes.s2);
   EdgeInsets get s4 => EdgeInsets.all(_sizes.s4);
@@ -134,7 +134,7 @@ class AppEdgeInsetsSizesData extends Equatable {
   EdgeInsets get s96 => EdgeInsets.all(_sizes.s96);
   EdgeInsets get s104 => EdgeInsets.all(_sizes.s104);
 
-  final AppSizesData _sizes;
+  final LabSizesData _sizes;
 
   @override
   List<Object?> get props => [_sizes];

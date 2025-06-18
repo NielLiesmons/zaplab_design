@@ -3,7 +3,7 @@ import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:flutter/gestures.dart';
 
-class AppQuotedMessage extends StatelessWidget {
+class LabQuotedMessage extends StatelessWidget {
   final ChatMessage? chatMessage;
   final Comment? reply;
   final NostrEventResolver onResolveEvent;
@@ -11,7 +11,7 @@ class AppQuotedMessage extends StatelessWidget {
   final NostrEmojiResolver onResolveEmoji;
   final Function(dynamic)? onTap;
 
-  const AppQuotedMessage({
+  const LabQuotedMessage({
     super.key,
     this.chatMessage,
     this.reply,
@@ -23,23 +23,23 @@ class AppQuotedMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return GestureDetector(
       onTap: onTap == null
           ? null
           : () {
-              print('AppQuotedMessage: GestureDetector onTap called');
+              print('LabQuotedMessage: GestureDetector onTap called');
               onTap!(chatMessage != null ? chatMessage! : reply!);
             },
       child: TapBuilder(
         onTap: onTap == null
             ? null
             : () {
-                print('AppQuotedMessage: TapBuilder onTap called');
+                print('LabQuotedMessage: TapBuilder onTap called');
                 onTap!(chatMessage != null ? chatMessage! : reply!);
               },
-        builder: (context, state, hasFocus) => AppContainer(
+        builder: (context, state, hasFocus) => LabContainer(
           decoration: BoxDecoration(
             color: theme.colors.white8,
             borderRadius: theme.radius.asBorderRadius().rad8,
@@ -48,8 +48,8 @@ class AppQuotedMessage extends StatelessWidget {
           child: IntrinsicHeight(
             child: Row(
               children: [
-                AppContainer(
-                  width: AppLineThicknessData.normal().thick,
+                LabContainer(
+                  width: LabLineThicknessData.normal().thick,
                   decoration: BoxDecoration(
                     color: Color(npubToColor(chatMessage != null
                         ? chatMessage!.author.value?.pubkey ?? ''
@@ -57,23 +57,23 @@ class AppQuotedMessage extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: AppContainer(
-                    padding: const AppEdgeInsets.only(
-                      left: AppGapSize.s8,
-                      right: AppGapSize.s12,
-                      top: AppGapSize.s6,
-                      bottom: AppGapSize.s6,
+                  child: LabContainer(
+                    padding: const LabEdgeInsets.only(
+                      left: LabGapSize.s8,
+                      right: LabGapSize.s12,
+                      top: LabGapSize.s6,
+                      bottom: LabGapSize.s6,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            AppProfilePic.s18(chatMessage != null
+                            LabProfilePic.s18(chatMessage != null
                                 ? chatMessage!.author.value
                                 : reply!.author.value),
-                            const AppGap.s6(),
-                            AppText.bold12(
+                            const LabGap.s6(),
+                            LabText.bold12(
                               chatMessage != null
                                   ? chatMessage!.author.value?.name ??
                                       formatNpub(
@@ -85,7 +85,7 @@ class AppQuotedMessage extends StatelessWidget {
                               color: theme.colors.white66,
                             ),
                             const Spacer(),
-                            AppText.reg12(
+                            LabText.reg12(
                               TimestampFormatter.format(
                                   chatMessage != null
                                       ? chatMessage!.createdAt
@@ -96,11 +96,11 @@ class AppQuotedMessage extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 5),
-                        AppContainer(
-                          padding: const AppEdgeInsets.only(
-                            left: AppGapSize.s2,
+                        LabContainer(
+                          padding: const LabEdgeInsets.only(
+                            left: LabGapSize.s2,
                           ),
-                          child: AppCompactTextRenderer(
+                          child: LabCompactTextRenderer(
                             content: chatMessage != null
                                 ? chatMessage!.content
                                 : reply!.content,

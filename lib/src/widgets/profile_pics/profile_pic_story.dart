@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
-enum AppProfilePicStorySize {
+enum LabProfilePicStorySize {
   s38,
   s40,
   s48,
@@ -14,62 +14,62 @@ enum AppProfilePicStorySize {
   s104,
 }
 
-class AppProfilePicStory extends StatelessWidget {
+class LabProfilePicStory extends StatelessWidget {
   final String? profilePicUrl;
   final Profile? profile;
-  final AppProfilePicStorySize size;
+  final LabProfilePicStorySize size;
   final VoidCallback onTap;
 
-  AppProfilePicStory(
+  LabProfilePicStory(
     this.profile, {
     super.key,
-    this.size = AppProfilePicStorySize.s38,
+    this.size = LabProfilePicStorySize.s38,
     VoidCallback? onTap,
   })  : onTap = onTap ?? (() {}),
         profilePicUrl = null;
 
-  AppProfilePicStory.fromUrl(
+  LabProfilePicStory.fromUrl(
     this.profilePicUrl, {
     super.key,
-    this.size = AppProfilePicStorySize.s38,
+    this.size = LabProfilePicStorySize.s38,
     VoidCallback? onTap,
   })  : onTap = onTap ?? (() {}),
         profile = null;
 
-  AppProfilePicStory.s38(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicStorySize.s38,
+  LabProfilePicStory.s38(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicStorySize.s38,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicStory.s40(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicStorySize.s40,
+  LabProfilePicStory.s40(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicStorySize.s40,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicStory.s48(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicStorySize.s48,
+  LabProfilePicStory.s48(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicStorySize.s48,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicStory.s56(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicStorySize.s56,
+  LabProfilePicStory.s56(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicStorySize.s56,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicStory.s64(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicStorySize.s64,
+  LabProfilePicStory.s64(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicStorySize.s64,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicStory.s72(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicStorySize.s72,
+  LabProfilePicStory.s72(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicStorySize.s72,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicStory.s80(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicStorySize.s80,
+  LabProfilePicStory.s80(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicStorySize.s80,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicStory.s96(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicStorySize.s96,
+  LabProfilePicStory.s96(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicStorySize.s96,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicStory.s104(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicStorySize.s104,
+  LabProfilePicStory.s104(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicStorySize.s104,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
 
@@ -77,11 +77,11 @@ class AppProfilePicStory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final sizes = theme.sizes;
     final resolvedSize = _resolveSize(size, sizes);
-    final outerBorderThickness = AppLineThicknessData.normal().medium;
-    final innerBorderThickness = AppLineThicknessData.normal().thin;
+    final outerBorderThickness = LabLineThicknessData.normal().medium;
+    final innerBorderThickness = LabLineThicknessData.normal().thin;
     final adjustedOuterSize = resolvedSize;
     final adjustedInnerSize = resolvedSize - 8;
 
@@ -125,7 +125,7 @@ class AppProfilePicStory extends StatelessWidget {
                           fit: BoxFit.cover,
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
-                            return const AppSkeletonLoader();
+                            return const LabSkeletonLoader();
                           },
                           errorBuilder: (context, error, stackTrace) {
                             if (profile != null) {
@@ -196,25 +196,25 @@ class AppProfilePicStory extends StatelessWidget {
     );
   }
 
-  double _resolveSize(AppProfilePicStorySize size, AppSizesData sizes) {
+  double _resolveSize(LabProfilePicStorySize size, LabSizesData sizes) {
     switch (size) {
-      case AppProfilePicStorySize.s38:
+      case LabProfilePicStorySize.s38:
         return sizes.s38;
-      case AppProfilePicStorySize.s40:
+      case LabProfilePicStorySize.s40:
         return sizes.s40;
-      case AppProfilePicStorySize.s48:
+      case LabProfilePicStorySize.s48:
         return sizes.s48;
-      case AppProfilePicStorySize.s56:
+      case LabProfilePicStorySize.s56:
         return sizes.s56;
-      case AppProfilePicStorySize.s64:
+      case LabProfilePicStorySize.s64:
         return sizes.s64;
-      case AppProfilePicStorySize.s72:
+      case LabProfilePicStorySize.s72:
         return sizes.s72;
-      case AppProfilePicStorySize.s80:
+      case LabProfilePicStorySize.s80:
         return sizes.s80;
-      case AppProfilePicStorySize.s96:
+      case LabProfilePicStorySize.s96:
         return sizes.s96;
-      case AppProfilePicStorySize.s104:
+      case LabProfilePicStorySize.s104:
         return sizes.s104;
     }
   }

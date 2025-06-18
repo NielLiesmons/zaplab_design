@@ -2,22 +2,22 @@ import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppTextMentionMenuItem {
+class LabTextMentionMenuItem {
   final Profile profile;
   final void Function(EditableTextState) onTap;
 
-  const AppTextMentionMenuItem({
+  const LabTextMentionMenuItem({
     required this.profile,
     required this.onTap,
   });
 }
 
-class AppTextMentionMenu extends StatefulWidget {
+class LabTextMentionMenu extends StatefulWidget {
   final Offset position;
   final EditableTextState editableTextState;
-  final List<AppTextMentionMenuItem>? menuItems;
+  final List<LabTextMentionMenuItem>? menuItems;
 
-  const AppTextMentionMenu({
+  const LabTextMentionMenu({
     super.key,
     required this.position,
     required this.editableTextState,
@@ -25,10 +25,10 @@ class AppTextMentionMenu extends StatefulWidget {
   });
 
   @override
-  State<AppTextMentionMenu> createState() => _AppTextMentionMenuState();
+  State<LabTextMentionMenu> createState() => _LabTextMentionMenuState();
 }
 
-class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
+class _LabTextMentionMenuState extends State<LabTextMentionMenu> {
   final ScrollController _scrollController = ScrollController();
 
   double _calculateWidth(BuildContext context) {
@@ -68,24 +68,24 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
     return Offset(xOffset, -menuHeight);
   }
 
-  Widget _buildMentionItem(AppTextMentionMenuItem item) {
-    final theme = AppTheme.of(context);
+  Widget _buildMentionItem(LabTextMentionMenuItem item) {
+    final theme = LabTheme.of(context);
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => item.onTap(widget.editableTextState),
-        child: AppContainer(
+        child: LabContainer(
           height: theme.sizes.s38,
-          padding: const AppEdgeInsets.symmetric(
-            horizontal: AppGapSize.s10,
+          padding: const LabEdgeInsets.symmetric(
+            horizontal: LabGapSize.s10,
           ),
           child: Row(
             children: [
-              AppProfilePic.s24(item.profile),
-              const AppGap.s8(),
+              LabProfilePic.s24(item.profile),
+              const LabGap.s8(),
               Expanded(
-                child: AppText.med14(
+                child: LabText.med14(
                   item.profile.name ?? formatNpub(item.profile.npub),
                   color: theme.colors.white,
                 ),
@@ -99,7 +99,7 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final items = widget.menuItems ?? [];
     final itemHeight = theme.sizes.s38;
     final menuHeight = items.length <= 4 ? itemHeight * items.length : 168.0;
@@ -116,7 +116,7 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
             child: Stack(
               children: [
-                AppContainer(
+                LabContainer(
                   height: menuHeight,
                   constraints: BoxConstraints(
                     maxWidth: menuWidth,
@@ -127,7 +127,7 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
                     borderRadius: theme.radius.asBorderRadius().rad8,
                     border: Border.all(
                       color: theme.colors.white33,
-                      width: AppLineThicknessData.normal().thin,
+                      width: LabLineThicknessData.normal().thin,
                     ),
                   ),
                   child: Stack(
@@ -140,7 +140,7 @@ class _AppTextMentionMenuState extends State<AppTextMentionMenu> {
                             for (final item in items) ...[
                               _buildMentionItem(item),
                               if (item != items.last)
-                                const AppDivider.horizontal(),
+                                const LabDivider.horizontal(),
                             ],
                           ],
                         ),

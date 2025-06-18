@@ -2,11 +2,11 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
 
-class AppModelButton extends StatelessWidget {
+class LabModelButton extends StatelessWidget {
   final Model? model;
   final VoidCallback? onTap;
 
-  const AppModelButton({
+  const LabModelButton({
     super.key,
     required this.model,
     this.onTap,
@@ -14,7 +14,7 @@ class AppModelButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final contentType = getModelContentType(model);
     final displayText = getModelDisplayText(model);
 
@@ -30,13 +30,13 @@ class AppModelButton extends StatelessWidget {
 
         return Transform.scale(
           scale: scaleFactor,
-          child: AppContainer(
+          child: LabContainer(
             constraints: const BoxConstraints(
               maxWidth: 180,
             ),
-            padding: const AppEdgeInsets.symmetric(
-              horizontal: AppGapSize.s8,
-              vertical: AppGapSize.s6,
+            padding: const LabEdgeInsets.symmetric(
+              horizontal: LabGapSize.s8,
+              vertical: LabGapSize.s6,
             ),
             decoration: BoxDecoration(
               color: theme.colors.gray66,
@@ -45,14 +45,14 @@ class AppModelButton extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                AppEmojiContentType(
+                LabEmojiContentType(
                   contentType: contentType,
                   size: 16,
                   opacity: 0.66,
                 ),
-                const AppGap.s8(),
+                const LabGap.s8(),
                 Flexible(
-                  child: AppText.reg12(
+                  child: LabText.reg12(
                     displayText,
                     color: theme.colors.white66,
                     textOverflow: TextOverflow.ellipsis,
@@ -70,4 +70,4 @@ class AppModelButton extends StatelessWidget {
 
 
 
-// AppModelButton
+// LabModelButton

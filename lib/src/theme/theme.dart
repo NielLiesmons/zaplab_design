@@ -16,22 +16,22 @@ export 'data/sizes.dart';
 export 'data/system_data.dart';
 export 'data/typography.dart';
 
-class AppTheme extends InheritedWidget {
-  const AppTheme({
+class LabTheme extends InheritedWidget {
+  const LabTheme({
     super.key,
     required this.data,
     required super.child,
   });
 
-  final AppThemeData data;
+  final LabThemeData data;
 
-  static AppThemeData of(BuildContext context) {
-    final widget = context.dependOnInheritedWidgetOfExactType<AppTheme>();
+  static LabThemeData of(BuildContext context) {
+    final widget = context.dependOnInheritedWidgetOfExactType<LabTheme>();
     return widget!.data;
   }
 
   @override
-  bool updateShouldNotify(covariant AppTheme oldWidget) {
+  bool updateShouldNotify(covariant LabTheme oldWidget) {
     return data != oldWidget.data;
   }
 }

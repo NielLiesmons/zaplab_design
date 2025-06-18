@@ -4,19 +4,19 @@ import 'package:flutter/widgets.dart';
 import 'package:zaplab_design/src/theme/theme.dart';
 
 /// Border Thicknesses
-class AppBorderData extends Equatable {
+class LabBorderData extends Equatable {
   final double thin;
   final double medium;
   final double thick;
 
-  const AppBorderData({
+  const LabBorderData({
     required this.thin,
     required this.medium,
     required this.thick,
   });
 
-  factory AppBorderData.fromThickness(AppLineThicknessData thicknessData) =>
-      AppBorderData(
+  factory LabBorderData.fromThickness(LabLineThicknessData thicknessData) =>
+      LabBorderData(
         thin: thicknessData.thin,
         medium: thicknessData.medium,
         thick: thicknessData.thick,

@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
 
-class AppFeedArticle extends StatelessWidget {
+class LabFeedArticle extends StatelessWidget {
   final Article article;
   final List<Profile> topThreeReplyProfiles;
   final int totalReplyProfiles;
@@ -10,7 +10,7 @@ class AppFeedArticle extends StatelessWidget {
   final Function(Profile) onProfileTap;
   final bool isUnread;
 
-  const AppFeedArticle({
+  const LabFeedArticle({
     super.key,
     required this.article,
     this.topThreeReplyProfiles = const [],
@@ -22,20 +22,20 @@ class AppFeedArticle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return TapBuilder(
       onTap: () => onTap(article),
       builder: (context, state, hasFocus) {
         return Column(
           children: [
-            AppContainer(
-              padding: AppEdgeInsets.only(
+            LabContainer(
+              padding: LabEdgeInsets.only(
                 top:
-                    article.imageUrl == null ? AppGapSize.none : AppGapSize.s12,
-                bottom: AppGapSize.s12,
-                left: AppGapSize.s12,
-                right: AppGapSize.s12,
+                    article.imageUrl == null ? LabGapSize.none : LabGapSize.s12,
+                bottom: LabGapSize.s12,
+                left: LabGapSize.s12,
+                right: LabGapSize.s12,
               ),
               child: Column(
                 children: [
@@ -45,7 +45,7 @@ class AppFeedArticle extends StatelessWidget {
                       builder: (context, constraints) {
                         final maxWidth = constraints.maxWidth;
                         if (maxWidth > 400) {
-                          return AppContainer(
+                          return LabContainer(
                             width: double.infinity,
                             height: 400 * (9 / 16),
                             clipBehavior: Clip.hardEdge,
@@ -54,7 +54,7 @@ class AppFeedArticle extends StatelessWidget {
                               borderRadius: theme.radius.asBorderRadius().rad16,
                               border: Border.all(
                                 color: theme.colors.white16,
-                                width: AppLineThicknessData.normal().thin,
+                                width: LabLineThicknessData.normal().thin,
                               ),
                             ),
                             child: Image.network(
@@ -63,18 +63,18 @@ class AppFeedArticle extends StatelessWidget {
                               loadingBuilder:
                                   (context, child, loadingProgress) {
                                 if (loadingProgress == null) return child;
-                                return const AppSkeletonLoader();
+                                return const LabSkeletonLoader();
                               },
                               errorBuilder: (context, error, stackTrace) {
                                 print('Error loading image: $error');
-                                return const AppSkeletonLoader();
+                                return const LabSkeletonLoader();
                               },
                             ),
                           );
                         }
                         return AspectRatio(
                           aspectRatio: 16 / 9,
-                          child: AppContainer(
+                          child: LabContainer(
                             width: double.infinity,
                             clipBehavior: Clip.hardEdge,
                             decoration: BoxDecoration(
@@ -82,7 +82,7 @@ class AppFeedArticle extends StatelessWidget {
                               borderRadius: theme.radius.asBorderRadius().rad16,
                               border: Border.all(
                                 color: theme.colors.white16,
-                                width: AppLineThicknessData.normal().thin,
+                                width: LabLineThicknessData.normal().thin,
                               ),
                             ),
                             child: Image.network(
@@ -91,18 +91,18 @@ class AppFeedArticle extends StatelessWidget {
                               loadingBuilder:
                                   (context, child, loadingProgress) {
                                 if (loadingProgress == null) return child;
-                                return const AppSkeletonLoader();
+                                return const LabSkeletonLoader();
                               },
                               errorBuilder: (context, error, stackTrace) {
                                 print('Error loading image: $error');
-                                return const AppSkeletonLoader();
+                                return const LabSkeletonLoader();
                               },
                             ),
                           ),
                         );
                       },
                     ),
-                  const AppGap.s8(),
+                  const LabGap.s8(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -112,19 +112,19 @@ class AppFeedArticle extends StatelessWidget {
                             Column(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                const AppGap.s4(),
-                                AppProfilePic.s38(article.author.value,
+                                const LabGap.s4(),
+                                LabProfilePic.s38(article.author.value,
                                     onTap: () => onProfileTap(
                                         article.author.value as Profile)),
                                 if (topThreeReplyProfiles.isNotEmpty)
                                   Expanded(
-                                    child: AppDivider.vertical(
+                                    child: LabDivider.vertical(
                                       color: theme.colors.white33,
                                     ),
                                   ),
                               ],
                             ),
-                            const AppGap.s12(),
+                            const LabGap.s12(),
                             Expanded(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -135,17 +135,17 @@ class AppFeedArticle extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
-                                        child: AppText.bold16(
+                                        child: LabText.bold16(
                                           article.title ?? 'No Title',
                                           maxLines: 2,
                                           textOverflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      const AppGap.s4(),
+                                      const LabGap.s4(),
                                       if (isUnread)
-                                        AppContainer(
-                                          margin: const AppEdgeInsets.only(
-                                              top: AppGapSize.s8),
+                                        LabContainer(
+                                          margin: const LabEdgeInsets.only(
+                                              top: LabGapSize.s8),
                                           height: theme.sizes.s8,
                                           width: theme.sizes.s8,
                                           decoration: BoxDecoration(
@@ -156,19 +156,19 @@ class AppFeedArticle extends StatelessWidget {
                                         ),
                                     ],
                                   ),
-                                  const AppGap.s2(),
+                                  const LabGap.s2(),
                                   Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      AppText.med12(
+                                      LabText.med12(
                                           article.author.value?.name ??
                                               formatNpub(article
                                                       .author.value?.pubkey ??
                                                   ''),
                                           color: theme.colors.white66),
                                       const Spacer(),
-                                      AppText.reg12(
+                                      LabText.reg12(
                                         TimestampFormatter.format(
                                             article.createdAt,
                                             format: TimestampFormat.relative),
@@ -176,10 +176,10 @@ class AppFeedArticle extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  const AppGap.s2(),
+                                  const LabGap.s2(),
                                   if (article.summary != null &&
                                       article.summary!.isNotEmpty)
-                                    AppSelectableText(
+                                    LabSelectableText(
                                       text: article.summary!,
                                       style:
                                           theme.typography.regArticle.copyWith(
@@ -204,28 +204,28 @@ class AppFeedArticle extends StatelessWidget {
                               height: 38,
                               child: Column(
                                 children: [
-                                  AppProfilePic.s20(topThreeReplyProfiles[0]),
-                                  const AppGap.s2(),
+                                  LabProfilePic.s20(topThreeReplyProfiles[0]),
+                                  const LabGap.s2(),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       if (topThreeReplyProfiles.length > 1)
-                                        AppProfilePic.s16(
+                                        LabProfilePic.s16(
                                             topThreeReplyProfiles[1]),
                                       const Spacer(),
                                       if (topThreeReplyProfiles.length > 2)
-                                        AppProfilePic.s12(
+                                        LabProfilePic.s12(
                                             topThreeReplyProfiles[2]),
-                                      const AppGap.s2()
+                                      const LabGap.s2()
                                     ],
                                   ),
                                 ],
                               ),
                             ),
-                            const AppGap.s12(),
+                            const LabGap.s12(),
                             Expanded(
-                              child: AppText.med14(
+                              child: LabText.med14(
                                 '${topThreeReplyProfiles[0].name ?? formatNpub(topThreeReplyProfiles[0].npub ?? '')} & ${totalReplyProfiles - 1} others replied',
                                 color: theme.colors.white33,
                               ),
@@ -238,7 +238,7 @@ class AppFeedArticle extends StatelessWidget {
                 ],
               ),
             ),
-            const AppDivider(),
+            const LabDivider(),
           ],
         );
       },

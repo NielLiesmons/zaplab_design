@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppFeedThread extends StatelessWidget {
+class LabFeedThread extends StatelessWidget {
   final Note? thread;
   final Comment? reply;
   final Function(Model) onTap;
@@ -19,7 +19,7 @@ class AppFeedThread extends StatelessWidget {
   final Function(Profile) onProfileTap;
   final bool isUnread;
 
-  const AppFeedThread({
+  const LabFeedThread({
     super.key,
     this.thread,
     this.reply,
@@ -41,22 +41,22 @@ class AppFeedThread extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Column(
       children: [
-        AppSwipeContainer(
+        LabSwipeContainer(
           onTap: () => onTap(thread ?? reply!),
-          padding: const AppEdgeInsets.all(AppGapSize.s12),
-          leftContent: AppIcon.s16(
+          padding: const LabEdgeInsets.all(LabGapSize.s12),
+          leftContent: LabIcon.s16(
             theme.icons.characters.reply,
             outlineColor: theme.colors.white66,
-            outlineThickness: AppLineThicknessData.normal().medium,
+            outlineThickness: LabLineThicknessData.normal().medium,
           ),
-          rightContent: AppIcon.s10(
+          rightContent: LabIcon.s10(
             theme.icons.characters.chevronUp,
             outlineColor: theme.colors.white66,
-            outlineThickness: AppLineThicknessData.normal().medium,
+            outlineThickness: LabLineThicknessData.normal().medium,
           ),
           onSwipeLeft: () => onReply(thread ?? reply!),
           onSwipeRight: () => onActions(thread ?? reply!),
@@ -69,17 +69,17 @@ class AppFeedThread extends StatelessWidget {
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        AppProfilePic.s38(
+                        LabProfilePic.s38(
                             thread?.author.value ?? reply!.author.value),
                         if (topThreeReplyProfiles.isNotEmpty)
                           Expanded(
-                            child: AppDivider.vertical(
+                            child: LabDivider.vertical(
                               color: theme.colors.white33,
                             ),
                           ),
                       ],
                     ),
-                    const AppGap.s12(),
+                    const LabGap.s12(),
                     Expanded(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -89,14 +89,14 @@ class AppFeedThread extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              AppText.bold14(thread != null
+                              LabText.bold14(thread != null
                                   ? thread!.author.value?.name ??
                                       formatNpub(
                                           thread!.author.value?.pubkey ?? '')
                                   : reply!.author.value?.name ??
                                       formatNpub(
                                           reply!.author.value?.pubkey ?? '')),
-                              AppText.reg12(
+                              LabText.reg12(
                                 TimestampFormatter.format(
                                     thread != null
                                         ? thread!.createdAt
@@ -105,7 +105,7 @@ class AppFeedThread extends StatelessWidget {
                                 color: theme.colors.white33,
                               ),
                               if (isUnread)
-                                AppContainer(
+                                LabContainer(
                                   height: theme.sizes.s8,
                                   width: theme.sizes.s8,
                                   decoration: BoxDecoration(
@@ -115,8 +115,8 @@ class AppFeedThread extends StatelessWidget {
                                 ),
                             ],
                           ),
-                          const AppGap.s2(),
-                          AppShortTextRenderer(
+                          const LabGap.s2(),
+                          LabShortTextRenderer(
                             content: thread != null
                                 ? thread!.content
                                 : reply!.content,
@@ -142,25 +142,25 @@ class AppFeedThread extends StatelessWidget {
                       height: 38,
                       child: Column(
                         children: [
-                          AppProfilePic.s20(topThreeReplyProfiles[0]),
-                          const AppGap.s2(),
+                          LabProfilePic.s20(topThreeReplyProfiles[0]),
+                          const LabGap.s2(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               if (topThreeReplyProfiles.length > 1)
-                                AppProfilePic.s16(topThreeReplyProfiles[1]),
+                                LabProfilePic.s16(topThreeReplyProfiles[1]),
                               const Spacer(),
                               if (topThreeReplyProfiles.length > 2)
-                                AppProfilePic.s12(topThreeReplyProfiles[2]),
-                              const AppGap.s2()
+                                LabProfilePic.s12(topThreeReplyProfiles[2]),
+                              const LabGap.s2()
                             ],
                           ),
                         ],
                       ),
                     ),
-                    const AppGap.s12(),
+                    const LabGap.s12(),
                     Expanded(
-                      child: AppText.med14(
+                      child: LabText.med14(
                         '${topThreeReplyProfiles[0].name ?? formatNpub(topThreeReplyProfiles[0].author.value?.npub ?? '')} & ${totalReplyProfiles - 1} others replied',
                         color: theme.colors.white33,
                       ),
@@ -171,7 +171,7 @@ class AppFeedThread extends StatelessWidget {
             ],
           ),
         ),
-        const AppDivider(),
+        const LabDivider(),
       ],
     );
   }

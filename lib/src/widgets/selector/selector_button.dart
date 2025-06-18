@@ -1,7 +1,7 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppSelectorButton extends StatelessWidget {
+class LabSelectorButton extends StatelessWidget {
   final List<Widget> selectedContent;
   final List<Widget> unselectedContent;
   final bool isSelected;
@@ -9,7 +9,7 @@ class AppSelectorButton extends StatelessWidget {
   final bool small;
   final VoidCallback? onTap;
 
-  const AppSelectorButton({
+  const LabSelectorButton({
     super.key,
     required this.selectedContent,
     required this.unselectedContent,
@@ -21,7 +21,7 @@ class AppSelectorButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return TapBuilder(
       onTap: onTap ?? () {},
@@ -33,7 +33,7 @@ class AppSelectorButton extends StatelessWidget {
 
         return Transform.scale(
           scale: scaleFactor,
-          child: AppContainer(
+          child: LabContainer(
             height: small ? theme.sizes.s28 : theme.sizes.s38,
             decoration: BoxDecoration(
               gradient: isSelected && emphasized ? theme.colors.blurple : null,

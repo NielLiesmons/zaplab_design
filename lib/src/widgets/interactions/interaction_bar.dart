@@ -1,14 +1,14 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppInteractionBar extends StatefulWidget {
+class LabInteractionBar extends StatefulWidget {
   final List<Zap> zaps;
   final List<Reaction> reactions;
   final void Function(Zap)? onZapTap;
   final void Function(Reaction)? onReactionTap;
   final VoidCallback? onExpand;
 
-  const AppInteractionBar({
+  const LabInteractionBar({
     super.key,
     this.zaps = const [],
     this.reactions = const [],
@@ -18,10 +18,10 @@ class AppInteractionBar extends StatefulWidget {
   });
 
   @override
-  State<AppInteractionBar> createState() => _AppInteractionBarState();
+  State<LabInteractionBar> createState() => _LabInteractionBarState();
 }
 
-class _AppInteractionBarState extends State<AppInteractionBar>
+class _LabInteractionBarState extends State<LabInteractionBar>
     with TickerProviderStateMixin {
   final _scrollController = ScrollController();
   late final AnimationController _actionZoneController;
@@ -39,7 +39,7 @@ class _AppInteractionBarState extends State<AppInteractionBar>
       vsync: this,
     );
     _popController = AnimationController(
-      duration: AppDurationsData.normal().fast,
+      duration: LabDurationsData.normal().fast,
       vsync: this,
     );
     _setupAnimations();
@@ -106,7 +106,7 @@ class _AppInteractionBarState extends State<AppInteractionBar>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     if (widget.zaps.isEmpty && widget.reactions.isEmpty) {
       return const SizedBox();
@@ -114,23 +114,23 @@ class _AppInteractionBarState extends State<AppInteractionBar>
 
     return Column(
       children: [
-        const AppDivider(),
+        const LabDivider(),
         Stack(
           children: [
             SingleChildScrollView(
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
               physics: const ScrollPhysics(),
-              child: AppContainer(
-                padding: const AppEdgeInsets.symmetric(
-                  horizontal: AppGapSize.s12,
-                  vertical: AppGapSize.s12,
+              child: LabContainer(
+                padding: const LabEdgeInsets.symmetric(
+                  horizontal: LabGapSize.s12,
+                  vertical: LabGapSize.s12,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    AppInteractionPills(
+                    LabInteractionPills(
                       zaps: widget.zaps,
                       reactions: widget.reactions,
                       onZapTap: widget.onZapTap,
@@ -148,7 +148,7 @@ class _AppInteractionBarState extends State<AppInteractionBar>
                 animation: _actionWidthAnimation,
                 builder: (context, child) => SizedBox(
                   width: _actionWidthAnimation.value,
-                  child: AppContainer(
+                  child: LabContainer(
                     decoration: BoxDecoration(
                       color: theme.colors.white16,
                     ),
@@ -162,12 +162,12 @@ class _AppInteractionBarState extends State<AppInteractionBar>
                               curve: Curves.easeOut,
                             ),
                           ),
-                          child: AppIcon.s16(
+                          child: LabIcon.s16(
                             theme.icons.characters.expand,
                             color: theme.colors.white66,
                             outlineColor: theme.colors.white66,
                             outlineThickness:
-                                AppLineThicknessData.normal().medium,
+                                LabLineThicknessData.normal().medium,
                           ),
                         ),
                       ),

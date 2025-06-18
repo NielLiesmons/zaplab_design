@@ -1,6 +1,6 @@
 import 'package:zaplab_design/src/widgets/text/long_text/long_text_element.dart';
 
-class AppNosciiDocParser {
+class LabNosciiDocParser {
   final _listCounter = _ListCounter();
   bool inBlockQuote = false;
   int blockQuoteLevel = 0;

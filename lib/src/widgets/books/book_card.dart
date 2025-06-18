@@ -2,11 +2,11 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 // import 'package:models/models.dart';
 
-class AppBookCard extends StatelessWidget {
+class LabBookCard extends StatelessWidget {
   final Book book;
   final VoidCallback? onTap;
 
-  const AppBookCard({
+  const LabBookCard({
     super.key,
     required this.book,
     this.onTap,
@@ -14,7 +14,7 @@ class AppBookCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return TapBuilder(
       onTap: onTap,
@@ -28,12 +28,12 @@ class AppBookCard extends StatelessWidget {
 
         return Transform.scale(
           scale: scaleFactor,
-          child: AppContainer(
+          child: LabContainer(
             width: 148,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppContainer(
+                LabContainer(
                   clipBehavior: Clip.hardEdge,
                   width: 144,
                   height: 216,
@@ -46,11 +46,11 @@ class AppBookCard extends StatelessWidget {
                     fit: BoxFit.cover,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;
-                      return const AppSkeletonLoader();
+                      return const LabSkeletonLoader();
                     },
                     errorBuilder: (context, error, stackTrace) {
                       print('Error loading asset: $error');
-                      return AppContainer(
+                      return LabContainer(
                         decoration: BoxDecoration(
                           color: theme.colors.gray33,
                         ),
@@ -58,15 +58,15 @@ class AppBookCard extends StatelessWidget {
                     },
                   ),
                 ),
-                const AppGap.s12(),
-                AppText.med14(
+                const LabGap.s12(),
+                LabText.med14(
                   book.title ?? '',
                   color: theme.colors.white,
                   maxLines: 1,
                   textOverflow: TextOverflow.ellipsis,
                 ),
-                const AppGap.s4(),
-                AppText.reg12(
+                const LabGap.s4(),
+                LabText.reg12(
                   book.writer ?? 'Writer not specified',
                   color: theme.colors.white66,
                   maxLines: 1,

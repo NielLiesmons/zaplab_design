@@ -29,7 +29,7 @@ class CodeBlockHighlighter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final List<TextSpan> spans = [];
 
     // Format code if it's JSON

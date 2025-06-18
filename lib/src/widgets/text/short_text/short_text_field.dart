@@ -1,13 +1,13 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppShortTextField extends StatefulWidget {
+class LabShortTextField extends StatefulWidget {
   final List<Widget>? placeholder;
   final void Function(String)? onChanged;
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final TextStyle? style;
-  final List<AppTextSelectionMenuItem>? contextMenuItems;
+  final List<LabTextSelectionMenuItem>? contextMenuItems;
   final Color? backgroundColor;
   final ChatMessage? quotedChatMessage;
   final CashuZap? quotedCashuZap;
@@ -26,7 +26,7 @@ class AppShortTextField extends StatefulWidget {
   final VoidCallback? onDoneTap;
   final VoidCallback? onChevronTap;
 
-  const AppShortTextField({
+  const LabShortTextField({
     super.key,
     this.placeholder,
     this.onChanged,
@@ -53,13 +53,13 @@ class AppShortTextField extends StatefulWidget {
     this.onChevronTap,
   });
 
-  AppShortTextField copyWith({
+  LabShortTextField copyWith({
     List<Widget>? placeholder,
     void Function(String)? onChanged,
     TextEditingController? controller,
     FocusNode? focusNode,
     TextStyle? style,
-    List<AppTextSelectionMenuItem>? contextMenuItems,
+    List<LabTextSelectionMenuItem>? contextMenuItems,
     Color? backgroundColor,
     ChatMessage? quotedChatMessage,
     Zap? quotedZap,
@@ -77,7 +77,7 @@ class AppShortTextField extends StatefulWidget {
     VoidCallback? onDoneTap,
     VoidCallback? onChevronTap,
   }) {
-    return AppShortTextField(
+    return LabShortTextField(
       placeholder: placeholder ?? this.placeholder,
       onChanged: onChanged ?? this.onChanged,
       controller: controller ?? this.controller,
@@ -104,13 +104,13 @@ class AppShortTextField extends StatefulWidget {
   }
 
   @override
-  State<AppShortTextField> createState() => _AppShortTextFieldState();
+  State<LabShortTextField> createState() => _LabShortTextFieldState();
 }
 
-class _AppShortTextFieldState extends State<AppShortTextField> {
+class _LabShortTextFieldState extends State<LabShortTextField> {
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     final defaultTextStyle = theme.typography.reg16.copyWith(
       color: theme.colors.white,
@@ -121,35 +121,35 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
         ) ??
         defaultTextStyle;
 
-    return AppContainer(
+    return LabContainer(
       decoration: BoxDecoration(
         color: widget.backgroundColor ?? theme.colors.black33,
         borderRadius: theme.radius.asBorderRadius().rad16,
         border: Border.all(
           color: theme.colors.white33,
-          width: AppLineThicknessData.normal().thin,
+          width: LabLineThicknessData.normal().thin,
         ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (widget.quotedZap != null || widget.quotedCashuZap != null)
-            AppContainer(
-              padding: const AppEdgeInsets.only(
-                left: AppGapSize.s8,
-                right: AppGapSize.s8,
-                top: AppGapSize.s8,
-                bottom: AppGapSize.s2,
+            LabContainer(
+              padding: const LabEdgeInsets.only(
+                left: LabGapSize.s8,
+                right: LabGapSize.s8,
+                top: LabGapSize.s8,
+                bottom: LabGapSize.s2,
               ),
               child: widget.quotedZap != null
-                  ? AppZapCard(
+                  ? LabZapCard(
                       zap: widget.quotedZap!,
                       onResolveEvent: widget.onResolveEvent,
                       onResolveProfile: widget.onResolveProfile,
                       onResolveEmoji: widget.onResolveEmoji,
                       onProfileTap: widget.onProfileTap,
                     )
-                  : AppZapCard(
+                  : LabZapCard(
                       cashuZap: widget.quotedCashuZap!,
                       onResolveEvent: widget.onResolveEvent,
                       onResolveProfile: widget.onResolveProfile,
@@ -158,14 +158,14 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
                     ),
             ),
           if (widget.quotedChatMessage != null)
-            AppContainer(
-              padding: const AppEdgeInsets.only(
-                left: AppGapSize.s8,
-                right: AppGapSize.s8,
-                top: AppGapSize.s8,
-                bottom: AppGapSize.s2,
+            LabContainer(
+              padding: const LabEdgeInsets.only(
+                left: LabGapSize.s8,
+                right: LabGapSize.s8,
+                top: LabGapSize.s8,
+                bottom: LabGapSize.s2,
               ),
-              child: AppQuotedMessage(
+              child: LabQuotedMessage(
                 chatMessage: widget.quotedChatMessage!,
                 onResolveEvent: widget.onResolveEvent,
                 onResolveProfile: widget.onResolveProfile,
@@ -186,18 +186,18 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
               ],
               stops: const [0.00, 0.03, 0.06, 0.94, 0.97, 1.00],
             ).createShader(bounds),
-            child: AppContainer(
+            child: LabContainer(
               clipBehavior: Clip.hardEdge,
-              padding: const AppEdgeInsets.only(
-                left: AppGapSize.s12,
-                right: AppGapSize.s12,
-                top: AppGapSize.s10,
-                bottom: AppGapSize.s8,
+              padding: const LabEdgeInsets.only(
+                left: LabGapSize.s12,
+                right: LabGapSize.s12,
+                top: LabGapSize.s10,
+                bottom: LabGapSize.s8,
               ),
               decoration: BoxDecoration(
                 borderRadius: theme.radius.asBorderRadius().rad16,
               ),
-              child: AppEditableShortText(
+              child: LabEditableShortText(
                 text: widget.controller?.text ?? '',
                 style: textStyle,
                 controller: widget.controller,
@@ -213,73 +213,73 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
               ),
             ),
           ),
-          AppContainer(
-            padding: const AppEdgeInsets.only(
-              left: AppGapSize.s12,
-              right: AppGapSize.s12,
-              bottom: AppGapSize.s8,
+          LabContainer(
+            padding: const LabEdgeInsets.only(
+              left: LabGapSize.s12,
+              right: LabGapSize.s12,
+              bottom: LabGapSize.s8,
             ),
             child: Row(
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    AppSmallButton(
+                    LabSmallButton(
                       square: true,
                       onTap: widget.onCameraTap,
                       inactiveColor: theme.colors.white8,
                       pressedColor: theme.colors.white8,
                       children: [
-                        AppIcon.s16(
+                        LabIcon.s16(
                           theme.icons.characters.camera,
                           color: theme.colors.white33,
                         ),
                       ],
                     ),
-                    const AppGap.s8(),
-                    AppSmallButton(
+                    const LabGap.s8(),
+                    LabSmallButton(
                       square: true,
                       onTap: widget.onEmojiTap,
                       inactiveColor: theme.colors.white8,
                       pressedColor: theme.colors.white8,
                       children: [
-                        AppIcon.s18(
+                        LabIcon.s18(
                           theme.icons.characters.emojiFill,
                           color: theme.colors.white33,
                         ),
                       ],
                     ),
-                    const AppGap.s8(),
-                    AppSmallButton(
+                    const LabGap.s8(),
+                    LabSmallButton(
                       square: true,
                       onTap: widget.onGifTap,
                       inactiveColor: theme.colors.white8,
                       pressedColor: theme.colors.white8,
                       children: [
-                        AppIcon.s12(
+                        LabIcon.s12(
                           theme.icons.characters.gif,
                           color: theme.colors.white33,
                         ),
                       ],
                     ),
-                    const AppGap.s8(),
-                    AppSmallButton(
+                    const LabGap.s8(),
+                    LabSmallButton(
                       square: true,
                       onTap: widget.onAddTap,
                       inactiveColor: theme.colors.white8,
                       pressedColor: theme.colors.white8,
                       children: [
-                        AppIcon.s16(
+                        LabIcon.s16(
                           theme.icons.characters.plus,
                           outlineColor: theme.colors.white33,
-                          outlineThickness: AppLineThicknessData.normal().thick,
+                          outlineThickness: LabLineThicknessData.normal().thick,
                         ),
                       ],
                     ),
                   ],
                 ),
                 const Spacer(),
-                AppSmallButton(
+                LabSmallButton(
                   onTap: () {
                     widget.onDoneTap?.call();
                     widget.onSendTap?.call();
@@ -289,12 +289,12 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
                   onChevronTap: widget.onChevronTap,
                   children: [
                     if (widget.onSendTap != null)
-                      AppIcon.s16(
+                      LabIcon.s16(
                         theme.icons.characters.send,
                         color: theme.colors.whiteEnforced,
                       ),
                     if (widget.onDoneTap != null)
-                      AppText.med14(
+                      LabText.med14(
                         'Done',
                         color: theme.colors.whiteEnforced,
                       ),
@@ -303,7 +303,7 @@ class _AppShortTextFieldState extends State<AppShortTextField> {
               ],
             ),
           ),
-          const AppGap.s4(),
+          const LabGap.s4(),
         ],
       ),
     );

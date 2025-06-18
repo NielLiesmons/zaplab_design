@@ -2,8 +2,8 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'dart:ui';
 
-class AppPanelButton extends StatelessWidget {
-  const AppPanelButton({
+class LabPanelButton extends StatelessWidget {
+  const LabPanelButton({
     super.key,
     required this.child,
     this.onTap,
@@ -25,14 +25,14 @@ class AppPanelButton extends StatelessWidget {
   final double? height;
   final Color? color;
   final Gradient? gradient;
-  final AppEdgeInsets? padding;
+  final LabEdgeInsets? padding;
   final BorderRadius? radius;
   final int? count;
   final bool isLight;
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Stack(
       clipBehavior: Clip.none,
@@ -50,7 +50,7 @@ class AppPanelButton extends StatelessWidget {
 
             return Transform.scale(
               scale: scaleFactor,
-              child: AppPanel(
+              child: LabPanel(
                 width: width,
                 height: height,
                 color: color,
@@ -73,16 +73,16 @@ class AppPanelButton extends StatelessWidget {
                 filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                 child: SizedBox(
                   height: theme.sizes.s20,
-                  child: AppContainer(
-                    padding: const AppEdgeInsets.symmetric(
-                      horizontal: AppGapSize.s8,
+                  child: LabContainer(
+                    padding: const LabEdgeInsets.symmetric(
+                      horizontal: LabGapSize.s8,
                     ),
                     decoration: BoxDecoration(
                       color: theme.colors.white16,
                       borderRadius: theme.radius.asBorderRadius().rad16,
                     ),
                     child: Center(
-                      child: AppText.med12(
+                      child: LabText.med12(
                         count.toString(),
                         color: theme.colors.white66,
                       ),

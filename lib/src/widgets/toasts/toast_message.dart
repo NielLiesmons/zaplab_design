@@ -2,11 +2,11 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:zaplab_design/src/utils/timestamp_formatter.dart';
 import 'package:models/models.dart';
 
-class AppToastMessage extends StatelessWidget {
+class LabToastMessage extends StatelessWidget {
   final ChatMessage message;
   final VoidCallback? onTap;
 
-  const AppToastMessage({
+  const LabToastMessage({
     super.key,
     required this.message,
     this.onTap,
@@ -18,12 +18,12 @@ class AppToastMessage extends StatelessWidget {
     Duration? duration,
     VoidCallback? onTap,
   }) {
-    AppToast.show(
+    LabToast.show(
       context,
       duration: duration,
       onTap: onTap,
       children: [
-        AppToastMessage(
+        LabToastMessage(
           message: message,
         ),
       ],
@@ -32,15 +32,15 @@ class AppToastMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppProfilePic.s32(message.author.value),
-        const AppGap.s8(),
+        LabProfilePic.s32(message.author.value),
+        const LabGap.s8(),
         Expanded(
-          child: AppContainer(
+          child: LabContainer(
             decoration: BoxDecoration(
               color: theme.colors.white16,
               borderRadius: BorderRadius.only(
@@ -50,9 +50,9 @@ class AppToastMessage extends StatelessWidget {
                 topLeft: theme.radius.rad4,
               ),
             ),
-            padding: const AppEdgeInsets.symmetric(
-              horizontal: AppGapSize.s12,
-              vertical: AppGapSize.s8,
+            padding: const LabEdgeInsets.symmetric(
+              horizontal: LabGapSize.s12,
+              vertical: LabGapSize.s8,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +62,7 @@ class AppToastMessage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Flexible(
-                      child: AppText.bold12(
+                      child: LabText.bold12(
                         message.author.value?.name ??
                             formatNpub(message.author.value?.npub ?? ''),
                         color: theme.colors.white66,
@@ -70,15 +70,15 @@ class AppToastMessage extends StatelessWidget {
                         textOverflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const AppGap.s8(),
-                    AppText.reg12(
+                    const LabGap.s8(),
+                    LabText.reg12(
                       TimestampFormatter.format(message.createdAt,
                           format: TimestampFormat.relative),
                       color: theme.colors.white33,
                     ),
                   ],
                 ),
-                AppText.reg14(
+                LabText.reg14(
                   message.content,
                   maxLines: 1,
                   textOverflow: TextOverflow.ellipsis,

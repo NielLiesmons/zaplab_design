@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppCompactTextRenderer extends StatelessWidget {
+class LabCompactTextRenderer extends StatelessWidget {
   final String content;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
@@ -12,7 +12,7 @@ class AppCompactTextRenderer extends StatelessWidget {
   final bool isWhite;
   final Color? textColor;
 
-  const AppCompactTextRenderer({
+  const LabCompactTextRenderer({
     super.key,
     required this.content,
     required this.onResolveEvent,
@@ -27,9 +27,9 @@ class AppCompactTextRenderer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final parser = AppShortTextParser();
+    final parser = LabShortTextParser();
     final elements = parser.parse(content);
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     final textStyle =
         isMedium ? theme.typography.reg14 : theme.typography.reg12;
@@ -40,11 +40,11 @@ class AppCompactTextRenderer extends StatelessWidget {
     final List<InlineSpan> spans = [];
     bool isFirstElement = true;
     for (final element in elements) {
-      if (element.type == AppShortTextElementType.heading1 ||
-          element.type == AppShortTextElementType.heading2 ||
-          element.type == AppShortTextElementType.heading3 ||
-          element.type == AppShortTextElementType.heading4 ||
-          element.type == AppShortTextElementType.heading5) {
+      if (element.type == LabShortTextElementType.heading1 ||
+          element.type == LabShortTextElementType.heading2 ||
+          element.type == LabShortTextElementType.heading3 ||
+          element.type == LabShortTextElementType.heading4 ||
+          element.type == LabShortTextElementType.heading5) {
         if (!isFirstElement) {
           spans.add(TextSpan(
             text: ' ',
@@ -64,7 +64,7 @@ class AppCompactTextRenderer extends StatelessWidget {
         continue;
       }
       isFirstElement = false;
-      if (element.type == AppShortTextElementType.images) {
+      if (element.type == LabShortTextElementType.images) {
         // Split by newlines and filter out any non-URL content
         final urls = element.content
             .split('\n')
@@ -85,21 +85,21 @@ class AppCompactTextRenderer extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 isMedium
-                    ? AppIcon.s16(
+                    ? LabIcon.s16(
                         theme.icons.characters.camera,
                         color: theme.colors.white33,
                       )
-                    : AppIcon.s14(
+                    : LabIcon.s14(
                         theme.icons.characters.camera,
                         color: theme.colors.white33,
                       ),
-                isMedium ? const AppGap.s8() : const AppGap.s6(),
+                isMedium ? const LabGap.s8() : const LabGap.s6(),
                 isMedium
-                    ? AppText.reg14(
+                    ? LabText.reg14(
                         urls.length > 1 ? '${urls.length} Images  ' : 'Image  ',
                         color: derivedTextColor.withValues(alpha: 0.44),
                       )
-                    : AppText.reg12(
+                    : LabText.reg12(
                         urls.length > 1 ? '${urls.length} Images  ' : 'Image  ',
                         color: derivedTextColor.withValues(alpha: 0.44),
                       ),
@@ -107,7 +107,7 @@ class AppCompactTextRenderer extends StatelessWidget {
             ),
           ));
         }
-      } else if (element.type == AppShortTextElementType.emoji) {
+      } else if (element.type == LabShortTextElementType.emoji) {
         spans.add(TextSpan(
           text: element.content,
           style: const TextStyle(
@@ -123,8 +123,8 @@ class AppCompactTextRenderer extends StatelessWidget {
           child: FutureBuilder<String>(
             future: onResolveEmoji(element.content),
             builder: (context, snapshot) {
-              return AppContainer(
-                child: AppEmojiImage(
+              return LabContainer(
+                child: LabEmojiImage(
                   emojiUrl: snapshot.data ?? '',
                   emojiName: snapshot.data ?? '',
                   size: emojiSize,
@@ -134,10 +134,10 @@ class AppCompactTextRenderer extends StatelessWidget {
             },
           ),
         ));
-      } else if (element.type == AppShortTextElementType.paragraph &&
+      } else if (element.type == LabShortTextElementType.paragraph &&
           element.children != null) {
         for (var child in element.children!) {
-          if (child.type == AppShortTextElementType.nostrModel) {
+          if (child.type == LabShortTextElementType.nostrModel) {
             spans.add(TextSpan(
               children: [
                 TextSpan(
@@ -158,15 +158,15 @@ class AppCompactTextRenderer extends StatelessWidget {
                       return Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          AppEmojiContentType(
+                          LabEmojiContentType(
                             contentType:
                                 getModelContentType(snapshot.data?.model),
                             size: emojiSize,
                             opacity: 0.66,
                           ),
-                          isMedium ? const AppGap.s8() : const AppGap.s6(),
+                          isMedium ? const LabGap.s8() : const LabGap.s6(),
                           isMedium
-                              ? AppText.reg14(
+                              ? LabText.reg14(
                                   getModelContentType(snapshot.data?.model) ==
                                           'nostr'
                                       ? 'Nostr Publication  '
@@ -184,7 +184,7 @@ class AppCompactTextRenderer extends StatelessWidget {
                                   color:
                                       derivedTextColor.withValues(alpha: 0.44),
                                 )
-                              : AppText.reg12(
+                              : LabText.reg12(
                                   getModelContentType(snapshot.data?.model) ==
                                           'nostr'
                                       ? 'Nostr Publication  '
@@ -209,7 +209,7 @@ class AppCompactTextRenderer extends StatelessWidget {
                 ),
               ],
             ));
-          } else if (child.type == AppShortTextElementType.audio) {
+          } else if (child.type == LabShortTextElementType.audio) {
             spans.add(TextSpan(
               children: [
                 TextSpan(
@@ -228,21 +228,21 @@ class AppCompactTextRenderer extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       isMedium
-                          ? AppIcon.s16(
+                          ? LabIcon.s16(
                               theme.icons.characters.voice,
                               color: theme.colors.white33,
                             )
-                          : AppIcon.s14(
+                          : LabIcon.s14(
                               theme.icons.characters.voice,
                               color: theme.colors.white33,
                             ),
-                      isMedium ? const AppGap.s8() : const AppGap.s6(),
+                      isMedium ? const LabGap.s8() : const LabGap.s6(),
                       isMedium
-                          ? AppText.reg14(
+                          ? LabText.reg14(
                               'Audio Message  ',
                               color: derivedTextColor.withValues(alpha: 0.44),
                             )
-                          : AppText.reg12(
+                          : LabText.reg12(
                               'Audio Message  ',
                               color: derivedTextColor.withValues(alpha: 0.44),
                             ),
@@ -251,7 +251,7 @@ class AppCompactTextRenderer extends StatelessWidget {
                 ),
               ],
             ));
-          } else if (child.type == AppShortTextElementType.images) {
+          } else if (child.type == LabShortTextElementType.images) {
             // Split by newlines and filter out any non-URL content
             final urls = child.content
                 .split('\n')
@@ -272,23 +272,23 @@ class AppCompactTextRenderer extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     isMedium
-                        ? AppIcon.s16(
+                        ? LabIcon.s16(
                             theme.icons.characters.camera,
                             color: theme.colors.white33,
                           )
-                        : AppIcon.s14(
+                        : LabIcon.s14(
                             theme.icons.characters.camera,
                             color: theme.colors.white33,
                           ),
-                    isMedium ? const AppGap.s8() : const AppGap.s6(),
+                    isMedium ? const LabGap.s8() : const LabGap.s6(),
                     isMedium
-                        ? AppText.reg14(
+                        ? LabText.reg14(
                             urls.length > 1
                                 ? '${urls.length} Images  '
                                 : 'Image  ',
                             color: derivedTextColor.withValues(alpha: 0.44),
                           )
-                        : AppText.reg12(
+                        : LabText.reg12(
                             urls.length > 1
                                 ? '${urls.length} Images  '
                                 : 'Image  ',
@@ -298,7 +298,7 @@ class AppCompactTextRenderer extends StatelessWidget {
                 ),
               ));
             }
-          } else if (child.type == AppShortTextElementType.nostrProfile) {
+          } else if (child.type == LabShortTextElementType.nostrProfile) {
             spans.add(TextSpan(
               children: [
                 TextSpan(
@@ -318,12 +318,12 @@ class AppCompactTextRenderer extends StatelessWidget {
                     future: onResolveProfile(child.content),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return AppText.reg12(
+                        return LabText.reg12(
                           '@${child.content}',
                           color: theme.colors.blurpleLightColor,
                         );
                       }
-                      return AppProfileInline(
+                      return LabProfileInline(
                         profile: snapshot.data!.profile,
                         onTap: snapshot.data?.onTap,
                         isCompact: true,
@@ -333,7 +333,7 @@ class AppCompactTextRenderer extends StatelessWidget {
                 ),
               ],
             ));
-          } else if (child.type == AppShortTextElementType.hashtag) {
+          } else if (child.type == LabShortTextElementType.hashtag) {
             spans.add(TextSpan(
               children: [
                 TextSpan(
@@ -349,18 +349,18 @@ class AppCompactTextRenderer extends StatelessWidget {
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
                   child: isMedium
-                      ? AppText.bold14(
+                      ? LabText.bold14(
                           '#${child.content}',
                           color: theme.colors.blurpleLightColor,
                         )
-                      : AppText.bold12(
+                      : LabText.bold12(
                           '#${child.content}',
                           color: theme.colors.blurpleLightColor,
                         ),
                 ),
               ],
             ));
-          } else if (child.type == AppShortTextElementType.link) {
+          } else if (child.type == LabShortTextElementType.link) {
             spans.add(TextSpan(
               text: child.content,
               style: textStyle.copyWith(
@@ -369,7 +369,7 @@ class AppCompactTextRenderer extends StatelessWidget {
                     : theme.colors.blurpleLightColor66,
               ),
             ));
-          } else if (child.type == AppShortTextElementType.monospace) {
+          } else if (child.type == LabShortTextElementType.monospace) {
             spans.add(TextSpan(
               children: [
                 TextSpan(
@@ -384,17 +384,17 @@ class AppCompactTextRenderer extends StatelessWidget {
                 ),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
-                  child: AppContainer(
+                  child: LabContainer(
                     height: 16,
-                    padding: const AppEdgeInsets.only(
-                      left: AppGapSize.s4,
-                      right: AppGapSize.s4,
+                    padding: const LabEdgeInsets.only(
+                      left: LabGapSize.s4,
+                      right: LabGapSize.s4,
                     ),
                     decoration: BoxDecoration(
                       color: theme.colors.white16,
                       borderRadius: theme.radius.asBorderRadius().rad4,
                     ),
-                    child: AppText.code(
+                    child: LabText.code(
                       child.content,
                       color: derivedTextColor,
                       fontSize: 12,
@@ -403,14 +403,14 @@ class AppCompactTextRenderer extends StatelessWidget {
                 ),
               ],
             ));
-          } else if (child.type == AppShortTextElementType.utfEmoji) {
+          } else if (child.type == LabShortTextElementType.utfEmoji) {
             spans.add(TextSpan(
               text: child.content,
               style: textStyle.copyWith(
                 color: derivedTextColor,
               ),
             ));
-          } else if (child.type == AppShortTextElementType.emoji) {
+          } else if (child.type == LabShortTextElementType.emoji) {
             spans.add(TextSpan(
               text: child.content,
               style: const TextStyle(
@@ -426,8 +426,8 @@ class AppCompactTextRenderer extends StatelessWidget {
               child: FutureBuilder<String>(
                 future: onResolveEmoji(child.content),
                 builder: (context, snapshot) {
-                  return AppContainer(
-                    child: AppEmojiImage(
+                  return LabContainer(
+                    child: LabEmojiImage(
                       emojiUrl: snapshot.data ?? '',
                       emojiName: snapshot.data ?? '',
                       size: emojiSize,

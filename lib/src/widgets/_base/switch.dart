@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppSwitch extends StatefulWidget {
-  const AppSwitch({
+class LabSwitch extends StatefulWidget {
+  const LabSwitch({
     super.key,
     this.value = false,
     this.onChanged,
@@ -11,10 +11,10 @@ class AppSwitch extends StatefulWidget {
   final ValueChanged<bool>? onChanged;
 
   @override
-  AppSwitchState createState() => AppSwitchState();
+  LabSwitchState createState() => LabSwitchState();
 }
 
-class AppSwitchState extends State<AppSwitch>
+class LabSwitchState extends State<LabSwitch>
     with SingleTickerProviderStateMixin {
   bool _isOn = false;
   late AnimationController _controller;
@@ -29,7 +29,7 @@ class AppSwitchState extends State<AppSwitch>
 
     _controller = AnimationController(
       vsync: this,
-      duration: AppDurationsData.normal().normal,
+      duration: LabDurationsData.normal().normal,
     );
 
     // Set up the Tween for the circle's movement, ensuring it starts from the correct position
@@ -44,7 +44,7 @@ class AppSwitchState extends State<AppSwitch>
   }
 
   @override
-  void didUpdateWidget(AppSwitch oldWidget) {
+  void didUpdateWidget(LabSwitch oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value) {
       setState(() {
@@ -77,7 +77,7 @@ class AppSwitchState extends State<AppSwitch>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return GestureDetector(
       onTap: () => _toggleSwitch(!_isOn),

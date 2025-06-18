@@ -1,15 +1,15 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppAmount extends StatelessWidget {
+class LabAmount extends StatelessWidget {
   final double value;
-  final AppTextLevel level;
+  final LabTextLevel level;
   final Color? color;
   final Gradient? gradient;
 
-  const AppAmount(
+  const LabAmount(
     this.value, {
     super.key,
-    this.level = AppTextLevel.med16,
+    this.level = LabTextLevel.med16,
     this.color,
     this.gradient,
   });
@@ -19,7 +19,7 @@ class AppAmount extends StatelessWidget {
     final formattedValue = value.toInt().toString().replaceAllMapped(
         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
 
-    return AppText(
+    return LabText(
       formattedValue,
       level: level,
       color: color,

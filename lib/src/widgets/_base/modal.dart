@@ -22,7 +22,7 @@ class ModalScope extends InheritedWidget {
   }
 }
 
-class AppModal extends StatelessWidget {
+class LabModal extends StatelessWidget {
   final Widget? topBar;
   final Widget? bottomBar;
   final bool includePadding;
@@ -35,7 +35,7 @@ class AppModal extends StatelessWidget {
   final double initialChildSize;
   final ValueNotifier<bool> _needsCompactMode = ValueNotifier<bool>(false);
 
-  AppModal({
+  LabModal({
     super.key,
     this.topBar,
     this.bottomBar,
@@ -59,7 +59,7 @@ class AppModal extends StatelessWidget {
     String? title,
     String? description,
   }) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Navigator.of(context).push(
       PageRouteBuilder(
@@ -68,7 +68,7 @@ class AppModal extends StatelessWidget {
         barrierColor: const Color(0x00000000),
         transitionDuration: theme.durations.normal,
         reverseTransitionDuration: theme.durations.normal,
-        pageBuilder: (_, __, ___) => AppModal(
+        pageBuilder: (_, __, ___) => LabModal(
           topBar: topBar,
           bottomBar: bottomBar,
           includePadding: includePadding,
@@ -105,7 +105,7 @@ class AppModal extends StatelessWidget {
     String? description,
     double initialChildSize = 0.64,
   }) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Navigator.of(context).push(
       PageRouteBuilder(
@@ -114,7 +114,7 @@ class AppModal extends StatelessWidget {
         barrierColor: theme.colors.black16,
         transitionDuration: theme.durations.normal,
         reverseTransitionDuration: theme.durations.normal,
-        pageBuilder: (_, __, ___) => AppModal(
+        pageBuilder: (_, __, ___) => LabModal(
           bottomBar: bottomBar,
           profilePicUrl: profilePicUrl,
           title: title,
@@ -128,20 +128,20 @@ class AppModal extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildHeaderWidgets(AppThemeData theme) {
+  List<Widget> _buildHeaderWidgets(LabThemeData theme) {
     List<Widget> headerWidgets = [];
     if (profilePicUrl != null || title != null || description != null) {
       if (profilePicUrl != null) {
         headerWidgets.addAll([
-          const AppGap.s8(),
-          AppProfilePic.fromUrl(profilePicUrl!, size: AppProfilePicSize.s80),
+          const LabGap.s8(),
+          LabProfilePic.fromUrl(profilePicUrl!, size: LabProfilePicSize.s80),
         ]);
       }
 
       if (title != null) {
         headerWidgets.addAll([
-          const AppGap.s8(),
-          AppText.h1(
+          const LabGap.s8(),
+          LabText.h1(
             title!,
             color: theme.colors.white,
             textAlign: TextAlign.center,
@@ -151,8 +151,8 @@ class AppModal extends StatelessWidget {
 
       if (description != null) {
         headerWidgets.addAll([
-          const AppGap.s4(),
-          AppText.reg16(
+          const LabGap.s4(),
+          LabText.reg16(
             description!,
             color: theme.colors.white66,
             textAlign: TextAlign.center,
@@ -161,7 +161,7 @@ class AppModal extends StatelessWidget {
       }
 
       if (headerWidgets.isNotEmpty) {
-        headerWidgets.add(const AppGap.s8());
+        headerWidgets.add(const LabGap.s8());
       }
     }
     return headerWidgets;
@@ -169,7 +169,7 @@ class AppModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final screenHeight =
         MediaQuery.of(context).size.height / theme.system.scale;
     final topBarVisible = ValueNotifier<bool>(false);
@@ -182,10 +182,10 @@ class AppModal extends StatelessWidget {
     // Create default topBar if title is provided and no custom topBar
     Widget? resolvedTopBar = topBar;
     if (topBar == null && title != null) {
-      resolvedTopBar = AppContainer(
-        padding: const AppEdgeInsets.all(AppGapSize.s12),
+      resolvedTopBar = LabContainer(
+        padding: const LabEdgeInsets.all(LabGapSize.s12),
         alignment: Alignment.center,
-        child: AppText.med16(
+        child: LabText.med16(
           title!,
           color: theme.colors.white,
         ),
@@ -196,7 +196,7 @@ class AppModal extends StatelessWidget {
     final contentKey = GlobalKey();
     final measuringWidget = Opacity(
       opacity: 0,
-      child: AppContainer(
+      child: LabContainer(
         key: contentKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -218,7 +218,7 @@ class AppModal extends StatelessWidget {
             children: [
               BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                child: AppContainer(
+                child: LabContainer(
                   decoration: BoxDecoration(color: theme.colors.black16),
                 ),
               ),
@@ -239,7 +239,7 @@ class AppModal extends StatelessWidget {
                             Navigator.of(context).pop();
                           }
                         },
-                        child: const AppContainer(
+                        child: const LabContainer(
                           decoration: BoxDecoration(color: Color(0x00000000)),
                         ),
                       ),
@@ -262,7 +262,7 @@ class AppModal extends StatelessWidget {
                         allChildren,
                       ),
                     if (needsCompactMode &&
-                        (bottomBar != null || AppPlatformUtils.isMobile))
+                        (bottomBar != null || LabPlatformUtils.isMobile))
                       _buildBottomBarOverlay(context, theme),
                   ],
                 ),
@@ -297,12 +297,12 @@ class AppModal extends StatelessWidget {
 
   Widget _buildCompactModal(
     BuildContext context,
-    AppThemeData theme,
+    LabThemeData theme,
     Widget? resolvedTopBar,
     List<Widget> allChildren,
   ) {
     final bottomPadding =
-        AppPlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
+        LabPlatformUtils.isMobile ? LabGapSize.s4 : LabGapSize.s16;
     final modalOffset = ValueNotifier<double>(0.0);
 
     return ValueListenableBuilder<double>(
@@ -325,11 +325,11 @@ class AppModal extends StatelessWidget {
                   Navigator.of(context).pop();
                 }
               },
-              child: AppContainer(
+              child: LabContainer(
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.vertical(
-                    top: const AppRadiusData.normal().rad32,
+                    top: const LabRadiusData.normal().rad32,
                   ),
                   boxShadow: [
                     BoxShadow(
@@ -341,58 +341,58 @@ class AppModal extends StatelessWidget {
                   border: Border(
                     top: BorderSide(
                       color: theme.colors.white16,
-                      width: AppLineThicknessData.normal().thin,
+                      width: LabLineThicknessData.normal().thin,
                     ),
                   ),
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.vertical(
-                    top: const AppRadiusData.normal().rad32,
+                    top: const LabRadiusData.normal().rad32,
                   ),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                    child: AppContainer(
+                    child: LabContainer(
                       width: double.infinity,
                       decoration: BoxDecoration(color: theme.colors.gray66),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           if (includePadding)
-                            AppContainer(
-                              padding: AppEdgeInsets.only(
-                                left: AppGapSize.s16,
-                                right: AppGapSize.s16,
-                                top: AppGapSize.s16,
-                                bottom: AppPlatformUtils.isMobile
-                                    ? AppGapSize.s12
-                                    : AppGapSize.s16,
+                            LabContainer(
+                              padding: LabEdgeInsets.only(
+                                left: LabGapSize.s16,
+                                right: LabGapSize.s16,
+                                top: LabGapSize.s16,
+                                bottom: LabPlatformUtils.isMobile
+                                    ? LabGapSize.s12
+                                    : LabGapSize.s16,
                               ),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   ...allChildren,
                                   if (bottomBar == null)
-                                    const AppBottomSafeArea(),
+                                    const LabBottomSafeArea(),
                                 ],
                               ),
                             )
                           else ...[
                             ...allChildren,
-                            if (bottomBar == null) const AppBottomSafeArea(),
+                            if (bottomBar == null) const LabBottomSafeArea(),
                           ],
                           if (bottomBar != null)
-                            AppContainer(
-                              padding: AppEdgeInsets.only(
-                                left: AppGapSize.s16,
-                                right: AppGapSize.s16,
-                                top: AppGapSize.none,
+                            LabContainer(
+                              padding: LabEdgeInsets.only(
+                                left: LabGapSize.s16,
+                                right: LabGapSize.s16,
+                                top: LabGapSize.none,
                                 bottom: bottomPadding,
                               ),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   bottomBar!,
-                                  const AppBottomSafeArea(),
+                                  const LabBottomSafeArea(),
                                 ],
                               ),
                             ),
@@ -411,7 +411,7 @@ class AppModal extends StatelessWidget {
 
   Widget _buildScrollableModal(
     BuildContext context,
-    AppThemeData theme,
+    LabThemeData theme,
     double screenHeight,
     ValueNotifier<bool> topBarVisible,
     ValueNotifier<double> modalOffset,
@@ -441,7 +441,7 @@ class AppModal extends StatelessWidget {
                 Navigator.of(context).pop();
               }
             },
-            child: const AppContainer(
+            child: const LabContainer(
                 decoration: BoxDecoration(
               color: Color(0x00000000),
             )),
@@ -466,11 +466,11 @@ class AppModal extends StatelessWidget {
                     minChildSize: 0.6,
                     maxChildSize: 1.0,
                     builder: (context, scrollController) {
-                      return AppContainer(
+                      return LabContainer(
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.vertical(
-                            top: const AppRadiusData.normal().rad32,
+                            top: const LabRadiusData.normal().rad32,
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -482,17 +482,17 @@ class AppModal extends StatelessWidget {
                           border: Border(
                             top: BorderSide(
                               color: theme.colors.white16,
-                              width: AppLineThicknessData.normal().thin,
+                              width: LabLineThicknessData.normal().thin,
                             ),
                           ),
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.vertical(
-                            top: const AppRadiusData.normal().rad32,
+                            top: const LabRadiusData.normal().rad32,
                           ),
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                            child: AppContainer(
+                            child: LabContainer(
                               width: double.infinity,
                               decoration:
                                   BoxDecoration(color: theme.colors.gray66),
@@ -504,18 +504,18 @@ class AppModal extends StatelessWidget {
                                     : EdgeInsets.zero,
                                 children: [
                                   if (includePadding)
-                                    AppContainer(
-                                      padding: const AppEdgeInsets.s16(),
+                                    LabContainer(
+                                      padding: const LabEdgeInsets.s16(),
                                       child: Column(
                                         children: [
                                           ...allChildren,
-                                          const AppBottomSafeArea(),
+                                          const LabBottomSafeArea(),
                                         ],
                                       ),
                                     )
                                   else ...[
                                     ...allChildren,
-                                    const AppBottomSafeArea(),
+                                    const LabBottomSafeArea(),
                                   ],
                                 ],
                               ),
@@ -546,7 +546,7 @@ class AppModal extends StatelessWidget {
 
                       return AnimatedOpacity(
                         opacity: isVisible ? 1.0 : 0.0,
-                        duration: AppDurationsData.normal().normal,
+                        duration: LabDurationsData.normal().normal,
                         curve: Curves.easeInOut,
                         child: GestureDetector(
                           onVerticalDragUpdate: (details) {
@@ -563,33 +563,33 @@ class AppModal extends StatelessWidget {
                               modalOffset.value = 0;
                             }
                           },
-                          child: AppContainer(
+                          child: LabContainer(
                             child: ClipRRect(
                               borderRadius: BorderRadius.vertical(
                                 top: offset > 0
-                                    ? const AppRadiusData.normal().rad32
+                                    ? const LabRadiusData.normal().rad32
                                     : Radius.zero,
                               ),
                               child: BackdropFilter(
                                 filter:
                                     ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                                child: AppContainer(
+                                child: LabContainer(
                                   decoration: BoxDecoration(
                                     color: theme.colors.gray66,
                                     border: Border(
                                       bottom: BorderSide(
                                         color: theme.colors.white16,
                                         width:
-                                            AppLineThicknessData.normal().thin,
+                                            LabLineThicknessData.normal().thin,
                                       ),
                                     ),
                                   ),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      const AppTopSafeArea(),
-                                      const AppGap.s4(),
-                                      const AppDragHandle(),
+                                      const LabTopSafeArea(),
+                                      const LabGap.s4(),
+                                      const LabDragHandle(),
                                       if (resolvedTopBar != null)
                                         resolvedTopBar,
                                     ],
@@ -611,33 +611,33 @@ class AppModal extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomBarOverlay(BuildContext context, AppThemeData theme) {
+  Widget _buildBottomBarOverlay(BuildContext context, LabThemeData theme) {
     final bottomPadding =
-        AppPlatformUtils.isMobile ? AppGapSize.s4 : AppGapSize.s16;
+        LabPlatformUtils.isMobile ? LabGapSize.s4 : LabGapSize.s16;
 
     return Positioned(
       bottom: 0,
       left: 0,
       right: 0,
-      child: AppContainer(
+      child: LabContainer(
         child: ClipRRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-            child: AppContainer(
+            child: LabContainer(
               padding: bottomBar != null
-                  ? AppEdgeInsets.only(
-                      left: AppGapSize.s16,
-                      right: AppGapSize.s16,
-                      top: AppGapSize.s16,
+                  ? LabEdgeInsets.only(
+                      left: LabGapSize.s16,
+                      right: LabGapSize.s16,
+                      top: LabGapSize.s16,
                       bottom: bottomPadding,
                     )
-                  : const AppEdgeInsets.all(AppGapSize.none),
+                  : const LabEdgeInsets.all(LabGapSize.none),
               decoration: BoxDecoration(
                 color: theme.colors.gray66,
                 border: Border(
                   top: BorderSide(
                     color: theme.colors.white16,
-                    width: AppLineThicknessData.normal().thin,
+                    width: LabLineThicknessData.normal().thin,
                   ),
                 ),
               ),
@@ -645,7 +645,7 @@ class AppModal extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (bottomBar != null) bottomBar!,
-                  if (AppPlatformUtils.isMobile) const AppBottomSafeArea(),
+                  if (LabPlatformUtils.isMobile) const LabBottomSafeArea(),
                 ],
               ),
             ),

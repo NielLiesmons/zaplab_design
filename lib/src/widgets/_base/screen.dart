@@ -20,7 +20,7 @@ class HistoryItem {
   final VoidCallback? onTap;
 }
 
-class AppScreen extends StatefulWidget {
+class LabScreen extends StatefulWidget {
   final Widget child;
   final Widget? topBarContent;
   final Widget? bottomBarContent;
@@ -31,7 +31,7 @@ class AppScreen extends StatefulWidget {
   final bool noTopGap;
   final ScrollController? scrollController;
 
-  const AppScreen({
+  const LabScreen({
     super.key,
     required this.child,
     this.topBarContent,
@@ -55,7 +55,7 @@ class AppScreen extends StatefulWidget {
   }) {
     return Navigator.of(context).push<T>(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => AppScreen(
+        pageBuilder: (context, animation, secondaryAnimation) => LabScreen(
           onHomeTap: () => Navigator.of(context).pop(),
           topBarContent: topBarContent,
           bottomBarContent: bottomBarContent,
@@ -65,12 +65,12 @@ class AppScreen extends StatefulWidget {
           child: child,
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          final theme = AppTheme.of(context);
+          final theme = LabTheme.of(context);
           return Stack(
             children: [
               BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                child: AppContainer(
+                child: LabContainer(
                   decoration: BoxDecoration(
                     color: theme.colors.gray33,
                   ),
@@ -94,10 +94,10 @@ class AppScreen extends StatefulWidget {
   }
 
   @override
-  State<AppScreen> createState() => _AppScreenState();
+  State<LabScreen> createState() => _LabScreenState();
 }
 
-class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
+class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
   static const double _buttonHeight = 38.0;
   static const double _buttonWidthDelta = 32.0;
   static const double _topBarHeight = 64.0;
@@ -145,14 +145,14 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
 
   double get _menuHeight {
     final topPadding = MediaQuery.of(context).padding.top;
-    final baseHeight = 94.0 + (AppPlatformUtils.isMobile ? topPadding : 38.0);
+    final baseHeight = 94.0 + (LabPlatformUtils.isMobile ? topPadding : 38.0);
     final historyHeight =
-        widget.history.length * AppTheme.of(context).sizes.s38;
+        widget.history.length * LabTheme.of(context).sizes.s38;
     return baseHeight + historyHeight;
   }
 
   bool get _shouldTreatAsEmpty =>
-      widget.history.isEmpty || !AppPlatformUtils.isMobile;
+      widget.history.isEmpty || !LabPlatformUtils.isMobile;
 
   void _handleScroll() {
     setState(() {
@@ -281,7 +281,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
       _showTopBarContent = false;
     }
 
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final progress = _currentDrag / _menuHeight;
 
     return Stack(
@@ -291,8 +291,8 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
             // Top zone (Safe Area))
             Opacity(
               opacity: _showTopZone ? 1.0 : 0.0,
-              child: AppContainer(
-                height: AppPlatformUtils.isMobile
+              child: LabContainer(
+                height: LabPlatformUtils.isMobile
                     ? MediaQuery.of(context).padding.top + 2
                     : 22,
                 decoration: BoxDecoration(
@@ -308,7 +308,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
               child: Stack(
                 children: [
                   // History menu
-                  if (widget.history.isNotEmpty && AppPlatformUtils.isMobile)
+                  if (widget.history.isNotEmpty && LabPlatformUtils.isMobile)
                     Positioned(
                       left: 0,
                       right: 0,
@@ -323,7 +323,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                               if (_currentDrag > 0) {
                                 if (details.primaryDelta! > 0 &&
                                     Navigator.canPop(context) &&
-                                    AppPlatformUtils.isMobile) {
+                                    LabPlatformUtils.isMobile) {
                                   final now = DateTime.now();
                                   if (_menuOpenedAt != null &&
                                       now
@@ -340,11 +340,11 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                             onHorizontalDragStart: (_) {},
                             onHorizontalDragUpdate: (_) {},
                             onHorizontalDragEnd: (_) {},
-                            child: AppContainer(
+                            child: LabContainer(
                               height: _menuHeight,
-                              padding: const AppEdgeInsets.symmetric(
-                                horizontal: AppGapSize.s16,
-                                vertical: AppGapSize.none,
+                              padding: const LabEdgeInsets.symmetric(
+                                horizontal: LabGapSize.s16,
+                                vertical: LabGapSize.none,
                               ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -367,7 +367,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
 
                                         return Transform.scale(
                                           scale: scaleFactor,
-                                          child: AppContainer(
+                                          child: LabContainer(
                                             decoration: BoxDecoration(
                                               color: theme.colors.white16,
                                               borderRadius: theme.radius
@@ -380,9 +380,9 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                 ),
                                               ],
                                             ),
-                                            padding: const AppEdgeInsets.all(
-                                                AppGapSize.s16),
-                                            child: AppIcon.s20(
+                                            padding: const LabEdgeInsets.all(
+                                                LabGapSize.s16),
+                                            child: LabIcon.s20(
                                               theme.icons.characters.home,
                                               color: theme.colors.white66,
                                             ),
@@ -391,7 +391,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                       },
                                     ),
                                   ),
-                                  const AppGap.s24(),
+                                  const LabGap.s24(),
                                   Transform.translate(
                                     offset: Offset(0,
                                         -_buttonHeight * (1 - progress) * 0.8),
@@ -407,7 +407,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                         child: BackdropFilter(
                                           filter: ImageFilter.blur(
                                               sigmaX: 24, sigmaY: 24),
-                                          child: AppContainer(
+                                          child: LabContainer(
                                             decoration: BoxDecoration(
                                               color: theme.colors.white8,
                                               borderRadius: BorderRadius.only(
@@ -416,24 +416,24 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                               ),
                                               border: Border(
                                                 top: BorderSide(
-                                                  color: AppColorsData.dark()
+                                                  color: LabColorsData.dark()
                                                       .white16,
-                                                  width: AppLineThicknessData
+                                                  width: LabLineThicknessData
                                                           .normal()
                                                       .thin,
                                                 ),
                                               ),
                                             ),
                                             padding:
-                                                const AppEdgeInsets.symmetric(
-                                              horizontal: AppGapSize.s16,
+                                                const LabEdgeInsets.symmetric(
+                                              horizontal: LabGapSize.s16,
                                             ),
                                             child: Center(
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 children: [
-                                                  AppText.reg12(
+                                                  LabText.reg12(
                                                     'More History...',
                                                     color: theme.colors.white66,
                                                   ),
@@ -472,7 +472,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                               },
                                               builder:
                                                   (context, state, hasFocus) {
-                                                return AppContainer(
+                                                return LabContainer(
                                                   decoration: BoxDecoration(
                                                     color: theme.colors.white8,
                                                     borderRadius:
@@ -485,18 +485,18 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                     border: Border(
                                                       top: BorderSide(
                                                         color:
-                                                            AppColorsData.dark()
+                                                            LabColorsData.dark()
                                                                 .white16,
                                                         width:
-                                                            AppLineThicknessData
+                                                            LabLineThicknessData
                                                                     .normal()
                                                                 .thin,
                                                       ),
                                                     ),
                                                   ),
-                                                  padding: const AppEdgeInsets
+                                                  padding: const LabEdgeInsets
                                                       .symmetric(
-                                                    horizontal: AppGapSize.s16,
+                                                    horizontal: LabGapSize.s16,
                                                   ),
                                                   child: Center(
                                                     child: Row(
@@ -504,15 +504,15 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                           MainAxisAlignment
                                                               .start,
                                                       children: [
-                                                        AppText.reg12(
+                                                        LabText.reg12(
                                                           widget.history[index]
                                                               .modelType,
                                                           color: theme
                                                               .colors.white66,
                                                         ),
-                                                        const AppGap.s8(),
+                                                        const LabGap.s8(),
                                                         Expanded(
-                                                          child: AppText.reg12(
+                                                          child: LabText.reg12(
                                                             widget
                                                                 .history[index]
                                                                 .displayText,
@@ -545,7 +545,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                   // Main content
                   Transform.translate(
                     offset: Offset(0, _currentDrag),
-                    child: AppContainer(
+                    child: LabContainer(
                       width: double.infinity,
                       clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
@@ -557,8 +557,8 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                           top: BorderSide(
                             color: theme.colors.white16,
                             width: _currentDrag > 0
-                                ? AppLineThicknessData.normal().thin
-                                : AppLineThicknessData.normal().medium,
+                                ? LabLineThicknessData.normal().thin
+                                : LabLineThicknessData.normal().medium,
                           ),
                         ),
                       ),
@@ -566,11 +566,11 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                         minHeight: MediaQuery.of(context).size.height *
                                 theme.system.scale -
                             (_topBarHeight +
-                                (AppPlatformUtils.isMobile
+                                (LabPlatformUtils.isMobile
                                     ? MediaQuery.of(context).padding.top
                                     : 20)),
                       ),
-                      child: AppScaffold(
+                      child: LabScaffold(
                         body: Stack(
                           children: [
                             // Scrollable content that goes under the top bar
@@ -618,18 +618,18 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                       children: [
                                         // Top padding to account for the gap and drag handle in the top bar
                                         if (!widget.noTopGap)
-                                          !AppPlatformUtils.isMobile
-                                              ? const AppGap.s8()
-                                              : const AppGap.s10(),
+                                          !LabPlatformUtils.isMobile
+                                              ? const LabGap.s8()
+                                              : const LabGap.s10(),
                                         // Actual content
                                         widget.child,
                                         if (widget.bottomBarContent != null)
                                           SizedBox(
-                                            height: AppPlatformUtils.isMobile
+                                            height: LabPlatformUtils.isMobile
                                                 ? 60
                                                 : 70,
                                           ),
-                                        const AppBottomSafeArea(),
+                                        const LabBottomSafeArea(),
                                       ],
                                     ),
                                   ),
@@ -643,7 +643,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                 top: 0,
                                 left: 0,
                                 right: 0,
-                                child: AppContainer(
+                                child: LabContainer(
                                   height: theme.sizes.s8,
                                   decoration: BoxDecoration(
                                     color: theme.colors.black,
@@ -670,7 +670,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                       _menuOpenedAt != null &&
                                       details.primaryDelta! > 0 &&
                                       Navigator.canPop(context) &&
-                                      AppPlatformUtils.isMobile) {
+                                      LabPlatformUtils.isMobile) {
                                     Navigator.of(context).pop();
                                   } else {
                                     _handleDrag(details.primaryDelta!);
@@ -684,7 +684,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                 onHorizontalDragUpdate: (_) {},
                                 onHorizontalDragEnd: (_) {},
                                 onTap: _currentDrag > 0 ? _closeMenu : null,
-                                child: AppContainer(
+                                child: LabContainer(
                                   height: _currentDrag > 0 ? 2000 : null,
                                   decoration: const BoxDecoration(
                                     color: Color(0x00000000),
@@ -701,7 +701,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                 )
                                               : ImageFilter.blur(
                                                   sigmaX: 0, sigmaY: 0),
-                                          child: AppContainer(
+                                          child: LabContainer(
                                             decoration: BoxDecoration(
                                               gradient: _showTopBarContent
                                                   ? LinearGradient(
@@ -724,8 +724,8 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                             child: Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                const AppGap.s8(),
-                                                const AppDragHandle(),
+                                                const LabGap.s8(),
+                                                const LabDragHandle(),
                                                 if (widget.topBarContent !=
                                                         null &&
                                                     _showTopBarContent) ...[
@@ -773,7 +773,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                               }
                                                             },
                                                             child: MouseRegion(
-                                                              cursor: AppPlatformUtils
+                                                              cursor: LabPlatformUtils
                                                                       .isDesktop
                                                                   ? SystemMouseCursors
                                                                       .click
@@ -792,15 +792,15 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                                           mainAxisSize:
                                                                               MainAxisSize.min,
                                                                           children: [
-                                                                            AppContainer(
-                                                                              padding: AppEdgeInsets.only(
-                                                                                left: AppGapSize.s12,
-                                                                                right: AppGapSize.s12,
-                                                                                bottom: AppPlatformUtils.isMobile ? AppGapSize.s12 : AppGapSize.s10,
+                                                                            LabContainer(
+                                                                              padding: LabEdgeInsets.only(
+                                                                                left: LabGapSize.s12,
+                                                                                right: LabGapSize.s12,
+                                                                                bottom: LabPlatformUtils.isMobile ? LabGapSize.s12 : LabGapSize.s10,
                                                                               ),
                                                                               child: widget.topBarContent!,
                                                                             ),
-                                                                            const AppDivider(),
+                                                                            const LabDivider(),
                                                                           ],
                                                                         ),
                                                                 ],
@@ -816,7 +816,7 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
                                                                   width: double
                                                                       .infinity),
                                                               Spacer(),
-                                                              AppDivider(),
+                                                              LabDivider(),
                                                             ],
                                                           ),
                                                   ),
@@ -850,11 +850,11 @@ class _AppScreenState extends State<AppScreen> with TickerProviderStateMixin {
               : ClipRect(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                    child: AppContainer(
+                    child: LabContainer(
                       decoration: BoxDecoration(
                         color: theme.colors.black33,
                       ),
-                      child: const AppBottomSafeArea(),
+                      child: const LabBottomSafeArea(),
                     ),
                   ),
                 ),

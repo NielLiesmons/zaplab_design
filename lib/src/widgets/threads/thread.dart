@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppThread extends StatelessWidget {
+class LabThread extends StatelessWidget {
   final Note thread;
   // TODO: Implement reactions, zaps, and communities once HasMany is available
   // final List<ReplaceReaction> reactions;
@@ -14,7 +14,7 @@ class AppThread extends StatelessWidget {
   final LinkTapHandler onLinkTap;
   final Function(Profile) onProfileTap;
 
-  const AppThread({
+  const LabThread({
     super.key,
     required this.thread,
     // TODO: Implement reactions, zaps, and communities once HasMany is available
@@ -31,14 +31,14 @@ class AppThread extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppContainer(
-      padding: const AppEdgeInsets.only(
-        top: AppGapSize.s4,
-        left: AppGapSize.s12,
-        right: AppGapSize.s12,
-        bottom: AppGapSize.s12,
+    return LabContainer(
+      padding: const LabEdgeInsets.only(
+        top: LabGapSize.s4,
+        left: LabGapSize.s12,
+        right: LabGapSize.s12,
+        bottom: LabGapSize.s12,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,9 +46,9 @@ class AppThread extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppProfilePic.s48(thread.author.value,
+              LabProfilePic.s48(thread.author.value,
                   onTap: () => onProfileTap(thread.author.value as Profile)),
-              const AppGap.s12(),
+              const LabGap.s12(),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,17 +57,17 @@ class AppThread extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        AppText.bold14(thread.author.value?.name ??
+                        LabText.bold14(thread.author.value?.name ??
                             formatNpub(thread.author.value?.pubkey ?? '')),
-                        AppText.reg12(
+                        LabText.reg12(
                           TimestampFormatter.format(thread.createdAt,
                               format: TimestampFormat.relative),
                           color: theme.colors.white33,
                         ),
                       ],
                     ),
-                    const AppGap.s6(),
-                    AppCommunityStack(
+                    const LabGap.s6(),
+                    LabCommunityStack(
                       communities: communities,
                     ),
                   ],
@@ -75,13 +75,13 @@ class AppThread extends StatelessWidget {
               ),
             ],
           ),
-          const AppGap.s12(),
-          AppContainer(
-            padding: const AppEdgeInsets.symmetric(
-              vertical: AppGapSize.none,
-              horizontal: AppGapSize.s4,
+          const LabGap.s12(),
+          LabContainer(
+            padding: const LabEdgeInsets.symmetric(
+              vertical: LabGapSize.none,
+              horizontal: LabGapSize.s4,
             ),
-            child: AppShortTextRenderer(
+            child: LabShortTextRenderer(
               content: thread.content,
               onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,

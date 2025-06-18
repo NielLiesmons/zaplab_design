@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppFeedForumPost extends StatelessWidget {
+class LabFeedForumPost extends StatelessWidget {
   final ForumPost forumPost;
   final List<Profile> topThreeReplyProfiles;
   final int totalReplyProfiles;
@@ -18,7 +18,7 @@ class AppFeedForumPost extends StatelessWidget {
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
 
-  const AppFeedForumPost({
+  const LabFeedForumPost({
     super.key,
     required this.forumPost,
     this.topThreeReplyProfiles = const [],
@@ -39,27 +39,27 @@ class AppFeedForumPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Column(
       children: [
-        AppSwipeContainer(
+        LabSwipeContainer(
           onTap: () => onTap(forumPost),
-          padding: const AppEdgeInsets.only(
-            top: AppGapSize.s8,
-            bottom: AppGapSize.s12,
-            left: AppGapSize.s12,
-            right: AppGapSize.s12,
+          padding: const LabEdgeInsets.only(
+            top: LabGapSize.s8,
+            bottom: LabGapSize.s12,
+            left: LabGapSize.s12,
+            right: LabGapSize.s12,
           ),
-          leftContent: AppIcon.s16(
+          leftContent: LabIcon.s16(
             theme.icons.characters.reply,
             outlineColor: theme.colors.white66,
-            outlineThickness: AppLineThicknessData.normal().medium,
+            outlineThickness: LabLineThicknessData.normal().medium,
           ),
-          rightContent: AppIcon.s10(
+          rightContent: LabIcon.s10(
             theme.icons.characters.chevronUp,
             outlineColor: theme.colors.white66,
-            outlineThickness: AppLineThicknessData.normal().medium,
+            outlineThickness: LabLineThicknessData.normal().medium,
           ),
           onSwipeLeft: () => onReply(forumPost),
           onSwipeRight: () => onActions(forumPost),
@@ -72,19 +72,19 @@ class AppFeedForumPost extends StatelessWidget {
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        const AppGap.s4(),
-                        AppProfilePic.s38(forumPost.author.value,
+                        const LabGap.s4(),
+                        LabProfilePic.s38(forumPost.author.value,
                             onTap: () => onProfileTap(
                                 forumPost.author.value as Profile)),
                         if (topThreeReplyProfiles.isNotEmpty)
                           Expanded(
-                            child: AppDivider.vertical(
+                            child: LabDivider.vertical(
                               color: theme.colors.white33,
                             ),
                           ),
                       ],
                     ),
-                    const AppGap.s12(),
+                    const LabGap.s12(),
                     Expanded(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -94,17 +94,17 @@ class AppFeedForumPost extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                child: AppText.bold16(
+                                child: LabText.bold16(
                                   forumPost.title ?? 'No Title',
                                   maxLines: 2,
                                   textOverflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              const AppGap.s4(),
+                              const LabGap.s4(),
                               if (isUnread)
-                                AppContainer(
-                                  margin: const AppEdgeInsets.only(
-                                      top: AppGapSize.s8),
+                                LabContainer(
+                                  margin: const LabEdgeInsets.only(
+                                      top: LabGapSize.s8),
                                   height: theme.sizes.s8,
                                   width: theme.sizes.s8,
                                   decoration: BoxDecoration(
@@ -114,25 +114,25 @@ class AppFeedForumPost extends StatelessWidget {
                                 ),
                             ],
                           ),
-                          const AppGap.s2(),
+                          const LabGap.s2(),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              AppText.med12(
+                              LabText.med12(
                                   forumPost.author.value?.name ??
                                       formatNpub(
                                           forumPost.author.value?.pubkey ?? ''),
                                   color: theme.colors.white66),
                               const Spacer(),
-                              AppText.reg12(
+                              LabText.reg12(
                                 TimestampFormatter.format(forumPost.createdAt,
                                     format: TimestampFormat.relative),
                                 color: theme.colors.white33,
                               ),
                             ],
                           ),
-                          const AppGap.s2(),
-                          AppShortTextRenderer(
+                          const LabGap.s2(),
+                          LabShortTextRenderer(
                             content: forumPost.content,
                             onResolveEvent: onResolveEvent,
                             onResolveProfile: onResolveProfile,
@@ -156,25 +156,25 @@ class AppFeedForumPost extends StatelessWidget {
                       height: 38,
                       child: Column(
                         children: [
-                          AppProfilePic.s20(topThreeReplyProfiles[0]),
-                          const AppGap.s2(),
+                          LabProfilePic.s20(topThreeReplyProfiles[0]),
+                          const LabGap.s2(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               if (topThreeReplyProfiles.length > 1)
-                                AppProfilePic.s16(topThreeReplyProfiles[1]),
+                                LabProfilePic.s16(topThreeReplyProfiles[1]),
                               const Spacer(),
                               if (topThreeReplyProfiles.length > 2)
-                                AppProfilePic.s12(topThreeReplyProfiles[2]),
-                              const AppGap.s2()
+                                LabProfilePic.s12(topThreeReplyProfiles[2]),
+                              const LabGap.s2()
                             ],
                           ),
                         ],
                       ),
                     ),
-                    const AppGap.s12(),
+                    const LabGap.s12(),
                     Expanded(
-                      child: AppText.med14(
+                      child: LabText.med14(
                         '${topThreeReplyProfiles[0].name ?? formatNpub(topThreeReplyProfiles[0].author.value?.npub ?? '')} & ${totalReplyProfiles - 1} others replied',
                         color: theme.colors.white33,
                       ),
@@ -185,7 +185,7 @@ class AppFeedForumPost extends StatelessWidget {
             ],
           ),
         ),
-        const AppDivider(),
+        const LabDivider(),
       ],
     );
   }

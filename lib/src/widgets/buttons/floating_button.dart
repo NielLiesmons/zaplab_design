@@ -2,11 +2,11 @@ import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppFloatingButton extends StatelessWidget {
+class LabFloatingButton extends StatelessWidget {
   final Widget icon;
   final VoidCallback? onTap;
 
-  const AppFloatingButton({
+  const LabFloatingButton({
     super.key,
     required this.icon,
     this.onTap,
@@ -14,13 +14,13 @@ class AppFloatingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(theme.sizes.s16),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-        child: AppButton(
+        child: LabButton(
           onTap: onTap,
           inactiveColor: theme.colors.white16,
           square: true,

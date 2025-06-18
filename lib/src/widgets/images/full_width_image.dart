@@ -2,21 +2,21 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:async';
 import 'dart:math' as math;
 
-class AppFullWidthImage extends StatefulWidget {
+class LabFullWidthImage extends StatefulWidget {
   final String url;
   final String? caption;
 
-  const AppFullWidthImage({
+  const LabFullWidthImage({
     super.key,
     required this.url,
     this.caption,
   });
 
   @override
-  State<AppFullWidthImage> createState() => _AppFullWidthImageState();
+  State<LabFullWidthImage> createState() => _LabFullWidthImageState();
 }
 
-class _AppFullWidthImageState extends State<AppFullWidthImage> {
+class _LabFullWidthImageState extends State<LabFullWidthImage> {
   late Future<Size> _imageSizeFuture;
 
   @override
@@ -43,7 +43,7 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return FutureBuilder<Size>(
       future: _imageSizeFuture,
@@ -51,14 +51,14 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppContainer(
+            LabContainer(
               width: double.infinity,
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                 color: theme.colors.gray66,
                 border: Border.all(
                   color: theme.colors.white16,
-                  width: AppLineThicknessData.normal().thin,
+                  width: LabLineThicknessData.normal().thin,
                 ),
               ),
               child: LayoutBuilder(
@@ -66,13 +66,13 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
                   final skeletonHeight = constraints.maxWidth / 1.618;
 
                   if (!snapshot.hasData) {
-                    return AppContainer(
+                    return LabContainer(
                       width: double.infinity,
                       height: skeletonHeight,
                       decoration: BoxDecoration(
                         color: theme.colors.gray33,
                       ),
-                      child: const AppSkeletonLoader(),
+                      child: const LabSkeletonLoader(),
                     );
                   }
 
@@ -83,14 +83,14 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
                   final height = constraints.maxWidth / aspectRatio;
                   final useMaxHeight = height > maxHeight;
 
-                  return AppContainer(
+                  return LabContainer(
                     width: constraints.maxWidth,
                     height: useMaxHeight ? maxHeight : height,
                     decoration: BoxDecoration(
                       color: theme.colors.gray66,
                       border: Border.all(
                         color: theme.colors.white16,
-                        width: AppLineThicknessData.normal().thin,
+                        width: LabLineThicknessData.normal().thin,
                       ),
                     ),
                     child: Center(
@@ -100,11 +100,11 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
                         width: constraints.maxWidth,
                         height: useMaxHeight ? maxHeight : height,
                         loadingBuilder: (context, error, stackTrace) {
-                          return const AppSkeletonLoader();
+                          return const LabSkeletonLoader();
                         },
                         errorBuilder: (context, error, stackTrace) {
                           return Center(
-                            child: AppText(
+                            child: LabText(
                               "Image not found",
                               color: theme.colors.white33,
                             ),
@@ -117,14 +117,14 @@ class _AppFullWidthImageState extends State<AppFullWidthImage> {
               ),
             ),
             if (widget.caption != null)
-              AppContainer(
+              LabContainer(
                 height: theme.sizes.s38,
-                padding: const AppEdgeInsets.symmetric(
-                  horizontal: AppGapSize.s12,
+                padding: const LabEdgeInsets.symmetric(
+                  horizontal: LabGapSize.s12,
                 ),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: AppText.med12(
+                  child: LabText.med12(
                     widget.caption!,
                     color: theme.colors.white66,
                   ),

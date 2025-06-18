@@ -1,11 +1,11 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 
-class AppBottomBarWelcome extends StatelessWidget {
+class LabBottomBarWelcome extends StatelessWidget {
   final VoidCallback? onAddLabelTap;
   final VoidCallback? onSearchTap;
   final VoidCallback? onActions;
-  const AppBottomBarWelcome({
+  const LabBottomBarWelcome({
     super.key,
     this.onAddLabelTap,
     this.onSearchTap,
@@ -14,38 +14,38 @@ class AppBottomBarWelcome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppBottomBar(
+    return LabBottomBar(
       child: Row(
         children: [
-          AppButton(
+          LabButton(
             inactiveGradient: theme.colors.blurple,
             onTap: onAddLabelTap,
             children: [
-              AppIcon.s12(
+              LabIcon.s12(
                 theme.icons.characters.plus,
-                outlineThickness: AppLineThicknessData.normal().thick,
+                outlineThickness: LabLineThicknessData.normal().thick,
                 outlineColor: theme.colors.whiteEnforced,
               ),
-              const AppGap.s8(),
-              AppText.med14('Add', color: theme.colors.whiteEnforced),
-              const AppGap.s4(),
+              const LabGap.s8(),
+              LabText.med14('Add', color: theme.colors.whiteEnforced),
+              const LabGap.s4(),
             ],
           ),
-          const AppGap.s12(),
+          const LabGap.s12(),
           Expanded(
-              child: AppInputButton(
+              child: LabInputButton(
             children: [
-              AppIcon.s18(theme.icons.characters.search,
-                  outlineThickness: AppLineThicknessData.normal().medium,
+              LabIcon.s18(theme.icons.characters.search,
+                  outlineThickness: LabLineThicknessData.normal().medium,
                   outlineColor: theme.colors.white33),
-              const AppGap.s8(),
-              AppText.med14('Search', color: theme.colors.white33),
+              const LabGap.s8(),
+              LabText.med14('Search', color: theme.colors.white33),
             ],
           )),
-          const AppGap.s12(),
-          AppButton(
+          const LabGap.s12(),
+          LabButton(
             square: true,
             inactiveColor: theme.colors.black33,
             onTap: onActions,
@@ -53,10 +53,10 @@ class AppBottomBarWelcome extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AppIcon.s8(theme.icons.characters.chevronUp,
-                      outlineThickness: AppLineThicknessData.normal().medium,
+                  LabIcon.s8(theme.icons.characters.chevronUp,
+                      outlineThickness: LabLineThicknessData.normal().medium,
                       outlineColor: theme.colors.white66),
-                  const AppGap.s2(),
+                  const LabGap.s2(),
                 ],
               ),
             ],

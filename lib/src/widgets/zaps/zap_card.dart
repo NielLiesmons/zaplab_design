@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppZapCard extends StatelessWidget {
+class LabZapCard extends StatelessWidget {
   final Zap? zap;
   final CashuZap? cashuZap;
   final NostrEventResolver onResolveEvent;
@@ -10,7 +10,7 @@ class AppZapCard extends StatelessWidget {
   final Function(Model)? onTap;
   final Function(Profile) onProfileTap;
 
-  const AppZapCard({
+  const LabZapCard({
     super.key,
     this.zap,
     this.cashuZap,
@@ -24,34 +24,34 @@ class AppZapCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final isCashuZap = cashuZap != null;
     final model = isCashuZap ? cashuZap! : zap!;
 
-    return AppPanelButton(
-      padding: const AppEdgeInsets.all(AppGapSize.none),
+    return LabPanelButton(
+      padding: const LabEdgeInsets.all(LabGapSize.none),
       gradient: theme.colors.graydient16,
       radius: theme.radius.asBorderRadius().rad12,
       onTap: onTap != null ? () => onTap!(model as Model) : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppContainer(
-            padding: const AppEdgeInsets.symmetric(
-              horizontal: AppGapSize.s12,
+          LabContainer(
+            padding: const LabEdgeInsets.symmetric(
+              horizontal: LabGapSize.s12,
             ),
             height: theme.sizes.s38,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppProfilePic.s18(
+                LabProfilePic.s18(
                     isCashuZap ? cashuZap!.author.value : zap!.author.value,
                     onTap: () => onProfileTap(isCashuZap
                         ? cashuZap!.author.value as Profile
                         : zap!.author.value as Profile)),
-                const AppGap.s10(),
+                const LabGap.s10(),
                 Expanded(
-                  child: AppText.bold14(
+                  child: LabText.bold14(
                     isCashuZap
                         ? cashuZap!.author.value?.name ??
                             formatNpub(cashuZap!.author.value?.pubkey ?? '')
@@ -61,16 +61,16 @@ class AppZapCard extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    AppIcon.s12(
+                    LabIcon.s12(
                       theme.icons.characters.zap,
                       gradient: theme.colors.gold,
                     ),
-                    const AppGap.s4(),
-                    AppAmount(
+                    const LabGap.s4(),
+                    LabAmount(
                       isCashuZap
                           ? cashuZap!.amount.toDouble()
                           : zap!.amount.toDouble(),
-                      level: AppTextLevel.bold14,
+                      level: LabTextLevel.bold14,
                       color: theme.colors.white,
                     ),
                   ],
@@ -80,13 +80,13 @@ class AppZapCard extends StatelessWidget {
           ),
           if ((isCashuZap ? cashuZap!.content : zap!.event.content)
               .isNotEmpty) ...[
-            const AppDivider.horizontal(),
-            AppContainer(
-              padding: const AppEdgeInsets.symmetric(
-                horizontal: AppGapSize.s12,
-                vertical: AppGapSize.s8,
+            const LabDivider.horizontal(),
+            LabContainer(
+              padding: const LabEdgeInsets.symmetric(
+                horizontal: LabGapSize.s12,
+                vertical: LabGapSize.s8,
               ),
-              child: AppCompactTextRenderer(
+              child: LabCompactTextRenderer(
                 content: isCashuZap ? cashuZap!.content : zap!.event.content,
                 onResolveEvent: onResolveEvent,
                 onResolveProfile: onResolveProfile,

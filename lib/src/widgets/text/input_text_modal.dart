@@ -1,6 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-abstract class AppInputTextModal {
+abstract class LabInputTextModal {
   static Future<void> show(
     BuildContext context, {
     required TextEditingController controller,
@@ -8,9 +8,9 @@ abstract class AppInputTextModal {
     String? title,
     bool singleLine = false,
     required void Function(String) onDone,
-    AppInputTextFieldSize size = AppInputTextFieldSize.small,
+    LabInputTextFieldSize size = LabInputTextFieldSize.small,
   }) async {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final focusNode = FocusNode();
     focusNode.requestFocus();
 
@@ -22,12 +22,12 @@ abstract class AppInputTextModal {
       }
     }
 
-    await AppInputModal.show(
+    await LabInputModal.show(
       context,
       children: [
-        AppKeyboardSubmitHandler(
+        LabKeyboardSubmitHandler(
           onSubmit: handleSubmit,
-          child: AppInputTextField(
+          child: LabInputTextField(
             controller: controller,
             focusNode: focusNode,
             singleLine: singleLine,
@@ -36,14 +36,14 @@ abstract class AppInputTextModal {
             size: size,
           ),
         ),
-        const AppGap.s12(),
-        AppButton(
+        const LabGap.s12(),
+        LabButton(
           onTap: handleSubmit,
           children: [
-            AppText.med14("Done", color: theme.colors.whiteEnforced),
+            LabText.med14("Done", color: theme.colors.whiteEnforced),
           ],
         ),
-        const AppGap.s16(),
+        const LabGap.s16(),
       ],
     );
   }

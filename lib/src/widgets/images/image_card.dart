@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 
-class AppImageCard extends StatelessWidget {
+class LabImageCard extends StatelessWidget {
   final String url;
   final VoidCallback? onTap;
   final double? width;
@@ -9,7 +9,7 @@ class AppImageCard extends StatelessWidget {
   final double? height;
   final double? loadingHeight;
 
-  const AppImageCard({
+  const LabImageCard({
     super.key,
     required this.url,
     this.onTap,
@@ -21,7 +21,7 @@ class AppImageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return TapBuilder(
       onTap: onTap,
@@ -35,14 +35,14 @@ class AppImageCard extends StatelessWidget {
 
         return Transform.scale(
           scale: scaleFactor,
-          child: AppContainer(
+          child: LabContainer(
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               color: theme.colors.gray66,
               borderRadius: theme.radius.asBorderRadius().rad16,
               border: Border.all(
                 color: theme.colors.white16,
-                width: AppLineThicknessData.normal().thin,
+                width: LabLineThicknessData.normal().thin,
               ),
             ),
             width: width,
@@ -51,11 +51,11 @@ class AppImageCard extends StatelessWidget {
               url,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
-                return AppContainer(
+                return LabContainer(
                   width: width ?? loadingWidth ?? 320,
                   height: height ?? loadingHeight ?? 180,
                   child: Center(
-                    child: AppText(
+                    child: LabText(
                       "Image not found",
                       color: theme.colors.white33,
                     ),
@@ -63,10 +63,10 @@ class AppImageCard extends StatelessWidget {
                 );
               },
               loadingBuilder: (context, error, stackTrace) {
-                return AppContainer(
+                return LabContainer(
                   width: width ?? loadingWidth ?? 320,
                   height: height ?? loadingHeight ?? 180,
-                  child: const AppSkeletonLoader(),
+                  child: const LabSkeletonLoader(),
                 );
               },
             ),

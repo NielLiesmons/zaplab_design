@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppModelCard extends StatelessWidget {
+class LabModelCard extends StatelessWidget {
   final Model? model;
   final NostrEventResolver? onResolveEvent;
   final NostrProfileResolver? onResolveProfile;
@@ -10,7 +10,7 @@ class AppModelCard extends StatelessWidget {
   final Function(Model)? onTap;
   final Function(Profile) onProfileTap;
 
-  const AppModelCard({
+  const LabModelCard({
     super.key,
     required this.model,
     this.onTap,
@@ -25,14 +25,14 @@ class AppModelCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     if (model == null || getModelContentType(model) == 'nostr') {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
-        child: AppPanelButton(
-          padding: const AppEdgeInsets.all(AppGapSize.none),
-          child: AppSkeletonLoader(
+        child: LabPanelButton(
+          padding: const LabEdgeInsets.all(LabGapSize.none),
+          child: LabSkeletonLoader(
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 12,
@@ -40,13 +40,13 @@ class AppModelCard extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const AppGap.s4(),
-                  AppIcon.s24(
+                  const LabGap.s4(),
+                  LabIcon.s24(
                     theme.icons.characters.nostr,
                     color: theme.colors.white33,
                   ),
-                  const AppGap.s16(),
-                  AppText.med14(
+                  const LabGap.s16(),
+                  LabText.med14(
                     'Nostr Publication',
                     color: theme.colors.white33,
                   ),
@@ -61,7 +61,7 @@ class AppModelCard extends StatelessWidget {
     if (model is Article) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
-        child: AppArticleCard(
+        child: LabArticleCard(
           article: model as Article,
           onTap: onTap,
           onProfileTap: onProfileTap,
@@ -72,7 +72,7 @@ class AppModelCard extends StatelessWidget {
     if (model is ChatMessage) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
-        child: AppQuotedMessage(
+        child: LabQuotedMessage(
           chatMessage: model as ChatMessage,
           onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
@@ -81,7 +81,7 @@ class AppModelCard extends StatelessWidget {
               ? null
               : (message) {
                   print(
-                      'AppModelCard: onTap called with message: ${message.id}');
+                      'LabModelCard: onTap called with message: ${message.id}');
                   onTap!(message);
                 },
         ),
@@ -91,7 +91,7 @@ class AppModelCard extends StatelessWidget {
     if (model is Zap) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
-        child: AppZapCard(
+        child: LabZapCard(
           zap: model as Zap,
           onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
           onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
@@ -105,7 +105,7 @@ class AppModelCard extends StatelessWidget {
     if (model is Note) {
       return ConstrainedBox(
         constraints: BoxConstraints(minWidth: minWidth),
-        child: AppThreadCard(
+        child: LabThreadCard(
           thread: model as Note,
           onTap: onTap,
           onProfileTap: onProfileTap,
@@ -118,31 +118,31 @@ class AppModelCard extends StatelessWidget {
 
     return ConstrainedBox(
       constraints: BoxConstraints(minWidth: minWidth),
-      child: AppPanelButton(
-        padding: const AppEdgeInsets.symmetric(
-          horizontal: AppGapSize.s12,
-          vertical: AppGapSize.s10,
+      child: LabPanelButton(
+        padding: const LabEdgeInsets.symmetric(
+          horizontal: LabGapSize.s12,
+          vertical: LabGapSize.s10,
         ),
         onTap: onTap!(model!),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AppProfilePic.s40(model!.author.value,
+            LabProfilePic.s40(model!.author.value,
                 onTap: () => onProfileTap(model!.author.value as Profile)),
-            const AppGap.s12(),
+            const LabGap.s12(),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      AppEmojiContentType(
+                      LabEmojiContentType(
                         contentType: getModelContentType(model),
                         size: 16,
                       ),
-                      const AppGap.s10(),
+                      const LabGap.s10(),
                       Expanded(
-                        child: AppCompactTextRenderer(
+                        child: LabCompactTextRenderer(
                           content: getModelDisplayText(model),
                           onResolveEvent:
                               onResolveEvent ?? (_) => Future.value(null),
@@ -154,8 +154,8 @@ class AppModelCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const AppGap.s2(),
-                  AppText.reg12(
+                  const LabGap.s2(),
+                  LabText.reg12(
                     model!.author.value?.name ??
                         formatNpub(model!.author.value?.npub ?? ''),
                     color: theme.colors.white66,

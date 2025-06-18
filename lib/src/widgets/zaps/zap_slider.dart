@@ -5,7 +5,7 @@ import 'package:models/models.dart';
 
 typedef ZapRecord = ({double amount, Profile profile});
 
-class AppZapSlider extends StatefulWidget {
+class LabZapSlider extends StatefulWidget {
   final Profile? profile;
   final double initialValue;
   final ValueChanged<double>? onValueChanged;
@@ -22,7 +22,7 @@ class AppZapSlider extends StatefulWidget {
   final VoidCallback onAddTap;
   final Function(Profile) onProfileTap;
 
-  const AppZapSlider({
+  const LabZapSlider({
     super.key,
     this.profile,
     this.initialValue = 100,
@@ -42,10 +42,10 @@ class AppZapSlider extends StatefulWidget {
   });
 
   @override
-  State<AppZapSlider> createState() => _AppZapSliderState();
+  State<LabZapSlider> createState() => _LabZapSliderState();
 }
 
-class _AppZapSliderState extends State<AppZapSlider> {
+class _LabZapSliderState extends State<LabZapSlider> {
   // Slider state and configuration
   double _value = 0.0;
   final double _startAngle = math.pi * 3 / 4; // Start at 315 degrees
@@ -82,7 +82,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Column(
       children: [
@@ -119,7 +119,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
                             CustomPaint(
                               key: _customPaintKey,
                               size: const Size(320, 320),
-                              painter: AppZapSliderPainter(
+                              painter: LabZapSliderPainter(
                                 value: _value,
                                 min: _minValue,
                                 max: _maxValue,
@@ -132,7 +132,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
                                 handleSize: theme.sizes.s24,
                                 markerLength: theme.sizes.s8,
                                 markerThickness:
-                                    AppLineThicknessData.normal().thin,
+                                    LabLineThicknessData.normal().thin,
                                 markerColor: theme.colors.white33,
                                 labelStyle: theme.typography.med12,
                                 labelColor: theme.colors.white33,
@@ -161,13 +161,13 @@ class _AppZapSliderState extends State<AppZapSlider> {
                                 top: 160 +
                                     (outerRadius + 9) * math.sin(angle) -
                                     9,
-                                child: AppProfilePic.s18(zapData.profile),
+                                child: LabProfilePic.s18(zapData.profile),
                               );
                             }),
                             Positioned(
                               left: 108,
                               top: 108,
-                              child: AppProfilePic.s104(widget.profile),
+                              child: LabProfilePic.s104(widget.profile),
                             ),
                           ],
                         ),
@@ -179,13 +179,13 @@ class _AppZapSliderState extends State<AppZapSlider> {
             ),
           ),
         ),
-        AppContainer(
+        LabContainer(
           decoration: BoxDecoration(
             color: theme.colors.black33,
             borderRadius: theme.radius.asBorderRadius().rad16,
             border: Border.all(
               color: theme.colors.white33,
-              width: AppLineThicknessData.normal().thin,
+              width: LabLineThicknessData.normal().thin,
             ),
           ),
           child: Column(
@@ -193,40 +193,40 @@ class _AppZapSliderState extends State<AppZapSlider> {
               TapBuilder(
                 onTap: _handleAmountTap,
                 builder: (context, state, hasFocus) {
-                  return AppContainer(
-                    padding: const AppEdgeInsets.symmetric(
-                      horizontal: AppGapSize.s16,
-                      vertical: AppGapSize.s12,
+                  return LabContainer(
+                    padding: const LabEdgeInsets.symmetric(
+                      horizontal: LabGapSize.s16,
+                      vertical: LabGapSize.s12,
                     ),
                     child: Row(
                       children: [
-                        AppIcon.s16(
+                        LabIcon.s16(
                           theme.icons.characters.zap,
                           gradient: theme.colors.gold,
                         ),
-                        const AppGap.s8(),
-                        AppAmount(
+                        const LabGap.s8(),
+                        LabAmount(
                           _value,
-                          level: AppTextLevel.h2,
+                          level: LabTextLevel.h2,
                           color: theme.colors.white,
                         ),
-                        const AppGap.s12(),
+                        const LabGap.s12(),
                         const Spacer(),
                         if (widget.otherZaps.isNotEmpty &&
                             _value >
                                 widget.otherZaps
                                     .map((z) => z.amount)
                                     .reduce(math.max))
-                          AppContainer(
+                          LabContainer(
                             decoration: BoxDecoration(
                               gradient: theme.colors.gold16,
                               borderRadius: theme.radius.asBorderRadius().rad16,
                             ),
-                            padding: const AppEdgeInsets.symmetric(
-                              horizontal: AppGapSize.s12,
-                              vertical: AppGapSize.s4,
+                            padding: const LabEdgeInsets.symmetric(
+                              horizontal: LabGapSize.s12,
+                              vertical: LabGapSize.s4,
                             ),
-                            child: AppText.med12(
+                            child: LabText.med12(
                               'Top Zap',
                               gradient: theme.colors.gold,
                             ),
@@ -236,25 +236,25 @@ class _AppZapSliderState extends State<AppZapSlider> {
                   );
                 },
               ),
-              const AppDivider.horizontal(),
+              const LabDivider.horizontal(),
               TapBuilder(
                 onTap: _handleMessageTap,
                 builder: (context, state, hasFocus) {
-                  return AppContainer(
-                    padding: const AppEdgeInsets.symmetric(
-                      horizontal: AppGapSize.s16,
-                      vertical: AppGapSize.s16,
+                  return LabContainer(
+                    padding: const LabEdgeInsets.symmetric(
+                      horizontal: LabGapSize.s16,
+                      vertical: LabGapSize.s16,
                     ),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: _message.isEmpty
-                          ? AppText.med14(
+                          ? LabText.med14(
                               'Your Message',
-                              color: AppTheme.of(context).colors.white33,
+                              color: LabTheme.of(context).colors.white33,
                             )
-                          : AppText.reg14(
+                          : LabText.reg14(
                               _message,
-                              color: AppTheme.of(context).colors.white,
+                              color: LabTheme.of(context).colors.white,
                               maxLines: 1,
                               textOverflow: TextOverflow.ellipsis,
                             ),
@@ -310,15 +310,15 @@ class _AppZapSliderState extends State<AppZapSlider> {
 
   void _handleMessageTap() async {
     _messageController.text = _message;
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     // Request focus before showing the modal
     _focusNode.requestFocus();
 
-    await AppInputModal.show(
+    await LabInputModal.show(
       context,
       children: [
-        AppShortTextField(
+        LabShortTextField(
           focusNode: _focusNode,
           controller: _messageController,
           onChanged: (value) {
@@ -328,7 +328,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
           },
           placeholder: _message.isEmpty
               ? [
-                  AppText.reg16(
+                  LabText.reg16(
                     'Your Message',
                     color: theme.colors.white33,
                   ),
@@ -353,7 +353,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
   }
 
   void _handleAmountTap() async {
-    await AppZapAmountModal.show(
+    await LabZapAmountModal.show(
       context,
       initialAmount: _value,
       recentAmounts: widget.recentAmounts ?? [],
@@ -367,7 +367,7 @@ class _AppZapSliderState extends State<AppZapSlider> {
   }
 }
 
-class AppZapSliderPainter extends CustomPainter {
+class LabZapSliderPainter extends CustomPainter {
   final double value;
   final double min;
   final double max;
@@ -388,7 +388,7 @@ class AppZapSliderPainter extends CustomPainter {
   final double markerThickness;
   static const double _maxValue = 1000000.0;
 
-  const AppZapSliderPainter({
+  const LabZapSliderPainter({
     required this.value,
     required this.min,
     required this.max,
@@ -419,7 +419,7 @@ class AppZapSliderPainter extends CustomPainter {
       ..shader = valueGradient.createShader(
         Rect.fromCircle(center: center, radius: 100.0),
       )
-      ..strokeWidth = AppLineThicknessData.normal().medium
+      ..strokeWidth = LabLineThicknessData.normal().medium
       ..strokeCap = StrokeCap.round;
 
     const radius = 100.0;
@@ -562,7 +562,7 @@ class AppZapSliderPainter extends CustomPainter {
       center.dy + radius * math.sin(handleAngle),
     );
 
-    final handlePaint = Paint()..color = AppColorsData.dark().whiteEnforced;
+    final handlePaint = Paint()..color = LabColorsData.dark().whiteEnforced;
 
     canvas.drawCircle(handlePosition, handleSize / 2, handlePaint);
   }

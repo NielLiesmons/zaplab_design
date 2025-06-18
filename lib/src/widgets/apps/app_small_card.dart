@@ -1,12 +1,12 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppAppSmallCard extends StatelessWidget {
+class LabAppSmallCard extends StatelessWidget {
   final App app;
   final VoidCallback onTap;
   final bool noPadding;
 
-  const AppAppSmallCard({
+  const LabAppSmallCard({
     super.key,
     required this.app,
     required this.onTap,
@@ -15,26 +15,26 @@ class AppAppSmallCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppContainer(
+    return LabContainer(
       padding: noPadding
-          ? const AppEdgeInsets.all(AppGapSize.none)
-          : const AppEdgeInsets.all(AppGapSize.s12),
+          ? const LabEdgeInsets.all(LabGapSize.none)
+          : const LabEdgeInsets.all(LabGapSize.s12),
       child: Row(
         children: [
-          AppProfilePicSquare.fromUrl(
+          LabProfilePicSquare.fromUrl(
             app.icons.isNotEmpty ? app.icons.first : '',
-            size: AppProfilePicSquareSize.s48,
+            size: LabProfilePicSquareSize.s48,
           ),
-          const AppGap.s12(),
+          const LabGap.s12(),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText.bold14(app.name ?? ''),
-                const AppGap.s2(),
-                AppText.reg12(
+                LabText.bold14(app.name ?? ''),
+                const LabGap.s2(),
+                LabText.reg12(
                   app.description,
                   color: theme.colors.white66,
                   maxLines: 1,

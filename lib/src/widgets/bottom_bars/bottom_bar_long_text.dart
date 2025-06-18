@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
-class AppBottomBarLongText extends StatelessWidget {
+class LabBottomBarLongText extends StatelessWidget {
   final Function(Model) onZapTap;
   final Function(Model) onPlayTap;
   final Function(Model) onReplyTap;
@@ -10,7 +10,7 @@ class AppBottomBarLongText extends StatelessWidget {
   final Function(Model) onActions;
   final Model model;
 
-  const AppBottomBarLongText({
+  const LabBottomBarLongText({
     super.key,
     required this.onZapTap,
     required this.onPlayTap,
@@ -22,33 +22,33 @@ class AppBottomBarLongText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppBottomBar(
+    return LabBottomBar(
       child: Row(
         children: [
-          AppButton(
+          LabButton(
             inactiveGradient: theme.colors.blurple,
             onTap: () => onZapTap(model),
             square: true,
             children: [
-              AppIcon.s20(
+              LabIcon.s20(
                 theme.icons.characters.zap,
                 color: theme.colors.whiteEnforced,
               ),
             ],
           ),
-          const AppGap.s12(),
-          AppButton(
+          const LabGap.s12(),
+          LabButton(
             inactiveColor: theme.colors.white16,
             onTap: () => onPlayTap(model),
             square: true,
             children: [
-              AppIcon.s12(theme.icons.characters.play,
+              LabIcon.s12(theme.icons.characters.play,
                   color: theme.colors.white66),
             ],
           ),
-          const AppGap.s12(),
+          const LabGap.s12(),
           Expanded(
             child: TapBuilder(
               onTap: () => onReplyTap(model),
@@ -62,36 +62,36 @@ class AppBottomBarLongText extends StatelessWidget {
 
                 return Transform.scale(
                   scale: scaleFactor,
-                  child: AppContainer(
+                  child: LabContainer(
                     height: theme.sizes.s40,
                     decoration: BoxDecoration(
                       color: theme.colors.black33,
                       borderRadius: theme.radius.asBorderRadius().rad16,
                       border: Border.all(
                         color: theme.colors.white33,
-                        width: AppLineThicknessData.normal().thin,
+                        width: LabLineThicknessData.normal().thin,
                       ),
                     ),
-                    padding: const AppEdgeInsets.only(
-                      left: AppGapSize.s14,
-                      right: AppGapSize.s12,
+                    padding: const LabEdgeInsets.only(
+                      left: LabGapSize.s14,
+                      right: LabGapSize.s12,
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        AppIcon.s12(
+                        LabIcon.s12(
                           theme.icons.characters.reply,
                           outlineThickness:
-                              AppLineThicknessData.normal().medium,
+                              LabLineThicknessData.normal().medium,
                           outlineColor: theme.colors.white33,
                         ),
-                        const AppGap.s8(),
-                        AppText.med14('Reply', color: theme.colors.white33),
+                        const LabGap.s8(),
+                        LabText.med14('Reply', color: theme.colors.white33),
                         const Spacer(),
                         TapBuilder(
                           onTap: () => onVoiceTap(model),
                           builder: (context, state, hasFocus) {
-                            return AppIcon.s18(theme.icons.characters.voice,
+                            return LabIcon.s18(theme.icons.characters.voice,
                                 color: theme.colors.white33);
                           },
                         ),
@@ -102,8 +102,8 @@ class AppBottomBarLongText extends StatelessWidget {
               },
             ),
           ),
-          const AppGap.s12(),
-          AppButton(
+          const LabGap.s12(),
+          LabButton(
             square: true,
             inactiveColor: theme.colors.black33,
             onTap: () => onActions(model),
@@ -111,10 +111,10 @@ class AppBottomBarLongText extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AppIcon.s8(theme.icons.characters.chevronUp,
-                      outlineThickness: AppLineThicknessData.normal().medium,
+                  LabIcon.s8(theme.icons.characters.chevronUp,
+                      outlineThickness: LabLineThicknessData.normal().medium,
                       outlineColor: theme.colors.white66),
-                  const AppGap.s2(),
+                  const LabGap.s2(),
                 ],
               ),
             ],

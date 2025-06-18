@@ -3,12 +3,12 @@ import 'package:tap_builder/tap_builder.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 
-class AppZapAmountModal extends StatefulWidget {
+class LabZapAmountModal extends StatefulWidget {
   final double initialAmount;
   final void Function(double)? onAmountChanged;
   final List<double> recentAmounts;
 
-  const AppZapAmountModal({
+  const LabZapAmountModal({
     super.key,
     required this.initialAmount,
     this.onAmountChanged,
@@ -21,10 +21,10 @@ class AppZapAmountModal extends StatefulWidget {
     void Function(double)? onAmountChanged,
     List<double> recentAmounts = const [],
   }) {
-    return AppModal.show(
+    return LabModal.show(
       context,
       children: [
-        AppZapAmountModal(
+        LabZapAmountModal(
           initialAmount: initialAmount,
           onAmountChanged: onAmountChanged,
           recentAmounts: recentAmounts,
@@ -34,10 +34,10 @@ class AppZapAmountModal extends StatefulWidget {
   }
 
   @override
-  State<AppZapAmountModal> createState() => _AppZapAmountModalState();
+  State<LabZapAmountModal> createState() => _LabZapAmountModalState();
 }
 
-class _AppZapAmountModalState extends State<AppZapAmountModal> {
+class _LabZapAmountModalState extends State<LabZapAmountModal> {
   bool _showCursor = true;
   late Timer _cursorTimer;
   late final ValueNotifier<double> _amount;
@@ -99,7 +99,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
   }
 
   Widget _buildNumPad(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Column(
       children: [
@@ -112,7 +112,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
                 () => _handleKeyPress('1'),
               ),
             ),
-            const AppGap.s8(),
+            const LabGap.s8(),
             Expanded(
               child: _buildKey(
                 context,
@@ -120,7 +120,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
                 () => _handleKeyPress('2'),
               ),
             ),
-            const AppGap.s8(),
+            const LabGap.s8(),
             Expanded(
               child: _buildKey(
                 context,
@@ -130,7 +130,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
             ),
           ],
         ),
-        const AppGap.s8(),
+        const LabGap.s8(),
         Row(
           children: [
             Expanded(
@@ -140,7 +140,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
                 () => _handleKeyPress('4'),
               ),
             ),
-            const AppGap.s8(),
+            const LabGap.s8(),
             Expanded(
               child: _buildKey(
                 context,
@@ -148,7 +148,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
                 () => _handleKeyPress('5'),
               ),
             ),
-            const AppGap.s8(),
+            const LabGap.s8(),
             Expanded(
               child: _buildKey(
                 context,
@@ -158,7 +158,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
             ),
           ],
         ),
-        const AppGap.s8(),
+        const LabGap.s8(),
         Row(
           children: [
             Expanded(
@@ -168,7 +168,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
                 () => _handleKeyPress('7'),
               ),
             ),
-            const AppGap.s8(),
+            const LabGap.s8(),
             Expanded(
               child: _buildKey(
                 context,
@@ -176,7 +176,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
                 () => _handleKeyPress('8'),
               ),
             ),
-            const AppGap.s8(),
+            const LabGap.s8(),
             Expanded(
               child: _buildKey(
                 context,
@@ -186,7 +186,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
             ),
           ],
         ),
-        const AppGap.s8(),
+        const LabGap.s8(),
         Row(
           children: [
             Expanded(
@@ -198,7 +198,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
                 backgroundColor: theme.colors.white16,
               ),
             ),
-            const AppGap.s8(),
+            const LabGap.s8(),
             Expanded(
               child: _buildKey(
                 context,
@@ -206,7 +206,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
                 () => _handleKeyPress('0'),
               ),
             ),
-            const AppGap.s8(),
+            const LabGap.s8(),
             Expanded(
               child: _buildKey(
                 context,
@@ -227,59 +227,59 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Focus(
       focusNode: _focusNode,
       onKeyEvent: _handleKeyEvent,
-      child: AppContainer(
+      child: LabContainer(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const AppGap.s12(),
-                AppText.med14(
+                const LabGap.s12(),
+                LabText.med14(
                   'Amount',
                   color: theme.colors.white66,
                 ),
               ],
             ),
-            const AppGap.s8(),
+            const LabGap.s8(),
             ValueListenableBuilder<double>(
               valueListenable: _amount,
               builder: (context, value, child) {
-                return AppContainer(
+                return LabContainer(
                   decoration: BoxDecoration(
                     color: theme.colors.black33,
                     borderRadius: theme.radius.asBorderRadius().rad16,
                     border: Border.all(
                       color: theme.colors.white33,
-                      width: AppLineThicknessData.normal().thin,
+                      width: LabLineThicknessData.normal().thin,
                     ),
                   ),
                   clipBehavior: Clip.hardEdge,
-                  padding: const AppEdgeInsets.all(AppGapSize.s16),
+                  padding: const LabEdgeInsets.all(LabGapSize.s16),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Row(
                         children: [
-                          AppIcon.s20(
+                          LabIcon.s20(
                             theme.icons.characters.zap,
                             gradient: theme.colors.gold,
                           ),
-                          const AppGap.s8(),
-                          AppAmount(
+                          const LabGap.s8(),
+                          LabAmount(
                             value,
-                            level: AppTextLevel.h1,
+                            level: LabTextLevel.h1,
                             color: theme.colors.white,
                           ),
-                          const AppGap.s4(),
+                          const LabGap.s4(),
                           _buildCursor(theme),
                           const Spacer(),
-                          AppCrossButton.s32(
+                          LabCrossButton.s32(
                             onTap: () {
                               _amount.value = 0;
                             },
@@ -287,7 +287,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
                         ],
                       ),
                       if (widget.recentAmounts.isNotEmpty) ...[
-                        const AppGap.s12(),
+                        const LabGap.s12(),
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           clipBehavior: Clip.none,
@@ -295,19 +295,19 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               for (final amount in widget.recentAmounts)
-                                AppContainer(
-                                  margin: const AppEdgeInsets.only(
-                                      right: AppGapSize.s8),
-                                  child: AppSmallButton(
+                                LabContainer(
+                                  margin: const LabEdgeInsets.only(
+                                      right: LabGapSize.s8),
+                                  child: LabSmallButton(
                                     children: [
-                                      AppIcon.s12(
+                                      LabIcon.s12(
                                         theme.icons.characters.zap,
                                         color: theme.colors.white66,
                                       ),
-                                      const AppGap.s4(),
-                                      AppAmount(
+                                      const LabGap.s4(),
+                                      LabAmount(
                                         amount,
-                                        level: AppTextLevel.med12,
+                                        level: LabTextLevel.med12,
                                         color: theme.colors.white66,
                                       ),
                                     ],
@@ -328,7 +328,7 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
                 );
               },
             ),
-            const AppGap.s16(),
+            const LabGap.s16(),
             _buildNumPad(context),
           ],
         ),
@@ -344,12 +344,12 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
     Gradient? gradient,
     Color? backgroundColor,
   }) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return TapBuilder(
       onTap: onTap,
       builder: (context, state, hasFocus) {
-        return AppContainer(
+        return LabContainer(
           height: theme.sizes.s48,
           decoration: BoxDecoration(
             color: backgroundColor ??
@@ -359,19 +359,19 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
           ),
           child: Center(
             child: icon != null
-                ? AppIcon(
+                ? LabIcon(
                     icon,
                     size: value == 'backspace'
-                        ? AppIconSize.s20
-                        : AppIconSize.s14,
+                        ? LabIconSize.s20
+                        : LabIconSize.s14,
                     outlineColor: value == 'backspace'
                         ? theme.colors.white66
                         : theme.colors.whiteEnforced,
                     outlineThickness: value == 'backspace'
-                        ? AppLineThicknessData.normal().medium
-                        : AppLineThicknessData.normal().thick,
+                        ? LabLineThicknessData.normal().medium
+                        : LabLineThicknessData.normal().thick,
                   )
-                : AppText.med16(
+                : LabText.med16(
                     value,
                     color: theme.colors.white,
                   ),
@@ -381,10 +381,10 @@ class _AppZapAmountModalState extends State<AppZapAmountModal> {
     );
   }
 
-  Widget _buildCursor(AppThemeData theme) {
+  Widget _buildCursor(LabThemeData theme) {
     return Opacity(
       opacity: _showCursor ? 1.0 : 0.0,
-      child: AppContainer(
+      child: LabContainer(
         width: theme.sizes.s2,
         height: theme.sizes.s24,
         decoration: BoxDecoration(

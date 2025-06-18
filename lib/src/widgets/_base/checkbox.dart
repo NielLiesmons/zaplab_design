@@ -1,8 +1,8 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppCheckBox extends StatefulWidget {
-  const AppCheckBox({
+class LabCheckBox extends StatefulWidget {
+  const LabCheckBox({
     super.key,
     this.value = false,
     this.onChanged,
@@ -12,10 +12,10 @@ class AppCheckBox extends StatefulWidget {
   final ValueChanged<bool>? onChanged;
 
   @override
-  AppCheckBoxState createState() => AppCheckBoxState();
+  LabCheckBoxState createState() => LabCheckBoxState();
 }
 
-class AppCheckBoxState extends State<AppCheckBox>
+class LabCheckBoxState extends State<LabCheckBox>
     with SingleTickerProviderStateMixin {
   bool _isChecked = false;
   late AnimationController _controller;
@@ -28,7 +28,7 @@ class AppCheckBoxState extends State<AppCheckBox>
     _isChecked = widget.value;
     _controller = AnimationController(
       vsync: this,
-      duration: AppDurationsData.normal().normal,
+      duration: LabDurationsData.normal().normal,
     );
     _scaleAnimation = TweenSequence<double>([
       TweenSequenceItem(
@@ -62,7 +62,7 @@ class AppCheckBoxState extends State<AppCheckBox>
   }
 
   @override
-  void didUpdateWidget(AppCheckBox oldWidget) {
+  void didUpdateWidget(LabCheckBox oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value) {
       setState(() {
@@ -92,7 +92,7 @@ class AppCheckBoxState extends State<AppCheckBox>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final isEnabled = widget.onChanged != null;
 
     return TapBuilder(
@@ -110,7 +110,7 @@ class AppCheckBoxState extends State<AppCheckBox>
           builder: (context, child) {
             return Transform.scale(
               scale: scaleFactor * _scaleAnimation.value,
-              child: AppContainer(
+              child: LabContainer(
                 width: theme.sizes.s24,
                 height: theme.sizes.s24,
                 decoration: BoxDecoration(
@@ -121,18 +121,18 @@ class AppCheckBoxState extends State<AppCheckBox>
                       ? null
                       : Border.all(
                           color: theme.colors.white33,
-                          width: AppLineThicknessData.normal().medium,
+                          width: LabLineThicknessData.normal().medium,
                         ),
                 ),
                 child: _isChecked
                     ? Center(
                         child: Transform.scale(
                           scale: _checkAnimation.value,
-                          child: AppIcon.s8(
+                          child: LabIcon.s8(
                             theme.icons.characters.check,
                             outlineColor: theme.colors.whiteEnforced,
                             outlineThickness:
-                                AppLineThicknessData.normal().thick,
+                                LabLineThicknessData.normal().thick,
                           ),
                         ),
                       )

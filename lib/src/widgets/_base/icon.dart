@@ -1,7 +1,7 @@
 import 'package:zaplab_design/src/theme/theme.dart';
 import 'package:flutter/widgets.dart';
 
-enum AppIconSize {
+enum LabIconSize {
   s4,
   s8,
   s10,
@@ -23,245 +23,245 @@ enum AppIconSize {
   s96,
 }
 
-extension AppIconSizeExtension on AppIconSizesData {
-  double resolve(AppIconSize size) {
+extension LabIconSizeExtension on LabIconSizesData {
+  double resolve(LabIconSize size) {
     switch (size) {
-      case AppIconSize.s4:
+      case LabIconSize.s4:
         return s4;
-      case AppIconSize.s8:
+      case LabIconSize.s8:
         return s8;
-      case AppIconSize.s10:
+      case LabIconSize.s10:
         return s10;
-      case AppIconSize.s12:
+      case LabIconSize.s12:
         return s12;
-      case AppIconSize.s14:
+      case LabIconSize.s14:
         return s14;
-      case AppIconSize.s16:
+      case LabIconSize.s16:
         return s16;
-      case AppIconSize.s18:
+      case LabIconSize.s18:
         return s18;
-      case AppIconSize.s20:
+      case LabIconSize.s20:
         return s20;
-      case AppIconSize.s24:
+      case LabIconSize.s24:
         return s24;
-      case AppIconSize.s28:
+      case LabIconSize.s28:
         return s28;
-      case AppIconSize.s32:
+      case LabIconSize.s32:
         return s32;
-      case AppIconSize.s38:
+      case LabIconSize.s38:
         return s38;
-      case AppIconSize.s40:
+      case LabIconSize.s40:
         return s40;
-      case AppIconSize.s48:
+      case LabIconSize.s48:
         return s48;
-      case AppIconSize.s56:
+      case LabIconSize.s56:
         return s56;
-      case AppIconSize.s64:
+      case LabIconSize.s64:
         return s64;
-      case AppIconSize.s72:
+      case LabIconSize.s72:
         return s72;
-      case AppIconSize.s80:
+      case LabIconSize.s80:
         return s80;
 
-      case AppIconSize.s96:
+      case LabIconSize.s96:
         return s96;
     }
   }
 }
 
 /// Normal Icon
-class AppIcon extends StatelessWidget {
-  const AppIcon(
+class LabIcon extends StatelessWidget {
+  const LabIcon(
     this.data, {
     super.key,
     this.color,
     this.gradient,
-    this.size = AppIconSize.s16,
+    this.size = LabIconSize.s16,
     this.outlineColor,
     this.outlineThickness = 0.0,
   });
 
-  const AppIcon.s4(
+  const LabIcon.s4(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s4;
+  }) : size = LabIconSize.s4;
 
-  const AppIcon.s8(
+  const LabIcon.s8(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s8;
+  }) : size = LabIconSize.s8;
 
-  const AppIcon.s10(
+  const LabIcon.s10(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s10;
+  }) : size = LabIconSize.s10;
 
-  const AppIcon.s12(
+  const LabIcon.s12(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s12;
+  }) : size = LabIconSize.s12;
 
-  const AppIcon.s14(
+  const LabIcon.s14(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s14;
+  }) : size = LabIconSize.s14;
 
-  const AppIcon.s16(
+  const LabIcon.s16(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s16;
+  }) : size = LabIconSize.s16;
 
-  const AppIcon.s18(
+  const LabIcon.s18(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s18;
+  }) : size = LabIconSize.s18;
 
-  const AppIcon.s20(
+  const LabIcon.s20(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s20;
+  }) : size = LabIconSize.s20;
 
-  const AppIcon.s24(
+  const LabIcon.s24(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s24;
+  }) : size = LabIconSize.s24;
 
-  const AppIcon.s28(
+  const LabIcon.s28(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s28;
+  }) : size = LabIconSize.s28;
 
-  const AppIcon.s32(
+  const LabIcon.s32(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s32;
+  }) : size = LabIconSize.s32;
 
-  const AppIcon.s38(
+  const LabIcon.s38(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s38;
+  }) : size = LabIconSize.s38;
 
-  const AppIcon.s40(
+  const LabIcon.s40(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s40;
+  }) : size = LabIconSize.s40;
 
-  const AppIcon.s48(
+  const LabIcon.s48(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s48;
+  }) : size = LabIconSize.s48;
 
-  const AppIcon.s56(
+  const LabIcon.s56(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s56;
+  }) : size = LabIconSize.s56;
 
-  const AppIcon.s64(
+  const LabIcon.s64(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s64;
+  }) : size = LabIconSize.s64;
 
-  const AppIcon.s72(
+  const LabIcon.s72(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s72;
+  }) : size = LabIconSize.s72;
 
-  const AppIcon.s80(
+  const LabIcon.s80(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s80;
+  }) : size = LabIconSize.s80;
 
-  const AppIcon.s96(
+  const LabIcon.s96(
     this.data, {
     super.key,
     this.color,
     this.gradient,
     this.outlineColor,
     this.outlineThickness = 0.0,
-  }) : size = AppIconSize.s96;
+  }) : size = LabIconSize.s96;
 
   final String data;
   final Color? color;
   final Gradient? gradient;
-  final AppIconSize size;
+  final LabIconSize size;
   final Color? outlineColor;
   final double outlineThickness;
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final resolvedSize = theme.icons.sizes.resolve(size);
 
     return Stack(
@@ -306,12 +306,12 @@ class AppIcon extends StatelessWidget {
 }
 
 /// Animated Icon
-class AppAnimatedIcon extends StatelessWidget {
-  const AppAnimatedIcon(
+class LabAnimatedIcon extends StatelessWidget {
+  const LabAnimatedIcon(
     this.data, {
     super.key,
     this.color,
-    this.size = AppIconSize.s16,
+    this.size = LabIconSize.s16,
     this.outlineColor,
     this.outlineThickness = 0.0,
     this.duration = const Duration(milliseconds: 200),
@@ -319,7 +319,7 @@ class AppAnimatedIcon extends StatelessWidget {
 
   final String data;
   final Color? color;
-  final AppIconSize size;
+  final LabIconSize size;
   final Color? outlineColor;
   final double outlineThickness;
   final Duration duration;
@@ -328,11 +328,11 @@ class AppAnimatedIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final resolvedSize = theme.icons.sizes.resolve(size);
 
     if (!isAnimated) {
-      return AppIcon(
+      return LabIcon(
         data,
         key: key,
         color: color,

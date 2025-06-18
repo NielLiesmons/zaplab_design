@@ -1,13 +1,13 @@
 import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppTextSelectionMenuItem {
+class LabTextSelectionMenuItem {
   final String? label;
   final Widget? icon;
   final void Function(EditableTextState) onTap;
   final bool Function(EditableTextState)? isVisible;
 
-  const AppTextSelectionMenuItem({
+  const LabTextSelectionMenuItem({
     this.label,
     this.icon,
     required this.onTap,
@@ -15,12 +15,12 @@ class AppTextSelectionMenuItem {
   });
 }
 
-class AppTextSelectionMenu extends StatefulWidget {
+class LabTextSelectionMenu extends StatefulWidget {
   final Offset position;
   final EditableTextState editableTextState;
-  final List<AppTextSelectionMenuItem>? menuItems;
+  final List<LabTextSelectionMenuItem>? menuItems;
 
-  const AppTextSelectionMenu({
+  const LabTextSelectionMenu({
     super.key,
     required this.position,
     required this.editableTextState,
@@ -28,10 +28,10 @@ class AppTextSelectionMenu extends StatefulWidget {
   });
 
   @override
-  State<AppTextSelectionMenu> createState() => _AppTextSelectionMenuState();
+  State<LabTextSelectionMenu> createState() => _LabTextSelectionMenuState();
 }
 
-class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
+class _LabTextSelectionMenuState extends State<LabTextSelectionMenu>
     with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   bool _showGradient = true;
@@ -108,13 +108,13 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
     });
   }
 
-  List<AppTextSelectionMenuItem> _getMenuItems() {
-    final theme = AppTheme.of(context);
+  List<LabTextSelectionMenuItem> _getMenuItems() {
+    final theme = LabTheme.of(context);
     final isEditable = widget.editableTextState.widget.readOnly != true;
 
     return isEditable
         ? [
-            AppTextSelectionMenuItem(
+            LabTextSelectionMenuItem(
               label: _showCheckmark ? 'Copied!' : 'Copy',
               icon: _showCheckmark
                   ? ScaleTransition(
@@ -122,14 +122,14 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          AppIcon.s10(
+                          LabIcon.s10(
                             theme.icons.characters.check,
                             outlineColor: theme.colors.white66,
                             outlineThickness:
-                                AppLineThicknessData.normal().thick,
+                                LabLineThicknessData.normal().thick,
                           ),
-                          const AppGap.s6(),
-                          AppText.med14(
+                          const LabGap.s6(),
+                          LabText.med14(
                             'Copied!',
                             color: theme.colors.white,
                           ),
@@ -139,21 +139,21 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
                   : null,
               onTap: (state) => _handleCopyWithAnimation(state),
             ),
-            AppTextSelectionMenuItem(
+            LabTextSelectionMenuItem(
               label: 'Cut',
               onTap: (state) => _handleAction(state.cutSelection),
             ),
-            AppTextSelectionMenuItem(
+            LabTextSelectionMenuItem(
               label: 'Paste',
               onTap: (state) => _handleAction(state.pasteText),
             ),
-            AppTextSelectionMenuItem(
+            LabTextSelectionMenuItem(
               label: 'Select All',
               onTap: (state) => _handleAction(state.selectAll),
             ),
           ]
         : [
-            AppTextSelectionMenuItem(
+            LabTextSelectionMenuItem(
               label: _showCheckmark ? 'Copied!' : 'Copy',
               icon: _showCheckmark
                   ? ScaleTransition(
@@ -161,14 +161,14 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          AppIcon.s10(
+                          LabIcon.s10(
                             theme.icons.characters.check,
                             outlineColor: theme.colors.white66,
                             outlineThickness:
-                                AppLineThicknessData.normal().thick,
+                                LabLineThicknessData.normal().thick,
                           ),
-                          const AppGap.s6(),
-                          AppText.med14(
+                          const LabGap.s6(),
+                          LabText.med14(
                             'Copied!',
                             color: theme.colors.white,
                           ),
@@ -178,7 +178,7 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
                   : null,
               onTap: (state) => _handleCopyWithAnimation(state),
             ),
-            AppTextSelectionMenuItem(
+            LabTextSelectionMenuItem(
               label: 'Select All',
               onTap: (state) => _handleAction(state.selectAll),
             ),
@@ -195,7 +195,7 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final menuWidth = _calculateWidth(context);
     final items = widget.menuItems ?? _getMenuItems();
 
@@ -211,14 +211,14 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
             child: Stack(
               children: [
-                AppContainer(
+                LabContainer(
                   height: theme.sizes.s38,
                   decoration: BoxDecoration(
                     color: theme.colors.white16,
                     borderRadius: theme.radius.asBorderRadius().rad8,
                     border: Border.all(
                       color: theme.colors.white33,
-                      width: AppLineThicknessData.normal().thin,
+                      width: LabLineThicknessData.normal().thin,
                     ),
                   ),
                   child: SingleChildScrollView(
@@ -237,7 +237,7 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
                               item.icon,
                               () => item.onTap(widget.editableTextState),
                             ),
-                            if (!isLast) const AppDivider.vertical(),
+                            if (!isLast) const LabDivider.vertical(),
                           ],
                         );
                       }).toList(),
@@ -273,16 +273,16 @@ class _AppTextSelectionMenuState extends State<AppTextSelectionMenu>
 
   Widget _buildButton(
       BuildContext context, String? label, Widget? icon, VoidCallback onTap) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     return GestureDetector(
       onTap: onTap,
-      child: AppContainer(
-        padding: const AppEdgeInsets.symmetric(
-          horizontal: AppGapSize.s12,
-          vertical: AppGapSize.s8,
+      child: LabContainer(
+        padding: const LabEdgeInsets.symmetric(
+          horizontal: LabGapSize.s12,
+          vertical: LabGapSize.s8,
         ),
         child: icon ??
-            AppText.med14(
+            LabText.med14(
               label!,
               color: theme.colors.white,
             ),

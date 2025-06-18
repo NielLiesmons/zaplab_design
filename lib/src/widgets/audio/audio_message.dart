@@ -6,21 +6,21 @@ import 'package:just_waveform/just_waveform.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 
-class AppAudioMessage extends StatefulWidget {
+class LabAudioMessage extends StatefulWidget {
   final String audioUrl;
   final bool isOutgoing;
 
-  const AppAudioMessage({
+  const LabAudioMessage({
     super.key,
     required this.audioUrl,
     this.isOutgoing = false,
   });
 
   @override
-  State<AppAudioMessage> createState() => _AppAudioMessageState();
+  State<LabAudioMessage> createState() => _LabAudioMessageState();
 }
 
-class _AppAudioMessageState extends State<AppAudioMessage>
+class _LabAudioMessageState extends State<LabAudioMessage>
     with SingleTickerProviderStateMixin {
   late AudioPlayer _player;
   bool _isLoading = true;
@@ -142,15 +142,15 @@ class _AppAudioMessageState extends State<AppAudioMessage>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     if (_hasError) {
-      return AppContainer(
+      return LabContainer(
         constraints: const BoxConstraints(maxWidth: 264),
-        padding: const AppEdgeInsets.all(AppGapSize.s4),
+        padding: const LabEdgeInsets.all(LabGapSize.s4),
         child: Row(
           children: [
-            AppContainer(
+            LabContainer(
               width: theme.sizes.s32,
               height: theme.sizes.s32,
               decoration: BoxDecoration(
@@ -158,14 +158,14 @@ class _AppAudioMessageState extends State<AppAudioMessage>
                 borderRadius: BorderRadius.all(theme.radius.rad16),
               ),
               alignment: Alignment.center,
-              child: AppIcon.s16(
+              child: LabIcon.s16(
                 theme.icons.characters.info,
                 outlineColor: theme.colors.white66,
-                outlineThickness: AppLineThicknessData.normal().medium,
+                outlineThickness: LabLineThicknessData.normal().medium,
               ),
             ),
-            const AppGap.s8(),
-            AppText.reg12(
+            const LabGap.s8(),
+            LabText.reg12(
               'Failed to load audio',
               color: theme.colors.white66,
             ),
@@ -174,15 +174,15 @@ class _AppAudioMessageState extends State<AppAudioMessage>
       );
     }
 
-    return AppContainer(
-      padding: const AppEdgeInsets.all(AppGapSize.s4),
+    return LabContainer(
+      padding: const LabEdgeInsets.all(LabGapSize.s4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               // Play/Pause button
-              AppSmallButton(
+              LabSmallButton(
                 square: true,
                 rounded: true,
                 inactiveColor:
@@ -200,7 +200,7 @@ class _AppAudioMessageState extends State<AppAudioMessage>
                   _player.playing
                       ? const SizedBox(width: 0)
                       : const SizedBox(width: 1),
-                  AppIcon.s12(
+                  LabIcon.s12(
                     _player.playing
                         ? theme.icons.characters.pause
                         : theme.icons.characters.play,
@@ -210,11 +210,11 @@ class _AppAudioMessageState extends State<AppAudioMessage>
                   ),
                 ],
               ),
-              const AppGap.s8(),
+              const LabGap.s8(),
               // Progress bar with waveform
               Expanded(
                 child: _isLoading || _waveformData == null
-                    ? AppContainer(
+                    ? LabContainer(
                         height: 24,
                         width: 160,
                         child: AnimatedBuilder(
@@ -233,7 +233,7 @@ class _AppAudioMessageState extends State<AppAudioMessage>
                       )
                     : Stack(
                         children: [
-                          AppContainer(
+                          LabContainer(
                             height: 32,
                             width: double.infinity,
                             child: ClipRRect(
@@ -274,10 +274,10 @@ class _AppAudioMessageState extends State<AppAudioMessage>
                         ],
                       ),
               ),
-              const AppGap.s8(),
+              const LabGap.s8(),
               // Duration
-              AppText.reg12(
-                AppDurationFormatter.format(_player.duration != null
+              LabText.reg12(
+                LabDurationFormatter.format(_player.duration != null
                     ? _player.duration! - _currentDuration
                     : Duration.zero),
                 color: theme.colors.white33,
@@ -285,10 +285,10 @@ class _AppAudioMessageState extends State<AppAudioMessage>
             ],
           ),
           if (_player.playing) ...[
-            const AppGap.s8(),
+            const LabGap.s8(),
             Row(
               children: [
-                AppContainer(
+                LabContainer(
                   width: 32,
                   height: 18,
                   decoration: BoxDecoration(
@@ -308,7 +308,7 @@ class _AppAudioMessageState extends State<AppAudioMessage>
                     },
                     builder: (context, state, hasFocus) {
                       return Center(
-                        child: AppText.reg10(
+                        child: LabText.reg10(
                           '${_playbackSpeed}x',
                           color: theme.colors.white66,
                         ),
@@ -317,7 +317,7 @@ class _AppAudioMessageState extends State<AppAudioMessage>
                   ),
                 ),
                 const Spacer(),
-                AppContainer(
+                LabContainer(
                   width: 32,
                   height: 18,
                   decoration: BoxDecoration(
@@ -330,7 +330,7 @@ class _AppAudioMessageState extends State<AppAudioMessage>
                     },
                     builder: (context, state, hasFocus) {
                       return Center(
-                        child: AppIcon.s12(
+                        child: LabIcon.s12(
                           theme.icons.characters.magic,
                           gradient: theme.colors.graydient66,
                         ),

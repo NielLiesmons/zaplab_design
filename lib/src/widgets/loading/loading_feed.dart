@@ -6,21 +6,21 @@ enum LoadingFeedType {
   thread,
 }
 
-class AppLoadingFeed extends StatefulWidget {
+class LabLoadingFeed extends StatefulWidget {
   final LoadingFeedType type;
   final Widget? customLoader;
 
-  const AppLoadingFeed({
+  const LabLoadingFeed({
     super.key,
     this.type = LoadingFeedType.content,
     this.customLoader,
   });
 
   @override
-  State<AppLoadingFeed> createState() => _AppLoadingFeedState();
+  State<LabLoadingFeed> createState() => _LabLoadingFeedState();
 }
 
-class _AppLoadingFeedState extends State<AppLoadingFeed> {
+class _LabLoadingFeedState extends State<LabLoadingFeed> {
   bool _showLoading = false;
 
   @override
@@ -41,48 +41,48 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
       return const SizedBox.shrink();
     }
 
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     switch (widget.type) {
       case LoadingFeedType.content:
-        return AppContainer(
-          padding: const AppEdgeInsets.all(AppGapSize.s16),
+        return LabContainer(
+          padding: const LabEdgeInsets.all(LabGapSize.s16),
           child: Column(
             children: [
               for (var i = 0; i < 21; i++) ...[
-                AppContainer(
+                LabContainer(
                   height: 160,
                   width: double.infinity,
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
                     borderRadius: theme.radius.asBorderRadius().rad16,
                   ),
-                  child: widget.customLoader ?? const AppSkeletonLoader(),
+                  child: widget.customLoader ?? const LabSkeletonLoader(),
                 ),
-                const AppGap.s16(),
+                const LabGap.s16(),
               ],
             ],
           ),
         );
       case LoadingFeedType.chat:
-        return AppContainer(
-          padding: const AppEdgeInsets.all(AppGapSize.s8),
+        return LabContainer(
+          padding: const LabEdgeInsets.all(LabGapSize.s8),
           child: Column(
             children: [
               for (var i = 0; i < 21; i++) ...[
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const AppContainer(
+                    const LabContainer(
                       height: 32,
                       width: 32,
                       clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                       ),
-                      child: AppSkeletonLoader(),
+                      child: LabSkeletonLoader(),
                     ),
-                    const AppGap.s6(),
+                    const LabGap.s6(),
                     Opacity(
                       opacity: 0.66,
                       child: Column(
@@ -92,7 +92,7 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
                           for (var j = 0; j < (i % 3) + 1; j++) ...[
                             Column(
                               children: [
-                                AppContainer(
+                                LabContainer(
                                   height: (j % 2 == 0 ? 40.0 : 60.0) +
                                       (i % 3) * 10.0,
                                   width: i % 3 == 0
@@ -114,19 +114,19 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
                                           : theme.sizes.s16),
                                     ),
                                   ),
-                                  child: const AppSkeletonLoader(),
+                                  child: const LabSkeletonLoader(),
                                 ),
-                                if (j < (i % 3)) const AppGap.s2(),
+                                if (j < (i % 3)) const LabGap.s2(),
                               ],
                             ),
                           ],
                         ],
                       ),
                     ),
-                    const AppGap.s48(),
+                    const LabGap.s48(),
                   ],
                 ),
-                const AppGap.s6(),
+                const LabGap.s6(),
               ],
             ],
           ),
@@ -135,8 +135,8 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
         return Column(
           children: [
             for (var i = 0; i < 21; i++) ...[
-              AppContainer(
-                padding: const AppEdgeInsets.all(AppGapSize.s12),
+              LabContainer(
+                padding: const LabEdgeInsets.all(LabGapSize.s12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -146,18 +146,18 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
                           const Column(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              AppContainer(
+                              LabContainer(
                                 height: 38,
                                 width: 38,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
                                 clipBehavior: Clip.hardEdge,
-                                child: AppSkeletonLoader(),
+                                child: LabSkeletonLoader(),
                               ),
                             ],
                           ),
-                          const AppGap.s12(),
+                          const LabGap.s12(),
                           Expanded(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -168,7 +168,7 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    AppContainer(
+                                    LabContainer(
                                       height: 16,
                                       width: 128,
                                       decoration: BoxDecoration(
@@ -176,10 +176,10 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
                                             theme.radius.asBorderRadius().rad16,
                                       ),
                                       clipBehavior: Clip.hardEdge,
-                                      child: const AppSkeletonLoader(),
+                                      child: const LabSkeletonLoader(),
                                     ),
                                     const Spacer(),
-                                    AppContainer(
+                                    LabContainer(
                                       height: 14,
                                       width: 32,
                                       decoration: BoxDecoration(
@@ -191,8 +191,8 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
                                     ),
                                   ],
                                 ),
-                                const AppGap.s8(),
-                                AppContainer(
+                                const LabGap.s8(),
+                                LabContainer(
                                   height: 160,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
@@ -202,7 +202,7 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
                                   clipBehavior: Clip.hardEdge,
                                   child: const Opacity(
                                     opacity: 0.50,
-                                    child: AppSkeletonLoader(),
+                                    child: LabSkeletonLoader(),
                                   ),
                                 ),
                               ],
@@ -214,7 +214,7 @@ class _AppLoadingFeedState extends State<AppLoadingFeed> {
                   ],
                 ),
               ),
-              AppDivider.horizontal(color: theme.colors.white8),
+              LabDivider.horizontal(color: theme.colors.white8),
             ],
           ],
         );

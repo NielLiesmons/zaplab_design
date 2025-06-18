@@ -1,4 +1,4 @@
-enum AppFormFactor {
+enum LabFormFactor {
   small,
   medium,
   big,

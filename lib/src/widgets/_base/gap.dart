@@ -2,7 +2,7 @@ import 'package:zaplab_design/src/theme/theme.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 
-enum AppGapSize {
+enum LabGapSize {
   none,
   s2,
   s4,
@@ -24,134 +24,134 @@ enum AppGapSize {
   s80,
 }
 
-extension AppGapSizeExtension on AppGapSize {
-  double getSizes(AppThemeData theme) {
+extension LabGapSizeExtension on LabGapSize {
+  double getSizes(LabThemeData theme) {
     switch (this) {
-      case AppGapSize.none:
+      case LabGapSize.none:
         return 0;
-      case AppGapSize.s2:
+      case LabGapSize.s2:
         return theme.sizes.s2;
-      case AppGapSize.s4:
+      case LabGapSize.s4:
         return theme.sizes.s4;
-      case AppGapSize.s6:
+      case LabGapSize.s6:
         return theme.sizes.s6;
-      case AppGapSize.s8:
+      case LabGapSize.s8:
         return theme.sizes.s8;
-      case AppGapSize.s10:
+      case LabGapSize.s10:
         return theme.sizes.s10;
-      case AppGapSize.s12:
+      case LabGapSize.s12:
         return theme.sizes.s12;
-      case AppGapSize.s14:
+      case LabGapSize.s14:
         return theme.sizes.s14;
-      case AppGapSize.s16:
+      case LabGapSize.s16:
         return theme.sizes.s16;
-      case AppGapSize.s20:
+      case LabGapSize.s20:
         return theme.sizes.s20;
-      case AppGapSize.s24:
+      case LabGapSize.s24:
         return theme.sizes.s24;
-      case AppGapSize.s32:
+      case LabGapSize.s32:
         return theme.sizes.s32;
-      case AppGapSize.s38:
+      case LabGapSize.s38:
         return theme.sizes.s38;
-      case AppGapSize.s40:
+      case LabGapSize.s40:
         return theme.sizes.s40;
-      case AppGapSize.s48:
+      case LabGapSize.s48:
         return theme.sizes.s48;
-      case AppGapSize.s56:
+      case LabGapSize.s56:
         return theme.sizes.s56;
-      case AppGapSize.s64:
+      case LabGapSize.s64:
         return theme.sizes.s64;
-      case AppGapSize.s72:
+      case LabGapSize.s72:
         return theme.sizes.s72;
-      case AppGapSize.s80:
+      case LabGapSize.s80:
         return theme.sizes.s80;
     }
   }
 }
 
-class AppGap extends StatelessWidget {
-  const AppGap(
+class LabGap extends StatelessWidget {
+  const LabGap(
     this.size, {
     super.key,
   });
 
-  const AppGap.s2({
+  const LabGap.s2({
     super.key,
-  }) : size = AppGapSize.s2;
+  }) : size = LabGapSize.s2;
 
-  const AppGap.s4({
+  const LabGap.s4({
     super.key,
-  }) : size = AppGapSize.s4;
+  }) : size = LabGapSize.s4;
 
-  const AppGap.s6({
+  const LabGap.s6({
     super.key,
-  }) : size = AppGapSize.s6;
+  }) : size = LabGapSize.s6;
 
-  const AppGap.s8({
+  const LabGap.s8({
     super.key,
-  }) : size = AppGapSize.s8;
+  }) : size = LabGapSize.s8;
 
-  const AppGap.s10({
+  const LabGap.s10({
     super.key,
-  }) : size = AppGapSize.s10;
+  }) : size = LabGapSize.s10;
 
-  const AppGap.s12({
+  const LabGap.s12({
     super.key,
-  }) : size = AppGapSize.s12;
+  }) : size = LabGapSize.s12;
 
-  const AppGap.s14({
+  const LabGap.s14({
     super.key,
-  }) : size = AppGapSize.s14;
+  }) : size = LabGapSize.s14;
 
-  const AppGap.s16({
+  const LabGap.s16({
     super.key,
-  }) : size = AppGapSize.s16;
+  }) : size = LabGapSize.s16;
 
-  const AppGap.s20({
+  const LabGap.s20({
     super.key,
-  }) : size = AppGapSize.s20;
+  }) : size = LabGapSize.s20;
 
-  const AppGap.s24({
+  const LabGap.s24({
     super.key,
-  }) : size = AppGapSize.s24;
+  }) : size = LabGapSize.s24;
 
-  const AppGap.s32({
+  const LabGap.s32({
     super.key,
-  }) : size = AppGapSize.s32;
+  }) : size = LabGapSize.s32;
 
-  const AppGap.s38({
+  const LabGap.s38({
     super.key,
-  }) : size = AppGapSize.s38;
+  }) : size = LabGapSize.s38;
 
-  const AppGap.s40({
+  const LabGap.s40({
     super.key,
-  }) : size = AppGapSize.s40;
+  }) : size = LabGapSize.s40;
 
-  const AppGap.s48({
+  const LabGap.s48({
     super.key,
-  }) : size = AppGapSize.s48;
+  }) : size = LabGapSize.s48;
 
-  const AppGap.s56({
+  const LabGap.s56({
     super.key,
-  }) : size = AppGapSize.s56;
+  }) : size = LabGapSize.s56;
 
-  const AppGap.s64({
+  const LabGap.s64({
     super.key,
-  }) : size = AppGapSize.s64;
+  }) : size = LabGapSize.s64;
 
-  const AppGap.s72({
+  const LabGap.s72({
     super.key,
-  }) : size = AppGapSize.s72;
+  }) : size = LabGapSize.s72;
 
-  const AppGap.s80({
+  const LabGap.s80({
     super.key,
-  }) : size = AppGapSize.s80;
+  }) : size = LabGapSize.s80;
 
-  final AppGapSize size;
+  final LabGapSize size;
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     return Gap(size.getSizes(theme));
   }
 }

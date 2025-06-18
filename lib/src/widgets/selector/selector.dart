@@ -1,13 +1,13 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppSelector extends StatefulWidget {
-  final List<AppSelectorButton> children;
+class LabSelector extends StatefulWidget {
+  final List<LabSelectorButton> children;
   final bool emphasized;
   final bool small;
   final ValueChanged<int>? onChanged;
   final int? initialIndex;
 
-  const AppSelector({
+  const LabSelector({
     super.key,
     required this.children,
     this.emphasized = false,
@@ -17,10 +17,10 @@ class AppSelector extends StatefulWidget {
   });
 
   @override
-  State<AppSelector> createState() => _AppSelectorState();
+  State<LabSelector> createState() => _LabSelectorState();
 }
 
-class _AppSelectorState extends State<AppSelector> {
+class _LabSelectorState extends State<LabSelector> {
   late int selectedIndex;
 
   @override
@@ -36,12 +36,12 @@ class _AppSelectorState extends State<AppSelector> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final isInsideModal = ModalScope.of(context);
-    final isInsideScope = AppScope.of(context);
+    final isInsideScope = LabScope.of(context);
 
-    return AppContainer(
-      padding: const AppEdgeInsets.all(AppGapSize.s8),
+    return LabContainer(
+      padding: const LabEdgeInsets.all(LabGapSize.s8),
       decoration: BoxDecoration(
         color: isInsideModal || isInsideScope
             ? theme.colors.black33
@@ -54,7 +54,7 @@ class _AppSelectorState extends State<AppSelector> {
         children: [
           for (int i = 0; i < widget.children.length; i++) ...[
             Expanded(
-              child: AppSelectorButton(
+              child: LabSelectorButton(
                 selectedContent: widget.children[i].selectedContent,
                 unselectedContent: widget.children[i].unselectedContent,
                 isSelected: i == selectedIndex,

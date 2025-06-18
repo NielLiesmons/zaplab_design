@@ -2,8 +2,8 @@ import 'package:zaplab_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 
-class AppTypographyData extends Equatable {
-  const AppTypographyData({
+class LabTypographyData extends Equatable {
+  const LabTypographyData({
     /// App Typography
     required this.h1,
     required this.h2,
@@ -38,7 +38,7 @@ class AppTypographyData extends Equatable {
     required this.caption,
   });
 
-  factory AppTypographyData.normal() => const AppTypographyData(
+  factory LabTypographyData.normal() => const LabTypographyData(
         /// App Typography
         h1: TextStyle(
           fontFamily: 'Inter',
@@ -359,7 +359,7 @@ class AppTypographyData extends Equatable {
         ),
       );
 
-  factory AppTypographyData.small() => const AppTypographyData(
+  factory LabTypographyData.small() => const LabTypographyData(
         /// App Typography
         h1: TextStyle(
           fontFamily: 'Inter',
@@ -680,7 +680,7 @@ class AppTypographyData extends Equatable {
         ),
       );
 
-  factory AppTypographyData.large() => const AppTypographyData(
+  factory LabTypographyData.large() => const LabTypographyData(
         /// App Typography
         h1: TextStyle(
           fontFamily: 'Inter',

@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:async';
 // import 'dart:html' as html;
 
-class AppSwipeContainer extends StatefulWidget {
+class LabSwipeContainer extends StatefulWidget {
   final Widget child;
   final Widget? leftContent;
   final Widget? rightContent;
@@ -10,14 +10,14 @@ class AppSwipeContainer extends StatefulWidget {
   final VoidCallback? onSwipeRight;
   final double actionWidth;
   final BoxDecoration? decoration;
-  final AppEdgeInsets? padding;
-  final AppEdgeInsets? margin;
+  final LabEdgeInsets? padding;
+  final LabEdgeInsets? margin;
   final AlignmentGeometry? alignment;
   final BoxConstraints? constraints;
   final bool isTransparent;
   final VoidCallback? onTap;
 
-  const AppSwipeContainer({
+  const LabSwipeContainer({
     super.key,
     required this.child,
     required this.leftContent,
@@ -35,10 +35,10 @@ class AppSwipeContainer extends StatefulWidget {
   });
 
   @override
-  State<AppSwipeContainer> createState() => _AppSwipeContainerState();
+  State<LabSwipeContainer> createState() => _LabSwipeContainerState();
 }
 
-class _AppSwipeContainerState extends State<AppSwipeContainer>
+class _LabSwipeContainerState extends State<LabSwipeContainer>
     with TickerProviderStateMixin {
   late AnimationController _controller;
   late AnimationController _popController;
@@ -56,7 +56,7 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
   static const double _kTouchSlopDesktop = 40.0;
 
   double get _touchSlop {
-    if (!AppPlatformUtils.isMobile) {
+    if (!LabPlatformUtils.isMobile) {
       return _kTouchSlopDesktop;
     }
     return _kTouchSlopMobile;
@@ -70,11 +70,11 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
     // }
     _controller = AnimationController(
       vsync: this,
-      duration: AppDurationsData.normal().normal,
+      duration: LabDurationsData.normal().normal,
     );
     _popController = AnimationController(
       vsync: this,
-      duration: AppDurationsData.normal().fast,
+      duration: LabDurationsData.normal().fast,
     );
     _slideAnimation = Tween<Offset>(
       begin: Offset.zero,
@@ -276,7 +276,7 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -288,7 +288,7 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
         onHorizontalDragUpdate: _handleDragUpdate,
         onHorizontalDragEnd: _handleDragEnd,
         onTap: widget.onTap,
-        child: AppContainer(
+        child: LabContainer(
           decoration: widget.decoration ?? const BoxDecoration(),
           margin: widget.margin,
           clipBehavior: widget.isTransparent ? Clip.none : Clip.hardEdge,
@@ -300,7 +300,7 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
                 builder: (context, child) => Transform.translate(
                   offset: _slideAnimation.value,
                   child: ClipRRect(
-                    child: AppContainer(
+                    child: LabContainer(
                       padding: widget.padding,
                       alignment: widget.alignment,
                       constraints: widget.constraints,
@@ -319,7 +319,7 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
                     animation: _leftWidthAnimation,
                     builder: (context, child) => SizedBox(
                       width: _leftWidthAnimation.value,
-                      child: AppContainer(
+                      child: LabContainer(
                         decoration: widget.isTransparent
                             ? null
                             : BoxDecoration(
@@ -352,7 +352,7 @@ class _AppSwipeContainerState extends State<AppSwipeContainer>
                     animation: _rightWidthAnimation,
                     builder: (context, child) => SizedBox(
                       width: _rightWidthAnimation.value,
-                      child: AppContainer(
+                      child: LabContainer(
                         decoration: widget.isTransparent
                             ? null
                             : BoxDecoration(

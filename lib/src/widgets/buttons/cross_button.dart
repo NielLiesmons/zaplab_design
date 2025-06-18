@@ -1,30 +1,30 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppCrossButton extends StatelessWidget {
-  const AppCrossButton({
+class LabCrossButton extends StatelessWidget {
+  const LabCrossButton({
     super.key,
     required this.size,
     this.onTap,
   });
 
-  const AppCrossButton.s20({
+  const LabCrossButton.s20({
     super.key,
     this.onTap,
-  }) : size = AppCrossButtonSize.s20;
+  }) : size = LabCrossButtonSize.s20;
 
-  const AppCrossButton.s24({
+  const LabCrossButton.s24({
     super.key,
     this.onTap,
-  }) : size = AppCrossButtonSize.s24;
+  }) : size = LabCrossButtonSize.s24;
 
-  const AppCrossButton.s32({
+  const LabCrossButton.s32({
     super.key,
     this.onTap,
-  }) : size = AppCrossButtonSize.s32;
+  }) : size = LabCrossButtonSize.s32;
 
   final VoidCallback? onTap;
-  final AppCrossButtonSize size;
+  final LabCrossButtonSize size;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class AppCrossButton extends StatelessWidget {
 
         return Transform.scale(
           scale: scaleFactor,
-          child: AppCrossButtonLayout(
+          child: LabCrossButtonLayout(
             size: size,
           ),
         );
@@ -49,44 +49,44 @@ class AppCrossButton extends StatelessWidget {
   }
 }
 
-enum AppCrossButtonSize {
+enum LabCrossButtonSize {
   s20,
   s24,
   s32,
 }
 
-class AppCrossButtonLayout extends StatelessWidget {
-  const AppCrossButtonLayout({
+class LabCrossButtonLayout extends StatelessWidget {
+  const LabCrossButtonLayout({
     super.key,
     required this.size,
   });
 
-  final AppCrossButtonSize size;
+  final LabCrossButtonSize size;
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     double buttonSize;
-    AppIconSize iconSize;
+    LabIconSize iconSize;
     double outlineThickness;
 
     switch (size) {
-      case AppCrossButtonSize.s20:
+      case LabCrossButtonSize.s20:
         buttonSize = theme.sizes.s20;
-        iconSize = AppIconSize.s8;
-        outlineThickness = AppLineThicknessData.normal().medium;
-      case AppCrossButtonSize.s24:
+        iconSize = LabIconSize.s8;
+        outlineThickness = LabLineThicknessData.normal().medium;
+      case LabCrossButtonSize.s24:
         buttonSize = theme.sizes.s24;
-        iconSize = AppIconSize.s8;
-        outlineThickness = AppLineThicknessData.normal().medium;
-      case AppCrossButtonSize.s32:
+        iconSize = LabIconSize.s8;
+        outlineThickness = LabLineThicknessData.normal().medium;
+      case LabCrossButtonSize.s32:
         buttonSize = theme.sizes.s32;
-        iconSize = AppIconSize.s12;
-        outlineThickness = AppLineThicknessData.normal().thick;
+        iconSize = LabIconSize.s12;
+        outlineThickness = LabLineThicknessData.normal().thick;
     }
 
-    return AppContainer(
+    return LabContainer(
       width: buttonSize,
       height: buttonSize,
       decoration: BoxDecoration(
@@ -94,7 +94,7 @@ class AppCrossButtonLayout extends StatelessWidget {
         borderRadius: BorderRadius.circular(buttonSize / 2),
       ),
       child: Center(
-        child: AppIcon(
+        child: LabIcon(
           theme.icons.characters.cross,
           size: iconSize,
           outlineColor: theme.colors.white33,

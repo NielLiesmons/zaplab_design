@@ -1,14 +1,14 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 
-class AppInputButton extends StatelessWidget {
+class LabInputButton extends StatelessWidget {
   final VoidCallback? onTap;
   final List<Widget> children;
   final Color? color;
   final double? height;
   final bool? topAlignment;
 
-  const AppInputButton({
+  const LabInputButton({
     super.key,
     this.onTap,
     required this.children,
@@ -19,9 +19,9 @@ class AppInputButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final isInsideModal = ModalScope.of(context);
-    final isInsideScope = AppScope.of(context);
+    final isInsideScope = LabScope.of(context);
 
     return TapBuilder(
       onTap: onTap,
@@ -38,7 +38,7 @@ class AppInputButton extends StatelessWidget {
           child: Semantics(
             enabled: true,
             selected: true,
-            child: AppContainer(
+            child: LabContainer(
               height: height ?? theme.sizes.s38,
               decoration: BoxDecoration(
                 color: color ??
@@ -48,14 +48,14 @@ class AppInputButton extends StatelessWidget {
                 borderRadius: theme.radius.asBorderRadius().rad16,
                 border: Border.all(
                   color: theme.colors.white33,
-                  width: AppLineThicknessData.normal().thin,
+                  width: LabLineThicknessData.normal().thin,
                 ),
               ),
-              padding: AppEdgeInsets.only(
-                left: AppGapSize.s12,
-                right: AppGapSize.s12,
-                top: topAlignment == true ? AppGapSize.s8 : AppGapSize.none,
-                bottom: topAlignment == true ? AppGapSize.s8 : AppGapSize.none,
+              padding: LabEdgeInsets.only(
+                left: LabGapSize.s12,
+                right: LabGapSize.s12,
+                top: topAlignment == true ? LabGapSize.s8 : LabGapSize.none,
+                bottom: topAlignment == true ? LabGapSize.s8 : LabGapSize.none,
               ),
               child: topAlignment == true
                   ? Align(

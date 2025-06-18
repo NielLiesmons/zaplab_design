@@ -1,12 +1,12 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppOtherProfileCard extends StatelessWidget {
+class LabOtherProfileCard extends StatelessWidget {
   final Profile profile;
   final VoidCallback? onSelect;
   final VoidCallback? onShare;
   final VoidCallback? onView;
-  const AppOtherProfileCard({
+  const LabOtherProfileCard({
     super.key,
     required this.profile,
     this.onSelect,
@@ -16,36 +16,36 @@ class AppOtherProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppContainer(
+    return LabContainer(
       width: 256,
       height: 144,
-      padding: const AppEdgeInsets.all(AppGapSize.s16),
+      padding: const LabEdgeInsets.all(LabGapSize.s16),
       decoration: BoxDecoration(
         color: theme.colors.gray33,
         borderRadius: theme.radius.asBorderRadius().rad16,
         border: Border.all(
           color: theme.colors.gray,
-          width: AppLineThicknessData.normal().medium,
+          width: LabLineThicknessData.normal().medium,
         ),
       ),
       child: Column(
         children: [
-          AppContainer(
+          LabContainer(
             child: Row(
               children: [
-                AppContainer(
+                LabContainer(
                   width: theme.sizes.s56,
                   height: theme.sizes.s56,
                   child: Center(
-                    child: AppProfilePic.s48(
+                    child: LabProfilePic.s48(
                       profile.author.value,
                       onTap: onView,
                     ),
                   ),
                 ),
-                const AppGap.s12(),
+                const LabGap.s12(),
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
@@ -53,14 +53,14 @@ class AppOtherProfileCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AppText.bold16(
+                        LabText.bold16(
                           profile.author.value?.name ??
                               formatNpub(profile.author.value?.npub ?? ''),
                           color: theme.colors.white,
                           maxLines: 1,
                           textOverflow: TextOverflow.ellipsis,
                         ),
-                        AppNpubDisplay(profile: profile),
+                        LabNpubDisplay(profile: profile),
                       ],
                     ),
                   ),
@@ -71,27 +71,27 @@ class AppOtherProfileCard extends StatelessWidget {
           const Spacer(),
           Row(
             children: [
-              AppSmallButton(
+              LabSmallButton(
                 onTap: onSelect,
                 rounded: true,
                 inactiveColor: theme.colors.white8,
                 children: [
-                  const AppGap.s4(),
-                  AppText.med12(
+                  const LabGap.s4(),
+                  LabText.med12(
                     'Select',
                     color: theme.colors.white66,
                   ),
-                  const AppGap.s4(),
+                  const LabGap.s4(),
                 ],
               ),
               const Spacer(),
-              AppSmallButton(
+              LabSmallButton(
                 onTap: onShare,
                 rounded: true,
                 square: true,
                 inactiveColor: theme.colors.white8,
                 children: [
-                  AppIcon.s16(
+                  LabIcon.s16(
                     theme.icons.characters.share,
                     color: theme.colors.white33,
                   ),

@@ -3,7 +3,7 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 import 'dart:ui';
 
-class AppGroupHomePanel extends StatelessWidget {
+class LabGroupHomePanel extends StatelessWidget {
   final Group group;
   final Model? lastModel;
   final NostrEventResolver onResolveEvent;
@@ -17,7 +17,7 @@ class AppGroupHomePanel extends StatelessWidget {
   final Function(Group)? onCreateNewPublication;
   final Function(Group)? onActions;
 
-  const AppGroupHomePanel({
+  const LabGroupHomePanel({
     super.key,
     required this.group,
     this.lastModel,
@@ -41,7 +41,7 @@ class AppGroupHomePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     final (displayCount, containerWidth) = _getCountDisplay(mainCount!);
 
@@ -49,22 +49,22 @@ class AppGroupHomePanel extends StatelessWidget {
       onTap: () => onNavigateToGroup(group),
       builder: (context, state, hasFocus) {
         return Column(children: [
-          AppSwipeContainer(
-            leftContent: AppIcon.s16(
+          LabSwipeContainer(
+            leftContent: LabIcon.s16(
               theme.icons.characters.plus,
               outlineColor: theme.colors.white66,
-              outlineThickness: AppLineThicknessData.normal().medium,
+              outlineThickness: LabLineThicknessData.normal().medium,
             ),
-            rightContent: AppIcon.s10(
+            rightContent: LabIcon.s10(
               theme.icons.characters.chevronUp,
               outlineColor: theme.colors.white66,
-              outlineThickness: AppLineThicknessData.normal().medium,
+              outlineThickness: LabLineThicknessData.normal().medium,
             ),
             onSwipeLeft: () => onCreateNewPublication!(group),
             onSwipeRight: () => onActions!(group),
-            padding: const AppEdgeInsets.symmetric(
-              horizontal: AppGapSize.s12,
-              vertical: AppGapSize.s12,
+            padding: const LabEdgeInsets.symmetric(
+              horizontal: LabGapSize.s12,
+              vertical: LabGapSize.s12,
             ),
             child: Column(
               children: [
@@ -74,7 +74,7 @@ class AppGroupHomePanel extends StatelessWidget {
                     Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        AppProfilePic.s48(
+                        LabProfilePic.s48(
                           group.author.value,
                           onTap: () => onNavigateToGroup(group),
                         ),
@@ -84,7 +84,7 @@ class AppGroupHomePanel extends StatelessWidget {
                           child: ClipOval(
                             child: BackdropFilter(
                               filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                              child: AppContainer(
+                              child: LabContainer(
                                 width: 20,
                                 height: 20,
                                 decoration: BoxDecoration(
@@ -92,7 +92,7 @@ class AppGroupHomePanel extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Center(
-                                  child: AppIcon.s12(
+                                  child: LabIcon.s12(
                                     theme.icons.characters.star,
                                     gradient: theme.colors.gold,
                                   ),
@@ -107,21 +107,21 @@ class AppGroupHomePanel extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AppContainer(
+                          LabContainer(
                             height: 20,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const AppGap.s12(),
+                                const LabGap.s12(),
                                 Expanded(
-                                  child: AppText.bold14(
+                                  child: LabText.bold14(
                                     group.author.value?.name ??
                                         formatNpub(
                                             group.author.value?.pubkey ?? ''),
                                     color: theme.colors.white,
                                   ),
                                 ),
-                                AppText.reg12(
+                                LabText.reg12(
                                   lastModel != null
                                       ? TimestampFormatter.format(
                                           lastModel!.createdAt,
@@ -133,8 +133,8 @@ class AppGroupHomePanel extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const AppGap.s6(),
-                          AppContainer(
+                          const LabGap.s6(),
+                          LabContainer(
                             height: 26,
                             child: Stack(
                               children: [
@@ -191,7 +191,7 @@ class AppGroupHomePanel extends StatelessWidget {
                                                     CrossAxisAlignment.center,
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  const AppGap.s12(),
+                                                  const LabGap.s12(),
                                                   Expanded(
                                                     child: ConstrainedBox(
                                                       constraints:
@@ -199,7 +199,7 @@ class AppGroupHomePanel extends StatelessWidget {
                                                               maxWidth: 104),
                                                       child: Row(
                                                         children: [
-                                                          AppText.bold12(
+                                                          LabText.bold12(
                                                             lastModel
                                                                     ?.author
                                                                     .value
@@ -212,10 +212,10 @@ class AppGroupHomePanel extends StatelessWidget {
                                                             color: theme
                                                                 .colors.white66,
                                                           ),
-                                                          const AppGap.s4(),
+                                                          const LabGap.s4(),
                                                           Flexible(
                                                             child:
-                                                                AppCompactTextRenderer(
+                                                                LabCompactTextRenderer(
                                                               content: lastModel ==
                                                                       null
                                                                   ? ''
@@ -238,7 +238,7 @@ class AppGroupHomePanel extends StatelessWidget {
                                                       ),
                                                     ),
                                                   ),
-                                                  const AppGap.s8(),
+                                                  const LabGap.s8(),
                                                   Builder(
                                                     builder: (context) {
                                                       final visibleEntries =
@@ -262,26 +262,26 @@ class AppGroupHomePanel extends StatelessWidget {
                                                                 builder: (context,
                                                                     state,
                                                                     hasFocus) {
-                                                                  return AppContainer(
+                                                                  return LabContainer(
                                                                     padding: (entry == visibleEntries.last &&
                                                                             (mainCount ?? 0) ==
                                                                                 0)
                                                                         ? null
-                                                                        : const AppEdgeInsets
+                                                                        : const LabEdgeInsets
                                                                             .only(
                                                                             right:
-                                                                                AppGapSize.s8,
+                                                                                LabGapSize.s8,
                                                                           ),
                                                                     child:
-                                                                        AppContainer(
+                                                                        LabContainer(
                                                                       height: theme
                                                                           .sizes
                                                                           .s56,
                                                                       padding:
-                                                                          const AppEdgeInsets
+                                                                          const LabEdgeInsets
                                                                               .symmetric(
                                                                         horizontal:
-                                                                            AppGapSize.s8,
+                                                                            LabGapSize.s8,
                                                                       ),
                                                                       decoration:
                                                                           BoxDecoration(
@@ -296,15 +296,15 @@ class AppGroupHomePanel extends StatelessWidget {
                                                                       child:
                                                                           Row(
                                                                         children: [
-                                                                          AppEmojiContentType(
+                                                                          LabEmojiContentType(
                                                                             contentType:
                                                                                 entry.key,
                                                                             size:
                                                                                 16,
                                                                           ),
-                                                                          const AppGap
+                                                                          const LabGap
                                                                               .s6(),
-                                                                          AppText
+                                                                          LabText
                                                                               .reg12(
                                                                             entry.value.toString(),
                                                                             color:
@@ -341,12 +341,12 @@ class AppGroupHomePanel extends StatelessWidget {
                                           onTap: () =>
                                               onNavigateToNotifications!(group),
                                           builder: (context, state, hasFocus) {
-                                            return AppContainer(
+                                            return LabContainer(
                                               height: 26,
                                               width: containerWidth,
                                               padding:
-                                                  const AppEdgeInsets.symmetric(
-                                                horizontal: AppGapSize.s8,
+                                                  const LabEdgeInsets.symmetric(
+                                                horizontal: LabGapSize.s8,
                                               ),
                                               decoration: BoxDecoration(
                                                 gradient: theme.colors.blurple,
@@ -355,7 +355,7 @@ class AppGroupHomePanel extends StatelessWidget {
                                                     .rad16,
                                               ),
                                               child: Center(
-                                                child: AppText.med12(
+                                                child: LabText.med12(
                                                   displayCount,
                                                   color: theme
                                                       .colors.whiteEnforced,
@@ -377,7 +377,7 @@ class AppGroupHomePanel extends StatelessWidget {
               ],
             ),
           ),
-          const AppDivider(),
+          const LabDivider(),
         ]);
       },
     );

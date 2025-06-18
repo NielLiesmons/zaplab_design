@@ -1,53 +1,53 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-enum AppDividerOrientation {
+enum LabDividerOrientation {
   horizontal,
   vertical,
 }
 
-class AppDivider extends StatelessWidget {
+class LabDivider extends StatelessWidget {
   final Color? color;
   final double? thickness;
-  final AppDividerOrientation orientation;
+  final LabDividerOrientation orientation;
 
-  const AppDivider({
+  const LabDivider({
     super.key,
     this.color,
     this.thickness,
-    this.orientation = AppDividerOrientation.horizontal,
+    this.orientation = LabDividerOrientation.horizontal,
   });
 
-  const AppDivider.vertical({
+  const LabDivider.vertical({
     super.key,
     this.color,
     this.thickness,
-  }) : orientation = AppDividerOrientation.vertical;
+  }) : orientation = LabDividerOrientation.vertical;
 
-  const AppDivider.horizontal({
+  const LabDivider.horizontal({
     super.key,
     this.color,
     this.thickness,
-  }) : orientation = AppDividerOrientation.horizontal;
+  }) : orientation = LabDividerOrientation.horizontal;
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     return Center(
-      child: AppContainer(
-        height: orientation == AppDividerOrientation.horizontal ? 0 : null,
-        width: orientation == AppDividerOrientation.vertical ? 0 : null,
+      child: LabContainer(
+        height: orientation == LabDividerOrientation.horizontal ? 0 : null,
+        width: orientation == LabDividerOrientation.vertical ? 0 : null,
         decoration: BoxDecoration(
-          border: orientation == AppDividerOrientation.horizontal
+          border: orientation == LabDividerOrientation.horizontal
               ? Border(
                   bottom: BorderSide(
                     color: color ?? theme.colors.white16,
-                    width: thickness ?? AppLineThicknessData.normal().medium,
+                    width: thickness ?? LabLineThicknessData.normal().medium,
                   ),
                 )
               : Border(
                   right: BorderSide(
                     color: color ?? theme.colors.white16,
-                    width: thickness ?? AppLineThicknessData.normal().medium,
+                    width: thickness ?? LabLineThicknessData.normal().medium,
                   ),
                 ),
         ),

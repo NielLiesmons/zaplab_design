@@ -1,21 +1,21 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:flutter/services.dart';
 
-class AppKeyDisplay extends StatefulWidget {
+class LabKeyDisplay extends StatefulWidget {
   final String secretKey;
   final String mnemonic;
 
-  const AppKeyDisplay({
+  const LabKeyDisplay({
     super.key,
     required this.secretKey,
     required this.mnemonic,
   });
 
   @override
-  State<AppKeyDisplay> createState() => _AppKeyDisplayState();
+  State<LabKeyDisplay> createState() => _LabKeyDisplayState();
 }
 
-class _AppKeyDisplayState extends State<AppKeyDisplay>
+class _LabKeyDisplayState extends State<LabKeyDisplay>
     with SingleTickerProviderStateMixin {
   int _selectedIndex = 0; // 0: Emoji, 1: Words, 2: Nsec
   bool _copied = false;
@@ -55,8 +55,8 @@ class _AppKeyDisplayState extends State<AppKeyDisplay>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
-    final emojis = AppKeyGenerator.nsecToEmojis(widget.secretKey) ?? [];
+    final theme = LabTheme.of(context);
+    final emojis = LabKeyGenerator.nsecToEmojis(widget.secretKey) ?? [];
 
     Widget content;
     if (_selectedIndex == 0) {
@@ -66,18 +66,18 @@ class _AppKeyDisplayState extends State<AppKeyDisplay>
         runSpacing: theme.sizes.s10,
         children: [
           for (var emoji in emojis)
-            AppContainer(
+            LabContainer(
               width: 66,
               height: 48,
-              padding: const AppEdgeInsets.only(
-                top: AppGapSize.s2,
+              padding: const LabEdgeInsets.only(
+                top: LabGapSize.s2,
               ),
               decoration: BoxDecoration(
                 color: theme.colors.black33,
                 borderRadius: theme.radius.asBorderRadius().rad16,
               ),
               child: Center(
-                child: AppText.h1(emoji),
+                child: LabText.h1(emoji),
               ),
             ),
         ],
@@ -90,7 +90,7 @@ class _AppKeyDisplayState extends State<AppKeyDisplay>
         runSpacing: theme.sizes.s10,
         children: [
           for (var word in words)
-            AppContainer(
+            LabContainer(
               width: 66,
               height: 48,
               decoration: BoxDecoration(
@@ -98,7 +98,7 @@ class _AppKeyDisplayState extends State<AppKeyDisplay>
                 borderRadius: theme.radius.asBorderRadius().rad16,
               ),
               child: Center(
-                child: AppText.med12(
+                child: LabText.med12(
                   word,
                   gradient: theme.colors.graydient,
                 ),
@@ -108,14 +108,14 @@ class _AppKeyDisplayState extends State<AppKeyDisplay>
       );
     } else {
       // Nsec view
-      content = AppContainer(
+      content = LabContainer(
         width: double.infinity,
         height: 164,
-        padding: const AppEdgeInsets.only(
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
-          top: AppGapSize.s10,
-          bottom: AppGapSize.s16,
+        padding: const LabEdgeInsets.only(
+          left: LabGapSize.s16,
+          right: LabGapSize.s16,
+          top: LabGapSize.s10,
+          bottom: LabGapSize.s16,
         ),
         decoration: BoxDecoration(
           color: theme.colors.black33,
@@ -124,12 +124,12 @@ class _AppKeyDisplayState extends State<AppKeyDisplay>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            AppText.reg16(
+            LabText.reg16(
               widget.secretKey,
               gradient: theme.colors.graydient,
             ),
             const Spacer(),
-            AppSmallButton(
+            LabSmallButton(
               inactiveColor: theme.colors.white8,
               onTap: _copyToClipboard,
               children: [
@@ -139,14 +139,14 @@ class _AppKeyDisplayState extends State<AppKeyDisplay>
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        AppIcon.s10(
+                        LabIcon.s10(
                           theme.icons.characters.check,
                           outlineColor: theme.colors.white66,
                           outlineThickness:
-                              AppLineThicknessData.normal().medium,
+                              LabLineThicknessData.normal().medium,
                         ),
-                        const AppGap.s6(),
-                        AppText.reg12(
+                        const LabGap.s6(),
+                        LabText.reg12(
                           'Copied!',
                           color: theme.colors.white66,
                         ),
@@ -157,13 +157,13 @@ class _AppKeyDisplayState extends State<AppKeyDisplay>
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      AppIcon(
+                      LabIcon(
                         theme.icons.characters.copy,
                         outlineColor: theme.colors.white66,
-                        outlineThickness: AppLineThicknessData.normal().medium,
+                        outlineThickness: LabLineThicknessData.normal().medium,
                       ),
-                      const AppGap.s8(),
-                      AppText.med12(
+                      const LabGap.s8(),
+                      LabText.med12(
                         "Copy",
                         color: theme.colors.white66,
                       ),
@@ -176,8 +176,8 @@ class _AppKeyDisplayState extends State<AppKeyDisplay>
       );
     }
 
-    return AppContainer(
-      padding: AppEdgeInsets.all(AppGapSize.s12),
+    return LabContainer(
+      padding: LabEdgeInsets.all(LabGapSize.s12),
       width: 318,
       height: 244,
       decoration: BoxDecoration(
@@ -188,35 +188,35 @@ class _AppKeyDisplayState extends State<AppKeyDisplay>
         children: [
           content,
           const Spacer(),
-          AppSelector(
+          LabSelector(
             initialIndex: _selectedIndex,
             small: true,
             onChanged: (index) => setState(() => _selectedIndex = index),
             children: [
-              AppSelectorButton(
+              LabSelectorButton(
                 selectedContent: const [
-                  AppText.reg14("Emoji"),
+                  LabText.reg14("Emoji"),
                 ],
                 unselectedContent: [
-                  AppText.reg14("Emoji", color: theme.colors.white66),
+                  LabText.reg14("Emoji", color: theme.colors.white66),
                 ],
                 isSelected: _selectedIndex == 0,
               ),
-              AppSelectorButton(
+              LabSelectorButton(
                 selectedContent: const [
-                  AppText.reg14("Words"),
+                  LabText.reg14("Words"),
                 ],
                 unselectedContent: [
-                  AppText.reg14("Words", color: theme.colors.white66),
+                  LabText.reg14("Words", color: theme.colors.white66),
                 ],
                 isSelected: _selectedIndex == 1,
               ),
-              AppSelectorButton(
+              LabSelectorButton(
                 selectedContent: const [
-                  AppText.reg14("Nsec"),
+                  LabText.reg14("Nsec"),
                 ],
                 unselectedContent: [
-                  AppText.reg14("Nsec", color: theme.colors.white66),
+                  LabText.reg14("Nsec", color: theme.colors.white66),
                 ],
                 isSelected: _selectedIndex == 2,
               ),
@@ -229,4 +229,4 @@ class _AppKeyDisplayState extends State<AppKeyDisplay>
 }
 
 
-// AppKeyDisplay
+// LabKeyDisplay

@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
 
-class AppFeedMail extends StatelessWidget {
+class LabFeedMail extends StatelessWidget {
   final Mail mail;
   final Function(Model) onTap;
   final Function(Profile) onProfileTap;
@@ -13,7 +13,7 @@ class AppFeedMail extends StatelessWidget {
   final Function(Model) onSwipeLeft;
   final Function(Model) onSwipeRight;
 
-  const AppFeedMail({
+  const LabFeedMail({
     super.key,
     required this.mail,
     required this.onTap,
@@ -28,30 +28,30 @@ class AppFeedMail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppSwipeContainer(
+    return LabSwipeContainer(
       onTap: () => onTap(mail),
-      leftContent: AppIcon.s16(
+      leftContent: LabIcon.s16(
         theme.icons.characters.reply,
         outlineColor: theme.colors.white66,
-        outlineThickness: AppLineThicknessData.normal().medium,
+        outlineThickness: LabLineThicknessData.normal().medium,
       ),
-      rightContent: AppIcon.s10(
+      rightContent: LabIcon.s10(
         theme.icons.characters.chevronUp,
         outlineColor: theme.colors.white66,
-        outlineThickness: AppLineThicknessData.normal().medium,
+        outlineThickness: LabLineThicknessData.normal().medium,
       ),
       onSwipeLeft: () => onSwipeLeft(mail),
       onSwipeRight: () => onSwipeRight(mail),
       child: Column(
         children: [
-          AppContainer(
-            padding: const AppEdgeInsets.only(
-              top: AppGapSize.s8,
-              bottom: AppGapSize.s12,
-              left: AppGapSize.s12,
-              right: AppGapSize.s12,
+          LabContainer(
+            padding: const LabEdgeInsets.only(
+              top: LabGapSize.s8,
+              bottom: LabGapSize.s12,
+              left: LabGapSize.s12,
+              right: LabGapSize.s12,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,17 +59,17 @@ class AppFeedMail extends StatelessWidget {
                 Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    AppContainer(
-                      margin: const AppEdgeInsets.only(
-                        top: AppGapSize.s4,
+                    LabContainer(
+                      margin: const LabEdgeInsets.only(
+                        top: LabGapSize.s4,
                       ),
-                      child: AppProfilePic.s38(mail.author.value,
+                      child: LabProfilePic.s38(mail.author.value,
                           onTap: () =>
                               onProfileTap(mail.author.value as Profile)),
                     ),
                   ],
                 ),
-                const AppGap.s12(),
+                const LabGap.s12(),
                 Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -79,17 +79,17 @@ class AppFeedMail extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
-                            child: AppContainer(
-                              padding: const AppEdgeInsets.only(
-                                top: AppGapSize.s2,
+                            child: LabContainer(
+                              padding: const LabEdgeInsets.only(
+                                top: LabGapSize.s2,
                               ),
                               child: isUnread
-                                  ? AppText.bold12(
+                                  ? LabText.bold12(
                                       mail.author.value?.name ??
                                           formatNpub(
                                               mail.author.value?.pubkey ?? ''),
                                     )
-                                  : AppText.med12(
+                                  : LabText.med12(
                                       mail.author.value?.name ??
                                           formatNpub(
                                               mail.author.value?.pubkey ?? ''),
@@ -97,16 +97,16 @@ class AppFeedMail extends StatelessWidget {
                                     ),
                             ),
                           ),
-                          AppContainer(
-                            child: AppText.reg12(
+                          LabContainer(
+                            child: LabText.reg12(
                               TimestampFormatter.format(mail.createdAt,
                                   format: TimestampFormat.relative),
                               color: theme.colors.white33,
                             ),
                           ),
-                          const AppGap.s12(),
+                          const LabGap.s12(),
                           if (isUnread)
-                            AppContainer(
+                            LabContainer(
                               height: theme.sizes.s8,
                               width: theme.sizes.s8,
                               decoration: BoxDecoration(
@@ -116,22 +116,22 @@ class AppFeedMail extends StatelessWidget {
                             ),
                         ],
                       ),
-                      const AppGap.s2(),
+                      const LabGap.s2(),
                       isUnread
-                          ? AppText.reg14(
+                          ? LabText.reg14(
                               mail.title ?? 'No Title',
                               color: theme.colors.white,
                               textOverflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             )
-                          : AppText.reg14(
+                          : LabText.reg14(
                               mail.title ?? 'No Title',
                               color: theme.colors.white,
                               textOverflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             ),
-                      const AppGap.s2(),
-                      AppCompactTextRenderer(
+                      const LabGap.s2(),
+                      LabCompactTextRenderer(
                         content: mail.content,
                         onResolveEvent: onResolveEvent,
                         onResolveProfile: onResolveProfile,
@@ -144,7 +144,7 @@ class AppFeedMail extends StatelessWidget {
               ],
             ),
           ),
-          const AppDivider(),
+          const LabDivider(),
         ],
       ),
     );

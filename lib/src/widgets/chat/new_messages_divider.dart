@@ -1,42 +1,42 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppNewMessagesDivider extends StatelessWidget {
+class LabNewMessagesDivider extends StatelessWidget {
   final String text;
 
-  const AppNewMessagesDivider({
+  const LabNewMessagesDivider({
     super.key,
     required this.text,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
-    return AppContainer(
-      padding: const AppEdgeInsets.symmetric(vertical: AppGapSize.s16),
+    final theme = LabTheme.of(context);
+    return LabContainer(
+      padding: const LabEdgeInsets.symmetric(vertical: LabGapSize.s16),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
           // Divider that spans the full width
           Expanded(
-            child: const AppDivider(),
+            child: const LabDivider(),
           ),
           // Centered text container
-          AppContainer(
-            padding: const AppEdgeInsets.symmetric(
-              horizontal: AppGapSize.s14,
-              vertical: AppGapSize.s6,
+          LabContainer(
+            padding: const LabEdgeInsets.symmetric(
+              horizontal: LabGapSize.s14,
+              vertical: LabGapSize.s6,
             ),
             decoration: BoxDecoration(
               gradient: theme.colors.blurple33,
               borderRadius: theme.radius.asBorderRadius().rad16,
             ),
-            child: AppText.reg12(
+            child: LabText.reg12(
               text,
               color: theme.colors.white,
             ),
           ),
           Expanded(
-            child: const AppDivider(),
+            child: const LabDivider(),
           ),
         ],
       ),

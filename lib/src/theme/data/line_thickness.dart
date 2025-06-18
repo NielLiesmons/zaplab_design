@@ -1,18 +1,18 @@
 import 'package:zaplab_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
 
-class AppLineThicknessData extends Equatable {
+class LabLineThicknessData extends Equatable {
   final double thin;
   final double medium;
   final double thick;
 
-  const AppLineThicknessData({
+  const LabLineThicknessData({
     required this.thin,
     required this.medium,
     required this.thick,
   });
 
-  factory AppLineThicknessData.normal() => const AppLineThicknessData(
+  factory LabLineThicknessData.normal() => const LabLineThicknessData(
         thin: 0.33,
         medium: 1.4,
         thick: 2.8,

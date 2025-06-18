@@ -1,12 +1,12 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppServiceHeader extends StatelessWidget {
+class LabServiceHeader extends StatelessWidget {
   final Service service;
   final List<Community> communities;
   final Function(Profile) onProfileTap;
 
-  const AppServiceHeader({
+  const LabServiceHeader({
     super.key,
     required this.service,
     required this.communities,
@@ -15,24 +15,24 @@ class AppServiceHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppContainer(
-          padding: const AppEdgeInsets.only(
-            top: AppGapSize.s4,
-            bottom: AppGapSize.s12,
-            left: AppGapSize.s12,
-            right: AppGapSize.s12,
+        LabContainer(
+          padding: const LabEdgeInsets.only(
+            top: LabGapSize.s4,
+            bottom: LabGapSize.s12,
+            left: LabGapSize.s12,
+            right: LabGapSize.s12,
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppProfilePic.s48(service.author.value,
+              LabProfilePic.s48(service.author.value,
                   onTap: () => onProfileTap(service.author.value as Profile)),
-              const AppGap.s12(),
+              const LabGap.s12(),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,17 +41,17 @@ class AppServiceHeader extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        AppText.bold14(service.author.value?.name ??
+                        LabText.bold14(service.author.value?.name ??
                             formatNpub(service.author.value?.pubkey ?? '')),
-                        AppText.reg12(
+                        LabText.reg12(
                           TimestampFormatter.format(service.createdAt,
                               format: TimestampFormat.relative),
                           color: theme.colors.white33,
                         ),
                       ],
                     ),
-                    const AppGap.s6(),
-                    AppCommunityStack(
+                    const LabGap.s6(),
+                    LabCommunityStack(
                       communities: communities,
                     ),
                   ],
@@ -60,25 +60,25 @@ class AppServiceHeader extends StatelessWidget {
             ],
           ),
         ),
-        const AppDivider(),
+        const LabDivider(),
         if (service.images.isNotEmpty) ...[
-          AppImageSlider(images: service.images.toList()),
-          const AppDivider(),
+          LabImageSlider(images: service.images.toList()),
+          const LabDivider(),
         ],
-        AppContainer(
-          padding: AppEdgeInsets.only(
-            top: service.images.isEmpty ? AppGapSize.none : AppGapSize.s8,
-            bottom: AppGapSize.s8,
-            left: AppGapSize.s12,
-            right: AppGapSize.s12,
+        LabContainer(
+          padding: LabEdgeInsets.only(
+            top: service.images.isEmpty ? LabGapSize.none : LabGapSize.s8,
+            bottom: LabGapSize.s8,
+            left: LabGapSize.s12,
+            right: LabGapSize.s12,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppText.h2(service.title ?? ''),
-              const AppGap.s4(),
+              LabText.h2(service.title ?? ''),
+              const LabGap.s4(),
               if (service.summary != null)
-                AppText.reg14(service.summary!, color: theme.colors.white66),
+                LabText.reg14(service.summary!, color: theme.colors.white66),
             ],
           ),
         ),

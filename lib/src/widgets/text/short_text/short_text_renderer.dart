@@ -41,7 +41,7 @@ class ShortTextContent extends InheritedWidget {
   }
 }
 
-class AppShortTextRenderer extends StatelessWidget {
+class LabShortTextRenderer extends StatelessWidget {
   final String content;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
@@ -50,7 +50,7 @@ class AppShortTextRenderer extends StatelessWidget {
   final LinkTapHandler onLinkTap;
   final Function(Profile) onProfileTap;
 
-  const AppShortTextRenderer({
+  const LabShortTextRenderer({
     super.key,
     required this.content,
     required this.onResolveEvent,
@@ -62,64 +62,64 @@ class AppShortTextRenderer extends StatelessWidget {
   });
 
   static ShortTextContentType analyzeContent(String content) {
-    final parser = AppShortTextParser();
+    final parser = LabShortTextParser();
     final elements = parser.parse(content);
     return _analyzeElements(elements);
   }
 
   static ShortTextContentType _analyzeElements(
-      List<AppShortTextElement> elements) {
+      List<LabShortTextElement> elements) {
     if (elements.isEmpty) {
       return ShortTextContentType.empty;
     }
 
     // Single image stack
     if (elements.length == 1 &&
-        elements[0].type == AppShortTextElementType.images) {
+        elements[0].type == LabShortTextElementType.images) {
       return ShortTextContentType.singleImageStack;
     }
 
     // Single emoji
     if (elements.length == 1 &&
-        (elements[0].type == AppShortTextElementType.emoji ||
-            elements[0].type == AppShortTextElementType.utfEmoji)) {
+        (elements[0].type == LabShortTextElementType.emoji ||
+            elements[0].type == LabShortTextElementType.utfEmoji)) {
       return ShortTextContentType.singleEmoji;
     }
 
     // Single paragraph with one child
     if (elements.length == 1 &&
-        elements[0].type == AppShortTextElementType.paragraph &&
+        elements[0].type == LabShortTextElementType.paragraph &&
         elements[0].children != null &&
         elements[0].children!.length == 1) {
       final child = elements[0].children![0];
 
       // Single profile
-      if (child.type == AppShortTextElementType.nostrProfile) {
+      if (child.type == LabShortTextElementType.nostrProfile) {
         return ShortTextContentType.singleProfile;
       }
 
       // Single model
-      if (child.type == AppShortTextElementType.nostrModel) {
+      if (child.type == LabShortTextElementType.nostrModel) {
         return ShortTextContentType.singleModel;
       }
     }
 
     // Check for paragraphs with only one type of content
     if (elements.length == 1 &&
-        elements[0].type == AppShortTextElementType.paragraph &&
+        elements[0].type == LabShortTextElementType.paragraph &&
         elements[0].children != null) {
       final children = elements[0].children!;
       // Filter out whitespace and check if all remaining children are either emoji or utfEmoji
       final nonWhitespaceChildren = children.where((child) {
-        return child.type != AppShortTextElementType.styledText ||
+        return child.type != LabShortTextElementType.styledText ||
             child.content.trim().isNotEmpty;
       }).toList();
 
       // Check if all non-whitespace children are either emoji or utfEmoji, and there are 1-2 of them
       if (nonWhitespaceChildren.length <= 2 &&
           nonWhitespaceChildren.every((child) =>
-              child.type == AppShortTextElementType.emoji ||
-              child.type == AppShortTextElementType.utfEmoji)) {
+              child.type == LabShortTextElementType.emoji ||
+              child.type == LabShortTextElementType.utfEmoji)) {
         return ShortTextContentType.singleEmoji;
       } else {}
     }
@@ -130,7 +130,7 @@ class AppShortTextRenderer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final parser = AppShortTextParser();
+    final parser = LabShortTextParser();
     final elements = parser.parse(content);
     final widgets = _buildElements(elements, context);
 
@@ -141,7 +141,7 @@ class AppShortTextRenderer extends StatelessWidget {
   }
 
   List<Widget> _buildElements(
-      List<AppShortTextElement> elements, BuildContext context) {
+      List<LabShortTextElement> elements, BuildContext context) {
     return [
       for (final element in elements)
         _buildElementWithSpacing(element, context),
@@ -149,65 +149,65 @@ class AppShortTextRenderer extends StatelessWidget {
   }
 
   Widget _buildElementWithSpacing(
-      AppShortTextElement element, BuildContext context) {
+      LabShortTextElement element, BuildContext context) {
     final (isInsideMessageBubble, _) = MessageBubbleScope.of(context);
     final contentType = ShortTextContent.of(context);
 
-    final AppEdgeInsets spacing = switch (element.type) {
-      AppShortTextElementType.listItem => const AppEdgeInsets.only(
-          bottom: AppGapSize.s6,
+    final LabEdgeInsets spacing = switch (element.type) {
+      LabShortTextElementType.listItem => const LabEdgeInsets.only(
+          bottom: LabGapSize.s6,
         ),
       _ => isInsideMessageBubble && contentType.isSingleContent
-          ? const AppEdgeInsets.all(AppGapSize.none)
-          : const AppEdgeInsets.only(
-              bottom: AppGapSize.s4,
+          ? const LabEdgeInsets.all(LabGapSize.none)
+          : const LabEdgeInsets.only(
+              bottom: LabGapSize.s4,
             ),
     };
 
     // Determine if this element should be swipeable (paragraphs and certain other content)
     final bool isSwipeable = switch (element.type) {
-      AppShortTextElementType.paragraph => true,
+      LabShortTextElementType.paragraph => true,
       _ => false,
     };
 
     final Widget content = _buildElement(context, element);
 
     if (!isSwipeable) {
-      return AppContainer(
+      return LabContainer(
         padding: spacing,
         child: content,
       );
     }
 
-    return AppContainer(
+    return LabContainer(
       padding: spacing,
       child: content,
     );
   }
 
-  Widget _buildElement(BuildContext context, AppShortTextElement element) {
-    final theme = AppTheme.of(context);
+  Widget _buildElement(BuildContext context, LabShortTextElement element) {
+    final theme = LabTheme.of(context);
     final (isInsideMessageBubble, _) = MessageBubbleScope.of(context);
 
     switch (element.type) {
-      case AppShortTextElementType.images:
+      case LabShortTextElementType.images:
         final urls = element.content.split('\n');
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const AppGap.s2(),
-            AppImageStack(images: urls),
-            const AppGap.s2(),
+            const LabGap.s2(),
+            LabImageStack(images: urls),
+            const LabGap.s2(),
           ],
         );
 
-      case AppShortTextElementType.emoji:
+      case LabShortTextElementType.emoji:
         return FutureBuilder<String>(
           future: onResolveEmoji(element.content),
           builder: (context, snapshot) {
-            return AppContainer(
-              padding: const AppEdgeInsets.symmetric(horizontal: AppGapSize.s2),
-              child: AppEmojiImage(
+            return LabContainer(
+              padding: const LabEdgeInsets.symmetric(horizontal: LabGapSize.s2),
+              child: LabEmojiImage(
                 emojiUrl: snapshot.data ?? '',
                 emojiName: snapshot.data ?? '',
                 size: ShortTextContent.of(context) ==
@@ -219,7 +219,7 @@ class AppShortTextRenderer extends StatelessWidget {
           },
         );
 
-      case AppShortTextElementType.utfEmoji:
+      case LabShortTextElementType.utfEmoji:
         return Text(
           element.content,
           style: theme.typography.reg14.copyWith(
@@ -231,27 +231,27 @@ class AppShortTextRenderer extends StatelessWidget {
           ),
         );
 
-      case AppShortTextElementType.audio:
+      case LabShortTextElementType.audio:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const AppGap.s2(),
-            AppAudioMessage(audioUrl: element.content),
-            const AppGap.s2(),
+            const LabGap.s2(),
+            LabAudioMessage(audioUrl: element.content),
+            const LabGap.s2(),
           ],
         );
 
-      case AppShortTextElementType.codeBlock:
-        return AppCodeBlock(
+      case LabShortTextElementType.codeBlock:
+        return LabCodeBlock(
           code: element.content,
           language: element.attributes?['language'] ?? 'plain',
         );
 
-      case AppShortTextElementType.listItem:
-      case AppShortTextElementType.orderedListItem:
+      case LabShortTextElementType.listItem:
+      case LabShortTextElementType.orderedListItem:
         final String number = element.attributes?['number'] ?? '•';
         final String displayNumber =
-            element.type == AppShortTextElementType.orderedListItem
+            element.type == LabShortTextElementType.orderedListItem
                 ? '$number.'
                 : number;
         return Padding(
@@ -261,18 +261,18 @@ class AppShortTextRenderer extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppContainer(
-                padding: const AppEdgeInsets.only(
-                  right: AppGapSize.s8,
+              LabContainer(
+                padding: const LabEdgeInsets.only(
+                  right: LabGapSize.s8,
                 ),
-                child: AppText.reg14(
+                child: LabText.reg14(
                   displayNumber,
                   color: theme.colors.white66,
                 ),
               ),
               Expanded(
                 child: element.children != null
-                    ? AppSelectableText.rich(
+                    ? LabSelectableText.rich(
                         TextSpan(
                           children:
                               _buildInlineElements(context, element.children!),
@@ -281,16 +281,16 @@ class AppShortTextRenderer extends StatelessWidget {
                           color: theme.colors.white,
                         ),
                         showContextMenu: true,
-                        selectionControls: AppTextSelectionControls(),
+                        selectionControls: LabTextSelectionControls(),
                         contextMenuItems: [
-                          AppTextSelectionMenuItem(
+                          LabTextSelectionMenuItem(
                             label: 'Copy',
                             onTap: (state) =>
                                 state.copySelection(SelectionChangedCause.tap),
                           ),
                         ],
                       )
-                    : AppText.reg14(
+                    : LabText.reg14(
                         element.content,
                         color: theme.colors.white,
                       ),
@@ -298,7 +298,7 @@ class AppShortTextRenderer extends StatelessWidget {
             ],
           ),
         );
-      case AppShortTextElementType.checkListItem:
+      case LabShortTextElementType.checkListItem:
         return Padding(
           padding: EdgeInsets.only(
             left: (int.tryParse(element.attributes?['level'] ?? '0') ?? 0) * 16,
@@ -306,14 +306,14 @@ class AppShortTextRenderer extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppCheckBox(
+              LabCheckBox(
                 value: element.checked ?? false,
                 onChanged: null,
               ),
-              const AppGap.s8(),
+              const LabGap.s8(),
               Expanded(
                 child: element.children != null
-                    ? AppSelectableText.rich(
+                    ? LabSelectableText.rich(
                         TextSpan(
                           children:
                               _buildInlineElements(context, element.children!),
@@ -322,16 +322,16 @@ class AppShortTextRenderer extends StatelessWidget {
                           color: theme.colors.white,
                         ),
                         showContextMenu: true,
-                        selectionControls: AppTextSelectionControls(),
+                        selectionControls: LabTextSelectionControls(),
                         contextMenuItems: [
-                          AppTextSelectionMenuItem(
+                          LabTextSelectionMenuItem(
                             label: 'Copy',
                             onTap: (state) =>
                                 state.copySelection(SelectionChangedCause.tap),
                           ),
                         ],
                       )
-                    : AppText.reg14(
+                    : LabText.reg14(
                         element.content,
                         color: theme.colors.white,
                       ),
@@ -340,7 +340,7 @@ class AppShortTextRenderer extends StatelessWidget {
           ),
         );
 
-      case AppShortTextElementType.paragraph:
+      case LabShortTextElementType.paragraph:
         if (element.children != null) {
           final List<Widget> paragraphPieces = [];
           final List<InlineSpan> currentSpans = [];
@@ -348,17 +348,17 @@ class AppShortTextRenderer extends StatelessWidget {
           // Check if this is a singleEmoji case
           if (ShortTextContent.of(context) ==
               ShortTextContentType.singleEmoji) {
-            return AppContainer(
+            return LabContainer(
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   for (var i = 0; i < element.children!.length; i++) ...[
                     if (element.children![i].type ==
-                        AppShortTextElementType.emoji)
+                        LabShortTextElementType.emoji)
                       FutureBuilder<String>(
                         future: onResolveEmoji(element.children![i].content),
                         builder: (context, snapshot) {
-                          return AppEmojiImage(
+                          return LabEmojiImage(
                             emojiUrl: snapshot.data ?? '',
                             emojiName: snapshot.data ?? '',
                             size: 96,
@@ -367,7 +367,7 @@ class AppShortTextRenderer extends StatelessWidget {
                         },
                       )
                     else if (element.children![i].type ==
-                        AppShortTextElementType.utfEmoji)
+                        LabShortTextElementType.utfEmoji)
                       Text(
                         element.children![i].content,
                         style: theme.typography.reg14.copyWith(
@@ -376,7 +376,7 @@ class AppShortTextRenderer extends StatelessWidget {
                         ),
                       ),
                     if (i == 0 && element.children!.length == 2)
-                      const AppGap.s4(),
+                      const LabGap.s4(),
                   ],
                 ],
               ),
@@ -384,16 +384,16 @@ class AppShortTextRenderer extends StatelessWidget {
           }
 
           for (var child in element.children!) {
-            if (child.type == AppShortTextElementType.nostrModel) {
+            if (child.type == LabShortTextElementType.nostrModel) {
               if (currentSpans.isNotEmpty) {
                 paragraphPieces.add(
-                  AppContainer(
-                    padding: AppEdgeInsets.symmetric(
+                  LabContainer(
+                    padding: LabEdgeInsets.symmetric(
                       horizontal: isInsideMessageBubble
-                          ? AppGapSize.s4
-                          : AppGapSize.none,
+                          ? LabGapSize.s4
+                          : LabGapSize.none,
                     ),
-                    child: AppSelectableText.rich(
+                    child: LabSelectableText.rich(
                       TextSpan(children: List.from(currentSpans)),
                       style: theme.typography.reg14.copyWith(
                         color: theme.colors.white,
@@ -404,15 +404,15 @@ class AppShortTextRenderer extends StatelessWidget {
                 currentSpans.clear();
               }
               paragraphPieces.add(isInsideMessageBubble
-                  ? const AppGap.s2()
-                  : const AppGap.s8());
+                  ? const LabGap.s2()
+                  : const LabGap.s8());
               paragraphPieces.add(
                 FutureBuilder<({Model model, VoidCallback? onTap})>(
                   future: onResolveEvent(child.content),
                   builder: (context, snapshot) {
                     return ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 320),
-                      child: AppModelCard(
+                      child: LabModelCard(
                         model: snapshot.data?.model,
                         onTap: snapshot.data?.onTap == null
                             ? null
@@ -428,18 +428,18 @@ class AppShortTextRenderer extends StatelessWidget {
                 ),
               );
               paragraphPieces.add(isInsideMessageBubble
-                  ? const AppGap.s4()
-                  : const AppGap.s8());
-            } else if (child.type == AppShortTextElementType.audio) {
+                  ? const LabGap.s4()
+                  : const LabGap.s8());
+            } else if (child.type == LabShortTextElementType.audio) {
               if (currentSpans.isNotEmpty) {
                 paragraphPieces.add(
-                  AppContainer(
-                    padding: AppEdgeInsets.symmetric(
+                  LabContainer(
+                    padding: LabEdgeInsets.symmetric(
                       horizontal: isInsideMessageBubble
-                          ? AppGapSize.s4
-                          : AppGapSize.none,
+                          ? LabGapSize.s4
+                          : LabGapSize.none,
                     ),
-                    child: AppSelectableText.rich(
+                    child: LabSelectableText.rich(
                       TextSpan(children: List.from(currentSpans)),
                       style: theme.typography.reg14.copyWith(
                         color: theme.colors.white,
@@ -449,24 +449,24 @@ class AppShortTextRenderer extends StatelessWidget {
                 );
                 currentSpans.clear();
               }
-              paragraphPieces.add(const AppGap.s2());
+              paragraphPieces.add(const LabGap.s2());
               paragraphPieces.add(
-                AppAudioMessage(audioUrl: child.content),
+                LabAudioMessage(audioUrl: child.content),
               );
-              paragraphPieces.add(const AppGap.s2());
-            } else if (child.type == AppShortTextElementType.utfEmoji) {
+              paragraphPieces.add(const LabGap.s2());
+            } else if (child.type == LabShortTextElementType.utfEmoji) {
               final contentType = ShortTextContent.of(context);
               if (contentType == ShortTextContentType.singleEmoji) {
                 // For singleEmoji, render as block
                 if (currentSpans.isNotEmpty) {
                   paragraphPieces.add(
-                    AppContainer(
-                      padding: AppEdgeInsets.symmetric(
+                    LabContainer(
+                      padding: LabEdgeInsets.symmetric(
                         horizontal: isInsideMessageBubble
-                            ? AppGapSize.s4
-                            : AppGapSize.none,
+                            ? LabGapSize.s4
+                            : LabGapSize.none,
                       ),
-                      child: AppSelectableText.rich(
+                      child: LabSelectableText.rich(
                         TextSpan(children: List.from(currentSpans)),
                         style: theme.typography.reg14.copyWith(
                           color: theme.colors.white,
@@ -476,11 +476,11 @@ class AppShortTextRenderer extends StatelessWidget {
                   );
                   currentSpans.clear();
                 }
-                paragraphPieces.add(const AppGap.s2());
+                paragraphPieces.add(const LabGap.s2());
                 paragraphPieces.add(
-                  AppContainer(
-                    padding: const AppEdgeInsets.symmetric(
-                        horizontal: AppGapSize.s2),
+                  LabContainer(
+                    padding: const LabEdgeInsets.symmetric(
+                        horizontal: LabGapSize.s2),
                     child: Text(
                       child.content,
                       style: theme.typography.reg14.copyWith(
@@ -490,7 +490,7 @@ class AppShortTextRenderer extends StatelessWidget {
                     ),
                   ),
                 );
-                paragraphPieces.add(const AppGap.s2());
+                paragraphPieces.add(const LabGap.s2());
               } else {
                 // For inline rendering
                 currentSpans.add(TextSpan(
@@ -501,19 +501,19 @@ class AppShortTextRenderer extends StatelessWidget {
                   ),
                 ));
               }
-            } else if (child.type == AppShortTextElementType.emoji) {
+            } else if (child.type == LabShortTextElementType.emoji) {
               final contentType = ShortTextContent.of(context);
               if (contentType == ShortTextContentType.singleEmoji) {
                 // For singleEmoji, render as block
                 if (currentSpans.isNotEmpty) {
                   paragraphPieces.add(
-                    AppContainer(
-                      padding: AppEdgeInsets.symmetric(
+                    LabContainer(
+                      padding: LabEdgeInsets.symmetric(
                         horizontal: isInsideMessageBubble
-                            ? AppGapSize.s4
-                            : AppGapSize.none,
+                            ? LabGapSize.s4
+                            : LabGapSize.none,
                       ),
-                      child: AppSelectableText.rich(
+                      child: LabSelectableText.rich(
                         TextSpan(children: List.from(currentSpans)),
                         style: theme.typography.reg14.copyWith(
                           color: theme.colors.white,
@@ -523,15 +523,15 @@ class AppShortTextRenderer extends StatelessWidget {
                   );
                   currentSpans.clear();
                 }
-                paragraphPieces.add(const AppGap.s2());
+                paragraphPieces.add(const LabGap.s2());
                 paragraphPieces.add(
                   FutureBuilder<String>(
                     future: onResolveEmoji(child.content),
                     builder: (context, snapshot) {
-                      return AppContainer(
-                        padding: const AppEdgeInsets.symmetric(
-                            horizontal: AppGapSize.s2),
-                        child: AppEmojiImage(
+                      return LabContainer(
+                        padding: const LabEdgeInsets.symmetric(
+                            horizontal: LabGapSize.s2),
+                        child: LabEmojiImage(
                           emojiUrl: snapshot.data ?? '',
                           emojiName: snapshot.data ?? '',
                           size: 80,
@@ -540,7 +540,7 @@ class AppShortTextRenderer extends StatelessWidget {
                     },
                   ),
                 );
-                paragraphPieces.add(const AppGap.s2());
+                paragraphPieces.add(const LabGap.s2());
               } else {
                 // For inline rendering
                 currentSpans.add(TextSpan(
@@ -560,10 +560,10 @@ class AppShortTextRenderer extends StatelessWidget {
                       child: FutureBuilder<String>(
                         future: onResolveEmoji(child.content),
                         builder: (context, snapshot) {
-                          return AppContainer(
-                            padding: const AppEdgeInsets.symmetric(
-                                horizontal: AppGapSize.s2),
-                            child: AppEmojiImage(
+                          return LabContainer(
+                            padding: const LabEdgeInsets.symmetric(
+                                horizontal: LabGapSize.s2),
+                            child: LabEmojiImage(
                               emojiUrl: snapshot.data ?? '',
                               emojiName: snapshot.data ?? '',
                               size: 17,
@@ -577,7 +577,7 @@ class AppShortTextRenderer extends StatelessWidget {
               }
             } else {
               // Handle all other elements exactly as before
-              if (child.type == AppShortTextElementType.nostrProfile) {
+              if (child.type == LabShortTextElementType.nostrProfile) {
                 currentSpans.add(TextSpan(
                   children: [
                     TextSpan(
@@ -597,12 +597,12 @@ class AppShortTextRenderer extends StatelessWidget {
                         future: onResolveProfile(child.content),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return AppText.reg12(
+                            return LabText.reg12(
                               '@${child.content}',
                               color: theme.colors.blurpleLightColor,
                             );
                           }
-                          return AppProfileInline(
+                          return LabProfileInline(
                             profile: snapshot.data!.profile,
                             onTap: snapshot.data?.onTap,
                           );
@@ -611,7 +611,7 @@ class AppShortTextRenderer extends StatelessWidget {
                     ),
                   ],
                 ));
-              } else if (child.type == AppShortTextElementType.hashtag) {
+              } else if (child.type == LabShortTextElementType.hashtag) {
                 currentSpans.add(TextSpan(
                   children: [
                     TextSpan(
@@ -656,7 +656,7 @@ class AppShortTextRenderer extends StatelessWidget {
                     ),
                   ],
                 ));
-              } else if (child.type == AppShortTextElementType.link) {
+              } else if (child.type == LabShortTextElementType.link) {
                 currentSpans.add(TextSpan(
                   text: child.content,
                   style: theme.typography.reg14.copyWith(
@@ -666,7 +666,7 @@ class AppShortTextRenderer extends StatelessWidget {
                     ..onTap = () =>
                         onLinkTap(child.attributes?['url'] ?? child.content),
                 ));
-              } else if (child.type == AppShortTextElementType.monospace) {
+              } else if (child.type == LabShortTextElementType.monospace) {
                 currentSpans.add(TextSpan(
                   children: [
                     TextSpan(
@@ -684,18 +684,18 @@ class AppShortTextRenderer extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const AppGap.s2(),
-                          AppContainer(
+                          const LabGap.s2(),
+                          LabContainer(
                             height: 20,
-                            padding: const AppEdgeInsets.only(
-                              left: AppGapSize.s4,
-                              right: AppGapSize.s4,
+                            padding: const LabEdgeInsets.only(
+                              left: LabGapSize.s4,
+                              right: LabGapSize.s4,
                             ),
                             decoration: BoxDecoration(
                               color: theme.colors.white16,
                               borderRadius: theme.radius.asBorderRadius().rad4,
                             ),
-                            child: AppText.code(
+                            child: LabText.code(
                               child.content,
                               color: theme.colors.white66,
                               fontSize: 14,
@@ -706,17 +706,17 @@ class AppShortTextRenderer extends StatelessWidget {
                     ),
                   ],
                 ));
-              } else if (child.type == AppShortTextElementType.images) {
+              } else if (child.type == LabShortTextElementType.images) {
                 final urls = child.content.split('\n');
                 if (currentSpans.isNotEmpty) {
                   paragraphPieces.add(
-                    AppContainer(
-                      padding: AppEdgeInsets.symmetric(
+                    LabContainer(
+                      padding: LabEdgeInsets.symmetric(
                         horizontal: isInsideMessageBubble
-                            ? AppGapSize.s4
-                            : AppGapSize.none,
+                            ? LabGapSize.s4
+                            : LabGapSize.none,
                       ),
-                      child: AppSelectableText.rich(
+                      child: LabSelectableText.rich(
                         TextSpan(children: List.from(currentSpans)),
                         style: theme.typography.reg14.copyWith(
                           color: theme.colors.white,
@@ -726,13 +726,13 @@ class AppShortTextRenderer extends StatelessWidget {
                   );
                   currentSpans.clear();
                 }
-                paragraphPieces.add(const AppGap.s2());
+                paragraphPieces.add(const LabGap.s2());
                 paragraphPieces.add(
-                  AppImageStack(
+                  LabImageStack(
                     images: urls,
                   ),
                 );
-                paragraphPieces.add(const AppGap.s4());
+                paragraphPieces.add(const LabGap.s4());
               } else {
                 currentSpans.add(TextSpan(
                   text: child.content,
@@ -760,12 +760,12 @@ class AppShortTextRenderer extends StatelessWidget {
           // Add any remaining text
           if (currentSpans.isNotEmpty) {
             paragraphPieces.add(
-              AppContainer(
-                padding: AppEdgeInsets.symmetric(
+              LabContainer(
+                padding: LabEdgeInsets.symmetric(
                   horizontal:
-                      isInsideMessageBubble ? AppGapSize.s4 : AppGapSize.none,
+                      isInsideMessageBubble ? LabGapSize.s4 : LabGapSize.none,
                 ),
-                child: AppSelectableText.rich(
+                child: LabSelectableText.rich(
                   TextSpan(
                     children: currentSpans,
                     style: theme.typography.reg14.copyWith(
@@ -776,9 +776,9 @@ class AppShortTextRenderer extends StatelessWidget {
                     color: theme.colors.white,
                   ),
                   showContextMenu: true,
-                  selectionControls: AppTextSelectionControls(),
+                  selectionControls: LabTextSelectionControls(),
                   contextMenuItems: [
-                    AppTextSelectionMenuItem(
+                    LabTextSelectionMenuItem(
                       label: 'Copy',
                       onTap: (state) =>
                           state.copySelection(SelectionChangedCause.tap),
@@ -794,11 +794,11 @@ class AppShortTextRenderer extends StatelessWidget {
             children: paragraphPieces,
           );
         }
-        return AppContainer(
-          padding: AppEdgeInsets.symmetric(
-            horizontal: isInsideMessageBubble ? AppGapSize.s4 : AppGapSize.none,
+        return LabContainer(
+          padding: LabEdgeInsets.symmetric(
+            horizontal: isInsideMessageBubble ? LabGapSize.s4 : LabGapSize.none,
           ),
-          child: AppSelectableText(
+          child: LabSelectableText(
             text: element.content,
             style: theme.typography.reg14.copyWith(
               color: theme.colors.white,
@@ -806,7 +806,7 @@ class AppShortTextRenderer extends StatelessWidget {
           ),
         );
 
-      case AppShortTextElementType.styledText:
+      case LabShortTextElementType.styledText:
         return Text(
           element.content,
           style: theme.typography.reg14.copyWith(
@@ -819,45 +819,45 @@ class AppShortTextRenderer extends StatelessWidget {
           ),
         );
 
-      case AppShortTextElementType.heading1:
-        return AppContainer(
-          padding: const AppEdgeInsets.only(top: AppGapSize.s8),
-          child: AppText.bold16(element.content),
+      case LabShortTextElementType.heading1:
+        return LabContainer(
+          padding: const LabEdgeInsets.only(top: LabGapSize.s8),
+          child: LabText.bold16(element.content),
         );
-      case AppShortTextElementType.heading2:
-        return AppText.bold16(element.content, color: theme.colors.white66);
-      case AppShortTextElementType.heading3:
-        return AppText.bold12(element.content);
-      case AppShortTextElementType.heading4:
-        return AppText.bold12(element.content, color: theme.colors.white66);
-      case AppShortTextElementType.heading5:
-        return AppText.bold12(element.content);
+      case LabShortTextElementType.heading2:
+        return LabText.bold16(element.content, color: theme.colors.white66);
+      case LabShortTextElementType.heading3:
+        return LabText.bold12(element.content);
+      case LabShortTextElementType.heading4:
+        return LabText.bold12(element.content, color: theme.colors.white66);
+      case LabShortTextElementType.heading5:
+        return LabText.bold12(element.content);
 
-      case AppShortTextElementType.blockQuote:
+      case LabShortTextElementType.blockQuote:
         return IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppContainer(
-                width: AppLineThicknessData.normal().thick,
+              LabContainer(
+                width: LabLineThicknessData.normal().thick,
                 decoration: BoxDecoration(
                   color: theme.colors.white33,
                   borderRadius: theme.radius.asBorderRadius().rad16,
                 ),
-                margin: const AppEdgeInsets.only(
-                  left: AppGapSize.s4,
-                  right: AppGapSize.s4,
-                  top: AppGapSize.s2,
-                  bottom: AppGapSize.s2,
+                margin: const LabEdgeInsets.only(
+                  left: LabGapSize.s4,
+                  right: LabGapSize.s4,
+                  top: LabGapSize.s2,
+                  bottom: LabGapSize.s2,
                 ),
               ),
               Expanded(
                 child: element.children != null
-                    ? AppContainer(
-                        padding: const AppEdgeInsets.symmetric(
-                          horizontal: AppGapSize.s4,
+                    ? LabContainer(
+                        padding: const LabEdgeInsets.symmetric(
+                          horizontal: LabGapSize.s4,
                         ),
-                        child: AppSelectableText.rich(
+                        child: LabSelectableText.rich(
                           TextSpan(
                             children: _buildStyledTextSpans(
                                 context, element.children!),
@@ -874,15 +874,15 @@ class AppShortTextRenderer extends StatelessWidget {
         );
 
       default:
-        return AppText.reg14(element.content);
+        return LabText.reg14(element.content);
     }
   }
 
   List<InlineSpan> _buildInlineElements(
-      BuildContext context, List<AppShortTextElement> children) {
-    final theme = AppTheme.of(context);
+      BuildContext context, List<LabShortTextElement> children) {
+    final theme = LabTheme.of(context);
     return children.map((child) {
-      if (child.type == AppShortTextElementType.nostrProfile) {
+      if (child.type == LabShortTextElementType.nostrProfile) {
         return TextSpan(
           children: [
             TextSpan(
@@ -901,12 +901,12 @@ class AppShortTextRenderer extends StatelessWidget {
                 future: onResolveProfile(child.content),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return AppText.reg12(
+                    return LabText.reg12(
                       '@${child.content}',
                       color: theme.colors.blurpleLightColor,
                     );
                   }
-                  return AppProfileInline(
+                  return LabProfileInline(
                     profile: snapshot.data!.profile,
                     onTap: snapshot.data?.onTap,
                   );
@@ -915,7 +915,7 @@ class AppShortTextRenderer extends StatelessWidget {
             ),
           ],
         );
-      } else if (child.type == AppShortTextElementType.emoji) {
+      } else if (child.type == LabShortTextElementType.emoji) {
         return TextSpan(
           children: [
             TextSpan(
@@ -933,10 +933,10 @@ class AppShortTextRenderer extends StatelessWidget {
               child: FutureBuilder<String>(
                 future: onResolveEmoji(child.content),
                 builder: (context, snapshot) {
-                  return AppContainer(
-                    padding: const AppEdgeInsets.symmetric(
-                        horizontal: AppGapSize.s2),
-                    child: AppEmojiImage(
+                  return LabContainer(
+                    padding: const LabEdgeInsets.symmetric(
+                        horizontal: LabGapSize.s2),
+                    child: LabEmojiImage(
                       emojiUrl: snapshot.data ?? '',
                       emojiName: snapshot.data ?? '',
                       size: 17,
@@ -947,7 +947,7 @@ class AppShortTextRenderer extends StatelessWidget {
             ),
           ],
         );
-      } else if (child.type == AppShortTextElementType.monospace) {
+      } else if (child.type == LabShortTextElementType.monospace) {
         return TextSpan(
           children: [
             TextSpan(
@@ -965,18 +965,18 @@ class AppShortTextRenderer extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const AppGap.s2(),
-                  AppContainer(
+                  const LabGap.s2(),
+                  LabContainer(
                     height: 20,
-                    padding: const AppEdgeInsets.only(
-                      left: AppGapSize.s4,
-                      right: AppGapSize.s4,
+                    padding: const LabEdgeInsets.only(
+                      left: LabGapSize.s4,
+                      right: LabGapSize.s4,
                     ),
                     decoration: BoxDecoration(
                       color: theme.colors.white16,
                       borderRadius: theme.radius.asBorderRadius().rad4,
                     ),
-                    child: AppText.code(
+                    child: LabText.code(
                       child.content,
                       color: theme.colors.white66,
                       fontSize: 14,
@@ -987,7 +987,7 @@ class AppShortTextRenderer extends StatelessWidget {
             ),
           ],
         );
-      } else if (child.type == AppShortTextElementType.hashtag) {
+      } else if (child.type == LabShortTextElementType.hashtag) {
         return TextSpan(
           children: [
             TextSpan(
@@ -1032,7 +1032,7 @@ class AppShortTextRenderer extends StatelessWidget {
             ),
           ],
         );
-      } else if (child.type == AppShortTextElementType.link) {
+      } else if (child.type == LabShortTextElementType.link) {
         return TextSpan(
           text: child.attributes?['text'] ?? child.content,
           style: theme.typography.reg14.copyWith(
@@ -1067,10 +1067,10 @@ class AppShortTextRenderer extends StatelessWidget {
   }
 
   List<InlineSpan> _buildStyledTextSpans(
-      BuildContext context, List<AppShortTextElement> elements) {
-    final theme = AppTheme.of(context);
+      BuildContext context, List<LabShortTextElement> elements) {
+    final theme = LabTheme.of(context);
     return elements.map((element) {
-      if (element.type == AppShortTextElementType.nostrProfile) {
+      if (element.type == LabShortTextElementType.nostrProfile) {
         return TextSpan(
           children: [
             TextSpan(
@@ -1088,7 +1088,7 @@ class AppShortTextRenderer extends StatelessWidget {
               child: FutureBuilder<({Profile profile, VoidCallback? onTap})>(
                 future: onResolveProfile(element.content),
                 builder: (context, snapshot) {
-                  return AppProfileInline(
+                  return LabProfileInline(
                     profile: snapshot.data!.profile,
                     onTap: snapshot.data?.onTap,
                   );
@@ -1099,7 +1099,7 @@ class AppShortTextRenderer extends StatelessWidget {
         );
       }
 
-      if (element.type == AppShortTextElementType.emoji) {
+      if (element.type == LabShortTextElementType.emoji) {
         return TextSpan(
           children: [
             TextSpan(
@@ -1117,10 +1117,10 @@ class AppShortTextRenderer extends StatelessWidget {
               child: FutureBuilder<String>(
                 future: onResolveEmoji(element.content),
                 builder: (context, snapshot) {
-                  return AppContainer(
-                    padding: const AppEdgeInsets.symmetric(
-                        horizontal: AppGapSize.s2),
-                    child: AppEmojiImage(
+                  return LabContainer(
+                    padding: const LabEdgeInsets.symmetric(
+                        horizontal: LabGapSize.s2),
+                    child: LabEmojiImage(
                       emojiUrl: snapshot.data ?? '',
                       emojiName: snapshot.data ?? '',
                       size: ShortTextContent.of(context) ==
@@ -1134,7 +1134,7 @@ class AppShortTextRenderer extends StatelessWidget {
             ),
           ],
         );
-      } else if (element.type == AppShortTextElementType.monospace) {
+      } else if (element.type == LabShortTextElementType.monospace) {
         return TextSpan(
           children: [
             TextSpan(
@@ -1152,18 +1152,18 @@ class AppShortTextRenderer extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const AppGap.s2(),
-                  AppContainer(
+                  const LabGap.s2(),
+                  LabContainer(
                     height: 20,
-                    padding: const AppEdgeInsets.only(
-                      left: AppGapSize.s4,
-                      right: AppGapSize.s4,
+                    padding: const LabEdgeInsets.only(
+                      left: LabGapSize.s4,
+                      right: LabGapSize.s4,
                     ),
                     decoration: BoxDecoration(
                       color: theme.colors.white16,
                       borderRadius: theme.radius.asBorderRadius().rad4,
                     ),
-                    child: AppText.code(
+                    child: LabText.code(
                       element.content,
                       color: theme.colors.white66,
                       fontSize: 14,
@@ -1174,7 +1174,7 @@ class AppShortTextRenderer extends StatelessWidget {
             ),
           ],
         );
-      } else if (element.type == AppShortTextElementType.hashtag) {
+      } else if (element.type == LabShortTextElementType.hashtag) {
         return TextSpan(
           children: [
             TextSpan(

@@ -1,4 +1,4 @@
-enum AppShortTextElementType {
+enum LabShortTextElementType {
   paragraph, // Regular text
   blockQuote, // > quote
   codeBlock, // ``` ``` or ```language```
@@ -22,15 +22,15 @@ enum AppShortTextElementType {
   checkListItem, // [x] or [ ] List items
 }
 
-class AppShortTextElement {
-  final AppShortTextElementType type;
+class LabShortTextElement {
+  final LabShortTextElementType type;
   final String content;
   final Map<String, String>? attributes; // For code blocks: language, etc.
   final int level; // For nested lists
   final bool? checked; // For checklists
-  final List<AppShortTextElement>? children; // Add this for nested styling
+  final List<LabShortTextElement>? children; // Add this for nested styling
 
-  const AppShortTextElement({
+  const LabShortTextElement({
     required this.type,
     required this.content,
     this.attributes,

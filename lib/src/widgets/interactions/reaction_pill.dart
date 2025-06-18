@@ -2,12 +2,12 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
-class AppReactionPill extends StatelessWidget {
+class LabReactionPill extends StatelessWidget {
   final Reaction reaction;
   final VoidCallback onTap;
   final bool isOutgoing;
 
-  const AppReactionPill({
+  const LabReactionPill({
     super.key,
     required this.reaction,
     required this.onTap,
@@ -16,9 +16,9 @@ class AppReactionPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final isInsideModal = ModalScope.of(context);
-    final isInsideScope = AppScope.of(context);
+    final isInsideScope = LabScope.of(context);
     final (isInsideMessageBubble, _) = MessageBubbleScope.of(context);
 
     return TapBuilder(
@@ -33,9 +33,9 @@ class AppReactionPill extends StatelessWidget {
 
         return AnimatedScale(
           scale: scaleFactor,
-          duration: AppDurationsData.normal().fast,
+          duration: LabDurationsData.normal().fast,
           curve: Curves.easeInOut,
-          child: AppContainer(
+          child: LabContainer(
             decoration: BoxDecoration(
               color: isOutgoing
                   ? null
@@ -47,26 +47,26 @@ class AppReactionPill extends StatelessWidget {
               gradient: isOutgoing ? theme.colors.blurple : null,
               borderRadius: BorderRadius.all(theme.radius.rad16),
             ),
-            padding: const AppEdgeInsets.only(
-              left: AppGapSize.s8,
-              right: AppGapSize.s4,
-              top: AppGapSize.s4,
-              bottom: AppGapSize.s4,
+            padding: const LabEdgeInsets.only(
+              left: LabGapSize.s8,
+              right: LabGapSize.s4,
+              top: LabGapSize.s4,
+              bottom: LabGapSize.s4,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (reaction.emojiTag != null)
-                  AppEmojiImage(
+                  LabEmojiImage(
                     emojiUrl: reaction.emojiTag?.$2 ?? '',
                     emojiName: reaction.emojiTag?.$1 ?? '',
                   )
                 else
-                  AppText.med16(
+                  LabText.med16(
                     reaction.event.content,
                   ),
-                const AppGap.s6(),
-                AppProfilePic.s18(reaction.author.value),
+                const LabGap.s6(),
+                LabProfilePic.s18(reaction.author.value),
               ],
             ),
           ),

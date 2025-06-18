@@ -1,10 +1,10 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppShortTextParser {
+class LabShortTextParser {
   final _listCounter = _ListCounter();
 
-  List<AppShortTextElement> parse(String text) {
-    final List<AppShortTextElement> elements = [];
+  List<LabShortTextElement> parse(String text) {
+    final List<LabShortTextElement> elements = [];
     final List<String> lines = text.split('\n');
     int? lastListLevel;
 
@@ -13,8 +13,8 @@ class AppShortTextParser {
 
       // Handle empty lines by adding a line break
       if (line.isEmpty) {
-        elements.add(AppShortTextElement(
-          type: AppShortTextElementType.styledText,
+        elements.add(LabShortTextElement(
+          type: LabShortTextElementType.styledText,
           content: '',
         ));
         continue;
@@ -29,8 +29,8 @@ class AppShortTextParser {
         final int level = _countLeadingIndent(line);
         final String content = line.replaceAll(RegExp(r'^[-*+]\s*'), '').trim();
 
-        elements.add(AppShortTextElement(
-          type: AppShortTextElementType.listItem,
+        elements.add(LabShortTextElement(
+          type: LabShortTextElementType.listItem,
           content: content,
           level: level,
           children: _parseInlineContent(content),
@@ -44,8 +44,8 @@ class AppShortTextParser {
         final int level = _countLeadingIndent(line);
         final String content = line.replaceAll(RegExp(r'^\d+\.\s*'), '').trim();
 
-        elements.add(AppShortTextElement(
-          type: AppShortTextElementType.orderedListItem,
+        elements.add(LabShortTextElement(
+          type: LabShortTextElementType.orderedListItem,
           content: content,
           level: level,
           children: _parseInlineContent(content),
@@ -60,14 +60,14 @@ class AppShortTextParser {
         if (level >= 1 && level <= 5) {
           final String content = line.replaceAll(RegExp(r'^#+\s*'), '').trim();
           print('Creating heading element with content: $content');
-          elements.add(AppShortTextElement(
+          elements.add(LabShortTextElement(
             type: switch (level) {
-              1 => AppShortTextElementType.heading1,
-              2 => AppShortTextElementType.heading2,
-              3 => AppShortTextElementType.heading3,
-              4 => AppShortTextElementType.heading4,
-              5 => AppShortTextElementType.heading5,
-              _ => AppShortTextElementType.paragraph,
+              1 => LabShortTextElementType.heading1,
+              2 => LabShortTextElementType.heading2,
+              3 => LabShortTextElementType.heading3,
+              4 => LabShortTextElementType.heading4,
+              5 => LabShortTextElementType.heading5,
+              _ => LabShortTextElementType.paragraph,
             },
             content: content,
           ));
@@ -97,8 +97,8 @@ class AppShortTextParser {
           i++;
         }
 
-        elements.add(AppShortTextElement(
-          type: AppShortTextElementType.codeBlock,
+        elements.add(LabShortTextElement(
+          type: LabShortTextElementType.codeBlock,
           content: codeContent.toString().trimRight(),
           attributes: {'language': 'plain'},
         ));
@@ -116,8 +116,8 @@ class AppShortTextParser {
           i++;
         }
 
-        elements.add(AppShortTextElement(
-          type: AppShortTextElementType.codeBlock,
+        elements.add(LabShortTextElement(
+          type: LabShortTextElementType.codeBlock,
           content: codeContent.toString().trimRight(),
           attributes: {'language': language.isEmpty ? 'plain' : language},
         ));
@@ -129,8 +129,8 @@ class AppShortTextParser {
         final String content = line.substring(1).trim();
         final children = _parseStyledText(content);
 
-        elements.add(AppShortTextElement(
-          type: AppShortTextElementType.blockQuote,
+        elements.add(LabShortTextElement(
+          type: LabShortTextElementType.blockQuote,
           content: content,
           children: children,
         ));
@@ -143,19 +143,19 @@ class AppShortTextParser {
       // If this is a single emoji or utfEmoji, return it as a standalone element
       if (children != null &&
           children.length == 1 &&
-          (children[0].type == AppShortTextElementType.emoji ||
-              children[0].type == AppShortTextElementType.utfEmoji)) {
+          (children[0].type == LabShortTextElementType.emoji ||
+              children[0].type == LabShortTextElementType.utfEmoji)) {
         elements.add(children[0]);
         continue;
       }
 
-      elements.add(AppShortTextElement(
-        type: AppShortTextElementType.paragraph,
+      elements.add(LabShortTextElement(
+        type: LabShortTextElementType.paragraph,
         content: line,
         children: children ??
             [
-              AppShortTextElement(
-                type: AppShortTextElementType.styledText,
+              LabShortTextElement(
+                type: LabShortTextElementType.styledText,
                 content: line,
               ),
             ],
@@ -165,26 +165,26 @@ class AppShortTextParser {
     return _combineConsecutiveImageElements(elements);
   }
 
-  List<AppShortTextElement> _combineConsecutiveImageElements(
-      List<AppShortTextElement> elements) {
-    final List<AppShortTextElement> result = [];
+  List<LabShortTextElement> _combineConsecutiveImageElements(
+      List<LabShortTextElement> elements) {
+    final List<LabShortTextElement> result = [];
     List<String>? currentImageUrls;
-    List<AppShortTextElement>? textBeforeImages;
+    List<LabShortTextElement>? textBeforeImages;
 
     for (final element in elements) {
       bool hasProcessedImages = false;
 
       // Check if this is a paragraph that ends with an image
-      if (element.type == AppShortTextElementType.paragraph &&
+      if (element.type == LabShortTextElementType.paragraph &&
           element.children != null) {
         // Find the last non-text element
         var lastNonText = element.children!.lastWhere(
-          (child) => child.type != AppShortTextElementType.styledText,
+          (child) => child.type != LabShortTextElementType.styledText,
           orElse: () => element.children!.first,
         );
 
         // If it's an image, we'll process this paragraph specially
-        if (lastNonText.type == AppShortTextElementType.images) {
+        if (lastNonText.type == LabShortTextElementType.images) {
           // Keep any text that comes before the image
           var textElements = element.children!
               .takeWhile((child) => child != lastNonText)
@@ -193,15 +193,15 @@ class AppShortTextParser {
             if (currentImageUrls != null) {
               // If we have pending images, add them before this text
 
-              result.add(AppShortTextElement(
-                type: AppShortTextElementType.images,
+              result.add(LabShortTextElement(
+                type: LabShortTextElementType.images,
                 content: currentImageUrls.join('\n'),
               ));
               currentImageUrls = null;
             }
             // Add the text as a new paragraph
-            result.add(AppShortTextElement(
-              type: AppShortTextElementType.paragraph,
+            result.add(LabShortTextElement(
+              type: LabShortTextElementType.paragraph,
               content: element.content,
               children: textElements,
             ));
@@ -220,7 +220,7 @@ class AppShortTextParser {
 
       // Handle standalone image elements
       if (!hasProcessedImages &&
-          element.type == AppShortTextElementType.images) {
+          element.type == LabShortTextElementType.images) {
         final urls = element.content.split('\n');
         if (currentImageUrls == null) {
           currentImageUrls = urls;
@@ -234,8 +234,8 @@ class AppShortTextParser {
       if (!hasProcessedImages) {
         // Add any pending images before this element
         if (currentImageUrls != null) {
-          result.add(AppShortTextElement(
-            type: AppShortTextElementType.images,
+          result.add(LabShortTextElement(
+            type: LabShortTextElementType.images,
             content: currentImageUrls.join('\n'),
           ));
           currentImageUrls = null;
@@ -246,8 +246,8 @@ class AppShortTextParser {
 
     // Add any remaining image URLs
     if (currentImageUrls != null) {
-      result.add(AppShortTextElement(
-        type: AppShortTextElementType.images,
+      result.add(LabShortTextElement(
+        type: LabShortTextElementType.images,
         content: currentImageUrls.join('\n'),
       ));
     }
@@ -255,7 +255,7 @@ class AppShortTextParser {
     return result;
   }
 
-  List<AppShortTextElement>? _parseStyledText(String text) {
+  List<LabShortTextElement>? _parseStyledText(String text) {
     if (!text.contains('*') &&
         !text.contains('_') &&
         !text.contains('~') &&
@@ -271,7 +271,7 @@ class AppShortTextParser {
       return null;
     }
 
-    final List<AppShortTextElement> styledElements = [];
+    final List<LabShortTextElement> styledElements = [];
     final RegExp combinedPattern =
         RegExp(r'\*_(.*?)_\*'); // Only match *_text_* pattern
     final RegExp combinedPattern2 =
@@ -315,14 +315,14 @@ class AppShortTextParser {
       if (utfEmojiMatch != null) {
         // Add any text before the emoji
         if (utfEmojiMatch.start > currentPosition) {
-          styledElements.add(AppShortTextElement(
-            type: AppShortTextElementType.styledText,
+          styledElements.add(LabShortTextElement(
+            type: LabShortTextElementType.styledText,
             content: text.substring(currentPosition, utfEmojiMatch.start),
           ));
         }
         // Add the emoji
-        styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.utfEmoji,
+        styledElements.add(LabShortTextElement(
+          type: LabShortTextElementType.utfEmoji,
           content: utfEmojiMatch[0]!,
         ));
         currentPosition = utfEmojiMatch.end;
@@ -378,8 +378,8 @@ class AppShortTextParser {
       if (matches.isEmpty) {
         // If no matches found, add one character and continue
         if (currentPosition < text.length) {
-          styledElements.add(AppShortTextElement(
-            type: AppShortTextElementType.styledText,
+          styledElements.add(LabShortTextElement(
+            type: LabShortTextElementType.styledText,
             content: text[currentPosition],
           ));
         }
@@ -400,8 +400,8 @@ class AppShortTextParser {
 
       // Add any text before the match
       if (firstMatch.start > currentPosition) {
-        styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.styledText,
+        styledElements.add(LabShortTextElement(
+          type: LabShortTextElementType.styledText,
           content: text.substring(currentPosition, firstMatch.start),
         ));
       }
@@ -428,29 +428,29 @@ class AppShortTextParser {
                             ? 'underline'
                             : 'line-through';
 
-        styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.styledText,
+        styledElements.add(LabShortTextElement(
+          type: LabShortTextElementType.styledText,
           content: content,
           attributes: {'style': style},
         ));
       } else if (firstMatch == monospaceMatch) {
-        styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.monospace,
+        styledElements.add(LabShortTextElement(
+          type: LabShortTextElementType.monospace,
           content: firstMatch.group(1)!,
         ));
       } else if (firstMatch == emojiMatch) {
-        styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.emoji,
+        styledElements.add(LabShortTextElement(
+          type: LabShortTextElementType.emoji,
           content: firstMatch.group(1)!,
         ));
       } else if (firstMatch == hashtagMatch) {
-        styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.hashtag,
+        styledElements.add(LabShortTextElement(
+          type: LabShortTextElementType.hashtag,
           content: firstMatch.group(1)!,
         ));
       } else if (firstMatch == nostrModelMatch) {
-        styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.nostrModel,
+        styledElements.add(LabShortTextElement(
+          type: LabShortTextElementType.nostrModel,
           content: firstMatch[0]!.trim(),
         ));
 
@@ -462,8 +462,8 @@ class AppShortTextParser {
         currentPosition = nextPosition;
         continue;
       } else if (firstMatch == nostrProfileMatch) {
-        styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.nostrProfile,
+        styledElements.add(LabShortTextElement(
+          type: LabShortTextElementType.nostrProfile,
           content: firstMatch[0]!,
         ));
       } else if (firstMatch == imageUrlMatch) {
@@ -494,8 +494,8 @@ class AppShortTextParser {
           break;
         }
 
-        styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.images,
+        styledElements.add(LabShortTextElement(
+          type: LabShortTextElementType.images,
           content: imageUrls.join('\n'),
         ));
 
@@ -503,8 +503,8 @@ class AppShortTextParser {
         currentPosition = text.length - remainingText.length;
         continue;
       } else if (firstMatch == audioUrlMatch) {
-        styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.audio,
+        styledElements.add(LabShortTextElement(
+          type: LabShortTextElementType.audio,
           content: firstMatch[0]!.trim(),
         ));
 
@@ -516,14 +516,14 @@ class AppShortTextParser {
         currentPosition = nextPosition;
         continue;
       } else if (firstMatch == markdownLinkMatch) {
-        styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.link,
+        styledElements.add(LabShortTextElement(
+          type: LabShortTextElementType.link,
           content: firstMatch.group(1)!, // The link text
           attributes: {'url': firstMatch.group(2)!}, // The URL
         ));
       } else if (firstMatch == urlMatch) {
-        styledElements.add(AppShortTextElement(
-          type: AppShortTextElementType.link,
+        styledElements.add(LabShortTextElement(
+          type: LabShortTextElementType.link,
           content: firstMatch[0]!,
         ));
       }
@@ -558,11 +558,11 @@ class AppShortTextParser {
     return count;
   }
 
-  List<AppShortTextElement> _parseInlineContent(String content) {
+  List<LabShortTextElement> _parseInlineContent(String content) {
     // For now, just return a single styled text element with the content
     return [
-      AppShortTextElement(
-        type: AppShortTextElementType.styledText,
+      LabShortTextElement(
+        type: LabShortTextElementType.styledText,
         content: content,
       ),
     ];

@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppAppReleaseCard extends StatelessWidget {
+class LabAppReleaseCard extends StatelessWidget {
   final App app;
   final String releaseNumber; // TODO: get data from app via models package
   final String size; // TODO: get data from app via models package
@@ -10,7 +10,7 @@ class AppAppReleaseCard extends StatelessWidget {
   final VoidCallback onInstall;
   final bool isInstalled;
 
-  const AppAppReleaseCard({
+  const LabAppReleaseCard({
     super.key,
     required this.app,
     required this.releaseNumber,
@@ -23,35 +23,35 @@ class AppAppReleaseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppContainer(
-      padding: const AppEdgeInsets.all(AppGapSize.s16),
+    return LabContainer(
+      padding: const LabEdgeInsets.all(LabGapSize.s16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // App info header
           Row(
             children: [
-              AppProfilePicSquare.fromUrl(
+              LabProfilePicSquare.fromUrl(
                 app.icons.first,
-                size: AppProfilePicSquareSize.s56,
+                size: LabProfilePicSquareSize.s56,
               ),
-              const AppGap.s16(),
+              const LabGap.s16(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      AppText.h2(app.name ?? ''),
-                      const AppGap.s12(),
-                      AppIcon.s14(theme.icons.characters.chevronRight,
+                      LabText.h2(app.name ?? ''),
+                      const LabGap.s12(),
+                      LabIcon.s14(theme.icons.characters.chevronRight,
                           outlineColor: theme.colors.white33,
                           outlineThickness:
-                              AppLineThicknessData.normal().medium),
+                              LabLineThicknessData.normal().medium),
                     ],
                   ),
-                  AppText.reg12(
+                  LabText.reg12(
                     releaseNumber,
                     color: theme.colors.white66,
                   ),
@@ -60,13 +60,13 @@ class AppAppReleaseCard extends StatelessWidget {
             ],
           ),
 
-          const AppGap.s12(),
+          const LabGap.s12(),
 
           // Description with "View More"
           GestureDetector(
             onTap: onViewMore,
-            child: AppContainer(
-              child: AppText.reg14(
+            child: LabContainer(
+              child: LabText.reg14(
                 app.description,
                 color: theme.colors.white66,
                 maxLines: 3,
@@ -75,14 +75,14 @@ class AppAppReleaseCard extends StatelessWidget {
             ),
           ),
 
-          const AppGap.s12(),
+          const LabGap.s12(),
 
           // Details panel (placeholder for now)
-          AppPanel(
+          LabPanel(
             isLight: true,
-            padding: const AppEdgeInsets.symmetric(
-                horizontal: AppGapSize.s16, vertical: AppGapSize.s10),
-            child: AppContainer(
+            padding: const LabEdgeInsets.symmetric(
+                horizontal: LabGapSize.s16, vertical: LabGapSize.s10),
+            child: LabContainer(
               // Temporary height
               child: Column(
                 children: [
@@ -94,20 +94,20 @@ class AppAppReleaseCard extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                AppText.reg14('Source',
+                                LabText.reg14('Source',
                                     color: theme.colors.white66),
-                                const AppGap.s12(),
+                                const LabGap.s12(),
                                 Expanded(
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      AppEmojiImage(
+                                      LabEmojiImage(
                                           emojiUrl: 'emojis/folder.png',
                                           emojiName: 'folder',
                                           size: theme.sizes.s16),
-                                      const AppGap.s8(),
+                                      const LabGap.s8(),
                                       Flexible(
-                                        child: AppText.med14(
+                                        child: LabText.med14(
                                           app.repository ?? '',
                                           textOverflow: TextOverflow.ellipsis,
                                           color: theme.colors.blurpleLightColor,
@@ -118,40 +118,40 @@ class AppAppReleaseCard extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            const AppGap.s4(),
+                            const LabGap.s4(),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                AppText.reg14('Size',
+                                LabText.reg14('Size',
                                     color: theme.colors.white66),
-                                AppText.reg14(size),
+                                LabText.reg14(size),
                               ],
                             ),
                           ],
                         ),
                       ),
-                      const AppGap.s32(),
+                      const LabGap.s32(),
                       Expanded(
                         child: Column(
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                AppText.reg14('Date',
+                                LabText.reg14('Date',
                                     color: theme.colors.white66),
-                                const AppGap.s12(),
-                                AppText.reg14(date),
+                                const LabGap.s12(),
+                                LabText.reg14(date),
                               ],
                             ),
-                            const AppGap.s4(),
+                            const LabGap.s4(),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                AppText.reg14('License',
+                                LabText.reg14('License',
                                     color: theme.colors.white66),
-                                const AppGap.s12(),
+                                const LabGap.s12(),
                                 Flexible(
-                                  child: AppText.reg14(app.license ?? '',
+                                  child: LabText.reg14(app.license ?? '',
                                       textOverflow: TextOverflow.ellipsis),
                                 ),
                               ],
@@ -166,36 +166,36 @@ class AppAppReleaseCard extends StatelessWidget {
             ),
           ),
 
-          const AppGap.s12(),
+          const LabGap.s12(),
 
           // Publisher info
-          AppPanelButton(
+          LabPanelButton(
             isLight: true,
-            padding: const AppEdgeInsets.symmetric(
-                horizontal: AppGapSize.s16, vertical: AppGapSize.s10),
+            padding: const LabEdgeInsets.symmetric(
+                horizontal: LabGapSize.s16, vertical: LabGapSize.s10),
             onTap: () {}, // Add callback if needed
             child: Row(
               children: [
-                AppText.med14(
+                LabText.med14(
                   'Published by',
                   color: theme.colors.white66,
                 ),
                 const Spacer(),
-                AppProfilePic.s24(app.author.value),
-                const AppGap.s8(),
-                AppText.bold14(app.author.value?.name ??
+                LabProfilePic.s24(app.author.value),
+                const LabGap.s8(),
+                LabText.bold14(app.author.value?.name ??
                     formatNpub(app.author.value?.pubkey ?? '')),
               ],
             ),
           ),
 
-          const AppGap.s12(),
+          const LabGap.s12(),
 
           // Install button
-          AppButton(
+          LabButton(
             onTap: onInstall,
             children: [
-              AppText.med16(
+              LabText.med16(
                 isInstalled ? 'Update' : 'Install',
                 color: theme.colors.whiteEnforced,
               ),

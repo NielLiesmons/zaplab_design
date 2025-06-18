@@ -1,7 +1,7 @@
 import 'package:zaplab_design/src/theme/theme.dart';
 import 'package:flutter/widgets.dart';
 
-enum AppTextLevel {
+enum LabTextLevel {
   /// App Typography
   h1,
   h2,
@@ -36,8 +36,8 @@ enum AppTextLevel {
   caption,
 }
 
-class AppText extends StatelessWidget {
-  const AppText(
+class LabText extends StatelessWidget {
+  const LabText(
     this.data, {
     super.key,
     this.color,
@@ -46,11 +46,11 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-    this.level = AppTextLevel.med16,
+    this.level = LabTextLevel.med16,
   });
 
   /// App Typography
-  const AppText.h1(
+  const LabText.h1(
     this.data, {
     super.key,
     this.color,
@@ -59,9 +59,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.h1;
+  }) : level = LabTextLevel.h1;
 
-  const AppText.h2(
+  const LabText.h2(
     this.data, {
     super.key,
     this.color,
@@ -70,9 +70,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.h2;
+  }) : level = LabTextLevel.h2;
 
-  const AppText.h3(
+  const LabText.h3(
     this.data, {
     super.key,
     this.color,
@@ -81,9 +81,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.h3;
+  }) : level = LabTextLevel.h3;
 
-  const AppText.bold16(
+  const LabText.bold16(
     this.data, {
     super.key,
     this.color,
@@ -92,9 +92,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.bold16;
+  }) : level = LabTextLevel.bold16;
 
-  const AppText.med16(
+  const LabText.med16(
     this.data, {
     super.key,
     this.color,
@@ -103,9 +103,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.med16;
+  }) : level = LabTextLevel.med16;
 
-  const AppText.reg16(
+  const LabText.reg16(
     this.data, {
     super.key,
     this.color,
@@ -114,9 +114,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.reg16;
+  }) : level = LabTextLevel.reg16;
 
-  const AppText.bold14(
+  const LabText.bold14(
     this.data, {
     super.key,
     this.color,
@@ -125,9 +125,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.bold14;
+  }) : level = LabTextLevel.bold14;
 
-  const AppText.med14(
+  const LabText.med14(
     this.data, {
     super.key,
     this.color,
@@ -136,9 +136,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.med14;
+  }) : level = LabTextLevel.med14;
 
-  const AppText.reg14(
+  const LabText.reg14(
     this.data, {
     super.key,
     this.color,
@@ -147,9 +147,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.reg14;
+  }) : level = LabTextLevel.reg14;
 
-  const AppText.bold12(
+  const LabText.bold12(
     this.data, {
     super.key,
     this.color,
@@ -158,9 +158,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.bold12;
+  }) : level = LabTextLevel.bold12;
 
-  const AppText.med12(
+  const LabText.med12(
     this.data, {
     super.key,
     this.color,
@@ -169,9 +169,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.med12;
+  }) : level = LabTextLevel.med12;
 
-  const AppText.reg12(
+  const LabText.reg12(
     this.data, {
     super.key,
     this.color,
@@ -180,9 +180,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.reg12;
+  }) : level = LabTextLevel.reg12;
 
-  const AppText.bold10(
+  const LabText.bold10(
     this.data, {
     super.key,
     this.color,
@@ -191,9 +191,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.bold10;
+  }) : level = LabTextLevel.bold10;
 
-  const AppText.med10(
+  const LabText.med10(
     this.data, {
     super.key,
     this.color,
@@ -202,9 +202,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.med10;
+  }) : level = LabTextLevel.med10;
 
-  const AppText.reg10(
+  const LabText.reg10(
     this.data, {
     super.key,
     this.color,
@@ -213,9 +213,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.reg10;
+  }) : level = LabTextLevel.reg10;
 
-  const AppText.link(
+  const LabText.link(
     this.data, {
     super.key,
     this.color,
@@ -224,10 +224,10 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.link;
+  }) : level = LabTextLevel.link;
 
   /// Long Form Typography
-  const AppText.longformh1(
+  const LabText.longformh1(
     this.data, {
     super.key,
     this.color,
@@ -236,9 +236,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.longformh1;
+  }) : level = LabTextLevel.longformh1;
 
-  const AppText.longformh2(
+  const LabText.longformh2(
     this.data, {
     super.key,
     this.color,
@@ -247,9 +247,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.longformh2;
+  }) : level = LabTextLevel.longformh2;
 
-  const AppText.longformh3(
+  const LabText.longformh3(
     this.data, {
     super.key,
     this.color,
@@ -258,9 +258,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.longformh3;
+  }) : level = LabTextLevel.longformh3;
 
-  const AppText.longformh4(
+  const LabText.longformh4(
     this.data, {
     super.key,
     this.color,
@@ -269,9 +269,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.longformh4;
+  }) : level = LabTextLevel.longformh4;
 
-  const AppText.longformh5(
+  const LabText.longformh5(
     this.data, {
     super.key,
     this.color,
@@ -280,9 +280,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.longformh5;
+  }) : level = LabTextLevel.longformh5;
 
-  const AppText.regArticle(
+  const LabText.regArticle(
     this.data, {
     super.key,
     this.color,
@@ -291,9 +291,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.regArticle;
+  }) : level = LabTextLevel.regArticle;
 
-  const AppText.boldArticle(
+  const LabText.boldArticle(
     this.data, {
     super.key,
     this.color,
@@ -302,9 +302,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.boldArticle;
+  }) : level = LabTextLevel.boldArticle;
 
-  const AppText.linkArticle(
+  const LabText.linkArticle(
     this.data, {
     super.key,
     this.color,
@@ -313,9 +313,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.linkArticle;
+  }) : level = LabTextLevel.linkArticle;
 
-  const AppText.regWiki(
+  const LabText.regWiki(
     this.data, {
     super.key,
     this.color,
@@ -324,9 +324,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.regWiki;
+  }) : level = LabTextLevel.regWiki;
 
-  const AppText.boldWiki(
+  const LabText.boldWiki(
     this.data, {
     super.key,
     this.color,
@@ -335,9 +335,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.boldWiki;
+  }) : level = LabTextLevel.boldWiki;
 
-  const AppText.linkWiki(
+  const LabText.linkWiki(
     this.data, {
     super.key,
     this.color,
@@ -346,9 +346,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.linkWiki;
+  }) : level = LabTextLevel.linkWiki;
 
-  const AppText.code(
+  const LabText.code(
     this.data, {
     super.key,
     this.color,
@@ -357,9 +357,9 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.code;
+  }) : level = LabTextLevel.code;
 
-  const AppText.caption(
+  const LabText.caption(
     this.data, {
     super.key,
     this.color,
@@ -368,10 +368,10 @@ class AppText extends StatelessWidget {
     this.maxLines,
     this.textOverflow,
     this.textAlign,
-  }) : level = AppTextLevel.caption;
+  }) : level = LabTextLevel.caption;
 
   final String data;
-  final AppTextLevel level;
+  final LabTextLevel level;
   final Color? color;
   final Gradient? gradient;
   final double? fontSize;
@@ -381,7 +381,7 @@ class AppText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final defaultColor = theme.colors.white;
     final resolvedColor = gradient == null ? (color ?? defaultColor) : null;
     final style = _getTextStyle(theme, level);
@@ -413,65 +413,65 @@ class AppText extends StatelessWidget {
     return text;
   }
 
-  TextStyle _getTextStyle(AppThemeData theme, AppTextLevel level) {
+  TextStyle _getTextStyle(LabThemeData theme, LabTextLevel level) {
     switch (level) {
-      case AppTextLevel.h1:
+      case LabTextLevel.h1:
         return theme.typography.h1;
-      case AppTextLevel.h2:
+      case LabTextLevel.h2:
         return theme.typography.h2;
-      case AppTextLevel.h3:
+      case LabTextLevel.h3:
         return theme.typography.h3;
-      case AppTextLevel.bold16:
+      case LabTextLevel.bold16:
         return theme.typography.bold16;
-      case AppTextLevel.med16:
+      case LabTextLevel.med16:
         return theme.typography.med16;
-      case AppTextLevel.reg16:
+      case LabTextLevel.reg16:
         return theme.typography.reg16;
-      case AppTextLevel.bold14:
+      case LabTextLevel.bold14:
         return theme.typography.bold14;
-      case AppTextLevel.med14:
+      case LabTextLevel.med14:
         return theme.typography.med14;
-      case AppTextLevel.reg14:
+      case LabTextLevel.reg14:
         return theme.typography.reg14;
-      case AppTextLevel.bold12:
+      case LabTextLevel.bold12:
         return theme.typography.bold12;
-      case AppTextLevel.med12:
+      case LabTextLevel.med12:
         return theme.typography.med12;
-      case AppTextLevel.reg12:
+      case LabTextLevel.reg12:
         return theme.typography.reg12;
-      case AppTextLevel.bold10:
+      case LabTextLevel.bold10:
         return theme.typography.bold10;
-      case AppTextLevel.med10:
+      case LabTextLevel.med10:
         return theme.typography.med10;
-      case AppTextLevel.reg10:
+      case LabTextLevel.reg10:
         return theme.typography.reg10;
-      case AppTextLevel.link:
+      case LabTextLevel.link:
         return theme.typography.link;
-      case AppTextLevel.longformh1:
+      case LabTextLevel.longformh1:
         return theme.typography.longformh1;
-      case AppTextLevel.longformh2:
+      case LabTextLevel.longformh2:
         return theme.typography.longformh2;
-      case AppTextLevel.longformh3:
+      case LabTextLevel.longformh3:
         return theme.typography.longformh3;
-      case AppTextLevel.longformh4:
+      case LabTextLevel.longformh4:
         return theme.typography.longformh4;
-      case AppTextLevel.longformh5:
+      case LabTextLevel.longformh5:
         return theme.typography.longformh5;
-      case AppTextLevel.boldArticle:
+      case LabTextLevel.boldArticle:
         return theme.typography.boldArticle;
-      case AppTextLevel.regArticle:
+      case LabTextLevel.regArticle:
         return theme.typography.regArticle;
-      case AppTextLevel.linkArticle:
+      case LabTextLevel.linkArticle:
         return theme.typography.linkArticle;
-      case AppTextLevel.boldWiki:
+      case LabTextLevel.boldWiki:
         return theme.typography.boldWiki;
-      case AppTextLevel.regWiki:
+      case LabTextLevel.regWiki:
         return theme.typography.regWiki;
-      case AppTextLevel.linkWiki:
+      case LabTextLevel.linkWiki:
         return theme.typography.linkWiki;
-      case AppTextLevel.code:
+      case LabTextLevel.code:
         return theme.typography.code;
-      case AppTextLevel.caption:
+      case LabTextLevel.caption:
         return theme.typography.caption;
     }
   }

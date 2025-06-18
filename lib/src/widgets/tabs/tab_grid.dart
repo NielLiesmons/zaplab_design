@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppTabGrid extends StatelessWidget {
-  const AppTabGrid({
+class LabTabGrid extends StatelessWidget {
+  const LabTabGrid({
     super.key,
     required this.tabs,
     required this.selectedIndex,
@@ -12,7 +12,7 @@ class AppTabGrid extends StatelessWidget {
   final List<TabData> tabs;
   final int selectedIndex;
   final ValueChanged<int> onTabSelected;
-  final GlobalKey<AppTabBarState> tabBarKey;
+  final GlobalKey<LabTabBarState> tabBarKey;
 
   void _handleTabSelection(int index) {
     onTabSelected(index);
@@ -22,7 +22,7 @@ class AppTabGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final rowCount = (tabs.length / 3).ceil();
     // final isInsideModal = ModalScope.of(context);
 
@@ -36,12 +36,12 @@ class AppTabGrid extends StatelessWidget {
               for (var col = 0; col < 3; col++) ...[
                 if (row * 3 + col < tabs.length)
                   Expanded(
-                    child: AppPanelButton(
-                      padding: const AppEdgeInsets.only(
-                        top: AppGapSize.s20,
-                        bottom: AppGapSize.s14,
-                        left: AppGapSize.s12,
-                        right: AppGapSize.s12,
+                    child: LabPanelButton(
+                      padding: const LabEdgeInsets.only(
+                        top: LabGapSize.s20,
+                        bottom: LabGapSize.s14,
+                        left: LabGapSize.s12,
+                        right: LabGapSize.s12,
                       ),
                       onTap: () => _handleTabSelection(row * 3 + col),
                       gradient: row * 3 + col == selectedIndex
@@ -54,8 +54,8 @@ class AppTabGrid extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           tabs[row * 3 + col].icon,
-                          const AppGap.s10(),
-                          AppText.med14(
+                          const LabGap.s10(),
+                          LabText.med14(
                             tabs[row * 3 + col].label,
                             color: row * 3 + col == selectedIndex
                                 ? theme.colors.whiteEnforced
@@ -69,11 +69,11 @@ class AppTabGrid extends StatelessWidget {
                   )
                 else
                   const Expanded(child: SizedBox()),
-                if (col < 2) const AppGap.s12(),
+                if (col < 2) const LabGap.s12(),
               ],
             ],
           ),
-          if (row < rowCount - 1) const AppGap.s12(),
+          if (row < rowCount - 1) const LabGap.s12(),
         ],
       ],
     );

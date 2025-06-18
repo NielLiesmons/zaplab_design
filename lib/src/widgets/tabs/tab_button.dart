@@ -1,8 +1,8 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppTabButton extends StatelessWidget {
-  const AppTabButton({
+class LabTabButton extends StatelessWidget {
+  const LabTabButton({
     super.key,
     required this.label,
     required this.icon,
@@ -21,7 +21,7 @@ class AppTabButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final isInsideModal = ModalScope.of(context);
 
     final defaultGradient = theme.colors.blurple;
@@ -41,28 +41,28 @@ class AppTabButton extends StatelessWidget {
 
         return Transform.scale(
           scale: scaleFactor,
-          child: AppContainer(
+          child: LabContainer(
             height: theme.sizes.s32,
             decoration: BoxDecoration(
               gradient: isSelected ? defaultGradient : null,
               color: isSelected ? null : inactiveColor,
               borderRadius: theme.radius.asBorderRadius().rad32,
             ),
-            padding: const AppEdgeInsets.symmetric(
-              horizontal: AppGapSize.s16,
+            padding: const LabEdgeInsets.symmetric(
+              horizontal: LabGapSize.s16,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                AppText.med14(
+                LabText.med14(
                   label,
                   color: isSelected
                       ? theme.colors.whiteEnforced
                       : theme.colors.white,
                 ),
                 if (count != null && count! > 0) ...[
-                  const AppGap.s8(),
-                  AppText.med14(
+                  const LabGap.s8(),
+                  LabText.med14(
                     count.toString(),
                     color: isSelected
                         ? theme.colors.whiteEnforced.withValues(alpha: 0.66)

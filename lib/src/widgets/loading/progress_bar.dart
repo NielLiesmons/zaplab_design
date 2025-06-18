@@ -1,10 +1,10 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppProgressBar extends StatelessWidget {
+class LabProgressBar extends StatelessWidget {
   final double progress; // Progress value (0.0 to 1.0)
   final double height;
   final bool isLight;
-  const AppProgressBar({
+  const LabProgressBar({
     super.key,
     required this.progress,
     this.height = 4,
@@ -13,14 +13,14 @@ class AppProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return SizedBox(
       height: height,
       child: Stack(
         children: [
           // Background bar
-          AppContainer(
+          LabContainer(
             height: height,
             decoration: BoxDecoration(
               borderRadius: theme.radius.asBorderRadius().rad16,

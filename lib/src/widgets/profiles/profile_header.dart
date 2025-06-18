@@ -1,8 +1,8 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppProfileHeader extends StatelessWidget {
-  const AppProfileHeader({
+class LabProfileHeader extends StatelessWidget {
+  const LabProfileHeader({
     super.key,
     required this.profile,
   });
@@ -11,9 +11,9 @@ class AppProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppContainer(
+    return LabContainer(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         color: theme.colors.black,
@@ -23,7 +23,7 @@ class AppProfileHeader extends StatelessWidget {
           // Cover image
           AspectRatio(
             aspectRatio: 3 / 1.2,
-            child: AppContainer(
+            child: LabContainer(
               decoration: BoxDecoration(
                 color: Color(profileToColor(profile)).withValues(alpha: 0.16),
               ),
@@ -35,19 +35,19 @@ class AppProfileHeader extends StatelessWidget {
                         return const SizedBox.shrink();
                       },
                       loadingBuilder: (context, error, stackTrace) {
-                        return const AppSkeletonLoader();
+                        return const LabSkeletonLoader();
                       },
                     )
                   : null,
             ),
           ),
           // Profile section
-          AppContainer(
-            padding: const AppEdgeInsets.only(
-              left: AppGapSize.s12,
-              right: AppGapSize.s12,
-              top: AppGapSize.s8,
-              bottom: AppGapSize.s10,
+          LabContainer(
+            padding: const LabEdgeInsets.only(
+              left: LabGapSize.s12,
+              right: LabGapSize.s12,
+              top: LabGapSize.s8,
+              bottom: LabGapSize.s10,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,25 +55,25 @@ class AppProfileHeader extends StatelessWidget {
                 Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    AppContainer(
+                    LabContainer(
                       height: 40,
                     ),
                     Positioned(
                       top: -40,
-                      child: AppProfilePic.s80(profile),
+                      child: LabProfilePic.s80(profile),
                     ),
                   ],
                 ),
-                const AppGap.s80(),
-                const AppGap.s12(),
+                const LabGap.s80(),
+                const LabGap.s12(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppText.bold16(
+                    LabText.bold16(
                       profile.name ?? formatNpub(profile.npub),
                       color: theme.colors.white,
                     ),
-                    AppNpubDisplay(profile: profile),
+                    LabNpubDisplay(profile: profile),
                   ],
                 ),
               ],
@@ -82,11 +82,11 @@ class AppProfileHeader extends StatelessWidget {
           if (profile.about != null && profile.about!.isNotEmpty)
             Column(
               children: [
-                const AppDivider(),
-                AppContainer(
-                  padding: const AppEdgeInsets.symmetric(
-                    horizontal: AppGapSize.s12,
-                    vertical: AppGapSize.s8,
+                const LabDivider(),
+                LabContainer(
+                  padding: const LabEdgeInsets.symmetric(
+                    horizontal: LabGapSize.s12,
+                    vertical: LabGapSize.s8,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,7 +94,7 @@ class AppProfileHeader extends StatelessWidget {
                       Row(
                         children: [
                           Flexible(
-                            child: AppText.reg14(
+                            child: LabText.reg14(
                               profile.about ?? '',
                             ),
                           ),

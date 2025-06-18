@@ -1,27 +1,27 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppTypingBubble extends StatelessWidget {
+class LabTypingBubble extends StatelessWidget {
   final Profile? profile;
 
-  const AppTypingBubble({
+  const LabTypingBubble({
     super.key,
     this.profile,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        AppContainer(
-          child: AppProfilePic.s32(profile),
+        LabContainer(
+          child: LabProfilePic.s32(profile),
         ),
-        const AppGap.s4(),
-        AppContainer(
+        const LabGap.s4(),
+        LabContainer(
           width: 56,
           height: 32,
           decoration: BoxDecoration(
@@ -33,15 +33,15 @@ class AppTypingBubble extends StatelessWidget {
               bottomLeft: theme.radius.rad4,
             ),
           ),
-          padding: const AppEdgeInsets.only(
-            left: AppGapSize.s8,
-            right: AppGapSize.s8,
-            top: AppGapSize.s4,
-            bottom: AppGapSize.s2,
+          padding: const LabEdgeInsets.only(
+            left: LabGapSize.s8,
+            right: LabGapSize.s8,
+            top: LabGapSize.s4,
+            bottom: LabGapSize.s2,
           ),
           child: Transform.scale(
             scale: 0.9,
-            child: AppLoadingDots(
+            child: LabLoadingDots(
               color: theme.colors.white66,
             ),
           ),

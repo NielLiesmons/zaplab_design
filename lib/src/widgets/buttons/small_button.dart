@@ -1,8 +1,8 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppSmallButton extends StatelessWidget {
-  const AppSmallButton({
+class LabSmallButton extends StatelessWidget {
+  const LabSmallButton({
     super.key,
     required this.children,
     this.onTap,
@@ -31,11 +31,11 @@ class AppSmallButton extends StatelessWidget {
   final Color? pressedColor;
   final bool square;
   final bool rounded;
-  final AppEdgeInsets? padding;
+  final LabEdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     // Determine the gradients/colors to use
     final defaultGradient = theme.colors.blurple;
@@ -69,7 +69,7 @@ class AppSmallButton extends StatelessWidget {
           child: Semantics(
             enabled: true,
             selected: true,
-            child: AppSmallButtonLayout(
+            child: LabSmallButtonLayout(
               content: children,
               square: square,
               rounded: rounded,
@@ -93,8 +93,8 @@ class AppSmallButton extends StatelessWidget {
   }
 }
 
-class AppSmallButtonLayout extends StatelessWidget {
-  const AppSmallButtonLayout({
+class LabSmallButtonLayout extends StatelessWidget {
+  const LabSmallButtonLayout({
     super.key,
     required this.content,
     this.gradient,
@@ -111,14 +111,14 @@ class AppSmallButtonLayout extends StatelessWidget {
   final VoidCallback? onChevronTap;
   final bool square;
   final bool rounded;
-  final AppEdgeInsets? padding;
+  final LabEdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final buttonHeight = theme.sizes.s32;
 
-    return AppContainer(
+    return LabContainer(
       decoration: BoxDecoration(
         borderRadius: rounded
             ? theme.radius.asBorderRadius().rad16
@@ -132,12 +132,12 @@ class AppSmallButtonLayout extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          AppContainer(
+          LabContainer(
             padding: padding ??
                 (square
                     ? null
-                    : const AppEdgeInsets.symmetric(
-                        horizontal: AppGapSize.s12,
+                    : const LabEdgeInsets.symmetric(
+                        horizontal: LabGapSize.s12,
                       )),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -146,24 +146,24 @@ class AppSmallButtonLayout extends StatelessWidget {
             ),
           ),
           if (onChevronTap != null) ...[
-            AppDivider.vertical(
+            LabDivider.vertical(
               color: theme.colors.whiteEnforced.withValues(alpha: 0.33),
             ),
             GestureDetector(
               onTap: onChevronTap,
               behavior: HitTestBehavior.opaque,
-              child: AppContainer(
-                padding: const AppEdgeInsets.only(
-                  left: AppGapSize.s8,
-                  right: AppGapSize.s8,
-                  top: AppGapSize.s2,
-                  bottom: AppGapSize.none,
+              child: LabContainer(
+                padding: const LabEdgeInsets.only(
+                  left: LabGapSize.s8,
+                  right: LabGapSize.s8,
+                  top: LabGapSize.s2,
+                  bottom: LabGapSize.none,
                 ),
-                child: AppIcon.s4(
+                child: LabIcon.s4(
                   theme.icons.characters.chevronDown,
                   outlineColor:
                       theme.colors.whiteEnforced.withValues(alpha: 0.66),
-                  outlineThickness: AppLineThicknessData.normal().medium,
+                  outlineThickness: LabLineThicknessData.normal().medium,
                 ),
               ),
             ),

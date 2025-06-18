@@ -2,14 +2,14 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
 
-class AppServiceCard extends StatelessWidget {
+class LabServiceCard extends StatelessWidget {
   final Service service;
   final Function(Model) onTap;
   final Function(Profile) onProfileTap;
   final bool isUnread;
   final bool noPadding;
 
-  const AppServiceCard({
+  const LabServiceCard({
     super.key,
     required this.service,
     required this.onTap,
@@ -20,20 +20,20 @@ class AppServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return TapBuilder(
       onTap: () => onTap(service),
       builder: (context, state, hasFocus) {
-        return AppContainer(
+        return LabContainer(
           padding: noPadding
-              ? const AppEdgeInsets.all(AppGapSize.none)
-              : AppEdgeInsets.only(
+              ? const LabEdgeInsets.all(LabGapSize.none)
+              : LabEdgeInsets.only(
                   top:
-                      service.images.isEmpty ? AppGapSize.none : AppGapSize.s12,
-                  bottom: AppGapSize.s8,
-                  left: AppGapSize.s12,
-                  right: AppGapSize.s12,
+                      service.images.isEmpty ? LabGapSize.none : LabGapSize.s12,
+                  bottom: LabGapSize.s8,
+                  left: LabGapSize.s12,
+                  right: LabGapSize.s12,
                 ),
           child: Column(
             children: [
@@ -43,7 +43,7 @@ class AppServiceCard extends StatelessWidget {
                   builder: (context, constraints) {
                     final maxWidth = constraints.maxWidth;
                     if (maxWidth > 400) {
-                      return AppContainer(
+                      return LabContainer(
                         width: double.infinity,
                         height: 400 * (9 / 16),
                         clipBehavior: Clip.hardEdge,
@@ -52,7 +52,7 @@ class AppServiceCard extends StatelessWidget {
                           borderRadius: theme.radius.asBorderRadius().rad16,
                           border: Border.all(
                             color: theme.colors.white16,
-                            width: AppLineThicknessData.normal().thin,
+                            width: LabLineThicknessData.normal().thin,
                           ),
                         ),
                         child: Image.network(
@@ -60,18 +60,18 @@ class AppServiceCard extends StatelessWidget {
                           fit: BoxFit.cover,
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
-                            return const AppSkeletonLoader();
+                            return const LabSkeletonLoader();
                           },
                           errorBuilder: (context, error, stackTrace) {
                             print('Error loading image: $error');
-                            return const AppSkeletonLoader();
+                            return const LabSkeletonLoader();
                           },
                         ),
                       );
                     }
                     return AspectRatio(
                       aspectRatio: 16 / 9,
-                      child: AppContainer(
+                      child: LabContainer(
                         width: double.infinity,
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
@@ -79,7 +79,7 @@ class AppServiceCard extends StatelessWidget {
                           borderRadius: theme.radius.asBorderRadius().rad16,
                           border: Border.all(
                             color: theme.colors.white16,
-                            width: AppLineThicknessData.normal().thin,
+                            width: LabLineThicknessData.normal().thin,
                           ),
                         ),
                         child: Image.network(
@@ -87,18 +87,18 @@ class AppServiceCard extends StatelessWidget {
                           fit: BoxFit.cover,
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
-                            return const AppSkeletonLoader();
+                            return const LabSkeletonLoader();
                           },
                           errorBuilder: (context, error, stackTrace) {
                             print('Error loading image: $error');
-                            return const AppSkeletonLoader();
+                            return const LabSkeletonLoader();
                           },
                         ),
                       ),
                     );
                   },
                 ),
-              const AppGap.s8(),
+              const LabGap.s8(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -108,13 +108,13 @@ class AppServiceCard extends StatelessWidget {
                         Column(
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            const AppGap.s4(),
-                            AppProfilePic.s38(service.author.value,
+                            const LabGap.s4(),
+                            LabProfilePic.s38(service.author.value,
                                 onTap: () => onProfileTap(
                                     service.author.value as Profile)),
                           ],
                         ),
-                        const AppGap.s12(),
+                        const LabGap.s12(),
                         Expanded(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -124,17 +124,17 @@ class AppServiceCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    child: AppText.bold16(
+                                    child: LabText.bold16(
                                       service.title ?? 'No Title',
                                       maxLines: 1,
                                       textOverflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  const AppGap.s4(),
+                                  const LabGap.s4(),
                                   if (isUnread)
-                                    AppContainer(
-                                      margin: const AppEdgeInsets.only(
-                                          top: AppGapSize.s8),
+                                    LabContainer(
+                                      margin: const LabEdgeInsets.only(
+                                          top: LabGapSize.s8),
                                       height: theme.sizes.s8,
                                       width: theme.sizes.s8,
                                       decoration: BoxDecoration(
@@ -145,11 +145,11 @@ class AppServiceCard extends StatelessWidget {
                                     ),
                                 ],
                               ),
-                              const AppGap.s2(),
+                              const LabGap.s2(),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  AppText.med12(
+                                  LabText.med12(
                                       service.author.value?.name ??
                                           formatNpub(
                                               service.author.value?.pubkey ??
@@ -164,9 +164,9 @@ class AppServiceCard extends StatelessWidget {
                     ),
                   ),
                   if (service.content.isNotEmpty)
-                    AppContainer(
-                      padding: const AppEdgeInsets.all(AppGapSize.s6),
-                      child: AppText.reg14(
+                    LabContainer(
+                      padding: const LabEdgeInsets.all(LabGapSize.s6),
+                      child: LabText.reg14(
                         service.summary ?? "No summary specified",
                         maxLines: 2,
                         textOverflow: TextOverflow.ellipsis,

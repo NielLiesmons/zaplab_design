@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
 import 'dart:ui' show PlatformDispatcher;
 
-class AppPlatformUtils {
+class LabPlatformUtils {
   static bool get isWeb => kIsWeb;
   static bool get isMobile =>
       (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) || isMobileWeb;

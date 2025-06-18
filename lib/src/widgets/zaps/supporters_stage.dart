@@ -1,18 +1,18 @@
 import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppSupportersStage extends StatelessWidget {
+class LabSupportersStage extends StatelessWidget {
   final List<Profile> topThreeSupporters;
 
-  const AppSupportersStage({
+  const LabSupportersStage({
     super.key,
     required this.topThreeSupporters,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
-    final isInsideScope = AppScope.of(context);
+    final theme = LabTheme.of(context);
+    final isInsideScope = LabScope.of(context);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -21,11 +21,11 @@ class AppSupportersStage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              AppProfilePic.s56(topThreeSupporters[0].author.value),
+              LabProfilePic.s56(topThreeSupporters[0].author.value),
               const SizedBox(height: 8),
               SizedBox(
                 width: double.infinity,
-                child: AppText.med14(
+                child: LabText.med14(
                   topThreeSupporters[0].author.value?.name ??
                       formatNpub(
                           topThreeSupporters[0].author.value?.npub ?? ''),
@@ -40,8 +40,8 @@ class AppSupportersStage extends StatelessWidget {
                 fit: FlexFit.loose,
                 child: SizedBox(
                   height: 64,
-                  child: AppContainer(
-                    padding: const AppEdgeInsets.only(top: AppGapSize.s12),
+                  child: LabContainer(
+                    padding: const LabEdgeInsets.only(top: LabGapSize.s12),
                     decoration: BoxDecoration(
                       color: isInsideScope
                           ? theme.colors.white8
@@ -54,7 +54,7 @@ class AppSupportersStage extends StatelessWidget {
                     ),
                     child: Align(
                       alignment: Alignment.topCenter,
-                      child: AppText.med14(
+                      child: LabText.med14(
                         '2',
                         color: theme.colors.white66,
                       ),
@@ -70,11 +70,11 @@ class AppSupportersStage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              AppProfilePic.s56(topThreeSupporters[1].author.value),
+              LabProfilePic.s56(topThreeSupporters[1].author.value),
               const SizedBox(height: 8),
               SizedBox(
                 width: double.infinity,
-                child: AppText.med14(
+                child: LabText.med14(
                   topThreeSupporters[1].author.value?.name ??
                       formatNpub(
                           topThreeSupporters[1].author.value?.npub ?? ''),
@@ -89,8 +89,8 @@ class AppSupportersStage extends StatelessWidget {
                 fit: FlexFit.loose,
                 child: SizedBox(
                   height: 96,
-                  child: AppContainer(
-                    padding: const AppEdgeInsets.only(top: AppGapSize.s12),
+                  child: LabContainer(
+                    padding: const LabEdgeInsets.only(top: LabGapSize.s12),
                     decoration: BoxDecoration(
                       color: isInsideScope
                           ? theme.colors.white8
@@ -103,7 +103,7 @@ class AppSupportersStage extends StatelessWidget {
                     ),
                     child: Align(
                       alignment: Alignment.topCenter,
-                      child: AppText.med14(
+                      child: LabText.med14(
                         '1',
                         color: theme.colors.white66,
                       ),
@@ -119,11 +119,11 @@ class AppSupportersStage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              AppProfilePic.s56(topThreeSupporters[2].author.value),
+              LabProfilePic.s56(topThreeSupporters[2].author.value),
               const SizedBox(height: 8),
               SizedBox(
                 width: double.infinity,
-                child: AppText.med14(
+                child: LabText.med14(
                   topThreeSupporters[2].author.value?.name ??
                       formatNpub(
                           topThreeSupporters[2].author.value?.npub ?? ''),
@@ -138,8 +138,8 @@ class AppSupportersStage extends StatelessWidget {
                 fit: FlexFit.loose,
                 child: SizedBox(
                   height: 48,
-                  child: AppContainer(
-                    padding: const AppEdgeInsets.only(top: AppGapSize.s12),
+                  child: LabContainer(
+                    padding: const LabEdgeInsets.only(top: LabGapSize.s12),
                     decoration: BoxDecoration(
                       color: isInsideScope
                           ? theme.colors.white8
@@ -152,7 +152,7 @@ class AppSupportersStage extends StatelessWidget {
                     ),
                     child: Align(
                       alignment: Alignment.topCenter,
-                      child: AppText.med14(
+                      child: LabText.med14(
                         '3',
                         color: theme.colors.white66,
                       ),

@@ -2,14 +2,14 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
-class AppProfileInline extends StatelessWidget {
+class LabProfileInline extends StatelessWidget {
   final Profile profile;
   final void Function()? onTap;
   final bool? isArticle;
   final bool? isEditableText;
   final bool isCompact;
 
-  const AppProfileInline({
+  const LabProfileInline({
     super.key,
     required this.profile,
     this.onTap,
@@ -20,7 +20,7 @@ class AppProfileInline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return TapBuilder(
       onTap: onTap,
@@ -32,7 +32,7 @@ class AppProfileInline extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const AppGap.s2(),
+                const LabGap.s2(),
                 if (profile.pictureUrl != null &&
                     profile.pictureUrl!.isNotEmpty)
                   Transform.translate(
@@ -40,40 +40,40 @@ class AppProfileInline extends StatelessWidget {
                         ? const Offset(0, -0.1)
                         : const Offset(0, 0.2),
                     child: isCompact
-                        ? AppProfilePic.s16(profile, onTap: onTap)
-                        : AppProfilePic.s20(profile, onTap: onTap),
+                        ? LabProfilePic.s16(profile, onTap: onTap)
+                        : LabProfilePic.s20(profile, onTap: onTap),
                   )
                 else
                   isCompact
-                      ? AppProfilePic.s16(null, onTap: onTap)
-                      : AppProfilePic.s20(null, onTap: onTap),
-                const AppGap.s4(),
+                      ? LabProfilePic.s16(null, onTap: onTap)
+                      : LabProfilePic.s20(null, onTap: onTap),
+                const LabGap.s4(),
                 Column(
                   children: [
-                    isCompact ? const AppGap.s2() : const SizedBox.shrink(),
+                    isCompact ? const LabGap.s2() : const SizedBox.shrink(),
                     profile.name!.isNotEmpty
                         ? (isArticle == false)
                             ? isEditableText == true
-                                ? AppText.med16(
+                                ? LabText.med16(
                                     profile.name!,
                                     color: theme.colors.blurpleLightColor,
                                     maxLines: 1,
                                     textOverflow: TextOverflow.ellipsis,
                                   )
                                 : isCompact
-                                    ? AppText.med12(
+                                    ? LabText.med12(
                                         profile.name!,
                                         color: theme.colors.blurpleLightColor66,
                                         maxLines: 1,
                                         textOverflow: TextOverflow.ellipsis,
                                       )
-                                    : AppText.med14(
+                                    : LabText.med14(
                                         profile.name!,
                                         color: theme.colors.blurpleLightColor,
                                         maxLines: 1,
                                         textOverflow: TextOverflow.ellipsis,
                                       )
-                            : AppText.boldArticle(
+                            : LabText.boldArticle(
                                 profile.name!,
                                 color: theme.colors.blurpleLightColor,
                                 maxLines: 1,
@@ -81,26 +81,26 @@ class AppProfileInline extends StatelessWidget {
                               )
                         : (isArticle == false)
                             ? isEditableText == true
-                                ? AppText.med16(
+                                ? LabText.med16(
                                     'ProfileName',
                                     color: theme.colors.blurpleLightColor66,
                                     maxLines: 1,
                                     textOverflow: TextOverflow.ellipsis,
                                   )
                                 : isCompact
-                                    ? AppText.med12(
+                                    ? LabText.med12(
                                         'ProfileName',
                                         color: theme.colors.blurpleLightColor66,
                                         maxLines: 1,
                                         textOverflow: TextOverflow.ellipsis,
                                       )
-                                    : AppText.med14(
+                                    : LabText.med14(
                                         'ProfileName',
                                         color: theme.colors.blurpleLightColor66,
                                         maxLines: 1,
                                         textOverflow: TextOverflow.ellipsis,
                                       )
-                            : AppText.boldArticle(
+                            : LabText.boldArticle(
                                 'ProfileName',
                                 color: theme.colors.blurpleLightColor66,
                                 maxLines: 1,

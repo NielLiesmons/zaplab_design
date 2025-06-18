@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppMail extends StatelessWidget {
+class LabMail extends StatelessWidget {
   final Mail mail;
   // TODO: Implement reactions, zaps, and communities once HasMany is available
   // final List<ReplaceReaction> reactions;
@@ -17,7 +17,7 @@ class AppMail extends StatelessWidget {
   final LinkTapHandler onLinkTap;
   final Function(Profile) onProfileTap;
 
-  const AppMail({
+  const LabMail({
     super.key,
     required this.mail,
     required this.recipients,
@@ -34,22 +34,22 @@ class AppMail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppSwipePanel(
-      leftContent: AppIcon.s16(
+    return LabSwipePanel(
+      leftContent: LabIcon.s16(
         theme.icons.characters.reply,
         outlineColor: theme.colors.white66,
-        outlineThickness: AppLineThicknessData.normal().medium,
+        outlineThickness: LabLineThicknessData.normal().medium,
       ),
-      rightContent: AppIcon.s10(
+      rightContent: LabIcon.s10(
         theme.icons.characters.chevronUp,
         outlineColor: theme.colors.white66,
-        outlineThickness: AppLineThicknessData.normal().medium,
+        outlineThickness: LabLineThicknessData.normal().medium,
       ),
       onSwipeLeft: () => onSwipeLeft(mail),
       onSwipeRight: () => onSwipeRight(mail),
-      padding: const AppEdgeInsets.all(AppGapSize.s12),
+      padding: const LabEdgeInsets.all(LabGapSize.s12),
       color: theme.colors.gray33,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,8 +57,8 @@ class AppMail extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppProfilePic.s48(mail.author.value),
-              const AppGap.s12(),
+              LabProfilePic.s48(mail.author.value),
+              const LabGap.s12(),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,24 +67,24 @@ class AppMail extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        AppText.bold14(mail.author.value?.name ??
+                        LabText.bold14(mail.author.value?.name ??
                             formatNpub(mail.author.value?.pubkey ?? '')),
-                        AppText.reg12(
+                        LabText.reg12(
                           TimestampFormatter.format(mail.createdAt,
                               format: TimestampFormat.relative),
                           color: theme.colors.white33,
                         ),
                       ],
                     ),
-                    const AppGap.s6(),
+                    const LabGap.s6(),
                     Row(
                       children: [
-                        AppText.reg12(
+                        LabText.reg12(
                           'To:',
                           color: theme.colors.white66,
                         ),
-                        const AppGap.s6(),
-                        AppSmallProfileStack(
+                        const LabGap.s6(),
+                        LabSmallProfileStack(
                           profiles: recipients,
                           activeProfile: activeProfile,
                         ),
@@ -95,13 +95,13 @@ class AppMail extends StatelessWidget {
               ),
             ],
           ),
-          const AppGap.s8(),
-          AppContainer(
-            padding: const AppEdgeInsets.symmetric(
-              vertical: AppGapSize.none,
-              horizontal: AppGapSize.s4,
+          const LabGap.s8(),
+          LabContainer(
+            padding: const LabEdgeInsets.symmetric(
+              vertical: LabGapSize.none,
+              horizontal: LabGapSize.s4,
             ),
-            child: AppShortTextRenderer(
+            child: LabShortTextRenderer(
               content: mail.content,
               onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,

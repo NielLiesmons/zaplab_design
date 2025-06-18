@@ -3,28 +3,28 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/widgets.dart';
 import 'theme.dart';
 
-enum AppThemeColorMode {
+enum LabThemeColorMode {
   light,
   gray,
   dark,
 }
 
-enum AppTextScale {
+enum LabTextScale {
   small,
   normal,
   large,
 }
 
-enum AppSystemScale {
+enum LabSystemScale {
   small,
   normal,
   large,
 }
 
-/// Updates automatically the [AppTheme] regarding the current [MediaQuery],
+/// Updates automatically the [LabTheme] regarding the current [MediaQuery],
 /// unless the color mode is overridden or set explicitly through the app settings.
-class AppResponsiveTheme extends StatefulWidget {
-  const AppResponsiveTheme({
+class LabResponsiveTheme extends StatefulWidget {
+  const LabResponsiveTheme({
     super.key,
     required this.child,
     this.colorMode,
@@ -33,101 +33,101 @@ class AppResponsiveTheme extends StatefulWidget {
     this.systemScale,
   });
 
-  final AppThemeColorMode? colorMode;
-  final AppFormFactor? formFactor;
-  final AppTextScale? textScale;
-  final AppSystemScale? systemScale;
+  final LabThemeColorMode? colorMode;
+  final LabFormFactor? formFactor;
+  final LabTextScale? textScale;
+  final LabSystemScale? systemScale;
   final Widget child;
 
-  static AppResponsiveThemeState of(BuildContext context) {
-    return context.findAncestorStateOfType<AppResponsiveThemeState>()!;
+  static LabResponsiveThemeState of(BuildContext context) {
+    return context.findAncestorStateOfType<LabResponsiveThemeState>()!;
   }
 
-  static AppThemeColorMode colorModeOf(BuildContext context) {
+  static LabThemeColorMode colorModeOf(BuildContext context) {
     if (kIsWeb) {
       // For web, we'll use the system preference through MediaQuery
       final platformBrightness = MediaQuery.platformBrightnessOf(context);
       return platformBrightness == ui.Brightness.dark
-          ? AppThemeColorMode.dark
-          : AppThemeColorMode.light;
+          ? LabThemeColorMode.dark
+          : LabThemeColorMode.light;
     }
 
     // For native platforms, use the existing logic
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
     final highContrast = MediaQuery.highContrastOf(context);
     if (platformBrightness == ui.Brightness.dark || highContrast) {
-      return AppThemeColorMode.dark;
+      return LabThemeColorMode.dark;
     }
-    return AppThemeColorMode.light;
+    return LabThemeColorMode.light;
   }
 
-  static AppFormFactor formFactorOf(BuildContext context) {
+  static LabFormFactor formFactorOf(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
     if (mediaQuery.size.width < 440) {
-      return AppFormFactor.small;
+      return LabFormFactor.small;
     } else if (mediaQuery.size.width >= 440 && mediaQuery.size.width < 880) {
-      return AppFormFactor.medium;
+      return LabFormFactor.medium;
     } else {
-      return AppFormFactor.big;
+      return LabFormFactor.big;
     }
   }
 
-  static AppTextScale textScaleOf(BuildContext context) => AppTextScale.normal;
+  static LabTextScale textScaleOf(BuildContext context) => LabTextScale.normal;
 
   @override
-  State<AppResponsiveTheme> createState() => AppResponsiveThemeState();
+  State<LabResponsiveTheme> createState() => LabResponsiveThemeState();
 }
 
-class AppResponsiveThemeState extends State<AppResponsiveTheme> {
-  AppThemeColorMode? _colorMode;
-  AppTextScale? _textScale;
-  AppSystemScale? _systemScale;
+class LabResponsiveThemeState extends State<LabResponsiveTheme> {
+  LabThemeColorMode? _colorMode;
+  LabTextScale? _textScale;
+  LabSystemScale? _systemScale;
 
-  AppThemeColorMode get colorMode =>
-      _colorMode ?? widget.colorMode ?? AppResponsiveTheme.colorModeOf(context);
+  LabThemeColorMode get colorMode =>
+      _colorMode ?? widget.colorMode ?? LabResponsiveTheme.colorModeOf(context);
 
-  AppTextScale get textScale =>
-      _textScale ?? widget.textScale ?? AppResponsiveTheme.textScaleOf(context);
+  LabTextScale get textScale =>
+      _textScale ?? widget.textScale ?? LabResponsiveTheme.textScaleOf(context);
 
-  AppSystemScale get systemScale {
-    final scale = _systemScale ?? widget.systemScale ?? AppSystemScale.normal;
+  LabSystemScale get systemScale {
+    final scale = _systemScale ?? widget.systemScale ?? LabSystemScale.normal;
     return scale;
   }
 
-  void setColorMode(AppThemeColorMode? mode) {
+  void setColorMode(LabThemeColorMode? mode) {
     setState(() => _colorMode = mode);
   }
 
-  void setTextScale(AppTextScale scale) {
+  void setTextScale(LabTextScale scale) {
     setState(() => _textScale = scale);
   }
 
-  void setSystemScale(AppSystemScale scale) {
+  void setSystemScale(LabSystemScale scale) {
     setState(() => _systemScale = scale);
   }
 
   @override
   Widget build(BuildContext context) {
-    var theme = AppThemeData.normal();
+    var theme = LabThemeData.normal();
 
     // Get system scale based on selection
     final systemData = switch (systemScale) {
-      AppSystemScale.small => AppSystemData.small(),
-      AppSystemScale.large => AppSystemData.large(),
-      AppSystemScale.normal => AppSystemData.normal(),
+      LabSystemScale.small => LabSystemData.small(),
+      LabSystemScale.large => LabSystemData.large(),
+      LabSystemScale.normal => LabSystemData.normal(),
     };
 
     // Apply typography based on text scale
     switch (textScale) {
-      case AppTextScale.small:
-        theme = theme.withTypography(AppTypographyData.small());
+      case LabTextScale.small:
+        theme = theme.withTypography(LabTypographyData.small());
         break;
-      case AppTextScale.large:
-        theme = theme.withTypography(AppTypographyData.large());
+      case LabTextScale.large:
+        theme = theme.withTypography(LabTypographyData.large());
         break;
       default:
-        theme = theme.withTypography(AppTypographyData.normal());
+        theme = theme.withTypography(LabTypographyData.normal());
     }
 
     // Apply system scale to UI elements
@@ -135,16 +135,16 @@ class AppResponsiveThemeState extends State<AppResponsiveTheme> {
 
     final colorMode = this.colorMode;
     theme = switch (colorMode) {
-      AppThemeColorMode.dark => theme.withColors(AppColorsData.dark()),
-      AppThemeColorMode.gray => theme.withColors(AppColorsData.gray()),
-      AppThemeColorMode.light => theme.withColors(AppColorsData.light()),
+      LabThemeColorMode.dark => theme.withColors(LabColorsData.dark()),
+      LabThemeColorMode.gray => theme.withColors(LabColorsData.gray()),
+      LabThemeColorMode.light => theme.withColors(LabColorsData.light()),
     };
 
     var formFactor =
-        widget.formFactor ?? AppResponsiveTheme.formFactorOf(context);
+        widget.formFactor ?? LabResponsiveTheme.formFactorOf(context);
     theme = theme.withFormFactor(formFactor);
 
-    return AppTheme(
+    return LabTheme(
       data: theme,
       child: widget.child,
     );

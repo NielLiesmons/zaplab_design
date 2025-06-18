@@ -3,74 +3,74 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'gap.dart';
 
-class AppEdgeInsets extends Equatable {
-  const AppEdgeInsets.all(AppGapSize value)
+class LabEdgeInsets extends Equatable {
+  const LabEdgeInsets.all(LabGapSize value)
       : left = value,
         top = value,
         right = value,
         bottom = value;
 
-  const AppEdgeInsets.symmetric({
-    AppGapSize vertical = AppGapSize.none,
-    AppGapSize horizontal = AppGapSize.none,
+  const LabEdgeInsets.symmetric({
+    LabGapSize vertical = LabGapSize.none,
+    LabGapSize horizontal = LabGapSize.none,
   })  : left = horizontal,
         top = vertical,
         right = horizontal,
         bottom = vertical;
 
-  const AppEdgeInsets.only({
-    this.left = AppGapSize.none,
-    this.top = AppGapSize.none,
-    this.right = AppGapSize.none,
-    this.bottom = AppGapSize.none,
+  const LabEdgeInsets.only({
+    this.left = LabGapSize.none,
+    this.top = LabGapSize.none,
+    this.right = LabGapSize.none,
+    this.bottom = LabGapSize.none,
   });
 
-  const AppEdgeInsets.s4()
-      : left = AppGapSize.s4,
-        top = AppGapSize.s4,
-        right = AppGapSize.s4,
-        bottom = AppGapSize.s4;
+  const LabEdgeInsets.s4()
+      : left = LabGapSize.s4,
+        top = LabGapSize.s4,
+        right = LabGapSize.s4,
+        bottom = LabGapSize.s4;
 
-  const AppEdgeInsets.s8()
-      : left = AppGapSize.s8,
-        top = AppGapSize.s8,
-        right = AppGapSize.s8,
-        bottom = AppGapSize.s8;
+  const LabEdgeInsets.s8()
+      : left = LabGapSize.s8,
+        top = LabGapSize.s8,
+        right = LabGapSize.s8,
+        bottom = LabGapSize.s8;
 
-  const AppEdgeInsets.s12()
-      : left = AppGapSize.s12,
-        top = AppGapSize.s12,
-        right = AppGapSize.s12,
-        bottom = AppGapSize.s12;
+  const LabEdgeInsets.s12()
+      : left = LabGapSize.s12,
+        top = LabGapSize.s12,
+        right = LabGapSize.s12,
+        bottom = LabGapSize.s12;
 
-  const AppEdgeInsets.s16()
-      : left = AppGapSize.s16,
-        top = AppGapSize.s16,
-        right = AppGapSize.s16,
-        bottom = AppGapSize.s16;
+  const LabEdgeInsets.s16()
+      : left = LabGapSize.s16,
+        top = LabGapSize.s16,
+        right = LabGapSize.s16,
+        bottom = LabGapSize.s16;
 
-  const AppEdgeInsets.s20()
-      : left = AppGapSize.s20,
-        top = AppGapSize.s20,
-        right = AppGapSize.s20,
-        bottom = AppGapSize.s20;
+  const LabEdgeInsets.s20()
+      : left = LabGapSize.s20,
+        top = LabGapSize.s20,
+        right = LabGapSize.s20,
+        bottom = LabGapSize.s20;
 
-  const AppEdgeInsets.s24()
-      : left = AppGapSize.s24,
-        top = AppGapSize.s24,
-        right = AppGapSize.s24,
-        bottom = AppGapSize.s24;
+  const LabEdgeInsets.s24()
+      : left = LabGapSize.s24,
+        top = LabGapSize.s24,
+        right = LabGapSize.s24,
+        bottom = LabGapSize.s24;
 
-  const AppEdgeInsets.s32()
-      : left = AppGapSize.s32,
-        top = AppGapSize.s32,
-        right = AppGapSize.s32,
-        bottom = AppGapSize.s32;
+  const LabEdgeInsets.s32()
+      : left = LabGapSize.s32,
+        top = LabGapSize.s32,
+        right = LabGapSize.s32,
+        bottom = LabGapSize.s32;
 
-  final AppGapSize left;
-  final AppGapSize top;
-  final AppGapSize right;
-  final AppGapSize bottom;
+  final LabGapSize left;
+  final LabGapSize top;
+  final LabGapSize right;
+  final LabGapSize bottom;
 
   @override
   List<Object?> get props => [
@@ -80,7 +80,7 @@ class AppEdgeInsets extends Equatable {
         bottom,
       ];
 
-  EdgeInsets toEdgeInsets(AppThemeData theme) {
+  EdgeInsets toEdgeInsets(LabThemeData theme) {
     return EdgeInsets.only(
       left: left.getSizes(theme),
       top: top.getSizes(theme),
@@ -90,54 +90,54 @@ class AppEdgeInsets extends Equatable {
   }
 }
 
-class AppPadding extends StatelessWidget {
-  const AppPadding({
+class LabPadding extends StatelessWidget {
+  const LabPadding({
     super.key,
-    this.padding = const AppEdgeInsets.all(AppGapSize.none),
+    this.padding = const LabEdgeInsets.all(LabGapSize.none),
     this.child,
   });
 
-  const AppPadding.s4({
+  const LabPadding.s4({
     super.key,
     this.child,
-  }) : padding = const AppEdgeInsets.all(AppGapSize.s4);
+  }) : padding = const LabEdgeInsets.all(LabGapSize.s4);
 
-  const AppPadding.s8({
+  const LabPadding.s8({
     super.key,
     this.child,
-  }) : padding = const AppEdgeInsets.all(AppGapSize.s8);
+  }) : padding = const LabEdgeInsets.all(LabGapSize.s8);
 
-  const AppPadding.s12({
+  const LabPadding.s12({
     super.key,
     this.child,
-  }) : padding = const AppEdgeInsets.all(AppGapSize.s12);
+  }) : padding = const LabEdgeInsets.all(LabGapSize.s12);
 
-  const AppPadding.s16({
+  const LabPadding.s16({
     super.key,
     this.child,
-  }) : padding = const AppEdgeInsets.all(AppGapSize.s16);
+  }) : padding = const LabEdgeInsets.all(LabGapSize.s16);
 
-  const AppPadding.s20({
+  const LabPadding.s20({
     super.key,
     this.child,
-  }) : padding = const AppEdgeInsets.all(AppGapSize.s20);
+  }) : padding = const LabEdgeInsets.all(LabGapSize.s20);
 
-  const AppPadding.s24({
+  const LabPadding.s24({
     super.key,
     this.child,
-  }) : padding = const AppEdgeInsets.all(AppGapSize.s24);
+  }) : padding = const LabEdgeInsets.all(LabGapSize.s24);
 
-  const AppPadding.s32({
+  const LabPadding.s32({
     super.key,
     this.child,
-  }) : padding = const AppEdgeInsets.all(AppGapSize.s32);
+  }) : padding = const LabEdgeInsets.all(LabGapSize.s32);
 
-  final AppEdgeInsets padding;
+  final LabEdgeInsets padding;
   final Widget? child;
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     return Padding(
       padding: padding.toEdgeInsets(theme),
       child: child,

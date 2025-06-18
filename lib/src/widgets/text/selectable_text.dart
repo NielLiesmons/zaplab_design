@@ -3,15 +3,15 @@ import 'text_selection_gesture_detector_builder.dart' as custom;
 
 bool isSelectingText = false;
 
-class AppSelectableText extends StatefulWidget {
+class LabSelectableText extends StatefulWidget {
   final String text;
   final TextStyle? style;
   final bool showContextMenu;
-  final List<AppTextSelectionMenuItem>? contextMenuItems;
+  final List<LabTextSelectionMenuItem>? contextMenuItems;
   final TextSelectionControls? selectionControls;
   final TextSpan? textSpan;
 
-  const AppSelectableText({
+  const LabSelectableText({
     super.key,
     required this.text,
     this.style,
@@ -21,15 +21,15 @@ class AppSelectableText extends StatefulWidget {
     this.textSpan,
   });
 
-  static AppSelectableText rich(
+  static LabSelectableText rich(
     TextSpan textSpan, {
     Key? key,
     TextStyle? style,
     bool showContextMenu = true,
-    List<AppTextSelectionMenuItem>? contextMenuItems,
+    List<LabTextSelectionMenuItem>? contextMenuItems,
     TextSelectionControls? selectionControls,
   }) {
-    return AppSelectableText(
+    return LabSelectableText(
       key: key,
       text: '',
       textSpan: textSpan,
@@ -41,10 +41,10 @@ class AppSelectableText extends StatefulWidget {
   }
 
   @override
-  State<AppSelectableText> createState() => _AppSelectableTextState();
+  State<LabSelectableText> createState() => _LabSelectableTextState();
 }
 
-class _AppSelectableTextState extends State<AppSelectableText>
+class _LabSelectableTextState extends State<LabSelectableText>
     implements custom.TextSelectionGestureDetectorBuilderDelegate {
   @override
   GlobalKey<EditableTextState> get editableTextKey => _editableTextKey;
@@ -80,7 +80,7 @@ class _AppSelectableTextState extends State<AppSelectableText>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final defaultStyle = theme.typography.reg14;
     final textStyle = widget.style ?? defaultStyle;
 
@@ -100,7 +100,7 @@ class _AppSelectableTextState extends State<AppSelectableText>
         minLines: 1,
         textAlign: TextAlign.left,
         selectionControls:
-            widget.selectionControls ?? AppTextSelectionControls(),
+            widget.selectionControls ?? LabTextSelectionControls(),
         enableInteractiveSelection: true,
         showSelectionHandles: true,
         showCursor: false,
@@ -119,7 +119,7 @@ class _AppSelectableTextState extends State<AppSelectableText>
           }
         },
         contextMenuBuilder: (context, EditableTextState editableTextState) {
-          return AppTextSelectionMenu(
+          return LabTextSelectionMenu(
             position: editableTextState.contextMenuAnchors.primaryAnchor,
             editableTextState: editableTextState,
             menuItems: widget.contextMenuItems,

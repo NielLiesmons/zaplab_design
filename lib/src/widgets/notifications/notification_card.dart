@@ -1,13 +1,13 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppNotificationCard extends StatelessWidget {
+class LabNotificationCard extends StatelessWidget {
   final Model model;
   final void Function(Model) onActions;
   final void Function(Model) onReply;
   final bool isUnread;
 
-  const AppNotificationCard({
+  const LabNotificationCard({
     super.key,
     required this.model,
     required this.onReply,
@@ -17,25 +17,25 @@ class AppNotificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppSwipePanel(
-      padding: const AppEdgeInsets.only(
-        left: AppGapSize.s12,
-        right: AppGapSize.s12,
-        top: AppGapSize.s10,
-        bottom: AppGapSize.s12,
+    return LabSwipePanel(
+      padding: const LabEdgeInsets.only(
+        left: LabGapSize.s12,
+        right: LabGapSize.s12,
+        top: LabGapSize.s10,
+        bottom: LabGapSize.s12,
       ),
       isLight: true,
-      leftContent: AppIcon.s16(
+      leftContent: LabIcon.s16(
         theme.icons.characters.reply,
         outlineColor: theme.colors.white66,
-        outlineThickness: AppLineThicknessData.normal().medium,
+        outlineThickness: LabLineThicknessData.normal().medium,
       ),
-      rightContent: AppIcon.s10(
+      rightContent: LabIcon.s10(
         theme.icons.characters.chevronUp,
         outlineColor: theme.colors.white66,
-        outlineThickness: AppLineThicknessData.normal().medium,
+        outlineThickness: LabLineThicknessData.normal().medium,
       ),
       onSwipeLeft: () => onReply(model),
       onSwipeRight: () => onActions(model),
@@ -44,14 +44,14 @@ class AppNotificationCard extends StatelessWidget {
           IntrinsicHeight(
             child: Row(
               children: [
-                AppContainer(
+                LabContainer(
                   width: theme.sizes.s38,
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const AppGap.s2(),
-                      AppProfilePic.s20(model is Comment
+                      const LabGap.s2(),
+                      LabProfilePic.s20(model is Comment
                           ? (model as Comment).parentModel.value!.author.value
                           : model is Zap
                               ? (model as Zap).zappedModel.value!.author.value
@@ -63,14 +63,14 @@ class AppNotificationCard extends StatelessWidget {
                                       .value
                                   : null),
                       Expanded(
-                        child: AppDivider.vertical(
+                        child: LabDivider.vertical(
                           color: theme.colors.white33,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const AppGap.s4(),
+                const LabGap.s4(),
                 Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -79,7 +79,7 @@ class AppNotificationCard extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          AppEmojiContentType(
+                          LabEmojiContentType(
                             contentType: getModelContentType(model is Comment
                                 ? (model as Comment).parentModel.value
                                 : model is Zap
@@ -89,9 +89,9 @@ class AppNotificationCard extends StatelessWidget {
                                         : null),
                             size: theme.sizes.s16,
                           ),
-                          const AppGap.s8(),
+                          const LabGap.s8(),
                           Expanded(
-                            child: AppText.reg14(
+                            child: LabText.reg14(
                               getModelDisplayText(model is Comment
                                   ? (model as Comment).parentModel.value
                                   : model is Zap
@@ -104,9 +104,9 @@ class AppNotificationCard extends StatelessWidget {
                               textOverflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          const AppGap.s12(),
+                          const LabGap.s12(),
                           if (isUnread)
-                            AppContainer(
+                            LabContainer(
                               height: theme.sizes.s8,
                               width: theme.sizes.s8,
                               decoration: BoxDecoration(
@@ -116,7 +116,7 @@ class AppNotificationCard extends StatelessWidget {
                             ),
                         ],
                       ),
-                      const AppGap.s10(),
+                      const LabGap.s10(),
                     ],
                   ),
                 ),
@@ -127,8 +127,8 @@ class AppNotificationCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppProfilePic.s38(null),
-                const AppGap.s12(),
+                LabProfilePic.s38(null),
+                const LabGap.s12(),
                 Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -137,16 +137,16 @@ class AppNotificationCard extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AppText.bold14("Name"), //TODO: Implement
+                          LabText.bold14("Name"), //TODO: Implement
                           const Spacer(),
-                          AppText.reg12(
+                          LabText.reg12(
                             TimestampFormatter.format(DateTime.now(),
                                 format: TimestampFormat.relative),
                             color: theme.colors.white33,
                           ),
                         ],
                       ),
-                      AppCompactTextRenderer(
+                      LabCompactTextRenderer(
                         content:
                             "This is a reply on an Article your current profile published ",
                         isMedium: true,

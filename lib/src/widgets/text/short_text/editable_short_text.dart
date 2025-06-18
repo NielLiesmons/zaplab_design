@@ -5,13 +5,13 @@ import 'package:models/models.dart';
 
 bool isEditingText = false;
 
-class AppEditableShortText extends StatefulWidget {
+class LabEditableShortText extends StatefulWidget {
   final String text;
   final TextStyle? style;
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final ValueChanged<String>? onChanged;
-  final List<AppTextSelectionMenuItem>? contextMenuItems;
+  final List<LabTextSelectionMenuItem>? contextMenuItems;
   final List<Widget>? placeholder;
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
@@ -19,7 +19,7 @@ class AppEditableShortText extends StatefulWidget {
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
 
-  const AppEditableShortText({
+  const LabEditableShortText({
     super.key,
     required this.text,
     this.style,
@@ -36,7 +36,7 @@ class AppEditableShortText extends StatefulWidget {
   });
 
   @override
-  State<AppEditableShortText> createState() => _AppEditableShortTextState();
+  State<LabEditableShortText> createState() => _LabEditableShortTextState();
 }
 
 class InlineSpanController extends TextEditingController {
@@ -205,7 +205,7 @@ class InlineSpanController extends TextEditingController {
     try {
       _activeSpans[offset] = WidgetSpan(
         alignment: PlaceholderAlignment.middle,
-        child: AppProfileInline(
+        child: LabProfileInline(
           profile: profile.profile,
           onTap: profile.onTap,
           isEditableText: true,
@@ -223,7 +223,7 @@ class InlineSpanController extends TextEditingController {
     try {
       _activeSpans[offset] = WidgetSpan(
         alignment: PlaceholderAlignment.middle,
-        child: AppEmojiImage(
+        child: LabEmojiImage(
           emojiUrl: emojiUrl,
           emojiName: emojiName,
           size: 24,
@@ -241,7 +241,7 @@ class InlineSpanController extends TextEditingController {
   }
 }
 
-class _AppEditableShortTextState extends State<AppEditableShortText>
+class _LabEditableShortTextState extends State<LabEditableShortText>
     implements custom.TextSelectionGestureDetectorBuilderDelegate {
   @override
   GlobalKey<EditableTextState> get editableTextKey => _editableTextKey;
@@ -257,13 +257,13 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
   // Track mention state
   String _currentMentionText = '';
   int? _mentionStartOffset;
-  List<AppTextMentionMenuItem> _mentionItems = [];
+  List<LabTextMentionMenuItem> _mentionItems = [];
   OverlayEntry? _mentionOverlay;
 
   // Track emoji state
   String _currentEmojiText = '';
   int? _emojiStartOffset;
-  List<AppTextEmojiMenuItem> _emojiItems = [];
+  List<LabTextEmojiMenuItem> _emojiItems = [];
   OverlayEntry? _emojiOverlay;
 
   @override
@@ -282,15 +282,15 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
       text: widget.text,
       triggerSpans: {
         '@': (context) {
-          final theme = AppTheme.of(context);
+          final theme = LabTheme.of(context);
           return Stack(
             clipBehavior: Clip.none,
             children: [
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  AppProfilePic.s24(null),
-                  const AppGap.s4(),
+                  LabProfilePic.s24(null),
+                  const LabGap.s4(),
                 ],
               ),
               ValueListenableBuilder<bool>(
@@ -301,7 +301,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
                         top: 0,
                         bottom: 0,
                         child: Center(
-                          child: AppText.med16(
+                          child: LabText.med16(
                             'Profile Name',
                             color: theme.colors.white33,
                           ),
@@ -313,7 +313,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
           );
         },
         ':': (context) {
-          final theme = AppTheme.of(context);
+          final theme = LabTheme.of(context);
           return Stack(
             clipBehavior: Clip.none,
             children: [
@@ -322,14 +322,14 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
                 children: [
                   Column(
                     children: [
-                      const AppGap.s2(),
-                      AppIcon.s20(
+                      const LabGap.s2(),
+                      LabIcon.s20(
                         theme.icons.characters.emojiFill,
                         gradient: theme.colors.graydient33,
                       ),
                     ],
                   ),
-                  const AppGap.s4(),
+                  const LabGap.s4(),
                 ],
               ),
               ValueListenableBuilder<bool>(
@@ -340,7 +340,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
                         top: 0,
                         bottom: 0,
                         child: Center(
-                          child: AppText.med16(
+                          child: LabText.med16(
                             'Emoji Name',
                             color: theme.colors.white33,
                           ),
@@ -407,7 +407,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
       if (offset == spanOffset || offset == spanOffset + 1) {
         final span = _controller._activeSpans[spanOffset];
         if (span is WidgetSpan &&
-            (span.child is AppProfileInline || span.child is AppEmojiImage)) {
+            (span.child is LabProfileInline || span.child is LabEmojiImage)) {
           // Always move cursor after the span
           final newOffset = spanOffset + 1;
           if (newOffset <= text.length) {
@@ -588,7 +588,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
             Positioned(
               left: pos.dx,
               top: pos.dy,
-              child: AppTextMentionMenu(
+              child: LabTextMentionMenu(
                 key: ValueKey(_currentMentionText),
                 position: pos,
                 editableTextState: editableTextState,
@@ -667,7 +667,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
 
     setState(() {
       _mentionItems = profiles
-          .map((profile) => AppTextMentionMenuItem(
+          .map((profile) => LabTextMentionMenuItem(
                 profile: profile,
                 onTap: (state) {
                   print('Profile selected: ${profile.name}');
@@ -734,7 +734,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
             Positioned(
               left: pos.dx,
               top: pos.dy,
-              child: AppTextEmojiMenu(
+              child: LabTextEmojiMenu(
                 key: ValueKey(_currentEmojiText),
                 position: pos,
                 editableTextState: editableTextState,
@@ -812,7 +812,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
 
     setState(() {
       _emojiItems = emojis
-          .map((emoji) => AppTextEmojiMenuItem(
+          .map((emoji) => LabTextEmojiMenuItem(
                 emojiUrl: emoji.emojiUrl,
                 emojiName: emoji.emojiName,
                 onTap: (state) {
@@ -856,7 +856,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final defaultStyle = theme.typography.reg16.copyWith();
 
     final textStyle = (widget.style ?? defaultStyle).copyWith(
@@ -871,7 +871,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
       ),
       child: SingleChildScrollView(
         clipBehavior: Clip.none,
-        physics: AppPlatformUtils.isMobile
+        physics: LabPlatformUtils.isMobile
             ? const ClampingScrollPhysics()
             : const AlwaysScrollableScrollPhysics(),
         child: Stack(
@@ -956,7 +956,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
                   minLines: 1,
                   textAlign: TextAlign.left,
                   textCapitalization: TextCapitalization.sentences,
-                  selectionControls: AppTextSelectionControls(),
+                  selectionControls: LabTextSelectionControls(),
                   enableInteractiveSelection: true,
                   showSelectionHandles: true,
                   showCursor: true,
@@ -968,7 +968,7 @@ class _AppEditableShortTextState extends State<AppEditableShortText>
                   contextMenuBuilder: widget.contextMenuItems == null
                       ? null
                       : (context, editableTextState) {
-                          return AppTextSelectionMenu(
+                          return LabTextSelectionMenu(
                             position: editableTextState
                                 .contextMenuAnchors.primaryAnchor,
                             editableTextState: editableTextState,

@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
-class AppBottomBarReply extends StatelessWidget {
+class LabBottomBarReply extends StatelessWidget {
   final Function(Model) onAddTap;
   final Function(Model) onReplyTap;
   final Function(Model) onVoiceTap;
@@ -13,7 +13,7 @@ class AppBottomBarReply extends StatelessWidget {
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
 
-  const AppBottomBarReply({
+  const LabBottomBarReply({
     super.key,
     required this.onAddTap,
     required this.onReplyTap,
@@ -28,21 +28,21 @@ class AppBottomBarReply extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Row(
       children: [
-        AppButton(
+        LabButton(
           square: true,
           onTap: () => onAddTap(model),
           children: [
-            AppIcon.s18(
+            LabIcon.s18(
               theme.icons.characters.zap,
               color: theme.colors.whiteEnforced,
             ),
           ],
         ),
-        const AppGap.s12(),
+        const LabGap.s12(),
         Expanded(
           child: TapBuilder(
             onTap: () => onReplyTap(model),
@@ -56,23 +56,23 @@ class AppBottomBarReply extends StatelessWidget {
 
               return Transform.scale(
                 scale: scaleFactor,
-                child: AppContainer(
+                child: LabContainer(
                   height: theme.sizes.s40,
                   decoration: BoxDecoration(
                     color: theme.colors.black33,
                     borderRadius: theme.radius.asBorderRadius().rad16,
                     border: Border.all(
                       color: theme.colors.white33,
-                      width: AppLineThicknessData.normal().thin,
+                      width: LabLineThicknessData.normal().thin,
                     ),
                   ),
-                  padding: const AppEdgeInsets.only(
-                    left: AppGapSize.s16,
-                    right: AppGapSize.s12,
+                  padding: const LabEdgeInsets.only(
+                    left: LabGapSize.s16,
+                    right: LabGapSize.s12,
                   ),
                   child: Center(
                     child: draftMessage != null
-                        ? AppCompactTextRenderer(
+                        ? LabCompactTextRenderer(
                             content: draftMessage!.event.content,
                             maxLines: 1,
                             onResolveEvent: onResolveEvent,
@@ -84,21 +84,21 @@ class AppBottomBarReply extends StatelessWidget {
                         : Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              AppIcon.s18(
+                              LabIcon.s18(
                                 theme.icons.characters.reply,
                                 outlineColor: theme.colors.white33,
                                 outlineThickness:
-                                    AppLineThicknessData.normal().medium,
+                                    LabLineThicknessData.normal().medium,
                               ),
-                              const AppGap.s8(),
-                              AppText.med14('Reply',
+                              const LabGap.s8(),
+                              LabText.med14('Reply',
                                   color: theme.colors.white33),
-                              const AppGap.s12(),
+                              const LabGap.s12(),
                               const Spacer(),
                               TapBuilder(
                                 onTap: () => onVoiceTap(model),
                                 builder: (context, state, hasFocus) {
-                                  return AppIcon.s18(
+                                  return LabIcon.s18(
                                       theme.icons.characters.voice,
                                       color: theme.colors.white33);
                                 },
@@ -111,8 +111,8 @@ class AppBottomBarReply extends StatelessWidget {
             },
           ),
         ),
-        const AppGap.s12(),
-        AppButton(
+        const LabGap.s12(),
+        LabButton(
           square: true,
           inactiveColor: theme.colors.black33,
           onTap: () => onActions(model),
@@ -120,10 +120,10 @@ class AppBottomBarReply extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AppIcon.s8(theme.icons.characters.chevronUp,
-                    outlineThickness: AppLineThicknessData.normal().medium,
+                LabIcon.s8(theme.icons.characters.chevronUp,
+                    outlineThickness: LabLineThicknessData.normal().medium,
                     outlineColor: theme.colors.white66),
-                const AppGap.s2(),
+                const LabGap.s2(),
               ],
             ),
           ],

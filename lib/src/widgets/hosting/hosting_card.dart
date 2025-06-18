@@ -14,14 +14,14 @@ class HostingService {
   });
 }
 
-class AppHostingCard extends StatelessWidget {
+class LabHostingCard extends StatelessWidget {
   final String name;
   final String type;
   final List<HostingService> services;
   final double usedStorage;
   final double totalStorage;
 
-  const AppHostingCard({
+  const LabHostingCard({
     super.key,
     required this.name,
     required this.type,
@@ -32,91 +32,91 @@ class AppHostingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppPanel(
-      padding: const AppEdgeInsets.all(AppGapSize.none),
+    return LabPanel(
+      padding: const LabEdgeInsets.all(LabGapSize.none),
       radius: theme.radius.asBorderRadius().rad24,
       gradient: theme.colors.graydient66,
-      child: AppContainer(
+      child: LabContainer(
         decoration: BoxDecoration(
           color: theme.colors.black.withValues(alpha: 0.5),
           borderRadius: theme.radius.asBorderRadius().rad12,
           border: Border(
             bottom: BorderSide(
               color: theme.colors.black8,
-              width: AppLineThicknessData.normal().medium,
+              width: LabLineThicknessData.normal().medium,
             ),
           ),
         ),
         child: Column(
           children: [
-            AppContainer(
-              padding: const AppEdgeInsets.symmetric(
-                horizontal: AppGapSize.s12,
-                vertical: AppGapSize.s12,
+            LabContainer(
+              padding: const LabEdgeInsets.symmetric(
+                horizontal: LabGapSize.s12,
+                vertical: LabGapSize.s12,
               ),
               child: Row(
                 children: [
-                  AppProfilePicSquare.fromUrl(
+                  LabProfilePicSquare.fromUrl(
                     'https://cdn.satellite.earth/413ea918cfc60bdab6a205fd7cf65bc67067a63de3c4407eb23b18ae3479f0c5.png',
-                    size: AppProfilePicSquareSize.s64,
+                    size: LabProfilePicSquareSize.s64,
                   ),
-                  const AppGap.s12(),
+                  const LabGap.s12(),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            AppText.med16(
+                            LabText.med16(
                               name,
                             ),
-                            const AppGap.s4(),
-                            AppText.reg16(type,
+                            const LabGap.s4(),
+                            LabText.reg16(type,
                                 gradient: theme.colors.graydient66),
                           ],
                         ),
-                        const AppGap.s2(),
+                        const LabGap.s2(),
                         Row(
                           children: [
-                            AppText.reg12(
+                            LabText.reg12(
                               '${usedStorage.toStringAsFixed(1)} GB / ${totalStorage.toStringAsFixed(1)} GB used',
                               color: theme.colors.white66,
                             ),
                           ],
                         ),
-                        const AppGap.s4(),
-                        AppProgressBar(
+                        const LabGap.s4(),
+                        LabProgressBar(
                           progress: usedStorage / totalStorage,
                           height: theme.sizes.s6,
                         ),
                       ],
                     ),
                   ),
-                  const AppGap.s20(),
-                  AppIcon.s16(
+                  const LabGap.s20(),
+                  LabIcon.s16(
                     theme.icons.characters.chevronRight,
                     outlineColor: theme.colors.white33,
-                    outlineThickness: AppLineThicknessData.normal().medium,
+                    outlineThickness: LabLineThicknessData.normal().medium,
                   ),
-                  const AppGap.s10(),
+                  const LabGap.s10(),
                 ],
               ),
             ),
-            const AppDivider(),
+            const LabDivider(),
             for (final service in services) ...[
-              AppContainer(
+              LabContainer(
                 height: theme.sizes.s38,
-                padding: const AppEdgeInsets.only(
-                  left: AppGapSize.s16,
-                  right: AppGapSize.s16,
-                  top: AppGapSize.s4,
-                  bottom: AppGapSize.s4,
+                padding: const LabEdgeInsets.only(
+                  left: LabGapSize.s16,
+                  right: LabGapSize.s16,
+                  top: LabGapSize.s4,
+                  bottom: LabGapSize.s4,
                 ),
                 child: Row(
                   children: [
-                    AppContainer(
+                    LabContainer(
                       height: theme.sizes.s8,
                       width: theme.sizes.s8,
                       decoration: BoxDecoration(
@@ -124,19 +124,19 @@ class AppHostingCard extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                     ),
-                    const AppGap.s12(),
+                    const LabGap.s12(),
                     Expanded(
-                      child: AppText.reg12(
+                      child: LabText.reg12(
                         service.name,
                       ),
                     ),
-                    const AppGap.s12(),
-                    AppText.reg12(service.description,
+                    const LabGap.s12(),
+                    LabText.reg12(service.description,
                         color: theme.colors.white33),
                   ],
                 ),
               ),
-              if (service != services.last) const AppDivider(),
+              if (service != services.last) const LabDivider(),
             ],
           ],
         ),

@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
-class AppCommunityHomePanel extends StatelessWidget {
+class LabCommunityHomePanel extends StatelessWidget {
   final Community community;
   final Model? lastModel;
   final NostrEventResolver onResolveEvent;
@@ -16,7 +16,7 @@ class AppCommunityHomePanel extends StatelessWidget {
   final Function(Community)? onCreateNewPublication;
   final Function(Community)? onActions;
   final bool isPinned;
-  const AppCommunityHomePanel({
+  const LabCommunityHomePanel({
     super.key,
     required this.community,
     this.lastModel,
@@ -41,7 +41,7 @@ class AppCommunityHomePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     final (displayCount, containerWidth) = _getCountDisplay(mainCount!);
 
@@ -49,29 +49,29 @@ class AppCommunityHomePanel extends StatelessWidget {
       onTap: () => onNavigateToCommunity(community),
       builder: (context, state, hasFocus) {
         return Column(children: [
-          AppSwipeContainer(
-            leftContent: AppIcon.s16(
+          LabSwipeContainer(
+            leftContent: LabIcon.s16(
               theme.icons.characters.plus,
               outlineColor: theme.colors.white66,
-              outlineThickness: AppLineThicknessData.normal().medium,
+              outlineThickness: LabLineThicknessData.normal().medium,
             ),
-            rightContent: AppIcon.s10(
+            rightContent: LabIcon.s10(
               theme.icons.characters.chevronUp,
               outlineColor: theme.colors.white66,
-              outlineThickness: AppLineThicknessData.normal().medium,
+              outlineThickness: LabLineThicknessData.normal().medium,
             ),
             onSwipeLeft: () => onCreateNewPublication!(community),
             onSwipeRight: () => onActions!(community),
-            padding: const AppEdgeInsets.symmetric(
-              horizontal: AppGapSize.s12,
-              vertical: AppGapSize.s12,
+            padding: const LabEdgeInsets.symmetric(
+              horizontal: LabGapSize.s12,
+              vertical: LabGapSize.s12,
             ),
             child: Column(
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    AppProfilePic.s48(
+                    LabProfilePic.s48(
                       community.author.value,
                       onTap: () => onNavigateToCommunity(community),
                     ),
@@ -79,14 +79,14 @@ class AppCommunityHomePanel extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AppContainer(
+                          LabContainer(
                             height: 20,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const AppGap.s12(),
+                                const LabGap.s12(),
                                 Expanded(
-                                  child: AppText.bold14(
+                                  child: LabText.bold14(
                                     community.author.value?.name ??
                                         formatNpub(
                                             community.author.value?.pubkey ??
@@ -94,7 +94,7 @@ class AppCommunityHomePanel extends StatelessWidget {
                                     color: theme.colors.white,
                                   ),
                                 ),
-                                AppText.reg12(
+                                LabText.reg12(
                                   lastModel != null
                                       ? TimestampFormatter.format(
                                           lastModel!.createdAt,
@@ -103,19 +103,19 @@ class AppCommunityHomePanel extends StatelessWidget {
                                       : ' ',
                                   color: theme.colors.white33,
                                 ),
-                                const AppGap.s8(),
+                                const LabGap.s8(),
                                 if (isPinned)
-                                  AppIcon.s12(
+                                  LabIcon.s12(
                                     theme.icons.characters.pin,
                                     outlineColor: theme.colors.white33,
                                     outlineThickness:
-                                        AppLineThicknessData.normal().medium,
+                                        LabLineThicknessData.normal().medium,
                                   ),
                               ],
                             ),
                           ),
-                          const AppGap.s6(),
-                          AppContainer(
+                          const LabGap.s6(),
+                          LabContainer(
                             height: 26,
                             child: Stack(
                               children: [
@@ -172,7 +172,7 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                     CrossAxisAlignment.center,
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  const AppGap.s12(),
+                                                  const LabGap.s12(),
                                                   Expanded(
                                                     child: ConstrainedBox(
                                                       constraints:
@@ -180,7 +180,7 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                               maxWidth: 104),
                                                       child: Row(
                                                         children: [
-                                                          AppText.bold12(
+                                                          LabText.bold12(
                                                             lastModel
                                                                     ?.author
                                                                     .value
@@ -193,10 +193,10 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                             color: theme
                                                                 .colors.white66,
                                                           ),
-                                                          const AppGap.s4(),
+                                                          const LabGap.s4(),
                                                           Flexible(
                                                             child:
-                                                                AppCompactTextRenderer(
+                                                                LabCompactTextRenderer(
                                                               content: lastModel ==
                                                                       null
                                                                   ? ''
@@ -219,7 +219,7 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                       ),
                                                     ),
                                                   ),
-                                                  const AppGap.s8(),
+                                                  const LabGap.s8(),
                                                   Builder(
                                                     builder: (context) {
                                                       final visibleEntries =
@@ -243,26 +243,26 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                                 builder: (context,
                                                                     state,
                                                                     hasFocus) {
-                                                                  return AppContainer(
+                                                                  return LabContainer(
                                                                     padding: (entry == visibleEntries.last &&
                                                                             (mainCount ?? 0) ==
                                                                                 0)
                                                                         ? null
-                                                                        : const AppEdgeInsets
+                                                                        : const LabEdgeInsets
                                                                             .only(
                                                                             right:
-                                                                                AppGapSize.s8,
+                                                                                LabGapSize.s8,
                                                                           ),
                                                                     child:
-                                                                        AppContainer(
+                                                                        LabContainer(
                                                                       height: theme
                                                                           .sizes
                                                                           .s56,
                                                                       padding:
-                                                                          const AppEdgeInsets
+                                                                          const LabEdgeInsets
                                                                               .symmetric(
                                                                         horizontal:
-                                                                            AppGapSize.s8,
+                                                                            LabGapSize.s8,
                                                                       ),
                                                                       decoration:
                                                                           BoxDecoration(
@@ -277,15 +277,15 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                                       child:
                                                                           Row(
                                                                         children: [
-                                                                          AppEmojiContentType(
+                                                                          LabEmojiContentType(
                                                                             contentType:
                                                                                 entry.key,
                                                                             size:
                                                                                 16,
                                                                           ),
-                                                                          const AppGap
+                                                                          const LabGap
                                                                               .s6(),
-                                                                          AppText
+                                                                          LabText
                                                                               .reg12(
                                                                             entry.value.toString(),
                                                                             color:
@@ -323,12 +323,12 @@ class AppCommunityHomePanel extends StatelessWidget {
                                               onNavigateToNotifications!(
                                                   community),
                                           builder: (context, state, hasFocus) {
-                                            return AppContainer(
+                                            return LabContainer(
                                               height: 26,
                                               width: containerWidth,
                                               padding:
-                                                  const AppEdgeInsets.symmetric(
-                                                horizontal: AppGapSize.s8,
+                                                  const LabEdgeInsets.symmetric(
+                                                horizontal: LabGapSize.s8,
                                               ),
                                               decoration: BoxDecoration(
                                                 gradient: theme.colors.blurple,
@@ -337,7 +337,7 @@ class AppCommunityHomePanel extends StatelessWidget {
                                                     .rad16,
                                               ),
                                               child: Center(
-                                                child: AppText.med12(
+                                                child: LabText.med12(
                                                   displayCount,
                                                   color: theme
                                                       .colors.whiteEnforced,
@@ -359,7 +359,7 @@ class AppCommunityHomePanel extends StatelessWidget {
               ],
             ),
           ),
-          const AppDivider(),
+          const LabDivider(),
         ]);
       },
     );

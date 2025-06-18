@@ -1,8 +1,8 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppSwipePanel extends StatelessWidget {
+class LabSwipePanel extends StatelessWidget {
   final Widget child;
-  final AppEdgeInsets? padding;
+  final LabEdgeInsets? padding;
   final Color? color;
   final Gradient? gradient;
   final bool isLight;
@@ -12,7 +12,7 @@ class AppSwipePanel extends StatelessWidget {
   final VoidCallback? onSwipeRight;
   final double actionWidth;
 
-  const AppSwipePanel({
+  const LabSwipePanel({
     super.key,
     required this.child,
     this.padding,
@@ -28,11 +28,11 @@ class AppSwipePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final isInsideModal = ModalScope.of(context);
 
-    return AppSwipeContainer(
-      padding: padding ?? const AppEdgeInsets.all(AppGapSize.s16),
+    return LabSwipeContainer(
+      padding: padding ?? const LabEdgeInsets.all(LabGapSize.s16),
       leftContent: leftContent,
       rightContent: rightContent,
       onSwipeLeft: onSwipeLeft,

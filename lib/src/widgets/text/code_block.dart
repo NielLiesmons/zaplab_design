@@ -3,21 +3,21 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:zaplab_design/src/widgets/text/code_block_highlighter.dart';
 import 'dart:ui';
 
-class AppCodeBlock extends StatefulWidget {
+class LabCodeBlock extends StatefulWidget {
   final String code;
   final String? language;
 
-  const AppCodeBlock({
+  const LabCodeBlock({
     super.key,
     required this.code,
     this.language,
   });
 
   @override
-  State<AppCodeBlock> createState() => _AppCodeBlockState();
+  State<LabCodeBlock> createState() => _LabCodeBlockState();
 }
 
-class _AppCodeBlockState extends State<AppCodeBlock>
+class _LabCodeBlockState extends State<LabCodeBlock>
     with SingleTickerProviderStateMixin {
   bool _showCheckmark = false;
   late final AnimationController _scaleController;
@@ -61,33 +61,33 @@ class _AppCodeBlockState extends State<AppCodeBlock>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final isInsideModal = ModalScope.of(context);
 
     return SizedBox(
       width: double.infinity,
       child: Stack(
         children: [
-          AppContainer(
+          LabContainer(
             width: double.infinity,
             clipBehavior: Clip.hardEdge,
-            padding: const AppEdgeInsets.symmetric(
-              horizontal: AppGapSize.s10,
-              vertical: AppGapSize.s6,
+            padding: const LabEdgeInsets.symmetric(
+              horizontal: LabGapSize.s10,
+              vertical: LabGapSize.s6,
             ),
             decoration: BoxDecoration(
               color: isInsideModal ? theme.colors.black33 : theme.colors.gray33,
               borderRadius: theme.radius.asBorderRadius().rad16,
               border: Border.all(
                 color: theme.colors.white16,
-                width: AppLineThicknessData.normal().medium,
+                width: LabLineThicknessData.normal().medium,
               ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText.h3(widget.language ?? '', color: theme.colors.white33),
-                const AppGap.s2(),
+                LabText.h3(widget.language ?? '', color: theme.colors.white33),
+                const LabGap.s2(),
                 SingleChildScrollView(
                   clipBehavior: Clip.none,
                   scrollDirection: Axis.horizontal,
@@ -106,7 +106,7 @@ class _AppCodeBlockState extends State<AppCodeBlock>
               borderRadius: theme.radius.asBorderRadius().rad8,
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                child: AppSmallButton(
+                child: LabSmallButton(
                   inactiveColor: isInsideModal
                       ? theme.colors.white8
                       : theme.colors.white16,
@@ -116,18 +116,18 @@ class _AppCodeBlockState extends State<AppCodeBlock>
                     _showCheckmark
                         ? ScaleTransition(
                             scale: _scaleAnimation,
-                            child: AppIcon.s10(
+                            child: LabIcon.s10(
                               theme.icons.characters.check,
                               outlineColor: theme.colors.white66,
                               outlineThickness:
-                                  AppLineThicknessData.normal().thick,
+                                  LabLineThicknessData.normal().thick,
                             ),
                           )
-                        : AppIcon.s18(
+                        : LabIcon.s18(
                             theme.icons.characters.copy,
                             outlineColor: theme.colors.white66,
                             outlineThickness:
-                                AppLineThicknessData.normal().medium,
+                                LabLineThicknessData.normal().medium,
                           )
                   ],
                 ),

@@ -1,33 +1,33 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppBadgeStack extends StatelessWidget {
-  const AppBadgeStack(
+class LabBadgeStack extends StatelessWidget {
+  const LabBadgeStack(
     this.badgeUrls, {
     super.key,
-    this.size = AppBadgeSize.medium,
+    this.size = LabBadgeSize.medium,
     this.maxBadges = 3,
     this.overlap = 24,
     this.onBadgeTap,
   });
 
-  const AppBadgeStack.small(
+  const LabBadgeStack.small(
     this.badgeUrls, {
     super.key,
     this.maxBadges = 3,
     this.overlap = 16,
     this.onBadgeTap,
-  }) : size = AppBadgeSize.small;
+  }) : size = LabBadgeSize.small;
 
-  const AppBadgeStack.large(
+  const LabBadgeStack.large(
     this.badgeUrls, {
     super.key,
     this.maxBadges = 3,
     this.overlap = 52,
     this.onBadgeTap,
-  }) : size = AppBadgeSize.large;
+  }) : size = LabBadgeSize.large;
 
   final List<String> badgeUrls;
-  final AppBadgeSize size;
+  final LabBadgeSize size;
   final int maxBadges;
   final double overlap;
   final void Function(int index)? onBadgeTap;
@@ -44,7 +44,7 @@ class AppBadgeStack extends StatelessWidget {
           for (var i = displayBadges.length - 1; i >= 0; i--)
             Positioned(
               left: i * overlap,
-              child: AppBadge(
+              child: LabBadge(
                 displayBadges[i],
                 size: size,
                 hideLeftDovetail: i != 0,
@@ -56,33 +56,33 @@ class AppBadgeStack extends StatelessWidget {
     );
   }
 
-  double _getStackWidth(AppBadgeSize size, int badgeCount, double overlap) {
+  double _getStackWidth(LabBadgeSize size, int badgeCount, double overlap) {
     final baseWidth = _getBadgeWidth(size);
     return baseWidth + (overlap * (badgeCount - 1));
   }
 
-  double _getStackHeight(AppBadgeSize size) {
+  double _getStackHeight(LabBadgeSize size) {
     return _getBadgeHeight(size);
   }
 
-  double _getBadgeWidth(AppBadgeSize size) {
+  double _getBadgeWidth(LabBadgeSize size) {
     switch (size) {
-      case AppBadgeSize.small:
+      case LabBadgeSize.small:
         return 32;
-      case AppBadgeSize.medium:
+      case LabBadgeSize.medium:
         return 42;
-      case AppBadgeSize.large:
+      case LabBadgeSize.large:
         return 104;
     }
   }
 
-  double _getBadgeHeight(AppBadgeSize size) {
+  double _getBadgeHeight(LabBadgeSize size) {
     switch (size) {
-      case AppBadgeSize.small:
+      case LabBadgeSize.small:
         return 38;
-      case AppBadgeSize.medium:
+      case LabBadgeSize.medium:
         return 52;
-      case AppBadgeSize.large:
+      case LabBadgeSize.large:
         return 126;
     }
   }

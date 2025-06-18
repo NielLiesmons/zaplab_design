@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppMessageStack extends StatelessWidget {
+class LabMessageStack extends StatelessWidget {
   final List<ChatMessage>? messages;
   final List<Comment>? replies;
   final bool isOutgoing;
@@ -16,7 +16,7 @@ class AppMessageStack extends StatelessWidget {
   final Function(Zap) onZapTap;
   final Function(Profile) onProfileTap;
 
-  const AppMessageStack({
+  const LabMessageStack({
     super.key,
     this.messages,
     this.replies,
@@ -42,8 +42,8 @@ class AppMessageStack extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         if (!isOutgoing) ...[
-          AppContainer(
-            child: AppProfilePic.s32(
+          LabContainer(
+            child: LabProfilePic.s32(
                 messages != null
                     ? messages!.first.author.value
                     : replies!.first.author.value,
@@ -51,15 +51,15 @@ class AppMessageStack extends StatelessWidget {
                     ? messages!.first.author.value as Profile
                     : replies!.first.author.value as Profile)),
           ),
-          const AppGap.s4(),
+          const LabGap.s4(),
         ] else ...[
           if (isOutgoing &&
-              AppShortTextRenderer.analyzeContent(messages != null
+              LabShortTextRenderer.analyzeContent(messages != null
                       ? messages!.first.content
                       : replies!.first.content) !=
                   ShortTextContentType.singleImageStack)
-            const AppGap.s64(),
-          const AppGap.s4(),
+            const LabGap.s64(),
+          const LabGap.s4(),
         ],
         Expanded(
           child: ConstrainedBox(
@@ -72,8 +72,8 @@ class AppMessageStack extends StatelessWidget {
                 for (int i = 0;
                     i < (messages != null ? messages!.length : replies!.length);
                     i++) ...[
-                  if (i > 0) const AppGap.s2(),
-                  AppMessageBubble(
+                  if (i > 0) const LabGap.s2(),
+                  LabMessageBubble(
                     message: messages != null ? messages![i] : null,
                     reply: replies != null ? replies![i] : null,
                     showHeader:
@@ -101,11 +101,11 @@ class AppMessageStack extends StatelessWidget {
           ),
         ),
         if (!isOutgoing &&
-            AppShortTextRenderer.analyzeContent(messages != null
+            LabShortTextRenderer.analyzeContent(messages != null
                     ? messages!.first.content
                     : replies!.first.content) !=
                 ShortTextContentType.singleImageStack)
-          const AppGap.s32(),
+          const LabGap.s32(),
       ],
     );
   }

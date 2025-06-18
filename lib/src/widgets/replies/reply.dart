@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppReply extends StatelessWidget {
+class LabReply extends StatelessWidget {
   final Comment reply;
   // TODO: Implement reactions, zaps, and communities once HasMany is available
   // final List<ReplaceReaction> reactions;
@@ -13,7 +13,7 @@ class AppReply extends StatelessWidget {
   final LinkTapHandler onLinkTap;
   final Function(Profile) onProfileTap;
 
-  const AppReply({
+  const LabReply({
     super.key,
     required this.reply,
     // TODO: Implement reactions, zaps, and communities once HasMany is available
@@ -29,39 +29,39 @@ class AppReply extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppContainer(
-      padding: const AppEdgeInsets.only(
-        top: AppGapSize.s4,
-        left: AppGapSize.s12,
-        right: AppGapSize.s12,
-        bottom: AppGapSize.s12,
+    return LabContainer(
+      padding: const LabEdgeInsets.only(
+        top: LabGapSize.s4,
+        left: LabGapSize.s12,
+        right: LabGapSize.s12,
+        bottom: LabGapSize.s12,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AppGap.s12(),
+          const LabGap.s12(),
           IntrinsicHeight(
             child: Row(
               children: [
-                AppContainer(
+                LabContainer(
                   width: theme.sizes.s38,
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const AppGap.s2(),
-                      AppProfilePic.s20(reply.parentModel.value!.author.value),
+                      const LabGap.s2(),
+                      LabProfilePic.s20(reply.parentModel.value!.author.value),
                       Expanded(
-                        child: AppDivider.vertical(
+                        child: LabDivider.vertical(
                           color: theme.colors.white33,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const AppGap.s4(),
+                const LabGap.s4(),
                 Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -70,24 +70,24 @@ class AppReply extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          AppEmojiContentType(
+                          LabEmojiContentType(
                             contentType:
                                 getModelContentType(reply.parentModel.value),
                             size: theme.sizes.s16,
                           ),
-                          const AppGap.s8(),
+                          const LabGap.s8(),
                           Expanded(
-                            child: AppText.reg14(
+                            child: LabText.reg14(
                               getModelDisplayText(reply.parentModel.value),
                               color: theme.colors.white66,
                               maxLines: 1,
                               textOverflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          const AppGap.s12(),
+                          const LabGap.s12(),
                         ],
                       ),
-                      const AppGap.s10(),
+                      const LabGap.s10(),
                     ],
                   ),
                 ),
@@ -97,27 +97,27 @@ class AppReply extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              AppProfilePic.s38(reply.author.value,
+              LabProfilePic.s38(reply.author.value,
                   onTap: () => onProfileTap(reply.author.value as Profile)),
-              const AppGap.s12(),
+              const LabGap.s12(),
               Expanded(
-                child: AppText.bold14(reply.author.value?.name ??
+                child: LabText.bold14(reply.author.value?.name ??
                     formatNpub(reply.author.value?.pubkey ?? '')),
               ),
-              AppText.reg12(
+              LabText.reg12(
                 TimestampFormatter.format(reply.createdAt,
                     format: TimestampFormat.relative),
                 color: theme.colors.white33,
               ),
             ],
           ),
-          const AppGap.s8(),
-          AppContainer(
-            padding: const AppEdgeInsets.symmetric(
-              vertical: AppGapSize.none,
-              horizontal: AppGapSize.s4,
+          const LabGap.s8(),
+          LabContainer(
+            padding: const LabEdgeInsets.symmetric(
+              vertical: LabGapSize.none,
+              horizontal: LabGapSize.s4,
             ),
-            child: AppShortTextRenderer(
+            child: LabShortTextRenderer(
               content: reply.content,
               onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,

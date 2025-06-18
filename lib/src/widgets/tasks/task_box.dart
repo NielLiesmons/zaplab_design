@@ -7,12 +7,12 @@ enum TaskBoxState {
   inReview,
 }
 
-class AppTaskBox extends StatelessWidget {
+class LabTaskBox extends StatelessWidget {
   final TaskBoxState state;
   final VoidCallback? onTap;
   final double size;
 
-  const AppTaskBox({
+  const LabTaskBox({
     super.key,
     this.state = TaskBoxState.open,
     this.onTap,
@@ -21,11 +21,11 @@ class AppTaskBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return GestureDetector(
       onTap: onTap,
-      child: AppContainer(
+      child: LabContainer(
         width: theme.sizes.s24,
         height: theme.sizes.s24,
         decoration: BoxDecoration(
@@ -40,7 +40,7 @@ class AppTaskBox extends StatelessWidget {
                       : state == TaskBoxState.inProgress
                           ? theme.colors.goldColor66
                           : theme.colors.blurpleColor66,
-                  width: AppLineThicknessData.normal().medium,
+                  width: LabLineThicknessData.normal().medium,
                 ),
         ),
         child: Center(
@@ -50,19 +50,19 @@ class AppTaskBox extends StatelessWidget {
     );
   }
 
-  Widget _buildStateIndicator(AppThemeData theme) {
+  Widget _buildStateIndicator(LabThemeData theme) {
     return switch (state) {
       TaskBoxState.open => const SizedBox.shrink(),
-      TaskBoxState.closed => AppIcon.s8(
+      TaskBoxState.closed => LabIcon.s8(
           theme.icons.characters.check,
           outlineColor: theme.colors.whiteEnforced,
-          outlineThickness: AppLineThicknessData.normal().thick,
+          outlineThickness: LabLineThicknessData.normal().thick,
         ),
       TaskBoxState.inProgress => Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(width: 7),
-            AppIcon.s14(
+            LabIcon.s14(
               theme.icons.characters.circle50,
               gradient: theme.colors.gold,
             ),
@@ -70,11 +70,11 @@ class AppTaskBox extends StatelessWidget {
         ),
       TaskBoxState.inReview => Stack(
           children: [
-            AppIcon.s14(
+            LabIcon.s14(
               theme.icons.characters.circle75,
               gradient: theme.colors.blurple,
             ),
-            AppIcon.s14(
+            LabIcon.s14(
               theme.icons.characters.circle75,
               color: theme.colors.white16,
             ),

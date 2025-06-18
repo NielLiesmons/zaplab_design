@@ -2,12 +2,12 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
-class AppZapPill extends StatelessWidget {
+class LabZapPill extends StatelessWidget {
   final Zap zap;
   final VoidCallback onTap;
   final bool isOutgoing;
 
-  const AppZapPill({
+  const LabZapPill({
     super.key,
     required this.zap,
     required this.onTap,
@@ -16,9 +16,9 @@ class AppZapPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final isInsideModal = ModalScope.of(context);
-    final isInsideScope = AppScope.of(context);
+    final isInsideScope = LabScope.of(context);
     final (isInsideMessageBubble, _) = MessageBubbleScope.of(context);
 
     return TapBuilder(
@@ -33,9 +33,9 @@ class AppZapPill extends StatelessWidget {
 
         return AnimatedScale(
           scale: scaleFactor,
-          duration: AppDurationsData.normal().fast,
+          duration: LabDurationsData.normal().fast,
           curve: Curves.easeInOut,
-          child: AppContainer(
+          child: LabContainer(
             decoration: BoxDecoration(
               color: isOutgoing
                   ? null
@@ -47,11 +47,11 @@ class AppZapPill extends StatelessWidget {
               gradient: isOutgoing ? theme.colors.gold : null,
               borderRadius: BorderRadius.all(theme.radius.rad16),
             ),
-            padding: const AppEdgeInsets.only(
-              left: AppGapSize.s8,
-              right: AppGapSize.s4,
-              top: AppGapSize.s4,
-              bottom: AppGapSize.s4,
+            padding: const LabEdgeInsets.only(
+              left: LabGapSize.s8,
+              right: LabGapSize.s4,
+              top: LabGapSize.s4,
+              bottom: LabGapSize.s4,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -59,24 +59,24 @@ class AppZapPill extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    AppIcon.s12(
+                    LabIcon.s12(
                       theme.icons.characters.zap,
                       color: isOutgoing
-                          ? AppColorsData.dark().black
+                          ? LabColorsData.dark().black
                           : theme.colors.white66,
                     ),
-                    const AppGap.s4(),
-                    AppAmount(
+                    const LabGap.s4(),
+                    LabAmount(
                       zap.amount.toDouble(),
-                      level: AppTextLevel.med12,
+                      level: LabTextLevel.med12,
                       color: isOutgoing
-                          ? AppColorsData.dark().black
+                          ? LabColorsData.dark().black
                           : theme.colors.white66,
                     ),
                   ],
                 ),
-                const AppGap.s6(),
-                AppProfilePic.s18(zap.author.value),
+                const LabGap.s6(),
+                LabProfilePic.s18(zap.author.value),
               ],
             ),
           ),

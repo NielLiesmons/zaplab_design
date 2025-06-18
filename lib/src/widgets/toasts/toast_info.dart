@@ -1,11 +1,11 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppToastInfo extends StatelessWidget {
+class LabToastInfo extends StatelessWidget {
   final String message;
 
   final VoidCallback? onTap;
 
-  const AppToastInfo({
+  const LabToastInfo({
     super.key,
     required this.message,
     this.onTap,
@@ -17,12 +17,12 @@ class AppToastInfo extends StatelessWidget {
     Duration? duration,
     VoidCallback? onTap,
   }) {
-    AppToast.show(
+    LabToast.show(
       context,
       duration: duration,
       onTap: onTap,
       children: [
-        AppToastInfo(
+        LabToastInfo(
           message: message,
         ),
       ],
@@ -31,12 +31,12 @@ class AppToastInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        AppContainer(
+        LabContainer(
           width: theme.sizes.s38,
           height: theme.sizes.s38,
           decoration: BoxDecoration(
@@ -44,15 +44,15 @@ class AppToastInfo extends StatelessWidget {
             borderRadius: BorderRadius.all(theme.radius.rad16),
           ),
           alignment: Alignment.center,
-          child: AppIcon.s18(
+          child: LabIcon.s18(
             theme.icons.characters.info,
             outlineColor: theme.colors.white66,
-            outlineThickness: AppLineThicknessData.normal().medium,
+            outlineThickness: LabLineThicknessData.normal().medium,
           ),
         ),
-        const AppGap.s12(),
+        const LabGap.s12(),
         Expanded(
-          child: AppText.reg14(
+          child: LabText.reg14(
             message,
           ),
         ),

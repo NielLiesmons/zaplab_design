@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
-enum AppProfilePicSquareSize {
+enum LabProfilePicSquareSize {
   s32,
   s38,
   s48,
@@ -14,62 +14,62 @@ enum AppProfilePicSquareSize {
   s104,
 }
 
-class AppProfilePicSquare extends StatelessWidget {
+class LabProfilePicSquare extends StatelessWidget {
   final String? profilePicUrl;
   final Profile? profile;
-  final AppProfilePicSquareSize size;
+  final LabProfilePicSquareSize size;
   final VoidCallback onTap;
 
-  AppProfilePicSquare(
+  LabProfilePicSquare(
     this.profile, {
     super.key,
-    this.size = AppProfilePicSquareSize.s56,
+    this.size = LabProfilePicSquareSize.s56,
     VoidCallback? onTap,
   })  : onTap = onTap ?? (() {}),
         profilePicUrl = null;
 
-  AppProfilePicSquare.fromUrl(
+  LabProfilePicSquare.fromUrl(
     this.profilePicUrl, {
     super.key,
-    this.size = AppProfilePicSquareSize.s56,
+    this.size = LabProfilePicSquareSize.s56,
     VoidCallback? onTap,
   })  : onTap = onTap ?? (() {}),
         profile = null;
 
-  AppProfilePicSquare.s32(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicSquareSize.s32,
+  LabProfilePicSquare.s32(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicSquareSize.s32,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicSquare.s38(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicSquareSize.s38,
+  LabProfilePicSquare.s38(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicSquareSize.s38,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicSquare.s48(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicSquareSize.s48,
+  LabProfilePicSquare.s48(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicSquareSize.s48,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicSquare.s56(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicSquareSize.s56,
+  LabProfilePicSquare.s56(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicSquareSize.s56,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicSquare.s64(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicSquareSize.s64,
+  LabProfilePicSquare.s64(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicSquareSize.s64,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicSquare.s72(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicSquareSize.s72,
+  LabProfilePicSquare.s72(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicSquareSize.s72,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicSquare.s80(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicSquareSize.s80,
+  LabProfilePicSquare.s80(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicSquareSize.s80,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicSquare.s96(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicSquareSize.s96,
+  LabProfilePicSquare.s96(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicSquareSize.s96,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
-  AppProfilePicSquare.s104(this.profile, {super.key, VoidCallback? onTap})
-      : size = AppProfilePicSquareSize.s104,
+  LabProfilePicSquare.s104(this.profile, {super.key, VoidCallback? onTap})
+      : size = LabProfilePicSquareSize.s104,
         onTap = onTap ?? (() {}),
         profilePicUrl = null;
 
@@ -77,11 +77,11 @@ class AppProfilePicSquare extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final sizes = theme.sizes;
     final icons = theme.icons;
     final resolvedSize = _resolveSize(size, sizes);
-    final thickness = AppLineThicknessData.normal().thin;
+    final thickness = LabLineThicknessData.normal().thin;
     final borderRadius = resolvedSize >= sizes.s72
         ? theme.radius.asBorderRadius().rad24
         : resolvedSize >= sizes.s48
@@ -100,7 +100,7 @@ class AppProfilePicSquare extends StatelessWidget {
 
         return Transform.scale(
           scale: scaleFactor,
-          child: AppContainer(
+          child: LabContainer(
             width: resolvedSize,
             height: resolvedSize,
             decoration: BoxDecoration(
@@ -119,7 +119,7 @@ class AppProfilePicSquare extends StatelessWidget {
                       fit: BoxFit.cover,
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) return child;
-                        return const AppSkeletonLoader();
+                        return const LabSkeletonLoader();
                       },
                       errorBuilder: (context, error, stackTrace) {
                         if (profile != null) {
@@ -188,25 +188,25 @@ class AppProfilePicSquare extends StatelessWidget {
     );
   }
 
-  double _resolveSize(AppProfilePicSquareSize size, AppSizesData sizes) {
+  double _resolveSize(LabProfilePicSquareSize size, LabSizesData sizes) {
     switch (size) {
-      case AppProfilePicSquareSize.s32:
+      case LabProfilePicSquareSize.s32:
         return sizes.s32;
-      case AppProfilePicSquareSize.s38:
+      case LabProfilePicSquareSize.s38:
         return sizes.s38;
-      case AppProfilePicSquareSize.s48:
+      case LabProfilePicSquareSize.s48:
         return sizes.s48;
-      case AppProfilePicSquareSize.s56:
+      case LabProfilePicSquareSize.s56:
         return sizes.s56;
-      case AppProfilePicSquareSize.s64:
+      case LabProfilePicSquareSize.s64:
         return sizes.s64;
-      case AppProfilePicSquareSize.s72:
+      case LabProfilePicSquareSize.s72:
         return sizes.s72;
-      case AppProfilePicSquareSize.s80:
+      case LabProfilePicSquareSize.s80:
         return sizes.s80;
-      case AppProfilePicSquareSize.s96:
+      case LabProfilePicSquareSize.s96:
         return sizes.s96;
-      case AppProfilePicSquareSize.s104:
+      case LabProfilePicSquareSize.s104:
         return sizes.s104;
     }
   }

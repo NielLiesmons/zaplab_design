@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 
 import '../theme/theme.dart';
 
-class AppScrollBehavior extends ScrollBehavior {
-  const AppScrollBehavior();
+class LabScrollBehavior extends ScrollBehavior {
+  const LabScrollBehavior();
 
   @override
   ScrollPhysics getScrollPhysics(BuildContext context) {
@@ -28,7 +28,7 @@ class AppScrollBehavior extends ScrollBehavior {
     Set<LogicalKeyboardKey>? pointerAxisModifiers,
     MultitouchDragStrategy? multitouchDragStrategy,
   }) {
-    return const AppScrollBehavior();
+    return const LabScrollBehavior();
   }
 
   @override
@@ -41,10 +41,10 @@ class AppScrollBehavior extends ScrollBehavior {
   }
 }
 
-class AppResponsiveWrapper extends StatelessWidget {
+class LabResponsiveWrapper extends StatelessWidget {
   final Widget child;
 
-  const AppResponsiveWrapper({
+  const LabResponsiveWrapper({
     super.key,
     required this.child,
   });
@@ -53,10 +53,10 @@ class AppResponsiveWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final scale = AppTheme.of(context).system.scale;
+        final scale = LabTheme.of(context).system.scale;
 
         return ScrollConfiguration(
-          behavior: const AppScrollBehavior(),
+          behavior: const LabScrollBehavior(),
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(
               size: Size(

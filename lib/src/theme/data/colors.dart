@@ -2,7 +2,7 @@ import 'package:zaplab_design/src/utils/named.dart';
 import 'package:flutter/rendering.dart';
 import 'package:equatable/equatable.dart';
 
-class AppColorsData extends Equatable {
+class LabColorsData extends Equatable {
   /// Colors
   final Color white;
   final Color white66;
@@ -50,7 +50,7 @@ class AppColorsData extends Equatable {
   final Gradient graydient33;
   final Gradient graydient16;
 
-  const AppColorsData({
+  const LabColorsData({
     required this.white,
     required this.white66,
     required this.white33,
@@ -97,7 +97,7 @@ class AppColorsData extends Equatable {
   });
 
   /// Dark mode
-  factory AppColorsData.dark() => AppColorsData(
+  factory LabColorsData.dark() => LabColorsData(
         /// Colors (full or 66% / 33% transparent)
         white: const Color(0xFFFFFFFF),
         white66: const Color(0xFFFFFFFF).withValues(alpha: 0.66),
@@ -270,7 +270,7 @@ class AppColorsData extends Equatable {
       );
 
   /// Light mode
-  factory AppColorsData.light() => AppColorsData(
+  factory LabColorsData.light() => LabColorsData(
         /// Colors (full or 66% / 33% transparent)
         white: const Color(0xFF000000),
         white66: const Color(0xFF000000).withValues(alpha: 0.55),
@@ -445,7 +445,7 @@ class AppColorsData extends Equatable {
       );
 
   /// Grey mode
-  factory AppColorsData.gray() => AppColorsData(
+  factory LabColorsData.gray() => LabColorsData(
         /// Colors (full or 66% / 33% transparent)
         white: const Color(0xFFFFFFFF),
         white66: const Color(0xFFFFFFFF).withValues(alpha: 0.66),

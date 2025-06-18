@@ -1,24 +1,24 @@
 import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppTextEmojiMenuItem {
+class LabTextEmojiMenuItem {
   final String emojiUrl;
   final String emojiName;
   final void Function(EditableTextState) onTap;
 
-  const AppTextEmojiMenuItem({
+  const LabTextEmojiMenuItem({
     required this.emojiUrl,
     required this.emojiName,
     required this.onTap,
   });
 }
 
-class AppTextEmojiMenu extends StatefulWidget {
+class LabTextEmojiMenu extends StatefulWidget {
   final Offset position;
   final EditableTextState editableTextState;
-  final List<AppTextEmojiMenuItem>? menuItems;
+  final List<LabTextEmojiMenuItem>? menuItems;
 
-  const AppTextEmojiMenu({
+  const LabTextEmojiMenu({
     super.key,
     required this.position,
     required this.editableTextState,
@@ -26,10 +26,10 @@ class AppTextEmojiMenu extends StatefulWidget {
   });
 
   @override
-  State<AppTextEmojiMenu> createState() => _AppTextEmojiMenuState();
+  State<LabTextEmojiMenu> createState() => _LabTextEmojiMenuState();
 }
 
-class _AppTextEmojiMenuState extends State<AppTextEmojiMenu> {
+class _LabTextEmojiMenuState extends State<LabTextEmojiMenu> {
   final ScrollController _scrollController = ScrollController();
 
   double _calculateWidth(BuildContext context) {
@@ -69,28 +69,28 @@ class _AppTextEmojiMenuState extends State<AppTextEmojiMenu> {
     return Offset(xOffset, -menuHeight);
   }
 
-  Widget _buildEmojiItem(AppTextEmojiMenuItem item) {
-    final theme = AppTheme.of(context);
+  Widget _buildEmojiItem(LabTextEmojiMenuItem item) {
+    final theme = LabTheme.of(context);
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => item.onTap(widget.editableTextState),
-        child: AppContainer(
+        child: LabContainer(
           height: theme.sizes.s38,
-          padding: const AppEdgeInsets.symmetric(
-            horizontal: AppGapSize.s10,
+          padding: const LabEdgeInsets.symmetric(
+            horizontal: LabGapSize.s10,
           ),
           child: Row(
             children: [
-              AppEmojiImage(
+              LabEmojiImage(
                 emojiUrl: item.emojiUrl,
                 emojiName: item.emojiName,
                 size: 24,
               ),
-              const AppGap.s8(),
+              const LabGap.s8(),
               Expanded(
-                child: AppText.med14(
+                child: LabText.med14(
                   item.emojiName,
                   color: theme.colors.white,
                 ),
@@ -104,7 +104,7 @@ class _AppTextEmojiMenuState extends State<AppTextEmojiMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final items = widget.menuItems ?? [];
     final itemHeight = theme.sizes.s38;
     final menuHeight = items.length <= 4 ? itemHeight * items.length : 168.0;
@@ -121,7 +121,7 @@ class _AppTextEmojiMenuState extends State<AppTextEmojiMenu> {
             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
             child: Stack(
               children: [
-                AppContainer(
+                LabContainer(
                   height: menuHeight,
                   constraints: BoxConstraints(
                     maxWidth: menuWidth,
@@ -132,7 +132,7 @@ class _AppTextEmojiMenuState extends State<AppTextEmojiMenu> {
                     borderRadius: theme.radius.asBorderRadius().rad8,
                     border: Border.all(
                       color: theme.colors.white33,
-                      width: AppLineThicknessData.normal().thin,
+                      width: LabLineThicknessData.normal().thin,
                     ),
                   ),
                   child: Stack(
@@ -145,7 +145,7 @@ class _AppTextEmojiMenuState extends State<AppTextEmojiMenu> {
                             for (final item in items) ...[
                               _buildEmojiItem(item),
                               if (item != items.last)
-                                const AppDivider.horizontal(),
+                                const LabDivider.horizontal(),
                             ],
                           ],
                         ),

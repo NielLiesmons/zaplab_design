@@ -19,13 +19,13 @@ class TabData {
   });
 }
 
-class AppTabView extends StatefulWidget {
+class LabTabView extends StatefulWidget {
   final List<TabData> tabs;
-  final AppTabController controller;
+  final LabTabController controller;
   final bool scrollableContent;
   final void Function(double)? onScroll;
   final double? scrollOffsetHeight;
-  const AppTabView({
+  const LabTabView({
     super.key,
     required this.tabs,
     required this.controller,
@@ -35,16 +35,16 @@ class AppTabView extends StatefulWidget {
   });
 
   @override
-  State<AppTabView> createState() => _AppTabViewState();
+  State<LabTabView> createState() => _LabTabViewState();
 }
 
-class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
+class _LabTabViewState extends State<LabTabView> with TickerProviderStateMixin {
   int _selectedIndex = 0;
   bool _isExpanded = false;
   bool _showScrollButton = false;
   late final AnimationController _slideController;
   late Animation<Offset> _slideAnimation;
-  final _tabBarKey = GlobalKey<AppTabBarState>();
+  final _tabBarKey = GlobalKey<LabTabBarState>();
   final _scrollController = ScrollController();
 
   @override
@@ -52,7 +52,7 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
     super.initState();
     _slideController = AnimationController(
       vsync: this,
-      duration: AppDurationsData.normal().normal,
+      duration: LabDurationsData.normal().normal,
     );
     _slideAnimation = Tween<Offset>(
       begin: Offset.zero,
@@ -85,29 +85,29 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
     if (!_scrollController.hasClients) return;
     _scrollController.animateTo(
       0,
-      duration: AppDurationsData.normal().normal,
+      duration: LabDurationsData.normal().normal,
       curve: Curves.easeOut,
     );
   }
 
   Future<void> _showSettingsModal(BuildContext context, TabData tab) async {
     if (tab.settingsContent == null) return;
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final rootContext = Navigator.of(context, rootNavigator: true).context;
     final isInsideModal = ModalScope.of(context);
 
     if (isInsideModal) {
-      await AppModal.showInOtherModal(
+      await LabModal.showInOtherModal(
         rootContext,
         title: tab.label,
         description: tab.settingsDescription,
         children: [tab.settingsContent!],
-        bottomBar: AppButton(
+        bottomBar: LabButton(
           onTap: () => Navigator.of(context).pop(),
           inactiveGradient: theme.colors.blurple,
           pressedGradient: theme.colors.blurple,
           children: [
-            AppText.med16(
+            LabText.med16(
               'Done',
               color: theme.colors.whiteEnforced,
             ),
@@ -115,17 +115,17 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
         ),
       );
     } else {
-      await AppModal.show(
+      await LabModal.show(
         rootContext,
         title: tab.label,
         description: tab.settingsDescription,
         children: [tab.settingsContent!],
-        bottomBar: AppButton(
+        bottomBar: LabButton(
           onTap: () => Navigator.of(context).pop(),
           inactiveGradient: theme.colors.blurple,
           pressedGradient: theme.colors.blurple,
           children: [
-            AppText.med16(
+            LabText.med16(
               'Done',
               color: theme.colors.whiteEnforced,
             ),
@@ -137,11 +137,11 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final bottomPadding = MediaQuery.of(context).padding.bottom;
     final currentTab = widget.tabs[_selectedIndex];
     final floatingButtonBottom = currentTab.bottomBar != null
-        ? (currentTab.bottomBar is AppBottomBarSafeArea ? 16 : 84)
+        ? (currentTab.bottomBar is LabBottomBarSafeArea ? 16 : 84)
         : 16;
 
     return Stack(
@@ -152,12 +152,12 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
           child: SizedBox(
             height: widget.scrollableContent
                 ? MediaQuery.of(context).size.height /
-                    AppTheme.of(context).system.scale
+                    LabTheme.of(context).system.scale
                 : null,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                AppTabBar(
+                LabTabBar(
                   key: _tabBarKey,
                   tabs: widget.tabs,
                   selectedIndex: _selectedIndex,
@@ -221,7 +221,7 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const AppDivider(),
+                const LabDivider(),
                 ConstrainedBox(
                   constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(context).size.height * 0.66 -
@@ -229,9 +229,9 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
                         MediaQuery.of(context).padding.bottom,
                   ),
                   child: SingleChildScrollView(
-                    child: AppContainer(
-                      padding: const AppEdgeInsets.all(AppGapSize.s12),
-                      child: AppTabGrid(
+                    child: LabContainer(
+                      padding: const LabEdgeInsets.all(LabGapSize.s12),
+                      child: LabTabGrid(
                         tabs: widget.tabs,
                         selectedIndex: _selectedIndex,
                         onTabSelected: (index) {
@@ -246,7 +246,7 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-                const AppDivider()
+                const LabDivider()
               ],
             ),
           ),
@@ -265,10 +265,10 @@ class _AppTabViewState extends State<AppTabView> with TickerProviderStateMixin {
           Positioned(
             right: theme.sizes.s16,
             bottom: floatingButtonBottom + bottomPadding,
-            child: AppFloatingButton(
-              icon: AppIcon.s12(
+            child: LabFloatingButton(
+              icon: LabIcon.s12(
                 theme.icons.characters.arrowUp,
-                outlineThickness: AppLineThicknessData.normal().medium,
+                outlineThickness: LabLineThicknessData.normal().medium,
                 outlineColor: theme.colors.white66,
               ),
               onTap: _scrollToTop,

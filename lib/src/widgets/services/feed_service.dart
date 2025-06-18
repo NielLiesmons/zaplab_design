@@ -2,13 +2,13 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
 
-class AppFeedService extends StatelessWidget {
+class LabFeedService extends StatelessWidget {
   final Service service;
   final Function(Model) onTap;
   final Function(Profile) onProfileTap;
   final bool isUnread;
 
-  const AppFeedService({
+  const LabFeedService({
     super.key,
     required this.service,
     required this.onTap,
@@ -23,13 +23,13 @@ class AppFeedService extends StatelessWidget {
       builder: (context, state, hasFocus) {
         return Column(
           children: [
-            AppServiceCard(
+            LabServiceCard(
               service: service,
               onTap: onTap,
               onProfileTap: onProfileTap,
               isUnread: isUnread,
             ),
-            const AppDivider(),
+            const LabDivider(),
           ],
         );
       },

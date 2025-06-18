@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppCommunityCard extends StatelessWidget {
+class LabCommunityCard extends StatelessWidget {
   final Community community;
   final VoidCallback onTap;
   final Profile? profile;
@@ -10,7 +10,7 @@ class AppCommunityCard extends StatelessWidget {
   final String? relevantProfilesDescription;
   final VoidCallback onProfilesTap;
 
-  const AppCommunityCard({
+  const LabCommunityCard({
     super.key,
     required this.community,
     required this.onTap,
@@ -23,50 +23,50 @@ class AppCommunityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppPanelButton(
+    return LabPanelButton(
       onTap: onTap,
-      padding: const AppEdgeInsets.all(AppGapSize.none),
+      padding: const LabEdgeInsets.all(LabGapSize.none),
       child: Column(
         children: [
           if (profile != null && profileLabel != null)
-            AppContainer(
-              padding: const AppEdgeInsets.symmetric(
-                vertical: AppGapSize.s8,
-                horizontal: AppGapSize.s12,
+            LabContainer(
+              padding: const LabEdgeInsets.symmetric(
+                vertical: LabGapSize.s8,
+                horizontal: LabGapSize.s12,
               ),
               decoration: BoxDecoration(
                 color: theme.colors.white8,
               ),
               child: Row(
                 children: [
-                  AppProfilePic.s18(profile!),
-                  const AppGap.s8(),
-                  AppText.reg12(
+                  LabProfilePic.s18(profile!),
+                  const LabGap.s8(),
+                  LabText.reg12(
                       "${profile!.name ?? formatNpub(profile!.npub)} is $profileLabel",
                       color: theme.colors.white66,
                       textOverflow: TextOverflow.ellipsis),
                 ],
               ),
             ),
-          AppContainer(
-            padding: const AppEdgeInsets.symmetric(
-              vertical: AppGapSize.s8,
-              horizontal: AppGapSize.s12,
+          LabContainer(
+            padding: const LabEdgeInsets.symmetric(
+              vertical: LabGapSize.s8,
+              horizontal: LabGapSize.s12,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppProfilePic.s56(community.author.value),
-                const AppGap.s12(),
+                LabProfilePic.s56(community.author.value),
+                const LabGap.s12(),
                 Flexible(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppText.med14(community.name),
-                      const AppGap.s2(),
-                      AppText.reg12(community.description ?? '',
+                      LabText.med14(community.name),
+                      const LabGap.s2(),
+                      LabText.reg12(community.description ?? '',
                           color: theme.colors.white66,
                           maxLines: 2,
                           textOverflow: TextOverflow.ellipsis),
@@ -76,16 +76,16 @@ class AppCommunityCard extends StatelessWidget {
               ],
             ),
           ),
-          const AppDivider(),
-          AppContainer(
-            padding: const AppEdgeInsets.symmetric(
-              vertical: AppGapSize.s8,
-              horizontal: AppGapSize.s12,
+          const LabDivider(),
+          LabContainer(
+            padding: const LabEdgeInsets.symmetric(
+              vertical: LabGapSize.s8,
+              horizontal: LabGapSize.s12,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                AppProfileStack(
+                LabProfileStack(
                   profiles: relevantProfiles ?? [],
                   description: relevantProfilesDescription,
                 ),

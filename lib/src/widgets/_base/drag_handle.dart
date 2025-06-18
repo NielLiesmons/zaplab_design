@@ -2,13 +2,13 @@ import 'package:zaplab_design/src/theme/theme.dart';
 import 'package:zaplab_design/src/utils/platform.dart';
 import 'package:flutter/widgets.dart';
 
-class AppDragHandle extends StatelessWidget {
-  const AppDragHandle({super.key});
+class LabDragHandle extends StatelessWidget {
+  const LabDragHandle({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
-    return AppPlatformUtils.isMobile
+    final theme = LabTheme.of(context);
+    return LabPlatformUtils.isMobile
         ? SizedBox(
             width: theme.sizes.s32,
             height: theme.sizes.s4,

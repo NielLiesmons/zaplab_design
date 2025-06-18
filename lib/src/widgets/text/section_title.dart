@@ -1,22 +1,22 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppSectionTitle extends StatelessWidget {
+class LabSectionTitle extends StatelessWidget {
   final String text;
 
-  const AppSectionTitle(this.text, {super.key});
+  const LabSectionTitle(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     return Column(
       children: [
         Row(
           children: [
-            const AppGap.s12(),
-            AppText.h3(text.toUpperCase(), color: theme.colors.white66),
+            const LabGap.s12(),
+            LabText.h3(text.toUpperCase(), color: theme.colors.white66),
           ],
         ),
-        const AppGap.s6(),
+        const LabGap.s6(),
       ],
     );
   }

@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppImageStack extends StatefulWidget {
+class LabImageStack extends StatefulWidget {
   final List<String> images;
   final VoidCallback? onTap;
   static const double _maxWidth = 220.0;
@@ -12,21 +12,21 @@ class AppImageStack extends StatefulWidget {
   static const double _stackHorizontalOffsetHover = 40.0;
   static const double _stackRotation = -5.0;
 
-  const AppImageStack({
+  const LabImageStack({
     super.key,
     required this.images,
     this.onTap,
   });
 
   static void _showFullScreen(BuildContext context, List<String> images) {
-    AppOpenedImages.show(context, images);
+    LabOpenedImages.show(context, images);
   }
 
   @override
-  State<AppImageStack> createState() => _AppImageStackState();
+  State<LabImageStack> createState() => _LabImageStackState();
 }
 
-class _AppImageStackState extends State<AppImageStack> {
+class _LabImageStackState extends State<LabImageStack> {
   Size? _firstImageSize;
   double? _aspectRatio;
   bool _isHovered = false;
@@ -63,10 +63,10 @@ class _AppImageStackState extends State<AppImageStack> {
   }
 
   Size _calculateContainerSize() {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     if (_aspectRatio == null) {
-      return const Size(AppImageStack._maxWidth, AppImageStack._maxWidth);
+      return const Size(LabImageStack._maxWidth, LabImageStack._maxWidth);
     }
 
     final double aspectRatio = _aspectRatio!;
@@ -75,36 +75,36 @@ class _AppImageStackState extends State<AppImageStack> {
     if (aspectRatio > theme.sizes.phi) {
       // Too wide - use max width and constrain height
       return Size(
-          AppImageStack._maxWidth, AppImageStack._maxWidth / theme.sizes.phi);
+          LabImageStack._maxWidth, LabImageStack._maxWidth / theme.sizes.phi);
     } else if (aspectRatio < 1 / theme.sizes.phi) {
       // Too tall - use max height and constrain width
       return Size(
-          AppImageStack._maxHeight / theme.sizes.phi, AppImageStack._maxHeight);
+          LabImageStack._maxHeight / theme.sizes.phi, LabImageStack._maxHeight);
     }
 
     // If within golden ratio bounds, maintain original aspect ratio
-    if (AppImageStack._maxWidth / aspectRatio <= AppImageStack._maxHeight) {
+    if (LabImageStack._maxWidth / aspectRatio <= LabImageStack._maxHeight) {
       // Width constrained
       return Size(
-          AppImageStack._maxWidth, AppImageStack._maxWidth / aspectRatio);
+          LabImageStack._maxWidth, LabImageStack._maxWidth / aspectRatio);
     } else {
       // Height constrained
       return Size(
-          AppImageStack._maxHeight * aspectRatio, AppImageStack._maxHeight);
+          LabImageStack._maxHeight * aspectRatio, LabImageStack._maxHeight);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     if (widget.images.isEmpty) return const SizedBox.shrink();
 
     final containerSize = _calculateContainerSize();
     final (_, isOutgoing) = MessageBubbleScope.of(context);
 
     final double horizontalOffset = _isHovered
-        ? AppImageStack._stackHorizontalOffsetHover
-        : AppImageStack._stackHorizontalOffset;
+        ? LabImageStack._stackHorizontalOffsetHover
+        : LabImageStack._stackHorizontalOffset;
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -112,7 +112,7 @@ class _AppImageStackState extends State<AppImageStack> {
       onExit: (_) => setState(() => _isHovered = false),
       child: GestureDetector(
         onTap: widget.onTap ??
-            () => AppImageStack._showFullScreen(context, widget.images),
+            () => LabImageStack._showFullScreen(context, widget.images),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -130,13 +130,13 @@ class _AppImageStackState extends State<AppImageStack> {
                       duration: const Duration(milliseconds: 200),
                       curve: Curves.easeInOut,
                       transform: Matrix4.rotationZ((isOutgoing ? 1 : -1) *
-                          (AppImageStack._stackRotation * 2 * (pi / 180)))
+                          (LabImageStack._stackRotation * 2 * (pi / 180)))
                         ..translate(
                             (isOutgoing ? -1 : 1) * horizontalOffset * 2,
                             (isOutgoing ? 1.6 : 1) *
-                                AppImageStack._stackVerticalOffset *
+                                LabImageStack._stackVerticalOffset *
                                 2),
-                      child: AppContainer(
+                      child: LabContainer(
                         width: containerSize.width - 80,
                         height: containerSize.height - 80,
                         clipBehavior: Clip.antiAlias,
@@ -145,7 +145,7 @@ class _AppImageStackState extends State<AppImageStack> {
                           borderRadius: theme.radius.asBorderRadius().rad16,
                           border: Border.all(
                             color: theme.colors.white16,
-                            width: AppLineThicknessData.normal().thin,
+                            width: LabLineThicknessData.normal().thin,
                           ),
                         ),
                         child: Opacity(
@@ -158,10 +158,10 @@ class _AppImageStackState extends State<AppImageStack> {
                             alignment: Alignment.center,
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;
-                              return const AppSkeletonLoader();
+                              return const LabSkeletonLoader();
                             },
                             errorBuilder: (context, error, stackTrace) {
-                              return const AppSkeletonLoader();
+                              return const LabSkeletonLoader();
                             },
                           ),
                         ),
@@ -178,12 +178,12 @@ class _AppImageStackState extends State<AppImageStack> {
                       duration: const Duration(milliseconds: 200),
                       curve: Curves.easeInOut,
                       transform: Matrix4.rotationZ((isOutgoing ? 1 : -1) *
-                          (AppImageStack._stackRotation * (pi / 180)))
+                          (LabImageStack._stackRotation * (pi / 180)))
                         ..translate(
                             (isOutgoing ? -1 : 1) * horizontalOffset,
                             (isOutgoing ? 1.6 : 1) *
-                                AppImageStack._stackVerticalOffset),
-                      child: AppContainer(
+                                LabImageStack._stackVerticalOffset),
+                      child: LabContainer(
                         width: containerSize.width - 40,
                         height: containerSize.height - 40,
                         clipBehavior: Clip.antiAlias,
@@ -192,7 +192,7 @@ class _AppImageStackState extends State<AppImageStack> {
                           borderRadius: theme.radius.asBorderRadius().rad16,
                           border: Border.all(
                             color: theme.colors.white16,
-                            width: AppLineThicknessData.normal().thin,
+                            width: LabLineThicknessData.normal().thin,
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -212,10 +212,10 @@ class _AppImageStackState extends State<AppImageStack> {
                             alignment: Alignment.center,
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;
-                              return const AppSkeletonLoader();
+                              return const LabSkeletonLoader();
                             },
                             errorBuilder: (context, error, stackTrace) {
-                              return const AppSkeletonLoader();
+                              return const LabSkeletonLoader();
                             },
                           ),
                         ),
@@ -228,7 +228,7 @@ class _AppImageStackState extends State<AppImageStack> {
                   curve: Curves.easeInOut,
                   transform: Matrix4.identity()
                     ..scale(_isHovered ? 1.0033 : 1.0),
-                  child: AppContainer(
+                  child: LabContainer(
                     width: containerSize.width,
                     height: containerSize.height,
                     clipBehavior: Clip.antiAlias,
@@ -237,7 +237,7 @@ class _AppImageStackState extends State<AppImageStack> {
                       borderRadius: theme.radius.asBorderRadius().rad16,
                       border: Border.all(
                         color: theme.colors.white16,
-                        width: AppLineThicknessData.normal().thin,
+                        width: LabLineThicknessData.normal().thin,
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -257,10 +257,10 @@ class _AppImageStackState extends State<AppImageStack> {
                           alignment: Alignment.center,
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
-                            return const AppSkeletonLoader();
+                            return const LabSkeletonLoader();
                           },
                           errorBuilder: (context, error, stackTrace) {
-                            return const AppSkeletonLoader();
+                            return const LabSkeletonLoader();
                           },
                         ),
                         // Counter for additional images
@@ -274,16 +274,16 @@ class _AppImageStackState extends State<AppImageStack> {
                               child: BackdropFilter(
                                 filter:
                                     ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                                child: AppContainer(
+                                child: LabContainer(
                                   height: theme.sizes.s28,
-                                  padding: const AppEdgeInsets.symmetric(
-                                      horizontal: AppGapSize.s10),
+                                  padding: const LabEdgeInsets.symmetric(
+                                      horizontal: LabGapSize.s10),
                                   decoration: BoxDecoration(
                                     color: theme.colors.gray66,
                                     borderRadius: BorderRadius.circular(13),
                                   ),
                                   child: Center(
-                                    child: AppText.med14(
+                                    child: LabText.med14(
                                       '${widget.images.length}',
                                       color: theme.colors.white66,
                                     ),

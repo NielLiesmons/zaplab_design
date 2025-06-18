@@ -1,14 +1,14 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppSettingSection extends StatelessWidget {
+class LabSettingSection extends StatelessWidget {
   final Widget? icon;
   final String title;
   final String? description;
   final VoidCallback? onTap;
   final List<HostingStatus>? hostingStatuses;
 
-  const AppSettingSection({
+  const LabSettingSection({
     super.key,
     this.icon,
     required this.title,
@@ -19,7 +19,7 @@ class AppSettingSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return TapBuilder(
       onTap: onTap,
@@ -37,11 +37,11 @@ class AppSettingSection extends StatelessWidget {
                 : CrossAxisAlignment.center,
             children: [
               if (title == 'Hosting' && hostingStatuses != null)
-                AppHostingIcon(
+                LabHostingIcon(
                   hostingStatuses: hostingStatuses,
                 )
               else
-                AppContainer(
+                LabContainer(
                   width: theme.sizes.s48,
                   height: theme.sizes.s48,
                   decoration: BoxDecoration(
@@ -50,40 +50,40 @@ class AppSettingSection extends StatelessWidget {
                   ),
                   child: Center(child: icon),
                 ),
-              const AppGap.s14(),
+              const LabGap.s14(),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (title == 'Hosting') const AppGap.s6(),
-                    AppText.med14(title),
-                    const AppGap.s2(),
+                    if (title == 'Hosting') const LabGap.s6(),
+                    LabText.med14(title),
+                    const LabGap.s2(),
                     description != null
-                        ? AppText.reg12(description!,
+                        ? LabText.reg12(description!,
                             color: theme.colors.white66)
                         : const SizedBox.shrink(),
                   ],
                 ),
               ),
-              const AppGap.s12(),
+              const LabGap.s12(),
               if (title == 'Hosting')
                 Column(
                   children: [
-                    const AppGap.s16(),
-                    AppIcon.s16(
+                    const LabGap.s16(),
+                    LabIcon.s16(
                       theme.icons.characters.chevronRight,
-                      outlineThickness: AppLineThicknessData.normal().medium,
+                      outlineThickness: LabLineThicknessData.normal().medium,
                       outlineColor: theme.colors.white33,
                     ),
                   ],
                 )
               else
-                AppIcon.s16(
+                LabIcon.s16(
                   theme.icons.characters.chevronRight,
-                  outlineThickness: AppLineThicknessData.normal().medium,
+                  outlineThickness: LabLineThicknessData.normal().medium,
                   outlineColor: theme.colors.white33,
                 ),
-              const AppGap.s12(),
+              const LabGap.s12(),
             ],
           ),
         );

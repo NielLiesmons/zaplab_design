@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppTextSelectionControls extends TextSelectionControls {
+class LabTextSelectionControls extends TextSelectionControls {
   static const double _handleSize = 16.0;
   static const double _lineThickness = 2.0;
 
@@ -9,17 +9,17 @@ class AppTextSelectionControls extends TextSelectionControls {
   Widget buildHandle(
       BuildContext context, TextSelectionHandleType type, double textLineHeight,
       [VoidCallback? onTap]) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.translucent,
-      child: AppContainer(
+      child: LabContainer(
         width: 16.0,
         height: textLineHeight + 32,
         child: Column(
           children: [
-            AppContainer(
+            LabContainer(
               width: _handleSize,
               height: _handleSize,
               decoration: BoxDecoration(
@@ -29,7 +29,7 @@ class AppTextSelectionControls extends TextSelectionControls {
                 shape: BoxShape.circle,
               ),
             ),
-            AppContainer(
+            LabContainer(
               width: _lineThickness,
               height: textLineHeight,
               decoration: BoxDecoration(
@@ -39,7 +39,7 @@ class AppTextSelectionControls extends TextSelectionControls {
                 borderRadius: BorderRadius.circular(10000),
               ),
             ),
-            AppContainer(
+            LabContainer(
               width: _handleSize,
               height: _handleSize,
               decoration: BoxDecoration(
@@ -86,7 +86,7 @@ class AppTextSelectionControls extends TextSelectionControls {
     ValueListenable<ClipboardStatus>? clipboardStatus,
     Offset? lastSecondaryTapDownPosition,
   ) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final editableTextState = delegate as EditableTextState;
 
     // Use the leftmost point (start of selection) for positioning
@@ -104,7 +104,7 @@ class AppTextSelectionControls extends TextSelectionControls {
                   -theme.sizes.s104, // Middle third
           -textLineHeight - theme.sizes.s56),
       showWhenUnlinked: false,
-      child: AppTextSelectionMenu(
+      child: LabTextSelectionMenu(
         position: selectionMidpoint,
         editableTextState: editableTextState,
       ),

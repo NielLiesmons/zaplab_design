@@ -1,9 +1,9 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppOpenedImages {
+class LabOpenedImages {
   static void show(BuildContext context, List<String> images,
       {String? scrollToImage}) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final screenHeight =
         MediaQuery.of(context).size.height / theme.system.scale;
     final scrollController = ScrollController();
@@ -15,7 +15,7 @@ class AppOpenedImages {
         if (key?.currentContext != null) {
           Scrollable.ensureVisible(
             key!.currentContext!,
-            duration: AppDurationsData.normal().normal,
+            duration: LabDurationsData.normal().normal,
             curve: Curves.easeInOut,
             alignment: 0.4,
           );
@@ -23,30 +23,30 @@ class AppOpenedImages {
       });
     }
 
-    AppScreen.show(
+    LabScreen.show(
       context: context,
       alwaysShowTopBar: true,
-      topBarContent: AppContainer(
+      topBarContent: LabContainer(
         height: theme.sizes.s32,
-        padding: const AppEdgeInsets.only(
-          top: AppGapSize.s8,
+        padding: const LabEdgeInsets.only(
+          top: LabGapSize.s8,
         ),
-        child: AppText.med14('${images.length} Images',
+        child: LabText.med14('${images.length} Images',
             color: theme.colors.white66),
       ),
-      child: AppContainer(
+      child: LabContainer(
         height: screenHeight - theme.sizes.s32,
         child: SingleChildScrollView(
           controller: scrollController,
           child: Column(
             children: [
-              const AppGap.s40(),
+              const LabGap.s40(),
               for (final url in images) ...[
-                AppFullWidthImage(
+                LabFullWidthImage(
                   key: imageKeys[url] = GlobalKey(),
                   url: url,
                 ),
-                const AppGap.s16(),
+                const LabGap.s16(),
               ],
             ],
           ),

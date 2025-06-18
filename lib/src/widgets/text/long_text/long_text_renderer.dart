@@ -3,7 +3,7 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:flutter/gestures.dart';
 import 'package:models/models.dart';
 
-class AppLongTextRenderer extends StatelessWidget {
+class LabLongTextRenderer extends StatelessWidget {
   final String content;
   final String? language;
   final NostrEventResolver onResolveEvent;
@@ -13,7 +13,7 @@ class AppLongTextRenderer extends StatelessWidget {
   final LinkTapHandler onLinkTap;
   final Function(Profile) onProfileTap;
 
-  const AppLongTextRenderer({
+  const LabLongTextRenderer({
     super.key,
     required this.content,
     this.language,
@@ -28,14 +28,14 @@ class AppLongTextRenderer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dynamic parser = language == 'ndown'
-        ? AppNDownParser()
+        ? LabNDownParser()
         : language == 'nosciidoc'
-            ? AppNosciiDocParser()
-            : AppNosciiDocParser();
+            ? LabNosciiDocParser()
+            : LabNosciiDocParser();
     final elements = parser.parse(content);
 
-    return AppContainer(
-      padding: const AppEdgeInsets.symmetric(vertical: AppGapSize.s8),
+    return LabContainer(
+      padding: const LabEdgeInsets.symmetric(vertical: LabGapSize.s8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -58,67 +58,67 @@ class AppLongTextRenderer extends StatelessWidget {
 
   Widget _buildElementWithSpacing(LongTextElement element, BuildContext context,
       {LongTextElement? nextElement}) {
-    final theme = AppTheme.of(context);
-    final AppEdgeInsets spacing = switch (element.type) {
-      LongTextElementType.heading1 => const AppEdgeInsets.only(
-          top: AppGapSize.s4,
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
+    final theme = LabTheme.of(context);
+    final LabEdgeInsets spacing = switch (element.type) {
+      LongTextElementType.heading1 => const LabEdgeInsets.only(
+          top: LabGapSize.s4,
+          bottom: LabGapSize.s6,
+          left: LabGapSize.s16,
+          right: LabGapSize.s16,
         ),
-      LongTextElementType.heading2 => const AppEdgeInsets.only(
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
+      LongTextElementType.heading2 => const LabEdgeInsets.only(
+          bottom: LabGapSize.s6,
+          left: LabGapSize.s16,
+          right: LabGapSize.s16,
         ),
-      LongTextElementType.heading3 => const AppEdgeInsets.only(
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
+      LongTextElementType.heading3 => const LabEdgeInsets.only(
+          bottom: LabGapSize.s6,
+          left: LabGapSize.s16,
+          right: LabGapSize.s16,
         ),
-      LongTextElementType.heading4 => const AppEdgeInsets.only(
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
+      LongTextElementType.heading4 => const LabEdgeInsets.only(
+          bottom: LabGapSize.s6,
+          left: LabGapSize.s16,
+          right: LabGapSize.s16,
         ),
-      LongTextElementType.heading5 => const AppEdgeInsets.only(
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
+      LongTextElementType.heading5 => const LabEdgeInsets.only(
+          bottom: LabGapSize.s6,
+          left: LabGapSize.s16,
+          right: LabGapSize.s16,
         ),
-      LongTextElementType.listItem => const AppEdgeInsets.only(
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
+      LongTextElementType.listItem => const LabEdgeInsets.only(
+          bottom: LabGapSize.s6,
+          left: LabGapSize.s16,
+          right: LabGapSize.s16,
         ),
-      LongTextElementType.orderedListItem => const AppEdgeInsets.only(
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
+      LongTextElementType.orderedListItem => const LabEdgeInsets.only(
+          bottom: LabGapSize.s6,
+          left: LabGapSize.s16,
+          right: LabGapSize.s16,
         ),
-      LongTextElementType.checkListItem => const AppEdgeInsets.only(
-          bottom: AppGapSize.s6,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
+      LongTextElementType.checkListItem => const LabEdgeInsets.only(
+          bottom: LabGapSize.s6,
+          left: LabGapSize.s16,
+          right: LabGapSize.s16,
         ),
-      LongTextElementType.horizontalRule => const AppEdgeInsets.only(
-          bottom: AppGapSize.none,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
+      LongTextElementType.horizontalRule => const LabEdgeInsets.only(
+          bottom: LabGapSize.none,
+          left: LabGapSize.s16,
+          right: LabGapSize.s16,
         ),
-      LongTextElementType.image => const AppEdgeInsets.only(
-          bottom: AppGapSize.s8,
+      LongTextElementType.image => const LabEdgeInsets.only(
+          bottom: LabGapSize.s8,
         ),
-      LongTextElementType.nostrModel => const AppEdgeInsets.only(
-          top: AppGapSize.s4,
-          bottom: AppGapSize.s8,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
+      LongTextElementType.nostrModel => const LabEdgeInsets.only(
+          top: LabGapSize.s4,
+          bottom: LabGapSize.s8,
+          left: LabGapSize.s16,
+          right: LabGapSize.s16,
         ),
-      _ => const AppEdgeInsets.only(
-          bottom: AppGapSize.s10,
-          left: AppGapSize.s16,
-          right: AppGapSize.s16,
+      _ => const LabEdgeInsets.only(
+          bottom: LabGapSize.s10,
+          left: LabGapSize.s16,
+          right: LabGapSize.s16,
         ),
     };
 
@@ -134,29 +134,29 @@ class AppLongTextRenderer extends StatelessWidget {
     final Widget content = _buildElement(context, element);
 
     if (!isSwipeable) {
-      return AppContainer(
+      return LabContainer(
         padding: spacing,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             content,
-            if (isLastListItem) const AppGap.s16(),
+            if (isLastListItem) const LabGap.s16(),
           ],
         ),
       );
     }
 
-    return AppSwipeContainer(
+    return LabSwipeContainer(
       padding: spacing,
-      leftContent: AppIcon.s16(
+      leftContent: LabIcon.s16(
         theme.icons.characters.reply,
         outlineColor: theme.colors.white66,
-        outlineThickness: AppLineThicknessData.normal().medium,
+        outlineThickness: LabLineThicknessData.normal().medium,
       ),
-      rightContent: AppIcon.s10(
+      rightContent: LabIcon.s10(
         theme.icons.characters.chevronUp,
         outlineColor: theme.colors.white66,
-        outlineThickness: AppLineThicknessData.normal().medium,
+        outlineThickness: LabLineThicknessData.normal().medium,
       ),
       onSwipeLeft: () {}, // Add your action handlers
       onSwipeRight: () {}, // Add your reply handlers
@@ -164,7 +164,7 @@ class AppLongTextRenderer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           content,
-          if (isLastListItem) const AppGap.s16(),
+          if (isLastListItem) const LabGap.s16(),
         ],
       ),
     );
@@ -172,7 +172,7 @@ class AppLongTextRenderer extends StatelessWidget {
 
   List<InlineSpan> _buildInlineElements(
       BuildContext context, List<LongTextElement> children) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     return children.map((child) {
       if (child.type == LongTextElementType.nostrProfile) {
         return TextSpan(
@@ -192,7 +192,7 @@ class AppLongTextRenderer extends StatelessWidget {
               child: FutureBuilder<({Profile profile, VoidCallback? onTap})>(
                 future: onResolveProfile(child.content),
                 builder: (context, snapshot) {
-                  return AppProfileInline(
+                  return LabProfileInline(
                     profile: snapshot.data!.profile,
                     onTap: snapshot.data?.onTap,
                     isArticle: true,
@@ -220,10 +220,10 @@ class AppLongTextRenderer extends StatelessWidget {
               child: FutureBuilder<String>(
                 future: onResolveEmoji(child.content),
                 builder: (context, snapshot) {
-                  return AppContainer(
-                    padding: const AppEdgeInsets.symmetric(
-                        horizontal: AppGapSize.s2),
-                    child: AppEmojiImage(
+                  return LabContainer(
+                    padding: const LabEdgeInsets.symmetric(
+                        horizontal: LabGapSize.s2),
+                    child: LabEmojiImage(
                       emojiUrl: snapshot.data ?? '',
                       emojiName: snapshot.data ?? '',
                       size: 16,
@@ -252,18 +252,18 @@ class AppLongTextRenderer extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const AppGap.s2(),
-                  AppContainer(
+                  const LabGap.s2(),
+                  LabContainer(
                     height: 22,
-                    padding: const AppEdgeInsets.only(
-                      left: AppGapSize.s4,
-                      right: AppGapSize.s4,
+                    padding: const LabEdgeInsets.only(
+                      left: LabGapSize.s4,
+                      right: LabGapSize.s4,
                     ),
                     decoration: BoxDecoration(
                       color: theme.colors.white16,
                       borderRadius: theme.radius.asBorderRadius().rad4,
                     ),
-                    child: AppText.code(
+                    child: LabText.code(
                       child.content,
                       color: theme.colors.white66,
                       fontSize: 16,
@@ -353,28 +353,28 @@ class AppLongTextRenderer extends StatelessWidget {
   }
 
   Widget _buildElement(BuildContext context, LongTextElement element) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     switch (element.type) {
       case LongTextElementType.heading1:
-        return AppText.longformh1(element.content);
+        return LabText.longformh1(element.content);
       case LongTextElementType.heading2:
-        return AppText.longformh2(element.content, color: theme.colors.white66);
+        return LabText.longformh2(element.content, color: theme.colors.white66);
       case LongTextElementType.heading3:
-        return AppText.longformh3(element.content);
+        return LabText.longformh3(element.content);
       case LongTextElementType.heading4:
-        return AppText.longformh4(element.content, color: theme.colors.white66);
+        return LabText.longformh4(element.content, color: theme.colors.white66);
       case LongTextElementType.heading5:
-        return AppText.longformh5(element.content);
+        return LabText.longformh5(element.content);
       case LongTextElementType.codeBlock:
-        return AppCodeBlock(
+        return LabCodeBlock(
           code: element.content,
           language: element.attributes?['language'] ?? 'plain',
         );
       case LongTextElementType.admonition:
-        return AppAdmonition(
+        return LabAdmonition(
           type: element.attributes?['type'] ?? 'note',
-          child: AppText.reg14(
+          child: LabText.reg14(
             element.content,
             color: theme.colors.white,
           ),
@@ -393,18 +393,18 @@ class AppLongTextRenderer extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppContainer(
-                padding: const AppEdgeInsets.only(
-                  right: AppGapSize.s8,
+              LabContainer(
+                padding: const LabEdgeInsets.only(
+                  right: LabGapSize.s8,
                 ),
-                child: AppText.regArticle(
+                child: LabText.regArticle(
                   displayNumber,
                   color: theme.colors.white66,
                 ),
               ),
               Expanded(
                 child: element.children != null
-                    ? AppSelectableText.rich(
+                    ? LabSelectableText.rich(
                         TextSpan(
                           children:
                               _buildInlineElements(context, element.children!),
@@ -413,16 +413,16 @@ class AppLongTextRenderer extends StatelessWidget {
                           color: theme.colors.white,
                         ),
                         showContextMenu: true,
-                        selectionControls: AppTextSelectionControls(),
+                        selectionControls: LabTextSelectionControls(),
                         contextMenuItems: [
-                          AppTextSelectionMenuItem(
+                          LabTextSelectionMenuItem(
                             label: 'Copy',
                             onTap: (state) =>
                                 state.copySelection(SelectionChangedCause.tap),
                           ),
                         ],
                       )
-                    : AppText.regArticle(
+                    : LabText.regArticle(
                         element.content,
                         color: theme.colors.white,
                       ),
@@ -438,14 +438,14 @@ class AppLongTextRenderer extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppCheckBox(
+              LabCheckBox(
                 value: element.checked ?? false,
                 onChanged: null,
               ),
-              const AppGap.s8(),
+              const LabGap.s8(),
               Expanded(
                 child: element.children != null
-                    ? AppSelectableText.rich(
+                    ? LabSelectableText.rich(
                         TextSpan(
                           children:
                               _buildInlineElements(context, element.children!),
@@ -454,16 +454,16 @@ class AppLongTextRenderer extends StatelessWidget {
                           color: theme.colors.white,
                         ),
                         showContextMenu: true,
-                        selectionControls: AppTextSelectionControls(),
+                        selectionControls: LabTextSelectionControls(),
                         contextMenuItems: [
-                          AppTextSelectionMenuItem(
+                          LabTextSelectionMenuItem(
                             label: 'Copy',
                             onTap: (state) =>
                                 state.copySelection(SelectionChangedCause.tap),
                           ),
                         ],
                       )
-                    : AppText.regArticle(
+                    : LabText.regArticle(
                         element.content,
                         color: theme.colors.white,
                       ),
@@ -475,14 +475,14 @@ class AppLongTextRenderer extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppText.boldArticle(element.content),
+            LabText.boldArticle(element.content),
             if (element.attributes?['description'] != null)
               Padding(
                 padding: const EdgeInsets.only(
                   left: 16,
                   top: 4,
                 ),
-                child: AppText.regArticle(
+                child: LabText.regArticle(
                   element.attributes!['description']!,
                   color: theme.colors.white66,
                 ),
@@ -490,13 +490,13 @@ class AppLongTextRenderer extends StatelessWidget {
           ],
         );
       case LongTextElementType.horizontalRule:
-        return const AppContainer(
-          padding: AppEdgeInsets.symmetric(vertical: AppGapSize.s16),
-          child: AppDivider(),
+        return const LabContainer(
+          padding: LabEdgeInsets.symmetric(vertical: LabGapSize.s16),
+          child: LabDivider(),
         );
       case LongTextElementType.paragraph:
         if (element.attributes?['role'] == 'lead') {
-          return AppSelectableText(
+          return LabSelectableText(
             text: element.content,
             style: theme.typography.regArticle.copyWith(
               color: theme.colors.white,
@@ -513,7 +513,7 @@ class AppLongTextRenderer extends StatelessWidget {
             if (child.type == LongTextElementType.nostrModel) {
               if (currentSpans.isNotEmpty) {
                 paragraphPieces.add(
-                  AppSelectableText.rich(
+                  LabSelectableText.rich(
                     TextSpan(children: List.from(currentSpans)),
                     style: theme.typography.regArticle.copyWith(
                       color: theme.colors.white,
@@ -524,13 +524,13 @@ class AppLongTextRenderer extends StatelessWidget {
               }
               paragraphPieces.add(const SizedBox(height: 8));
               paragraphPieces.add(
-                AppContainer(
+                LabContainer(
                   child: FutureBuilder<({Model model, VoidCallback? onTap})>(
                     future: onResolveEvent(child.content),
                     builder: (context, snapshot) {
                       return ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 320),
-                        child: AppModelCard(
+                        child: LabModelCard(
                           model: snapshot.data?.model,
                           onTap: snapshot.data?.onTap == null
                               ? null
@@ -551,15 +551,15 @@ class AppLongTextRenderer extends StatelessWidget {
           // Add any remaining text
           if (currentSpans.isNotEmpty) {
             paragraphPieces.add(
-              AppSelectableText.rich(
+              LabSelectableText.rich(
                 TextSpan(children: List.from(currentSpans)),
                 style: theme.typography.regArticle.copyWith(
                   color: theme.colors.white,
                 ),
                 showContextMenu: true,
-                selectionControls: AppTextSelectionControls(),
+                selectionControls: LabTextSelectionControls(),
                 contextMenuItems: [
-                  AppTextSelectionMenuItem(
+                  LabTextSelectionMenuItem(
                     label: 'Copy',
                     onTap: (state) =>
                         state.copySelection(SelectionChangedCause.tap),
@@ -574,14 +574,14 @@ class AppLongTextRenderer extends StatelessWidget {
             children: paragraphPieces,
           );
         }
-        return AppSelectableText(
+        return LabSelectableText(
           text: element.content,
           style: theme.typography.regArticle.copyWith(
             color: theme.colors.white,
           ),
         );
       case LongTextElementType.image:
-        return AppFullWidthImage(
+        return LabFullWidthImage(
           url: element.content,
           caption: element.attributes?['title'],
         );
@@ -598,32 +598,32 @@ class AppLongTextRenderer extends StatelessWidget {
           ),
         );
       case LongTextElementType.blockQuote:
-        return AppContainer(
-          padding: const AppEdgeInsets.only(
-            bottom: AppGapSize.s8,
+        return LabContainer(
+          padding: const LabEdgeInsets.only(
+            bottom: LabGapSize.s8,
           ),
           child: IntrinsicHeight(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppContainer(
+                LabContainer(
                   width: 1.4,
                   decoration: BoxDecoration(
                     color: theme.colors.white16,
                     borderRadius: theme.radius.asBorderRadius().rad4,
                   ),
                 ),
-                const AppGap.s16(),
+                const LabGap.s16(),
                 Expanded(
                   child: element.children != null
-                      ? AppSelectableText.rich(
+                      ? LabSelectableText.rich(
                           TextSpan(
                             children: _buildInlineElements(
                                 context, element.children!),
                           ),
                           style: theme.typography.regArticle.copyWith(),
                         )
-                      : AppSelectableText.rich(
+                      : LabSelectableText.rich(
                           TextSpan(
                             children: _buildInlineElements(context, [
                               LongTextElement(
@@ -640,13 +640,13 @@ class AppLongTextRenderer extends StatelessWidget {
           ),
         );
       default:
-        return AppText.regArticle(element.content);
+        return LabText.regArticle(element.content);
     }
   }
 
   List<TextSpan> _buildStyledTextSpans(
       BuildContext context, List<LongTextElement> elements) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     return elements.map((element) {
       final style = element.attributes?['style'];
       return TextSpan(

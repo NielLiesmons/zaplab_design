@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-class AppTabController extends ChangeNotifier {
-  AppTabController({
+class LabTabController extends ChangeNotifier {
+  LabTabController({
     required int length,
     int initialIndex = 0,
   })  : _length = length,

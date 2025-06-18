@@ -1,8 +1,8 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 
-class AppBottomBarContentFeed extends StatelessWidget {
-  const AppBottomBarContentFeed({
+class LabBottomBarContentFeed extends StatelessWidget {
+  const LabBottomBarContentFeed({
     super.key,
     this.onAddTap,
     this.onSearchTap,
@@ -15,22 +15,22 @@ class AppBottomBarContentFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppBottomBar(
+    return LabBottomBar(
       child: Row(
         children: [
-          AppButton(
+          LabButton(
             square: true,
             children: [
-              AppIcon.s12(theme.icons.characters.plus,
-                  outlineThickness: AppLineThicknessData.normal().thick,
+              LabIcon.s12(theme.icons.characters.plus,
+                  outlineThickness: LabLineThicknessData.normal().thick,
                   outlineColor: theme.colors.white66),
             ],
             inactiveColor: theme.colors.white16,
             onTap: onAddTap,
           ),
-          const AppGap.s12(),
+          const LabGap.s12(),
           Expanded(
             child: TapBuilder(
               onTap: onSearchTap,
@@ -47,30 +47,30 @@ class AppBottomBarContentFeed extends StatelessWidget {
                   child: Semantics(
                     enabled: true,
                     selected: true,
-                    child: AppContainer(
+                    child: LabContainer(
                       height: theme.sizes.s40,
                       decoration: BoxDecoration(
                         color: theme.colors.black33,
                         borderRadius: theme.radius.asBorderRadius().rad16,
                         border: Border.all(
                           color: theme.colors.white33,
-                          width: AppLineThicknessData.normal().thin,
+                          width: LabLineThicknessData.normal().thin,
                         ),
                       ),
-                      padding: const AppEdgeInsets.only(
-                        left: AppGapSize.s12,
-                        right: AppGapSize.s8,
+                      padding: const LabEdgeInsets.only(
+                        left: LabGapSize.s12,
+                        right: LabGapSize.s8,
                       ),
                       child: Center(
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            AppIcon.s18(theme.icons.characters.search,
+                            LabIcon.s18(theme.icons.characters.search,
                                 outlineThickness:
-                                    AppLineThicknessData.normal().medium,
+                                    LabLineThicknessData.normal().medium,
                                 outlineColor: theme.colors.white33),
-                            const AppGap.s8(),
-                            AppText.med14('Search',
+                            const LabGap.s8(),
+                            LabText.med14('Search',
                                 color: theme.colors.white33),
                           ],
                         ),
@@ -81,17 +81,17 @@ class AppBottomBarContentFeed extends StatelessWidget {
               },
             ),
           ),
-          const AppGap.s12(),
-          AppButton(
+          const LabGap.s12(),
+          LabButton(
             square: true,
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AppIcon.s8(theme.icons.characters.chevronUp,
-                      outlineThickness: AppLineThicknessData.normal().medium,
+                  LabIcon.s8(theme.icons.characters.chevronUp,
+                      outlineThickness: LabLineThicknessData.normal().medium,
                       outlineColor: theme.colors.white66),
-                  const AppGap.s2(),
+                  const LabGap.s2(),
                 ],
               ),
             ],

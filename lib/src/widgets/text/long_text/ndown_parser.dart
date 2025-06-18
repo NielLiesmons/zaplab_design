@@ -1,6 +1,6 @@
 import 'package:zaplab_design/src/widgets/text/long_text/long_text_element.dart';
 
-class AppNDownParser {
+class LabNDownParser {
   final _listCounter = _ListCounter();
 
   List<LongTextElement> parse(String text) {
@@ -363,4 +363,4 @@ class _ListCounter {
 
 
 
-// AppMarkDownParser
+// LabMarkDownParser

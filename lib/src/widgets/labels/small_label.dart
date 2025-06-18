@@ -1,13 +1,13 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppSmallLabel extends StatelessWidget {
+class LabSmallLabel extends StatelessWidget {
   final String text;
   final bool isSelected;
   final bool isEmphasized;
   final VoidCallback? onTap;
 
-  const AppSmallLabel(
+  const LabSmallLabel(
     this.text, {
     super.key,
     this.isSelected = false,
@@ -17,7 +17,7 @@ class AppSmallLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return TapBuilder(
       onTap: onTap,
@@ -35,11 +35,11 @@ class AppSmallLabel extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Main label container
-              AppContainer(
+              LabContainer(
                 height: theme.sizes.s24,
                 constraints: const BoxConstraints(maxWidth: 200),
-                padding: const AppEdgeInsets.only(
-                  left: AppGapSize.s8,
+                padding: const LabEdgeInsets.only(
+                  left: LabGapSize.s8,
                 ),
                 decoration: BoxDecoration(
                   color: isSelected || isEmphasized
@@ -56,17 +56,17 @@ class AppSmallLabel extends StatelessWidget {
                     if (isSelected)
                       Padding(
                         padding: const EdgeInsets.only(right: 8),
-                        child: AppIcon.s10(
+                        child: LabIcon.s10(
                           theme.icons.characters.check,
                           outlineColor: theme.colors.white,
-                          outlineThickness: AppLineThicknessData.normal().thick,
+                          outlineThickness: LabLineThicknessData.normal().thick,
                         ),
                       ),
                     Flexible(
-                      child: AppText.reg12(
+                      child: LabText.reg12(
                         text,
                         color: isSelected || isEmphasized
-                            ? AppColorsData.dark().white
+                            ? LabColorsData.dark().white
                             : theme.colors.white66,
                         textOverflow: TextOverflow.ellipsis,
                       ),
@@ -132,4 +132,4 @@ class HouseShapePainter2 extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-// AppLabel
+// LabLabel

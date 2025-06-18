@@ -2,8 +2,8 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppProfileStack extends StatelessWidget {
-  AppProfileStack({
+class LabProfileStack extends StatelessWidget {
+  LabProfileStack({
     super.key,
     required this.profiles,
     this.description,
@@ -18,7 +18,7 @@ class AppProfileStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return TapBuilder(
       onTap: onTap,
@@ -32,7 +32,7 @@ class AppProfileStack extends StatelessWidget {
 
         return Transform.scale(
           scale: scaleFactor,
-          child: AppContainer(
+          child: LabContainer(
             width: 240,
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
@@ -49,11 +49,11 @@ class AppProfileStack extends StatelessWidget {
                             0),
                         child: Row(
                           children: [
-                            AppContainer(
+                            LabContainer(
                               height: theme.sizes.s32,
-                              padding: const AppEdgeInsets.only(
-                                left: AppGapSize.s24,
-                                right: AppGapSize.s12,
+                              padding: const LabEdgeInsets.only(
+                                left: LabGapSize.s24,
+                                right: LabGapSize.s12,
                               ),
                               decoration: BoxDecoration(
                                 color: theme.colors.white16,
@@ -61,7 +61,7 @@ class AppProfileStack extends StatelessWidget {
                                     theme.radius.asBorderRadius().rad24,
                               ),
                               child: Center(
-                                child: AppText.med12(
+                                child: LabText.med12(
                                   '${profiles.length}',
                                   color: theme.colors.white66,
                                   textOverflow: TextOverflow.ellipsis,
@@ -69,10 +69,10 @@ class AppProfileStack extends StatelessWidget {
                               ),
                             ),
                             if (description != null) ...[
-                              const AppGap.s8(),
+                              const LabGap.s8(),
                               SizedBox(
                                 width: 120,
-                                child: AppText.reg10(
+                                child: LabText.reg10(
                                   description!,
                                   color: theme.colors.white33,
                                   maxLines: 2,
@@ -97,19 +97,19 @@ class AppProfileStack extends StatelessWidget {
                                 i--)
                               Positioned(
                                 left: i * 24.0,
-                                child: AppContainer(
+                                child: LabContainer(
                                   decoration: BoxDecoration(
                                     borderRadius:
                                         theme.radius.asBorderRadius().rad16,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppColorsData.dark().black33,
+                                        color: LabColorsData.dark().black33,
                                         blurRadius: 4,
                                         offset: const Offset(3, 0),
                                       ),
                                     ],
                                   ),
-                                  child: AppProfilePic.s32(
+                                  child: LabProfilePic.s32(
                                     _visibleProfiles[i],
                                     onTap: onTap,
                                   ),

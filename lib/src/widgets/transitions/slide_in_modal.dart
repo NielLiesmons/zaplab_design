@@ -1,8 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppSlideInModal extends CustomTransitionPage {
-  AppSlideInModal({
+class LabSlideInModal extends CustomTransitionPage {
+  LabSlideInModal({
     required super.child,
     super.key,
   }) : super(

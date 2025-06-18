@@ -1,8 +1,8 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppButton extends StatelessWidget {
-  const AppButton({
+class LabButton extends StatelessWidget {
+  const LabButton({
     super.key,
     this.children,
     this.text,
@@ -32,7 +32,7 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     // Determine the gradients/colors to use
     final defaultGradient = theme.colors.blurple;
@@ -66,10 +66,10 @@ class AppButton extends StatelessWidget {
           child: Semantics(
             enabled: true,
             selected: true,
-            child: AppButtonLayout(
+            child: LabButtonLayout(
               content: children ??
                   [
-                    AppText.med14(
+                    LabText.med14(
                       text!,
                       color: theme.colors.whiteEnforced,
                     ),
@@ -93,8 +93,8 @@ class AppButton extends StatelessWidget {
   }
 }
 
-class AppButtonLayout extends StatelessWidget {
-  const AppButtonLayout({
+class LabButtonLayout extends StatelessWidget {
+  const LabButtonLayout({
     super.key,
     required this.content,
     this.gradient,
@@ -109,10 +109,10 @@ class AppButtonLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final buttonHeight = theme.sizes.s38;
 
-    return AppContainer(
+    return LabContainer(
       decoration: BoxDecoration(
         borderRadius: theme.radius.asBorderRadius().rad16,
         gradient: gradient,
@@ -122,8 +122,8 @@ class AppButtonLayout extends StatelessWidget {
       width: square ? buttonHeight : null,
       padding: square
           ? null
-          : const AppEdgeInsets.symmetric(
-              horizontal: AppGapSize.s16,
+          : const LabEdgeInsets.symmetric(
+              horizontal: LabGapSize.s16,
             ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

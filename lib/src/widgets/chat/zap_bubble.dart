@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppZapBubble extends StatefulWidget {
+class LabZapBubble extends StatefulWidget {
   final CashuZap cashuZap;
   final bool isOutgoing;
   final Function(Model) onActions;
@@ -15,7 +15,7 @@ class AppZapBubble extends StatefulWidget {
   final LinkTapHandler onLinkTap;
   final Function(Profile) onProfileTap;
 
-  const AppZapBubble({
+  const LabZapBubble({
     super.key,
     required this.cashuZap,
     this.isOutgoing = false,
@@ -32,13 +32,13 @@ class AppZapBubble extends StatefulWidget {
   });
 
   @override
-  State<AppZapBubble> createState() => _AppZapBubbleState();
+  State<LabZapBubble> createState() => _LabZapBubbleState();
 }
 
-class _AppZapBubbleState extends State<AppZapBubble> {
+class _LabZapBubbleState extends State<LabZapBubble> {
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final isLight = theme.colors.white == const Color(0xFF000000);
 
     return Row(
@@ -48,15 +48,15 @@ class _AppZapBubbleState extends State<AppZapBubble> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         if (!widget.isOutgoing) ...[
-          AppContainer(
-            child: AppProfilePic.s32(widget.cashuZap.author.value,
+          LabContainer(
+            child: LabProfilePic.s32(widget.cashuZap.author.value,
                 onTap: () => widget
                     .onProfileTap(widget.cashuZap.author.value as Profile)),
           ),
-          const AppGap.s4(),
+          const LabGap.s4(),
         ] else ...[
-          const AppGap.s64(),
-          const AppGap.s4(),
+          const LabGap.s64(),
+          const LabGap.s4(),
         ],
         Expanded(
           child: ConstrainedBox(
@@ -66,7 +66,7 @@ class _AppZapBubbleState extends State<AppZapBubble> {
                   ? CrossAxisAlignment.end
                   : CrossAxisAlignment.start,
               children: [
-                AppSwipeContainer(
+                LabSwipeContainer(
                   decoration: BoxDecoration(
                     gradient: theme.colors.graydient16,
                     borderRadius: BorderRadius.only(
@@ -80,15 +80,15 @@ class _AppZapBubbleState extends State<AppZapBubble> {
                           : theme.radius.rad4,
                     ),
                   ),
-                  leftContent: AppIcon.s16(
+                  leftContent: LabIcon.s16(
                     theme.icons.characters.reply,
                     outlineColor: theme.colors.white66,
-                    outlineThickness: AppLineThicknessData.normal().medium,
+                    outlineThickness: LabLineThicknessData.normal().medium,
                   ),
-                  rightContent: AppIcon.s10(
+                  rightContent: LabIcon.s10(
                     theme.icons.characters.chevronUp,
                     outlineColor: theme.colors.white66,
-                    outlineThickness: AppLineThicknessData.normal().medium,
+                    outlineThickness: LabLineThicknessData.normal().medium,
                   ),
                   onSwipeLeft: () => widget.onReply(widget.cashuZap),
                   onSwipeRight: () => widget.onActions(widget.cashuZap),
@@ -102,12 +102,12 @@ class _AppZapBubbleState extends State<AppZapBubble> {
                               maxWidth: bubbleConstraints.maxWidth,
                               minWidth: theme.sizes.s80,
                             ),
-                            child: AppContainer(
-                              padding: const AppEdgeInsets.only(
-                                left: AppGapSize.s8,
-                                right: AppGapSize.s8,
-                                top: AppGapSize.s8,
-                                bottom: AppGapSize.s2,
+                            child: LabContainer(
+                              padding: const LabEdgeInsets.only(
+                                left: LabGapSize.s8,
+                                right: LabGapSize.s8,
+                                top: LabGapSize.s8,
+                                bottom: LabGapSize.s2,
                               ),
                               child: Column(
                                 crossAxisAlignment: widget.isOutgoing
@@ -116,10 +116,10 @@ class _AppZapBubbleState extends State<AppZapBubble> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   if (!widget.isOutgoing) ...[
-                                    AppContainer(
-                                      padding: const AppEdgeInsets.only(
-                                        left: AppGapSize.s4,
-                                        right: AppGapSize.s4,
+                                    LabContainer(
+                                      padding: const LabEdgeInsets.only(
+                                        left: LabGapSize.s4,
+                                        right: LabGapSize.s4,
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
@@ -135,7 +135,7 @@ class _AppZapBubbleState extends State<AppZapBubble> {
                                               ),
                                               child: Stack(
                                                 children: [
-                                                  AppText.bold12(
+                                                  LabText.bold12(
                                                     widget.cashuZap.author
                                                             .value!.name ??
                                                         formatNpub(widget
@@ -147,7 +147,7 @@ class _AppZapBubbleState extends State<AppZapBubble> {
                                                     textOverflow:
                                                         TextOverflow.ellipsis,
                                                   ),
-                                                  AppText.bold12(
+                                                  LabText.bold12(
                                                     widget.cashuZap.author
                                                             .value!.name ??
                                                         formatNpub(widget
@@ -164,12 +164,12 @@ class _AppZapBubbleState extends State<AppZapBubble> {
                                                 ],
                                               ),
                                             ),
-                                          const AppGap.s4(),
-                                          AppContainer(
+                                          const LabGap.s4(),
+                                          LabContainer(
                                             padding:
-                                                const AppEdgeInsets.symmetric(
-                                              horizontal: AppGapSize.s8,
-                                              vertical: AppGapSize.s2,
+                                                const LabEdgeInsets.symmetric(
+                                              horizontal: LabGapSize.s8,
+                                              vertical: LabGapSize.s2,
                                             ),
                                             decoration: BoxDecoration(
                                               color: theme.colors.black33,
@@ -179,15 +179,15 @@ class _AppZapBubbleState extends State<AppZapBubble> {
                                             ),
                                             child: Row(
                                               children: [
-                                                AppIcon.s10(
+                                                LabIcon.s10(
                                                   theme.icons.characters.zap,
                                                   gradient: theme.colors.gold,
                                                 ),
-                                                const AppGap.s6(),
-                                                AppAmount(
+                                                const LabGap.s6(),
+                                                LabAmount(
                                                   widget.cashuZap.amount
                                                       .toDouble(),
-                                                  level: AppTextLevel.bold12,
+                                                  level: LabTextLevel.bold12,
                                                   color: theme.colors.white,
                                                 ),
                                               ],
@@ -197,8 +197,8 @@ class _AppZapBubbleState extends State<AppZapBubble> {
                                       ),
                                     ),
                                   ],
-                                  const AppGap.s2(),
-                                  AppShortTextRenderer(
+                                  const LabGap.s2(),
+                                  LabShortTextRenderer(
                                     content: widget.cashuZap.event.content,
                                     onResolveEvent: widget.onResolveEvent,
                                     onResolveProfile: widget.onResolveProfile,
@@ -220,7 +220,7 @@ class _AppZapBubbleState extends State<AppZapBubble> {
             ),
           ),
         ),
-        if (!widget.isOutgoing) const AppGap.s32(),
+        if (!widget.isOutgoing) const LabGap.s32(),
       ],
     );
   }

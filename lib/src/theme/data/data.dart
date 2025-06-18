@@ -12,8 +12,8 @@ import 'sizes.dart';
 import 'typography.dart';
 import 'system_data.dart';
 
-class AppThemeData extends Equatable {
-  const AppThemeData({
+class LabThemeData extends Equatable {
+  const LabThemeData({
     required this.borders,
     required this.colors,
     required this.durations,
@@ -26,27 +26,27 @@ class AppThemeData extends Equatable {
     TargetPlatform? platform,
   }) : _platform = platform;
 
-  factory AppThemeData.normal() => AppThemeData(
-        borders: AppBorderData.fromThickness(AppLineThicknessData.normal()),
-        colors: AppColorsData.light(),
-        durations: AppDurationsData.normal(),
-        formFactor: AppFormFactor.small,
-        icons: AppIconsData.normal(),
-        radius: const AppRadiusData.normal(),
-        sizes: AppSizesData.normal(),
-        typography: AppTypographyData.normal(),
-        system: AppSystemData.normal(),
+  factory LabThemeData.normal() => LabThemeData(
+        borders: LabBorderData.fromThickness(LabLineThicknessData.normal()),
+        colors: LabColorsData.light(),
+        durations: LabDurationsData.normal(),
+        formFactor: LabFormFactor.small,
+        icons: LabIconsData.normal(),
+        radius: const LabRadiusData.normal(),
+        sizes: LabSizesData.normal(),
+        typography: LabTypographyData.normal(),
+        system: LabSystemData.normal(),
       );
 
-  final AppBorderData borders;
-  final AppColorsData colors;
-  final AppDurationsData durations;
-  final AppFormFactor formFactor;
-  final AppIconsData icons;
-  final AppRadiusData radius;
-  final AppSizesData sizes;
-  final AppTypographyData typography;
-  final AppSystemData system;
+  final LabBorderData borders;
+  final LabColorsData colors;
+  final LabDurationsData durations;
+  final LabFormFactor formFactor;
+  final LabIconsData icons;
+  final LabRadiusData radius;
+  final LabSizesData sizes;
+  final LabTypographyData typography;
+  final LabSystemData system;
   final TargetPlatform? _platform;
   TargetPlatform get platform => _platform ?? defaultTargetPlatform;
 
@@ -63,8 +63,8 @@ class AppThemeData extends Equatable {
         platform,
       ];
 
-  AppThemeData withColors(AppColorsData colors) {
-    return AppThemeData(
+  LabThemeData withColors(LabColorsData colors) {
+    return LabThemeData(
       borders: borders,
       colors: colors,
       durations: durations,
@@ -78,8 +78,8 @@ class AppThemeData extends Equatable {
     );
   }
 
-  AppThemeData withFormFactor(AppFormFactor formFactor) {
-    return AppThemeData(
+  LabThemeData withFormFactor(LabFormFactor formFactor) {
+    return LabThemeData(
       borders: borders,
       colors: colors,
       durations: durations,
@@ -93,12 +93,12 @@ class AppThemeData extends Equatable {
     );
   }
 
-  AppThemeData copyWith({
-    AppColorsData? colors,
-    AppTypographyData? typography,
-    AppFormFactor? formFactor,
+  LabThemeData copyWith({
+    LabColorsData? colors,
+    LabTypographyData? typography,
+    LabFormFactor? formFactor,
   }) {
-    return AppThemeData(
+    return LabThemeData(
       borders: borders,
       colors: colors ?? this.colors,
       durations: durations,
@@ -112,8 +112,8 @@ class AppThemeData extends Equatable {
     );
   }
 
-  AppThemeData withScale(double scale) {
-    return AppThemeData(
+  LabThemeData withScale(double scale) {
+    return LabThemeData(
       borders: borders,
       colors: colors,
       durations: durations,
@@ -122,13 +122,13 @@ class AppThemeData extends Equatable {
       radius: radius,
       sizes: sizes,
       typography: typography,
-      system: AppSystemData(scale: scale),
+      system: LabSystemData(scale: scale),
       platform: platform,
     );
   }
 
-  AppThemeData withTypography(AppTypographyData typography) {
-    return AppThemeData(
+  LabThemeData withTypography(LabTypographyData typography) {
+    return LabThemeData(
       borders: borders,
       colors: colors,
       durations: durations,

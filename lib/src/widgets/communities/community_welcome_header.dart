@@ -3,13 +3,13 @@ import 'dart:math' as math;
 import 'dart:ui';
 import 'package:models/models.dart';
 
-class AppCommunityWelcomeHeader extends StatefulWidget {
+class LabCommunityWelcomeHeader extends StatefulWidget {
   final Community community;
   final VoidCallback? onProfileTap;
   final List<Profile>? profiles;
   final List<String>? emojiImageUrls;
 
-  const AppCommunityWelcomeHeader({
+  const LabCommunityWelcomeHeader({
     super.key,
     required this.community,
     this.onProfileTap,
@@ -18,11 +18,11 @@ class AppCommunityWelcomeHeader extends StatefulWidget {
   });
 
   @override
-  State<AppCommunityWelcomeHeader> createState() =>
-      _AppCommunityWelcomeHeaderState();
+  State<LabCommunityWelcomeHeader> createState() =>
+      _LabCommunityWelcomeHeaderState();
 }
 
-class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
+class _LabCommunityWelcomeHeaderState extends State<LabCommunityWelcomeHeader>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   final List<double> _circleOffsets = [];
@@ -50,15 +50,15 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppContainer(
-      padding: const AppEdgeInsets.all(AppGapSize.s16),
+    return LabContainer(
+      padding: const LabEdgeInsets.all(LabGapSize.s16),
       clipBehavior: Clip.none,
       child: Column(
         children: [
           // Concentric circles with community image
-          AppContainer(
+          LabContainer(
             height: 104,
             clipBehavior: Clip.none,
             child: Stack(
@@ -74,7 +74,7 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
                     return Positioned(
                       left: -(diameter - 104) / 2,
                       top: -(diameter - 104) / 2,
-                      child: AppContainer(
+                      child: LabContainer(
                         width: diameter,
                         height: diameter,
                         clipBehavior: Clip.none,
@@ -108,12 +108,12 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
                   },
                 ),
                 // Community image
-                AppProfilePic.s104(widget.community.author.value,
+                LabProfilePic.s104(widget.community.author.value,
                     onTap: widget.onProfileTap),
               ],
             ),
           ),
-          const AppGap.s8(),
+          const LabGap.s8(),
           // Community name
           Stack(
             alignment: Alignment.center,
@@ -121,15 +121,15 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
               // Blurred background
               ImageFiltered(
                 imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: AppContainer(
+                child: LabContainer(
                   decoration: BoxDecoration(
                     color: theme.colors.black,
                     borderRadius: theme.radius.asBorderRadius().rad16,
                   ),
-                  padding: const AppEdgeInsets.all(AppGapSize.s8),
+                  padding: const LabEdgeInsets.all(LabGapSize.s8),
                   child: Opacity(
                     opacity: 0,
-                    child: AppText.h1(
+                    child: LabText.h1(
                       widget.community.author.value?.name ??
                           formatNpub(widget.community.author.value?.npub ?? ''),
                       textAlign: TextAlign.center,
@@ -139,7 +139,7 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
                 ),
               ),
               // Original text on top
-              AppText.h1(
+              LabText.h1(
                 widget.community.author.value?.name ??
                     formatNpub(widget.community.author.value?.npub ?? ''),
                 textAlign: TextAlign.center,
@@ -147,18 +147,18 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
               ),
             ],
           ),
-          const AppGap.s4(),
+          const LabGap.s4(),
           // Community description
           ClipRRect(
             borderRadius: theme.radius.asBorderRadius().rad24,
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-              child: AppContainer(
-                padding: const AppEdgeInsets.only(
-                  left: AppGapSize.s12,
-                  right: AppGapSize.s14,
-                  top: AppGapSize.s6,
-                  bottom: AppGapSize.s6,
+              child: LabContainer(
+                padding: const LabEdgeInsets.only(
+                  left: LabGapSize.s12,
+                  right: LabGapSize.s14,
+                  top: LabGapSize.s6,
+                  bottom: LabGapSize.s6,
                 ),
                 decoration: BoxDecoration(
                   color: theme.colors.white8,
@@ -167,12 +167,12 @@ class _AppCommunityWelcomeHeaderState extends State<AppCommunityWelcomeHeader>
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const AppEmojiContentType(
+                    const LabEmojiContentType(
                       contentType: 'community',
                       size: 16,
                     ),
-                    const AppGap.s6(),
-                    AppText.reg12(
+                    const LabGap.s6(),
+                    LabText.reg12(
                       'Community',
                       color: theme.colors.white66,
                     ),
@@ -232,7 +232,7 @@ class _CircleItems extends StatelessWidget {
               opacity: 0.9 -
                   (circleIndex *
                       0.15), // Start at 90%, decrease by 15% each circle
-              child: AppEmojiImage(
+              child: LabEmojiImage(
                 emojiUrl: emojiUrls[emojiIndex],
                 emojiName: '',
                 size: emojiSize,
@@ -251,10 +251,10 @@ class _CircleItems extends StatelessWidget {
         final x = radius + (radius * math.cos(angle));
         final y = radius + (radius * math.sin(angle));
         final profilePic = circleIndex < 2
-            ? AppProfilePic.s18(_profiles[profileIndex])
+            ? LabProfilePic.s18(_profiles[profileIndex])
             : (circleIndex < 4
-                ? AppProfilePic.s16(_profiles[profileIndex])
-                : AppProfilePic.s12(_profiles[profileIndex]));
+                ? LabProfilePic.s16(_profiles[profileIndex])
+                : LabProfilePic.s12(_profiles[profileIndex]));
         items.add(
           Positioned(
             left: x - emojiSize / 2,

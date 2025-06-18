@@ -3,21 +3,21 @@ import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppNpubDisplay extends StatefulWidget {
+class LabNpubDisplay extends StatefulWidget {
   final Profile profile;
   final bool copyable;
 
-  const AppNpubDisplay({
+  const LabNpubDisplay({
     super.key,
     required this.profile,
     this.copyable = true,
   });
 
   @override
-  State<AppNpubDisplay> createState() => _AppNpubDisplayState();
+  State<LabNpubDisplay> createState() => _LabNpubDisplayState();
 }
 
-class _AppNpubDisplayState extends State<AppNpubDisplay> {
+class _LabNpubDisplayState extends State<LabNpubDisplay> {
   bool _showCheck = false;
 
   void _handleTap() {
@@ -39,12 +39,12 @@ class _AppNpubDisplayState extends State<AppNpubDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     Widget content = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        AppContainer(
+        LabContainer(
           height: theme.sizes.s8,
           width: theme.sizes.s8,
           decoration: BoxDecoration(
@@ -52,27 +52,27 @@ class _AppNpubDisplayState extends State<AppNpubDisplay> {
             borderRadius: BorderRadius.circular(100),
             border: Border.all(
               color: theme.colors.white16,
-              width: AppLineThicknessData.normal().thin,
+              width: LabLineThicknessData.normal().thin,
             ),
           ),
         ),
-        const AppGap.s8(),
-        AppText.med12(
+        const LabGap.s8(),
+        LabText.med12(
           formatNpub(widget.profile.npub),
           color: theme.colors.white66,
         ),
         const SizedBox(width: 8),
         if (_showCheck)
-          AppIcon.s8(
+          LabIcon.s8(
             theme.icons.characters.check,
             outlineColor: theme.colors.blurpleLightColor,
-            outlineThickness: AppLineThicknessData.normal().medium,
+            outlineThickness: LabLineThicknessData.normal().medium,
           ),
         if (!_showCheck && widget.copyable)
-          AppIcon.s14(
+          LabIcon.s14(
             theme.icons.characters.copy,
             outlineColor: theme.colors.white33,
-            outlineThickness: AppLineThicknessData.normal().medium,
+            outlineThickness: LabLineThicknessData.normal().medium,
           ),
       ],
     );
@@ -87,7 +87,7 @@ class _AppNpubDisplayState extends State<AppNpubDisplay> {
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            AppContainer(
+            LabContainer(
               height: theme.sizes.s8,
               width: theme.sizes.s8,
               decoration: BoxDecoration(
@@ -95,27 +95,27 @@ class _AppNpubDisplayState extends State<AppNpubDisplay> {
                 borderRadius: BorderRadius.circular(100),
                 border: Border.all(
                   color: theme.colors.white16,
-                  width: AppLineThicknessData.normal().thin,
+                  width: LabLineThicknessData.normal().thin,
                 ),
               ),
             ),
-            const AppGap.s8(),
-            AppText.med12(
+            const LabGap.s8(),
+            LabText.med12(
               formatNpub(widget.profile.npub),
               color: theme.colors.white66,
             ),
             const SizedBox(width: 8),
             if (_showCheck)
-              AppIcon.s8(
+              LabIcon.s8(
                 theme.icons.characters.check,
                 outlineColor: theme.colors.blurpleLightColor,
-                outlineThickness: AppLineThicknessData.normal().medium,
+                outlineThickness: LabLineThicknessData.normal().medium,
               ),
             if (state == TapState.hover && !_showCheck)
-              AppIcon.s14(
+              LabIcon.s14(
                 theme.icons.characters.copy,
                 outlineColor: theme.colors.white33,
-                outlineThickness: AppLineThicknessData.normal().medium,
+                outlineThickness: LabLineThicknessData.normal().medium,
               ),
           ],
         );

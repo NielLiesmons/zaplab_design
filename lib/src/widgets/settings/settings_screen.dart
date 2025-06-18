@@ -2,7 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
-class AppSettingsScreen extends StatefulWidget {
+class LabSettingsScreen extends StatefulWidget {
   // Profiles in use
   final List<Profile> profiles;
   final Function(Profile) onSelect;
@@ -35,7 +35,7 @@ class AppSettingsScreen extends StatefulWidget {
   // Other actions & settings
   final VoidCallback? onHomeTap;
 
-  const AppSettingsScreen({
+  const LabSettingsScreen({
     super.key,
     required this.profiles,
     required this.onSelect,
@@ -62,10 +62,10 @@ class AppSettingsScreen extends StatefulWidget {
   });
 
   @override
-  AppSettingsScreenState createState() => AppSettingsScreenState();
+  LabSettingsScreenState createState() => LabSettingsScreenState();
 }
 
-class AppSettingsScreenState extends State<AppSettingsScreen>
+class LabSettingsScreenState extends State<LabSettingsScreen>
     with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   late final AnimationController _scaleController;
@@ -90,7 +90,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
   }
 
   @override
-  void didUpdateWidget(AppSettingsScreen oldWidget) {
+  void didUpdateWidget(LabSettingsScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.activeProfile != oldWidget.activeProfile) {
       _visuallyActiveProfile = widget.activeProfile;
@@ -98,7 +98,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
   }
 
   Future<void> _animateProfileChange(VoidCallback onComplete) async {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     // First scroll to start
     await _scrollController.animateTo(
@@ -118,15 +118,15 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
   }
 
   Widget _buildTopBar(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppContainer(
+    return LabContainer(
       child: Row(
         children: [
           // Header
-          AppContainer(
+          LabContainer(
             width: theme.sizes.s38,
-            child: AppContainer(
+            child: LabContainer(
               width: theme.sizes.s32,
               height: theme.sizes.s32,
               decoration: BoxDecoration(
@@ -134,20 +134,20 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                 shape: BoxShape.circle,
               ),
               child: Center(
-                child: AppIcon.s20(theme.icons.characters.profile,
+                child: LabIcon.s20(theme.icons.characters.profile,
                     color: theme.colors.white33),
               ),
             ),
           ),
-          const AppGap.s12(),
-          const AppText.h2('Profiles'),
+          const LabGap.s12(),
+          const LabText.h2('Profiles'),
         ],
       ),
     );
   }
 
   Widget _buildContent(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final activeProfile = _visuallyActiveProfile;
 
     if (activeProfile == null) {
@@ -162,8 +162,8 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Profiles section
-        AppContainer(
-          padding: const AppEdgeInsets.all(AppGapSize.s16),
+        LabContainer(
+          padding: const LabEdgeInsets.all(LabGapSize.s16),
           child: SingleChildScrollView(
             controller: _scrollController,
             scrollDirection: Axis.horizontal,
@@ -197,8 +197,8 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                     .map(
                       (profile) => Row(
                         children: [
-                          const AppGap.s16(),
-                          AppOtherProfileCard(
+                          const LabGap.s16(),
+                          LabOtherProfileCard(
                             profile: profile,
                             onView: () {
                               widget.onViewProfile?.call(profile);
@@ -223,7 +223,7 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                       ),
                     ),
                 // Add profile button
-                const AppGap.s16(),
+                const LabGap.s16(),
                 TapBuilder(
                   onTap: widget.onAddProfile ?? () {},
                   builder: (context, state, hasFocus) {
@@ -236,22 +236,22 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
 
                     return Transform.scale(
                       scale: scaleFactor,
-                      child: AppContainer(
+                      child: LabContainer(
                         width: 256,
                         height: 144,
-                        padding: const AppEdgeInsets.all(AppGapSize.s16),
+                        padding: const LabEdgeInsets.all(LabGapSize.s16),
                         decoration: BoxDecoration(
                           color: theme.colors.gray33,
                           borderRadius: theme.radius.asBorderRadius().rad16,
                           border: Border.all(
                             color: theme.colors.gray,
-                            width: AppLineThicknessData.normal().medium,
+                            width: LabLineThicknessData.normal().medium,
                           ),
                         ),
                         alignment: Alignment.centerLeft,
                         child: Row(
                           children: [
-                            AppContainer(
+                            LabContainer(
                               width: theme.sizes.s38,
                               height: theme.sizes.s38,
                               decoration: BoxDecoration(
@@ -259,16 +259,16 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
                                 shape: BoxShape.circle,
                               ),
                               child: Center(
-                                child: AppIcon.s16(
+                                child: LabIcon.s16(
                                   theme.icons.characters.plus,
                                   outlineThickness:
-                                      AppLineThicknessData.normal().thick,
+                                      LabLineThicknessData.normal().thick,
                                   outlineColor: theme.colors.white33,
                                 ),
                               ),
                             ),
-                            const AppGap.s12(),
-                            AppText.med14('Add Profile',
+                            const LabGap.s12(),
+                            LabText.med14('Add Profile',
                                 color: theme.colors.white33),
                           ],
                         ),
@@ -280,17 +280,17 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
             ),
           ),
         ),
-        const AppDivider(),
+        const LabDivider(),
         if (_isLoading)
-          AppContainer(
-            padding: const AppEdgeInsets.all(AppGapSize.s32),
+          LabContainer(
+            padding: const LabEdgeInsets.all(LabGapSize.s32),
             child: Column(
               children: [
-                AppContainer(
+                LabContainer(
                   height: theme.sizes.s48,
-                  child: AppLoadingDots(color: theme.colors.white66),
+                  child: LabLoadingDots(color: theme.colors.white66),
                 ),
-                AppText.med14('Loading Profile...',
+                LabText.med14('Loading Profile...',
                     color: theme.colors.white33),
               ],
             ),
@@ -302,29 +302,29 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
   }
 
   List<Widget> _buildPresetSections(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final List<Widget> sections = [];
 
     // First group
     if (widget.onHistoryTap != null ||
         widget.onDraftsTap != null ||
         widget.onLabelsTap != null) {
-      sections.add(AppContainer(
-        padding: const AppEdgeInsets.all(AppGapSize.s16),
+      sections.add(LabContainer(
+        padding: const LabEdgeInsets.all(LabGapSize.s16),
         child: Column(
           children: [
             if (widget.onHistoryTap != null)
-              AppSettingSection(
-                icon: AppIcon.s20(theme.icons.characters.clock,
+              LabSettingSection(
+                icon: LabIcon.s20(theme.icons.characters.clock,
                     gradient: theme.colors.graydient66),
                 title: 'History',
                 description: widget.historyDescription ?? '',
                 onTap: widget.onHistoryTap,
               ),
             if (widget.onDraftsTap != null) ...[
-              if (widget.onHistoryTap != null) const AppGap.s12(),
-              AppSettingSection(
-                icon: AppIcon.s20(theme.icons.characters.draft,
+              if (widget.onHistoryTap != null) const LabGap.s12(),
+              LabSettingSection(
+                icon: LabIcon.s20(theme.icons.characters.draft,
                     gradient: theme.colors.graydient66),
                 title: 'Drafts',
                 description: widget.draftsDescription ?? '',
@@ -333,9 +333,9 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
             ],
             if (widget.onLabelsTap != null) ...[
               if (widget.onHistoryTap != null || widget.onDraftsTap != null)
-                const AppGap.s12(),
-              AppSettingSection(
-                icon: AppIcon.s24(theme.icons.characters.label,
+                const LabGap.s12(),
+              LabSettingSection(
+                icon: LabIcon.s24(theme.icons.characters.label,
                     gradient: theme.colors.graydient66),
                 title: 'Labels',
                 description: widget.labelsDescription ?? '',
@@ -347,13 +347,13 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
       ));
     }
 
-    sections.add(const AppDivider());
+    sections.add(const LabDivider());
 
     if (widget.onPreferencesTap != null) {
-      sections.add(AppContainer(
-        padding: const AppEdgeInsets.all(AppGapSize.s16),
-        child: AppSettingSection(
-          icon: AppIcon.s24(theme.icons.characters.appearance,
+      sections.add(LabContainer(
+        padding: const LabEdgeInsets.all(LabGapSize.s16),
+        child: LabSettingSection(
+          icon: LabIcon.s24(theme.icons.characters.appearance,
               gradient: theme.colors.gold),
           title: 'Preferences',
           description: widget.preferencesDescription ?? '',
@@ -362,14 +362,14 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
       ));
     }
 
-    sections.add(const AppDivider());
+    sections.add(const LabDivider());
 
     if (widget.onSignerTap != null) {
-      sections.add(AppContainer(
-        padding: const AppEdgeInsets.all(AppGapSize.s16),
-        child: AppSettingSection(
+      sections.add(LabContainer(
+        padding: const LabEdgeInsets.all(LabGapSize.s16),
+        child: LabSettingSection(
           title: 'Signer & Secret Key',
-          icon: AppIcon.s32(theme.icons.characters.security,
+          icon: LabIcon.s32(theme.icons.characters.security,
               gradient: theme.colors.blurple),
           description: widget.signerDescription ?? '',
           onTap: widget.onSignerTap,
@@ -377,15 +377,15 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
       ));
     }
 
-    sections.add(const AppDivider());
+    sections.add(const LabDivider());
 
     // Invite group0
     if (widget.onInviteTap != null) {
       sections.add(
-        AppContainer(
-          padding: const AppEdgeInsets.all(AppGapSize.s16),
-          child: AppSettingSection(
-            icon: AppIcon.s20(theme.icons.characters.heart,
+        LabContainer(
+          padding: const LabEdgeInsets.all(LabGapSize.s16),
+          child: LabSettingSection(
+            icon: LabIcon.s20(theme.icons.characters.heart,
                 gradient: theme.colors.rouge),
             title: 'Invite Someone',
             description: 'To a Community, a Group or this App',
@@ -395,13 +395,13 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
       );
     }
 
-    sections.add(const AppDivider());
+    sections.add(const LabDivider());
 
     if (widget.onHostingTap != null) {
-      sections.add(AppContainer(
-        padding: const AppEdgeInsets.all(AppGapSize.s16),
-        child: AppSettingSection(
-          icon: AppIcon.s20(theme.icons.characters.hosting,
+      sections.add(LabContainer(
+        padding: const LabEdgeInsets.all(LabGapSize.s16),
+        child: LabSettingSection(
+          icon: LabIcon.s20(theme.icons.characters.hosting,
               gradient: theme.colors.blurple),
           title: 'Hosting',
           description: widget.hostingDescription ?? '',
@@ -411,17 +411,17 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
       ));
     }
 
-    sections.add(const AppDivider());
+    sections.add(const LabDivider());
 
     if (widget.onDisconnectTap != null) {
       sections.add(
-        AppContainer(
-          padding: const AppEdgeInsets.all(AppGapSize.s16),
-          child: AppButton(
+        LabContainer(
+          padding: const LabEdgeInsets.all(LabGapSize.s16),
+          child: LabButton(
             onTap: widget.onDisconnectTap,
             inactiveColor: theme.colors.gray66,
             children: [
-              AppText.med14('Disconnect Profile', color: theme.colors.white66)
+              LabText.med14('Disconnect Profile', color: theme.colors.white66)
             ],
           ),
         ),
@@ -433,16 +433,16 @@ class AppSettingsScreenState extends State<AppSettingsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return AppScreen(
+    return LabScreen(
       alwaysShowTopBar: true,
       topBarContent: _buildTopBar(context),
       onHomeTap: widget.onHomeTap ?? () {},
-      child: AppContainer(
+      child: LabContainer(
         width: double.infinity,
         child: Column(
           children: [
-            const AppGap.s32(),
-            const AppGap.s12(),
+            const LabGap.s32(),
+            const LabGap.s12(),
             _buildContent(context),
           ],
         ),

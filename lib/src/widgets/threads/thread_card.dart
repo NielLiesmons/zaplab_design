@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppThreadCard extends StatelessWidget {
+class LabThreadCard extends StatelessWidget {
   final Note thread;
   final Function(Note)? onTap;
   final Function(Profile) onProfileTap;
@@ -9,7 +9,7 @@ class AppThreadCard extends StatelessWidget {
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
 
-  const AppThreadCard({
+  const LabThreadCard({
     super.key,
     required this.thread,
     this.onTap,
@@ -21,32 +21,32 @@ class AppThreadCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppPanelButton(
-      padding: const AppEdgeInsets.only(
-          top: AppGapSize.s10,
-          bottom: AppGapSize.s8,
-          left: AppGapSize.s12,
-          right: AppGapSize.s12),
+    return LabPanelButton(
+      padding: const LabEdgeInsets.only(
+          top: LabGapSize.s10,
+          bottom: LabGapSize.s8,
+          left: LabGapSize.s12,
+          right: LabGapSize.s12),
       onTap: onTap == null ? null : () => onTap!(thread),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppContainer(
+          LabContainer(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppProfilePic.s18(thread.author.value,
+                LabProfilePic.s18(thread.author.value,
                     onTap: () => onProfileTap(thread.author.value as Profile)),
-                const AppGap.s8(),
+                const LabGap.s8(),
                 Expanded(
-                  child: AppText.bold12(
+                  child: LabText.bold12(
                     thread.author.value?.name ??
                         formatNpub(thread.author.value?.pubkey ?? ''),
                   ),
                 ),
-                AppText.reg12(
+                LabText.reg12(
                   TimestampFormatter.format(thread.createdAt,
                       format: TimestampFormat.relative),
                   color: theme.colors.white33,
@@ -54,9 +54,9 @@ class AppThreadCard extends StatelessWidget {
               ],
             ),
           ),
-          const AppGap.s6(),
-          AppContainer(
-            child: AppCompactTextRenderer(
+          const LabGap.s6(),
+          LabContainer(
+            child: LabCompactTextRenderer(
               content: thread.content,
               onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,

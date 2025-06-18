@@ -13,18 +13,18 @@ const kMaxWindowHeight = 1280.0;
 const kDefaultWindowWidth = 580.0;
 const kDefaultWindowHeight = 800.0;
 
-class AppBase extends StatelessWidget {
+class LabBase extends StatelessWidget {
   final String title;
   final RouterConfig<Object> routerConfig;
   final Widget? appLogo;
-  final Widget? darkAppLogo;
+  final Widget? darkLabLogo;
   final Locale? locale;
   final List<Locale> supportedLocales;
   final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
   final double? textScaleFactor;
-  final AppThemeColorMode? colorMode;
-  final AppTextScale? textScale;
-  final AppSystemScale? systemScale;
+  final LabThemeColorMode? colorMode;
+  final LabTextScale? textScale;
+  final LabSystemScale? systemScale;
   final VoidCallback? onHomeTap;
   final VoidCallback? onBackTap;
   final VoidCallback? onSearchTap;
@@ -34,12 +34,12 @@ class AppBase extends StatelessWidget {
   final Widget? historyMenu;
   final Profile? activeProfile;
 
-  AppBase({
+  LabBase({
     super.key,
     required this.title,
     required this.routerConfig,
     this.appLogo,
-    this.darkAppLogo,
+    this.darkLabLogo,
     this.locale,
     this.supportedLocales = const <Locale>[Locale('en', 'US')],
     this.localizationsDelegates,
@@ -57,7 +57,7 @@ class AppBase extends StatelessWidget {
     this.activeProfile,
   }) {
     // Initialize window settings for desktop platforms
-    if (AppPlatformUtils.isDesktop) {
+    if (LabPlatformUtils.isDesktop) {
       windowManager.ensureInitialized();
       windowManager
           .setMinimumSize(const Size(kMinWindowWidth, kMinWindowHeight));
@@ -80,15 +80,15 @@ class AppBase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return createPlatformWrapper(
-      child: AppResponsiveTheme(
+      child: LabResponsiveTheme(
         colorMode: colorMode,
         textScale: textScale,
         systemScale: systemScale,
-        child: _AppBaseContent(
+        child: _LabBaseContent(
           title: title,
           routerConfig: routerConfig,
           appLogo: appLogo,
-          darkAppLogo: darkAppLogo,
+          darkLabLogo: darkLabLogo,
           locale: locale,
           supportedLocales: supportedLocales,
           localizationsDelegates: localizationsDelegates,
@@ -109,16 +109,16 @@ class AppBase extends StatelessWidget {
 }
 
 /// Internal widget that handles the actual base functionality
-class _AppBaseContent extends StatefulWidget {
+class _LabBaseContent extends StatefulWidget {
   final String title;
   final RouterConfig<Object> routerConfig;
   final Widget? appLogo;
-  final Widget? darkAppLogo;
+  final Widget? darkLabLogo;
   final Locale? locale;
   final List<Locale> supportedLocales;
   final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
   final double? textScaleFactor;
-  final AppThemeColorMode? colorMode;
+  final LabThemeColorMode? colorMode;
   final VoidCallback? onHomeTap;
   final VoidCallback? onBackTap;
   final VoidCallback? onSearchTap;
@@ -128,11 +128,11 @@ class _AppBaseContent extends StatefulWidget {
   final Widget? historyWidget;
   final Profile? activeProfile;
 
-  const _AppBaseContent({
+  const _LabBaseContent({
     required this.title,
     required this.routerConfig,
     this.appLogo,
-    this.darkAppLogo,
+    this.darkLabLogo,
     this.locale,
     this.supportedLocales = const <Locale>[Locale('en', 'US')],
     this.localizationsDelegates,
@@ -149,10 +149,10 @@ class _AppBaseContent extends StatefulWidget {
   });
 
   @override
-  State<_AppBaseContent> createState() => _AppBaseContentState();
+  State<_LabBaseContent> createState() => _LabBaseContentState();
 }
 
-class _AppBaseContentState extends State<_AppBaseContent>
+class _LabBaseContentState extends State<_LabBaseContent>
     with SingleTickerProviderStateMixin {
   bool _showHistoryMenu = false;
   late AnimationController _menuController;
@@ -162,7 +162,7 @@ class _AppBaseContentState extends State<_AppBaseContent>
   void initState() {
     super.initState();
     _menuController = AnimationController(
-      duration: AppDurationsData.normal().normal,
+      duration: LabDurationsData.normal().normal,
       vsync: this,
     );
     _menuAnimation = CurvedAnimation(
@@ -196,7 +196,7 @@ class _AppBaseContentState extends State<_AppBaseContent>
   @override
   Widget build(BuildContext context) {
     // Set system UI overlay style for native platforms only
-    if (!AppPlatformUtils.isWeb) {
+    if (!LabPlatformUtils.isWeb) {
       SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(
           statusBarColor: Color(0x00000000),
@@ -212,7 +212,7 @@ class _AppBaseContentState extends State<_AppBaseContent>
       );
     }
 
-    return AppResponsiveWrapper(
+    return LabResponsiveWrapper(
       child: MediaQuery(
         data: MediaQuery.of(context).copyWith(
           textScaler: TextScaler.linear(widget.textScaleFactor ?? 1.0),
@@ -220,25 +220,25 @@ class _AppBaseContentState extends State<_AppBaseContent>
         child: WidgetsApp.router(
           routerConfig: widget.routerConfig,
           builder: (context, child) {
-            return AppScaffold(
+            return LabScaffold(
               body: Stack(
                 children: [
                   Row(
                     children: [
                       // Sidebar (on desktop or web if any callbacks are provided)
-                      if (!AppPlatformUtils.isMobile && _shouldShowSidebar)
-                        AppContainer(
+                      if (!LabPlatformUtils.isMobile && _shouldShowSidebar)
+                        LabContainer(
                           decoration: BoxDecoration(
-                            color: AppTheme.of(context).colors.gray33,
+                            color: LabTheme.of(context).colors.gray33,
                           ),
                           child: Row(
                             children: [
-                              AppContainer(
-                                padding: const AppEdgeInsets.all(AppGapSize.s4),
+                              LabContainer(
+                                padding: const LabEdgeInsets.all(LabGapSize.s4),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    const AppGap.s24(),
+                                    const LabGap.s24(),
                                     if (widget.onBackTap != null)
                                       GestureDetector(
                                         onLongPress:
@@ -262,16 +262,16 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                     if (widget.onHomeTap != null)
                                       _buildSidebarItem(
                                         context,
-                                        icon: AppIcon.s20(
-                                          AppTheme.of(context)
+                                        icon: LabIcon.s20(
+                                          LabTheme.of(context)
                                               .icons
                                               .characters
                                               .home,
-                                          outlineColor: AppTheme.of(context)
+                                          outlineColor: LabTheme.of(context)
                                               .colors
                                               .white66,
                                           outlineThickness:
-                                              AppLineThicknessData.normal()
+                                              LabLineThicknessData.normal()
                                                   .medium,
                                         ),
                                         onTap: widget.onHomeTap!,
@@ -279,16 +279,16 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                     if (widget.onMailTap != null)
                                       _buildSidebarItem(
                                         context,
-                                        icon: AppIcon.s20(
-                                          AppTheme.of(context)
+                                        icon: LabIcon.s20(
+                                          LabTheme.of(context)
                                               .icons
                                               .characters
                                               .mail,
-                                          outlineColor: AppTheme.of(context)
+                                          outlineColor: LabTheme.of(context)
                                               .colors
                                               .white66,
                                           outlineThickness:
-                                              AppLineThicknessData.normal()
+                                              LabLineThicknessData.normal()
                                                   .medium,
                                         ),
                                         onTap: widget.onMailTap!,
@@ -296,16 +296,16 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                     if (widget.onSearchTap != null)
                                       _buildSidebarItem(
                                         context,
-                                        icon: AppIcon.s20(
-                                          AppTheme.of(context)
+                                        icon: LabIcon.s20(
+                                          LabTheme.of(context)
                                               .icons
                                               .characters
                                               .search,
-                                          outlineColor: AppTheme.of(context)
+                                          outlineColor: LabTheme.of(context)
                                               .colors
                                               .white66,
                                           outlineThickness:
-                                              AppLineThicknessData.normal()
+                                              LabLineThicknessData.normal()
                                                   .medium,
                                         ),
                                         onTap: widget.onSearchTap!,
@@ -313,16 +313,16 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                     if (widget.onAddTap != null)
                                       _buildSidebarItem(
                                         context,
-                                        icon: AppIcon.s20(
-                                          AppTheme.of(context)
+                                        icon: LabIcon.s20(
+                                          LabTheme.of(context)
                                               .icons
                                               .characters
                                               .plus,
-                                          outlineColor: AppTheme.of(context)
+                                          outlineColor: LabTheme.of(context)
                                               .colors
                                               .white66,
                                           outlineThickness:
-                                              AppLineThicknessData.normal()
+                                              LabLineThicknessData.normal()
                                                   .medium,
                                         ),
                                         onTap: widget.onAddTap!,
@@ -330,16 +330,16 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                     const Spacer(),
                                     if (widget.onProfilesTap != null &&
                                         widget.activeProfile != null)
-                                      AppProfilePic.s38(widget.activeProfile!,
+                                      LabProfilePic.s38(widget.activeProfile!,
                                           onTap: widget.onProfilesTap!),
-                                    const AppGap.s12(),
+                                    const LabGap.s12(),
                                   ],
                                 ),
                               ),
-                              AppContainer(
+                              LabContainer(
                                 width: 1.4,
                                 decoration: BoxDecoration(
-                                  color: AppTheme.of(context).colors.white8,
+                                  color: LabTheme.of(context).colors.white8,
                                 ),
                               ),
                             ],
@@ -367,10 +367,10 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                 child: BackdropFilter(
                                   filter:
                                       ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                                  child: AppContainer(
+                                  child: LabContainer(
                                     decoration: BoxDecoration(
                                       color:
-                                          AppTheme.of(context).colors.black33,
+                                          LabTheme.of(context).colors.black33,
                                     ),
                                   ),
                                 ),
@@ -394,19 +394,19 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                         -240 * (1 - _menuAnimation.value),
                                         0,
                                       ),
-                                      child: AppContainer(
+                                      child: LabContainer(
                                         width: 320,
                                         decoration: BoxDecoration(
-                                          color: AppTheme.of(context)
+                                          color: LabTheme.of(context)
                                               .colors
                                               .gray66,
                                           border: Border(
                                             right: BorderSide(
-                                              color: AppTheme.of(context)
+                                              color: LabTheme.of(context)
                                                   .colors
                                                   .white16,
                                               width:
-                                                  AppLineThicknessData.normal()
+                                                  LabLineThicknessData.normal()
                                                       .thin,
                                             ),
                                           ),
@@ -415,12 +415,12 @@ class _AppBaseContentState extends State<_AppBaseContent>
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              const AppGap.s20(),
-                                              AppContainer(
+                                              const LabGap.s20(),
+                                              LabContainer(
                                                 padding:
-                                                    const AppEdgeInsets.all(
-                                                        AppGapSize.s12),
-                                                child: AppScope(
+                                                    const LabEdgeInsets.all(
+                                                        LabGapSize.s12),
+                                                child: LabScope(
                                                   isInsideScope: true,
                                                   child: widget.historyWidget!,
                                                 ),
@@ -446,7 +446,7 @@ class _AppBaseContentState extends State<_AppBaseContent>
           locale: widget.locale,
           localizationsDelegates: widget.localizationsDelegates,
           supportedLocales: widget.supportedLocales,
-          color: AppTheme.of(context).colors.white,
+          color: LabTheme.of(context).colors.white,
         ),
       ),
     );
@@ -458,7 +458,7 @@ class _AppBaseContentState extends State<_AppBaseContent>
     bool isMenuOpen = false,
     bool showHistoryControls = false,
   }) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     return MouseRegion(
       child: TapBuilder(
         onTap: onTap,
@@ -472,28 +472,28 @@ class _AppBaseContentState extends State<_AppBaseContent>
 
           return Transform.scale(
             scale: scaleFactor,
-            child: AppContainer(
+            child: LabContainer(
               height: 38,
               width: 38,
-              margin: const AppEdgeInsets.all(AppGapSize.s4),
+              margin: const LabEdgeInsets.all(LabGapSize.s4),
               padding: isMenuOpen && showHistoryControls
-                  ? const AppEdgeInsets.all(AppGapSize.none)
-                  : const AppEdgeInsets.only(right: AppGapSize.s2),
+                  ? const LabEdgeInsets.all(LabGapSize.none)
+                  : const LabEdgeInsets.only(right: LabGapSize.s2),
               decoration: BoxDecoration(
                 color: theme.colors.white8,
                 shape: BoxShape.circle,
               ),
               child: Center(
                 child: isMenuOpen && showHistoryControls
-                    ? AppIcon.s14(
+                    ? LabIcon.s14(
                         theme.icons.characters.cross,
                         outlineColor: theme.colors.white66,
-                        outlineThickness: AppLineThicknessData.normal().medium,
+                        outlineThickness: LabLineThicknessData.normal().medium,
                       )
-                    : AppIcon.s16(
+                    : LabIcon.s16(
                         theme.icons.characters.chevronLeft,
                         outlineColor: theme.colors.white66,
-                        outlineThickness: AppLineThicknessData.normal().medium,
+                        outlineThickness: LabLineThicknessData.normal().medium,
                       ),
               ),
             ),
@@ -508,7 +508,7 @@ class _AppBaseContentState extends State<_AppBaseContent>
     required Widget icon,
     required VoidCallback onTap,
   }) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     return MouseRegion(
       child: TapBuilder(
         onTap: onTap,
@@ -522,12 +522,12 @@ class _AppBaseContentState extends State<_AppBaseContent>
 
           return Transform.scale(
             scale: scaleFactor,
-            child: AppContainer(
+            child: LabContainer(
               height: 48,
               width: 48,
-              margin: const AppEdgeInsets.symmetric(
-                vertical: AppGapSize.s2,
-                horizontal: AppGapSize.s4,
+              margin: const LabEdgeInsets.symmetric(
+                vertical: LabGapSize.s2,
+                horizontal: LabGapSize.s4,
               ),
               decoration: BoxDecoration(
                 color: state == TapState.hover ||

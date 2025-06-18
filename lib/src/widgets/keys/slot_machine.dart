@@ -1,12 +1,12 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:math';
 
-class AppSlotMachine extends StatefulWidget {
+class LabSlotMachine extends StatefulWidget {
   final String? initialNsec; // Optional initial nsec to display
   final bool showSelector; // Controls visibility of the mode selector
   final void Function(String secretKey, String mode)? onSpinComplete;
 
-  const AppSlotMachine({
+  const LabSlotMachine({
     super.key,
     this.initialNsec,
     this.showSelector = false,
@@ -14,7 +14,7 @@ class AppSlotMachine extends StatefulWidget {
   });
 
   @override
-  State<AppSlotMachine> createState() => _AppSlotMachineState();
+  State<LabSlotMachine> createState() => _LabSlotMachineState();
 }
 
 class SlotSpinCurve extends Curve {
@@ -60,7 +60,7 @@ class SlotMachineCurve extends Curve {
   }
 }
 
-class _AppSlotMachineState extends State<AppSlotMachine>
+class _LabSlotMachineState extends State<LabSlotMachine>
     with TickerProviderStateMixin {
   List<String> targetEmojis = [];
   String targetNsec = '';
@@ -107,11 +107,11 @@ class _AppSlotMachineState extends State<AppSlotMachine>
       setState(() {
         targetNsec = widget.initialNsec!;
         // Verify the checksum
-        final isValid = AppKeyGenerator.verifyNsecChecksum(widget.initialNsec!);
+        final isValid = LabKeyGenerator.verifyNsecChecksum(widget.initialNsec!);
         targetMnemonic =
-            AppKeyGenerator.nsecToMnemonic(widget.initialNsec!) ?? '';
+            LabKeyGenerator.nsecToMnemonic(widget.initialNsec!) ?? '';
         _mnemonicWords = targetMnemonic.split(' ');
-        final emojis = AppKeyGenerator.nsecToEmojis(widget.initialNsec!);
+        final emojis = LabKeyGenerator.nsecToEmojis(widget.initialNsec!);
         if (emojis != null) {
           targetEmojis = List<String>.from(
               emojis); // Create a copy to prmodel reference issues
@@ -155,16 +155,16 @@ class _AppSlotMachineState extends State<AppSlotMachine>
 
   void _generateNewKey() {
     // Generate a new mnemonic
-    final mnemonic = AppKeyGenerator.generateMnemonic();
+    final mnemonic = LabKeyGenerator.generateMnemonic();
 
     // Convert mnemonic to nsec
-    final nsec = AppKeyGenerator.mnemonicToNsec(mnemonic);
+    final nsec = LabKeyGenerator.mnemonicToNsec(mnemonic);
 
     // Verify the checksum
-    final isValid = AppKeyGenerator.verifyNsecChecksum(nsec);
+    final isValid = LabKeyGenerator.verifyNsecChecksum(nsec);
 
     // Convert nsec to emojis
-    final emojis = AppKeyGenerator.nsecToEmojis(nsec);
+    final emojis = LabKeyGenerator.nsecToEmojis(nsec);
     if (emojis == null) {
       throw Exception('Failed to generate emojis from nsec');
     }
@@ -309,10 +309,10 @@ class _AppSlotMachineState extends State<AppSlotMachine>
     _handleController.forward();
   }
 
-  Widget _buildDisk(AppThemeData theme, int rowIndex, int diskIndex) {
+  Widget _buildDisk(LabThemeData theme, int rowIndex, int diskIndex) {
     final controllerIndex = (rowIndex * 4) + diskIndex;
 
-    return AppContainer(
+    return LabContainer(
       width: 56,
       height: 88,
       clipBehavior: Clip.hardEdge,
@@ -351,18 +351,18 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                   top: offset - 56,
                   left: 0,
                   right: 0,
-                  child: AppContainer(
+                  child: LabContainer(
                     height: 56,
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
                           color: theme.colors.black33,
-                          width: AppLineThicknessData.normal().medium,
+                          width: LabLineThicknessData.normal().medium,
                         ),
                       ),
                     ),
                     child: Center(
-                      child: AppText(
+                      child: LabText(
                         getDisplayText(currentEmoji),
                         fontSize: _currentMode == 'Words'
                             ? 11
@@ -377,19 +377,19 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                   top: offset,
                   left: 0,
                   right: 0,
-                  child: AppContainer(
+                  child: LabContainer(
                     height: 56,
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
                           color: theme.colors.black33,
-                          width: AppLineThicknessData.normal().medium,
+                          width: LabLineThicknessData.normal().medium,
                         ),
                       ),
                     ),
                     child: Center(
                       child: currentEmoji == '-'
-                          ? AppContainer(
+                          ? LabContainer(
                               width: 24,
                               height: 8,
                               decoration: BoxDecoration(
@@ -397,7 +397,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                                 borderRadius: BorderRadius.circular(2),
                               ),
                             )
-                          : AppText(
+                          : LabText(
                               getDisplayText(currentEmoji),
                               fontSize: _currentMode == 'Words'
                                   ? 11
@@ -412,18 +412,18 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                   top: offset + 56,
                   left: 0,
                   right: 0,
-                  child: AppContainer(
+                  child: LabContainer(
                     height: 56,
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
                           color: theme.colors.black33,
-                          width: AppLineThicknessData.normal().medium,
+                          width: LabLineThicknessData.normal().medium,
                         ),
                       ),
                     ),
                     child: Center(
-                      child: AppText(
+                      child: LabText(
                         getDisplayText(currentEmoji),
                         fontSize: _currentMode == 'Words'
                             ? 11
@@ -452,18 +452,18 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                 top: offset - 56,
                 left: 0,
                 right: 0,
-                child: AppContainer(
+                child: LabContainer(
                   height: 56,
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
                         color: theme.colors.black33,
-                        width: AppLineThicknessData.normal().medium,
+                        width: LabLineThicknessData.normal().medium,
                       ),
                     ),
                   ),
                   child: Center(
-                    child: AppText(
+                    child: LabText(
                       getDisplayText(prevSpinEmoji),
                       fontSize: _currentMode == 'Words'
                           ? 11
@@ -478,18 +478,18 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                 top: offset,
                 left: 0,
                 right: 0,
-                child: AppContainer(
+                child: LabContainer(
                   height: 56,
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
                         color: theme.colors.black33,
-                        width: AppLineThicknessData.normal().medium,
+                        width: LabLineThicknessData.normal().medium,
                       ),
                     ),
                   ),
                   child: Center(
-                    child: AppText(
+                    child: LabText(
                       getDisplayText(currentSpinEmoji),
                       fontSize: _currentMode == 'Words'
                           ? 11
@@ -504,18 +504,18 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                 top: offset + 56,
                 left: 0,
                 right: 0,
-                child: AppContainer(
+                child: LabContainer(
                   height: 56,
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
                         color: theme.colors.black33,
-                        width: AppLineThicknessData.normal().medium,
+                        width: LabLineThicknessData.normal().medium,
                       ),
                     ),
                   ),
                   child: Center(
-                    child: AppText(
+                    child: LabText(
                       getDisplayText(nextSpinEmoji),
                       fontSize: _currentMode == 'Words'
                           ? 11
@@ -533,8 +533,8 @@ class _AppSlotMachineState extends State<AppSlotMachine>
     );
   }
 
-  Widget _buildDiskRow(AppThemeData theme, int rowIndex) {
-    return AppContainer(
+  Widget _buildDiskRow(LabThemeData theme, int rowIndex) {
+    return LabContainer(
       height: 88,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
@@ -542,7 +542,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
         borderRadius: theme.radius.asBorderRadius().rad16,
         border: Border.all(
           color: theme.colors.white16,
-          width: AppLineThicknessData.normal().thin,
+          width: LabLineThicknessData.normal().thin,
         ),
       ),
       child: Stack(
@@ -550,15 +550,15 @@ class _AppSlotMachineState extends State<AppSlotMachine>
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const AppGap.s8(),
+              const LabGap.s8(),
               _buildDisk(theme, rowIndex, 0),
-              const AppGap.s4(),
+              const LabGap.s4(),
               _buildDisk(theme, rowIndex, 1),
-              const AppGap.s4(),
+              const LabGap.s4(),
               _buildDisk(theme, rowIndex, 2),
-              const AppGap.s4(),
+              const LabGap.s4(),
               _buildDisk(theme, rowIndex, 3),
-              const AppGap.s8(),
+              const LabGap.s8(),
             ],
           ),
           // Top gradient overlay
@@ -632,7 +632,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
     );
   }
 
-  Widget _buildHandle(AppThemeData theme, double totalHeight) {
+  Widget _buildHandle(LabThemeData theme, double totalHeight) {
     final handleBarLength = totalHeight / 2 - 40;
     final centerY = totalHeight / 2; // 148.0
     const baseCircleSize = 44.0;
@@ -675,7 +675,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
           Positioned(
             left: 8,
             top: (totalHeight - 88) / 2,
-            child: AppContainer(
+            child: LabContainer(
               width: 32,
               height: 88,
               decoration: BoxDecoration(
@@ -683,7 +683,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                 borderRadius: theme.radius.asBorderRadius().rad16,
                 border: Border.all(
                   color: theme.colors.white16,
-                  width: AppLineThicknessData.normal().thin,
+                  width: LabLineThicknessData.normal().thin,
                 ),
               ),
             ),
@@ -710,7 +710,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                     ).createShader(bounds);
                   },
                   blendMode: BlendMode.dstIn,
-                  child: AppContainer(
+                  child: LabContainer(
                     width: 16,
                     height: barHeight,
                     decoration: BoxDecoration(
@@ -724,8 +724,8 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                           end: Alignment.centerRight,
                           colors: [
                             const Color(0x00000000),
-                            AppColorsData.dark().black16,
-                            AppColorsData.dark().black8,
+                            LabColorsData.dark().black16,
+                            LabColorsData.dark().black8,
                           ],
                           stops: const [0.33, 0.80, 1],
                         ),
@@ -745,7 +745,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
               onVerticalDragStart: _onHandleDragStart,
               onVerticalDragUpdate: _onHandleDragUpdate,
               onVerticalDragEnd: _onHandleDragEnd,
-              child: AppContainer(
+              child: LabContainer(
                 width: circleSize,
                 height: circleSize,
                 decoration: BoxDecoration(
@@ -753,7 +753,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColorsData.dark().black33,
+                      color: LabColorsData.dark().black33,
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -788,7 +788,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     const totalHeight = 296.0;
 
     return Column(
@@ -799,46 +799,46 @@ class _AppSlotMachineState extends State<AppSlotMachine>
             Column(
               children: [
                 _buildDiskRow(theme, 0),
-                const AppGap.s16(),
+                const LabGap.s16(),
                 _buildDiskRow(theme, 1),
-                const AppGap.s16(),
+                const LabGap.s16(),
                 _buildDiskRow(theme, 2),
               ],
             ),
-            const AppGap.s16(),
+            const LabGap.s16(),
             _buildHandle(theme, totalHeight),
           ],
         ),
         if (widget.showSelector) ...[
-          const AppGap.s32(),
-          AppContainer(
+          const LabGap.s32(),
+          LabContainer(
             width: 344,
-            child: AppSelector(
+            child: LabSelector(
               children: [
-                AppSelectorButton(
+                LabSelectorButton(
                   selectedContent: const [
-                    AppText.reg14("Emoji"),
+                    LabText.reg14("Emoji"),
                   ],
                   unselectedContent: [
-                    AppText.reg14("Emoji", color: theme.colors.white66),
+                    LabText.reg14("Emoji", color: theme.colors.white66),
                   ],
                   isSelected: _currentMode == 'Emoji',
                 ),
-                AppSelectorButton(
+                LabSelectorButton(
                   selectedContent: const [
-                    AppText.reg14("Words"),
+                    LabText.reg14("Words"),
                   ],
                   unselectedContent: [
-                    AppText.reg14("Words", color: theme.colors.white66),
+                    LabText.reg14("Words", color: theme.colors.white66),
                   ],
                   isSelected: _currentMode == 'Words',
                 ),
-                AppSelectorButton(
+                LabSelectorButton(
                   selectedContent: const [
-                    AppText.reg14("Nsec"),
+                    LabText.reg14("Nsec"),
                   ],
                   unselectedContent: [
-                    AppText.reg14("Nsec", color: theme.colors.white66),
+                    LabText.reg14("Nsec", color: theme.colors.white66),
                   ],
                   isSelected: _currentMode == 'Nsec',
                 ),
@@ -854,7 +854,7 @@ class _AppSlotMachineState extends State<AppSlotMachine>
                       // If we have a nsec but no mnemonic, generate the mnemonic
                       if (targetNsec.isNotEmpty && targetMnemonic.isEmpty) {
                         targetMnemonic =
-                            AppKeyGenerator.nsecToMnemonic(targetNsec) ?? '';
+                            LabKeyGenerator.nsecToMnemonic(targetNsec) ?? '';
                       }
                       break;
                     case 2:

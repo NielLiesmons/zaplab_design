@@ -1,14 +1,14 @@
 import 'package:zaplab_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
 
-class AppDurationsData extends Equatable {
-  const AppDurationsData({
+class LabDurationsData extends Equatable {
+  const LabDurationsData({
     required this.areAnimationEnabled,
     required this.normal,
     required this.fast,
   });
 
-  factory AppDurationsData.normal() => const AppDurationsData(
+  factory LabDurationsData.normal() => const LabDurationsData(
         areAnimationEnabled: true,
         normal: Duration(milliseconds: 222),
         fast: Duration(milliseconds: 128),

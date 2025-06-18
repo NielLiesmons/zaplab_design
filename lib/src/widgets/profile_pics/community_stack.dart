@@ -2,10 +2,10 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppCommunityStack extends StatelessWidget {
+class LabCommunityStack extends StatelessWidget {
   final List<Community>? communities;
   final VoidCallback? onTap;
-  const AppCommunityStack({
+  const LabCommunityStack({
     super.key,
     this.communities,
     this.onTap,
@@ -16,7 +16,7 @@ class AppCommunityStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return TapBuilder(
       onTap: onTap,
@@ -32,17 +32,17 @@ class AppCommunityStack extends StatelessWidget {
           scale: scaleFactor,
           child: communities == null || communities!.isEmpty
               ? IntrinsicWidth(
-                  child: AppContainer(
+                  child: LabContainer(
                     height: theme.sizes.s20,
-                    padding: const AppEdgeInsets.symmetric(
-                      horizontal: AppGapSize.s12,
+                    padding: const LabEdgeInsets.symmetric(
+                      horizontal: LabGapSize.s12,
                     ),
                     decoration: BoxDecoration(
                       color: theme.colors.white8,
                       borderRadius: theme.radius.asBorderRadius().rad16,
                     ),
                     child: Center(
-                      child: AppText.reg12(
+                      child: LabText.reg12(
                         'No target found',
                         color: theme.colors.white33,
                         textOverflow: TextOverflow.ellipsis,
@@ -50,7 +50,7 @@ class AppCommunityStack extends StatelessWidget {
                     ),
                   ),
                 )
-              : AppContainer(
+              : LabContainer(
                   width: 240,
                   child: MouseRegion(
                     cursor: SystemMouseCursors.click,
@@ -65,11 +65,11 @@ class AppCommunityStack extends StatelessWidget {
                                   theme.sizes.s6 +
                                       (_visibleCommunities.length - 1) * 16,
                                   0),
-                              child: AppContainer(
+                              child: LabContainer(
                                 height: theme.sizes.s20,
-                                padding: const AppEdgeInsets.only(
-                                  left: AppGapSize.s20,
-                                  right: AppGapSize.s12,
+                                padding: const LabEdgeInsets.only(
+                                  left: LabGapSize.s20,
+                                  right: LabGapSize.s12,
                                 ),
                                 decoration: BoxDecoration(
                                   color: theme.colors.white16,
@@ -77,7 +77,7 @@ class AppCommunityStack extends StatelessWidget {
                                       theme.radius.asBorderRadius().rad16,
                                 ),
                                 child: Center(
-                                  child: AppText.reg12(
+                                  child: LabText.reg12(
                                     communities!.length == 1
                                         ? communities!
                                                 .first.author.value?.name ??
@@ -107,7 +107,7 @@ class AppCommunityStack extends StatelessWidget {
                                       left:
                                           (_visibleCommunities.length - 1 - i) *
                                               16.0,
-                                      child: AppContainer(
+                                      child: LabContainer(
                                         decoration: BoxDecoration(
                                           borderRadius: theme.radius
                                               .asBorderRadius()
@@ -115,13 +115,13 @@ class AppCommunityStack extends StatelessWidget {
                                           boxShadow: [
                                             BoxShadow(
                                               color:
-                                                  AppColorsData.dark().black33,
+                                                  LabColorsData.dark().black33,
                                               blurRadius: 4,
                                               offset: const Offset(3, 0),
                                             ),
                                           ],
                                         ),
-                                        child: AppProfilePic.s20(
+                                        child: LabProfilePic.s20(
                                           _visibleCommunities[i].author.value!,
                                           onTap: onTap,
                                         ),

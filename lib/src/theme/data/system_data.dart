@@ -5,27 +5,27 @@ import 'package:zaplab_design/src/utils/platform.dart';
 const mobileScaleFactor = 1.15;
 const desktopScaleFactor = 1.08;
 
-class AppSystemData extends Equatable {
+class LabSystemData extends Equatable {
   final double scale;
 
-  const AppSystemData({
+  const LabSystemData({
     required this.scale,
   });
 
-  factory AppSystemData.normal() => AppSystemData(
+  factory LabSystemData.normal() => LabSystemData(
         scale:
-            AppPlatformUtils.isMobile ? mobileScaleFactor : desktopScaleFactor,
+            LabPlatformUtils.isMobile ? mobileScaleFactor : desktopScaleFactor,
       );
 
-  factory AppSystemData.small() => AppSystemData(
-        scale: (AppPlatformUtils.isMobile
+  factory LabSystemData.small() => LabSystemData(
+        scale: (LabPlatformUtils.isMobile
                 ? mobileScaleFactor
                 : desktopScaleFactor) *
             0.95,
       );
 
-  factory AppSystemData.large() => AppSystemData(
-        scale: (AppPlatformUtils.isMobile
+  factory LabSystemData.large() => LabSystemData(
+        scale: (LabPlatformUtils.isMobile
                 ? mobileScaleFactor
                 : desktopScaleFactor) *
             1.05,

@@ -1,12 +1,12 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class AppArticleCard extends StatelessWidget {
+class LabArticleCard extends StatelessWidget {
   final Article article;
   final Function(Article)? onTap;
   final Function(Profile) onProfileTap;
 
-  const AppArticleCard({
+  const LabArticleCard({
     super.key,
     required this.article,
     this.onTap,
@@ -15,10 +15,10 @@ class AppArticleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppPanelButton(
-      padding: const AppEdgeInsets.all(AppGapSize.none),
+    return LabPanelButton(
+      padding: const LabEdgeInsets.all(LabGapSize.none),
       isLight: true,
       onTap: () => onTap?.call(article),
       child: Column(
@@ -28,10 +28,10 @@ class AppArticleCard extends StatelessWidget {
           if (article.imageUrl != null && article.imageUrl!.isNotEmpty)
             AspectRatio(
               aspectRatio: 16 / 9,
-              child: AppContainer(
+              child: LabContainer(
                 width: double.infinity,
-                padding: const AppEdgeInsets.all(AppGapSize.s2),
-                child: AppContainer(
+                padding: const LabEdgeInsets.all(LabGapSize.s2),
+                child: LabContainer(
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
                     color: theme.colors.gray33,
@@ -45,11 +45,11 @@ class AppArticleCard extends StatelessWidget {
                     fit: BoxFit.cover,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;
-                      return const AppSkeletonLoader();
+                      return const LabSkeletonLoader();
                     },
                     errorBuilder: (context, error, stackTrace) {
                       print('Error loading image: $error');
-                      return const AppSkeletonLoader();
+                      return const LabSkeletonLoader();
                     },
                   ),
                 ),
@@ -57,33 +57,33 @@ class AppArticleCard extends StatelessWidget {
             ),
 
           // Model info section
-          AppContainer(
-            padding: const AppEdgeInsets.only(
-              left: AppGapSize.s12,
-              right: AppGapSize.s12,
-              top: AppGapSize.s8,
-              bottom: AppGapSize.s10,
+          LabContainer(
+            padding: const LabEdgeInsets.only(
+              left: LabGapSize.s12,
+              right: LabGapSize.s12,
+              top: LabGapSize.s8,
+              bottom: LabGapSize.s10,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppProfilePic.s40(article.author.value,
+                LabProfilePic.s40(article.author.value,
                     onTap: () => onProfileTap(article.author.value as Profile)),
-                const AppGap.s12(),
+                const LabGap.s12(),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                          const AppEmojiImage(
+                          const LabEmojiImage(
                             emojiUrl: 'assets/emoji/article.png',
                             emojiName: 'article',
                             size: 16,
                           ),
-                          const AppGap.s10(),
+                          const LabGap.s10(),
                           Expanded(
-                            child: AppText.reg14(
+                            child: LabText.reg14(
                               article.title ?? '',
                               maxLines: 1,
                               textOverflow: TextOverflow.ellipsis,
@@ -91,8 +91,8 @@ class AppArticleCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const AppGap.s2(),
-                      AppText.reg12(
+                      const LabGap.s2(),
+                      LabText.reg12(
                         article.author.value?.name ??
                             formatNpub(article.author.value?.pubkey ?? ''),
                         color: theme.colors.white66,

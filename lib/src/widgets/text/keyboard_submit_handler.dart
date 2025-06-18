@@ -1,12 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-class AppKeyboardSubmitHandler extends StatelessWidget {
+class LabKeyboardSubmitHandler extends StatelessWidget {
   final Widget child;
   final VoidCallback onSubmit;
   final bool enabled;
 
-  const AppKeyboardSubmitHandler({
+  const LabKeyboardSubmitHandler({
     super.key,
     required this.child,
     required this.onSubmit,

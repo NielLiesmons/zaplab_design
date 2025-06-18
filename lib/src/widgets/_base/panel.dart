@@ -1,16 +1,16 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppPanel extends StatelessWidget {
+class LabPanel extends StatelessWidget {
   final Widget child;
   final double? width;
   final double? height;
-  final AppEdgeInsets? padding;
+  final LabEdgeInsets? padding;
   final Color? color;
   final Gradient? gradient;
   final BorderRadius? radius;
   final bool isLight;
 
-  const AppPanel({
+  const LabPanel({
     super.key,
     required this.child,
     this.width,
@@ -24,13 +24,13 @@ class AppPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
-    final isInsideScope = AppScope.of(context);
+    final theme = LabTheme.of(context);
+    final isInsideScope = LabScope.of(context);
     final isInsideModal = ModalScope.of(context);
     final (isInsideMessage, _) = MessageBubbleScope.of(context);
 
-    return AppContainer(
-      padding: padding ?? const AppEdgeInsets.all(AppGapSize.s16),
+    return LabContainer(
+      padding: padding ?? const LabEdgeInsets.all(LabGapSize.s16),
       width: width ?? double.infinity,
       height: height,
       clipBehavior: Clip.hardEdge,

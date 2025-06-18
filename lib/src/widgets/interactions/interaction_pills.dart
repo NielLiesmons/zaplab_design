@@ -2,13 +2,13 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:collection/collection.dart';
 import 'package:models/models.dart';
 
-class AppInteractionPills extends StatelessWidget {
+class LabInteractionPills extends StatelessWidget {
   final List<Zap> zaps;
   final List<Reaction> reactions;
   final void Function(Zap)? onZapTap;
   final void Function(Reaction)? onReactionTap;
 
-  const AppInteractionPills({
+  const LabInteractionPills({
     super.key,
     this.zaps = const [],
     this.reactions = const [],
@@ -46,11 +46,11 @@ class AppInteractionPills extends StatelessWidget {
                 outgoingReactions.isEmpty &&
                 incomingZaps.isEmpty &&
                 incomingReactions.isEmpty;
-            return AppContainer(
+            return LabContainer(
               padding: isLastItem
-                  ? const AppEdgeInsets.all(AppGapSize.none)
-                  : const AppEdgeInsets.only(right: AppGapSize.s8),
-              child: AppZapPill(
+                  ? const LabEdgeInsets.all(LabGapSize.none)
+                  : const LabEdgeInsets.only(right: LabGapSize.s8),
+              child: LabZapPill(
                 zap: zap,
                 isOutgoing: true,
                 onTap: () => onZapTap?.call(zap),
@@ -61,11 +61,11 @@ class AppInteractionPills extends StatelessWidget {
             final isLastItem = index == outgoingReactions.length - 1 &&
                 incomingZaps.isEmpty &&
                 incomingReactions.isEmpty;
-            return AppContainer(
+            return LabContainer(
               padding: isLastItem
-                  ? const AppEdgeInsets.all(AppGapSize.none)
-                  : const AppEdgeInsets.only(right: AppGapSize.s8),
-              child: AppReactionPill(
+                  ? const LabEdgeInsets.all(LabGapSize.none)
+                  : const LabEdgeInsets.only(right: LabGapSize.s8),
+              child: LabReactionPill(
                 reaction: reaction,
                 isOutgoing: true,
                 onTap: () => onReactionTap?.call(reaction),
@@ -75,11 +75,11 @@ class AppInteractionPills extends StatelessWidget {
           ...incomingZaps.mapIndexed((index, zap) {
             final isLastItem =
                 index == incomingZaps.length - 1 && incomingReactions.isEmpty;
-            return AppContainer(
+            return LabContainer(
               padding: isLastItem
-                  ? const AppEdgeInsets.all(AppGapSize.none)
-                  : const AppEdgeInsets.only(right: AppGapSize.s8),
-              child: AppZapPill(
+                  ? const LabEdgeInsets.all(LabGapSize.none)
+                  : const LabEdgeInsets.only(right: LabGapSize.s8),
+              child: LabZapPill(
                 zap: zap,
                 isOutgoing: false,
                 onTap: () => onZapTap?.call(zap),
@@ -88,11 +88,11 @@ class AppInteractionPills extends StatelessWidget {
           }),
           ...incomingReactions.mapIndexed((index, reaction) {
             final isLastItem = index == incomingReactions.length - 1;
-            return AppContainer(
+            return LabContainer(
               padding: isLastItem
-                  ? const AppEdgeInsets.all(AppGapSize.none)
-                  : const AppEdgeInsets.only(right: AppGapSize.s8),
-              child: AppReactionPill(
+                  ? const LabEdgeInsets.all(LabGapSize.none)
+                  : const LabEdgeInsets.only(right: LabGapSize.s8),
+              child: LabReactionPill(
                 reaction: reaction,
                 isOutgoing: false,
                 onTap: () => onReactionTap?.call(reaction),

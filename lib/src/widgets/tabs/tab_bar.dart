@@ -3,13 +3,13 @@ import 'package:flutter/gestures.dart';
 import 'dart:async';
 import 'dart:ui' as ui;
 
-class AppTabBar extends StatefulWidget {
+class LabTabBar extends StatefulWidget {
   final List<TabData> tabs;
   final int selectedIndex;
   final ValueChanged<int> onTabSelected;
   final ValueChanged<int> onTabLongPress;
   final ValueChanged<bool>? onExpansionChanged;
-  const AppTabBar({
+  const LabTabBar({
     super.key,
     required this.tabs,
     required this.selectedIndex,
@@ -19,10 +19,10 @@ class AppTabBar extends StatefulWidget {
   });
 
   @override
-  State<AppTabBar> createState() => AppTabBarState();
+  State<LabTabBar> createState() => LabTabBarState();
 }
 
-class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
+class LabTabBarState extends State<LabTabBar> with TickerProviderStateMixin {
   late final AnimationController _actionZoneController;
   late final AnimationController _popController;
   late final AnimationController _gridController;
@@ -96,7 +96,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
 
   void _handleScroll() {
     if (!_scrollController.hasClients || _isExpanded) return;
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     // Check scrollability when scroll position changes
     _checkScrollability();
@@ -143,7 +143,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
 
   Future<void> _triggerTransitionSequence({bool isButtonClick = false}) async {
     final width = MediaQuery.of(context).size.width;
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     if (isButtonClick) {
       // Fast parallel animation for button clicks
@@ -213,7 +213,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
             _scrollController.position.minScrollExtent,
             _scrollController.position.maxScrollExtent,
           ),
-          duration: AppDurationsData.normal().normal,
+          duration: LabDurationsData.normal().normal,
           curve: Curves.easeInOut,
         );
       }
@@ -249,7 +249,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
   }
 
   @override
-  void didUpdateWidget(AppTabBar oldWidget) {
+  void didUpdateWidget(LabTabBar oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.tabs != widget.tabs) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -260,7 +260,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -268,7 +268,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const AppDivider(),
+          const LabDivider(),
           SizedBox(
             width: double.infinity,
             child: Stack(
@@ -290,17 +290,17 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                           : const ScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       dragStartBehavior: DragStartBehavior.down,
-                      child: AppContainer(
-                        padding: const AppEdgeInsets.symmetric(
-                          horizontal: AppGapSize.s12,
-                          vertical: AppGapSize.s12,
+                      child: LabContainer(
+                        padding: const LabEdgeInsets.symmetric(
+                          horizontal: LabGapSize.s12,
+                          vertical: LabGapSize.s12,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             for (var i = 0; i < widget.tabs.length; i++) ...[
-                              AppTabButton(
+                              LabTabButton(
                                 key: _tabKeys[i],
                                 label: widget.tabs[i].label,
                                 count: widget.tabs[i].count,
@@ -320,7 +320,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                                         : null,
                               ),
                               if (i < widget.tabs.length - 1)
-                                const AppGap.s12(),
+                                const LabGap.s12(),
                             ],
                           ],
                         ),
@@ -329,7 +329,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                   ),
                 ),
                 // Left hover zone
-                if (!AppPlatformUtils.isMobile && _isHovered && _isScrollable)
+                if (!LabPlatformUtils.isMobile && _isHovered && _isScrollable)
                   AnimatedBuilder(
                     animation: Listenable.merge(
                         [_actionWidthAnimation, _scrollController]),
@@ -354,7 +354,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                                     );
                                   },
                                   blendMode: BlendMode.dstIn,
-                                  child: AppContainer(
+                                  child: LabContainer(
                                     width: theme.sizes.s64,
                                     decoration: BoxDecoration(
                                       color: ModalScope.of(context)
@@ -373,7 +373,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                                       child: BackdropFilter(
                                         filter: ui.ImageFilter.blur(
                                             sigmaX: 24, sigmaY: 24),
-                                        child: AppSmallButton(
+                                        child: LabSmallButton(
                                           rounded: true,
                                           square: true,
                                           inactiveColor: theme.colors.white16,
@@ -388,14 +388,14 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                                                     _scrollController
                                                             .position.pixels -
                                                         theme.sizes.s104 * 2,
-                                                    duration: AppDurationsData
+                                                    duration: LabDurationsData
                                                             .normal()
                                                         .normal,
                                                     curve: Curves.easeInOut,
                                                   );
                                                 },
                                           children: [
-                                            AppIcon.s12(
+                                            LabIcon.s12(
                                               _scrollController
                                                           .position.pixels <=
                                                       0
@@ -405,13 +405,13 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                                                       .chevronLeft,
                                               outlineColor: theme.colors.white,
                                               outlineThickness:
-                                                  AppLineThicknessData.normal()
+                                                  LabLineThicknessData.normal()
                                                       .medium,
                                             ),
                                             if (_scrollController
                                                     .position.pixels >=
                                                 0)
-                                              const AppGap.s2(),
+                                              const LabGap.s2(),
                                           ],
                                         ),
                                       ),
@@ -423,7 +423,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                           ),
                   ),
                 // Right hover zone
-                if (!AppPlatformUtils.isMobile && _isHovered && _isScrollable)
+                if (!LabPlatformUtils.isMobile && _isHovered && _isScrollable)
                   AnimatedBuilder(
                     animation: Listenable.merge(
                         [_actionWidthAnimation, _scrollController]),
@@ -452,7 +452,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                                     );
                                   },
                                   blendMode: BlendMode.dstIn,
-                                  child: AppContainer(
+                                  child: LabContainer(
                                     width: theme.sizes.s64,
                                     decoration: BoxDecoration(
                                       color: ModalScope.of(context)
@@ -471,7 +471,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                                       child: BackdropFilter(
                                         filter: ui.ImageFilter.blur(
                                             sigmaX: 24, sigmaY: 24),
-                                        child: AppSmallButton(
+                                        child: LabSmallButton(
                                           rounded: true,
                                           square: true,
                                           inactiveColor: theme.colors.white16,
@@ -481,19 +481,19 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                                                       .position.pixels +
                                                   theme.sizes.s104 * 2,
                                               duration:
-                                                  AppDurationsData.normal()
+                                                  LabDurationsData.normal()
                                                       .normal,
                                               curve: Curves.easeInOut,
                                             );
                                           },
                                           children: [
-                                            const AppGap.s2(),
-                                            AppIcon.s12(
+                                            const LabGap.s2(),
+                                            LabIcon.s12(
                                               theme.icons.characters
                                                   .chevronRight,
                                               outlineColor: theme.colors.white,
                                               outlineThickness:
-                                                  AppLineThicknessData.normal()
+                                                  LabLineThicknessData.normal()
                                                       .medium,
                                             ),
                                           ],
@@ -515,7 +515,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                     animation: _actionWidthAnimation,
                     builder: (context, child) => SizedBox(
                       width: _actionWidthAnimation.value,
-                      child: AppContainer(
+                      child: LabContainer(
                         decoration: BoxDecoration(
                           color: theme.colors.white16,
                         ),
@@ -530,12 +530,12 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
                                   curve: Curves.easeOut,
                                 ),
                               ),
-                              child: AppIcon.s16(
+                              child: LabIcon.s16(
                                 theme.icons.characters.expand,
                                 color: theme.colors.white66,
                                 outlineColor: theme.colors.white66,
                                 outlineThickness:
-                                    AppLineThicknessData.normal().medium,
+                                    LabLineThicknessData.normal().medium,
                               ),
                             ),
                           ),
@@ -548,7 +548,7 @@ class AppTabBarState extends State<AppTabBar> with TickerProviderStateMixin {
             ),
           ),
           // Grid View should go here
-          const AppDivider(),
+          const LabDivider(),
         ],
       ),
     );

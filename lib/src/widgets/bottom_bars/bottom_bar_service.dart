@@ -2,14 +2,14 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
-class AppBottomBarService extends StatelessWidget {
+class LabBottomBarService extends StatelessWidget {
   final Function(Service) onAddLabelTap;
   final Function(Service) onMailTap;
   final Function(Service) onVoiceTap;
   final Function(Service) onActions;
   final Service service;
 
-  const AppBottomBarService({
+  const LabBottomBarService({
     super.key,
     required this.onAddLabelTap,
     required this.onMailTap,
@@ -20,23 +20,23 @@ class AppBottomBarService extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppBottomBar(
+    return LabBottomBar(
       child: Row(
         children: [
-          AppButton(
+          LabButton(
             inactiveColor: theme.colors.white16,
             square: true,
             onTap: () => onAddLabelTap(service),
             children: [
-              AppIcon.s20(
+              LabIcon.s20(
                 theme.icons.characters.label,
                 color: theme.colors.white33,
               ),
             ],
           ),
-          const AppGap.s12(),
+          const LabGap.s12(),
           Expanded(
             child: TapBuilder(
               onTap: () => onMailTap(service),
@@ -50,32 +50,32 @@ class AppBottomBarService extends StatelessWidget {
 
                 return Transform.scale(
                   scale: scaleFactor,
-                  child: AppContainer(
+                  child: LabContainer(
                     height: theme.sizes.s40,
                     decoration: BoxDecoration(
                       color: theme.colors.black33,
                       borderRadius: theme.radius.asBorderRadius().rad16,
                       border: Border.all(
                         color: theme.colors.white33,
-                        width: AppLineThicknessData.normal().thin,
+                        width: LabLineThicknessData.normal().thin,
                       ),
                     ),
-                    padding: const AppEdgeInsets.only(
-                      left: AppGapSize.s16,
-                      right: AppGapSize.s12,
+                    padding: const LabEdgeInsets.only(
+                      left: LabGapSize.s16,
+                      right: LabGapSize.s12,
                     ),
                     child: Center(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          AppIcon(
+                          LabIcon(
                             theme.icons.characters.mail,
                             outlineColor: theme.colors.white33,
                             outlineThickness:
-                                AppLineThicknessData.normal().medium,
+                                LabLineThicknessData.normal().medium,
                           ),
-                          const AppGap.s12(),
-                          AppText.med14(
+                          const LabGap.s12(),
+                          LabText.med14(
                               'Mail ${service.author.value?.name ?? formatNpub(service.author.value?.npub ?? '')}',
                               color: theme.colors.white33),
                           const Spacer(),
@@ -87,8 +87,8 @@ class AppBottomBarService extends StatelessWidget {
               },
             ),
           ),
-          const AppGap.s12(),
-          AppButton(
+          const LabGap.s12(),
+          LabButton(
             square: true,
             inactiveColor: theme.colors.black33,
             onTap: () => onActions(service),
@@ -96,10 +96,10 @@ class AppBottomBarService extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AppIcon.s8(theme.icons.characters.chevronUp,
-                      outlineThickness: AppLineThicknessData.normal().medium,
+                  LabIcon.s8(theme.icons.characters.chevronUp,
+                      outlineThickness: LabLineThicknessData.normal().medium,
                       outlineColor: theme.colors.white66),
-                  const AppGap.s2(),
+                  const LabGap.s2(),
                 ],
               ),
             ],

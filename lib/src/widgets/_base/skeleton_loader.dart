@@ -1,18 +1,18 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppSkeletonLoader extends StatefulWidget {
+class LabSkeletonLoader extends StatefulWidget {
   final Widget? child;
 
-  const AppSkeletonLoader({
+  const LabSkeletonLoader({
     super.key,
     this.child,
   });
 
   @override
-  State<AppSkeletonLoader> createState() => _AppSkeletonLoaderState();
+  State<LabSkeletonLoader> createState() => _LabSkeletonLoaderState();
 }
 
-class _AppSkeletonLoaderState extends State<AppSkeletonLoader>
+class _LabSkeletonLoaderState extends State<LabSkeletonLoader>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
@@ -33,12 +33,12 @@ class _AppSkeletonLoaderState extends State<AppSkeletonLoader>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        return AppContainer(
+        return LabContainer(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment(-6 + _controller.value * 8, -0.3),

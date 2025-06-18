@@ -1,10 +1,10 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppModelEmptyStateCard extends StatelessWidget {
+class LabModelEmptyStateCard extends StatelessWidget {
   final String contentType;
   final VoidCallback onCreateTap;
 
-  const AppModelEmptyStateCard({
+  const LabModelEmptyStateCard({
     super.key,
     required this.contentType,
     required this.onCreateTap,
@@ -14,33 +14,33 @@ class AppModelEmptyStateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
-    return AppPanelButton(
+    final theme = LabTheme.of(context);
+    return LabPanelButton(
       onTap: onCreateTap,
       color: theme.colors.gray33,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const AppGap.s16(),
-          AppEmojiContentType(
+          const LabGap.s16(),
+          LabEmojiContentType(
             contentType: contentType,
             size: theme.sizes.s64,
           ),
-          const AppGap.s12(),
-          AppText.h2('No ${getModelNameFromContentType(contentType)}s yet',
+          const LabGap.s12(),
+          LabText.h2('No ${getModelNameFromContentType(contentType)}s yet',
               color: theme.colors.white33),
-          const AppGap.s16(),
-          AppButton(
+          const LabGap.s16(),
+          LabButton(
               onTap: onCreateTap,
               inactiveColor: theme.colors.white16,
               children: [
-                AppIcon(
+                LabIcon(
                   theme.icons.characters.plus,
                   outlineColor: theme.colors.white66,
-                  outlineThickness: AppLineThicknessData.normal().thick,
+                  outlineThickness: LabLineThicknessData.normal().thick,
                 ),
-                const AppGap.s12(),
-                AppText.med14(
+                const LabGap.s12(),
+                LabText.med14(
                   "Create ${getModelNameFromContentType(contentType)}",
                   color: theme.colors.white66,
                 )

@@ -1,7 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 
-class AppLoadBar extends StatelessWidget {
-  const AppLoadBar({
+class LabLoadBar extends StatelessWidget {
+  const LabLoadBar({
     super.key,
     required this.progress,
     this.backgroundGradient,
@@ -14,7 +14,7 @@ class AppLoadBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
     return Stack(
       alignment: Alignment.center,
@@ -45,7 +45,7 @@ class AppLoadBar extends StatelessWidget {
   }
 
   Widget _buildBar({
-    required AppThemeData theme,
+    required LabThemeData theme,
     required Gradient gradient,
     required double widthFactor,
   }) {

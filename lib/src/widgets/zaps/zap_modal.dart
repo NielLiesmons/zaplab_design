@@ -3,7 +3,7 @@ import 'package:models/models.dart';
 
 typedef ZapResult = ({double amount, String message});
 
-class AppZapModal extends StatefulWidget {
+class LabZapModal extends StatefulWidget {
   final Model model;
   final List<({double amount, Profile profile})> otherZaps;
   final List<double> recentAmounts;
@@ -18,7 +18,7 @@ class AppZapModal extends StatefulWidget {
   final VoidCallback onAddTap;
   final Function(Profile) onProfileTap;
 
-  const AppZapModal({
+  const LabZapModal({
     super.key,
     required this.model,
     this.otherZaps = const [],
@@ -54,7 +54,7 @@ class AppZapModal extends StatefulWidget {
     double amount = recentAmounts.isNotEmpty ? recentAmounts.first : 100;
     String message = '';
 
-    return AppModal.show<({double amount, String message})>(
+    return LabModal.show<({double amount, String message})>(
       context,
       title: 'Zap',
       description:
@@ -62,11 +62,11 @@ class AppZapModal extends StatefulWidget {
       children: [
         StatefulBuilder(
           builder: (context, setState) {
-            return AppContainer(
+            return LabContainer(
               child: Column(
                 children: [
-                  const AppGap.s4(),
-                  AppZapSlider(
+                  const LabGap.s4(),
+                  LabZapSlider(
                     initialValue: amount,
                     otherZaps: otherZaps,
                     profile: model.author.value,
@@ -91,27 +91,27 @@ class AppZapModal extends StatefulWidget {
           },
         ),
       ],
-      bottomBar: AppButton(
+      bottomBar: LabButton(
         children: [
-          AppText.med16(
+          LabText.med16(
             'Zap',
-            color: AppTheme.of(context).colors.whiteEnforced,
+            color: LabTheme.of(context).colors.whiteEnforced,
           ),
         ],
         onTap: () => Navigator.of(context).pop(
           (amount: amount, message: message),
         ),
-        inactiveGradient: AppTheme.of(context).colors.blurple,
-        pressedGradient: AppTheme.of(context).colors.blurple,
+        inactiveGradient: LabTheme.of(context).colors.blurple,
+        pressedGradient: LabTheme.of(context).colors.blurple,
       ),
     );
   }
 
   @override
-  State<AppZapModal> createState() => _AppZapModalState();
+  State<LabZapModal> createState() => _LabZapModalState();
 }
 
-class _AppZapModalState extends State<AppZapModal> {
+class _LabZapModalState extends State<LabZapModal> {
   late double amount;
   late String message;
 
@@ -124,13 +124,13 @@ class _AppZapModalState extends State<AppZapModal> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
 
-    return AppModal(
+    return LabModal(
       title: 'Zap',
       description:
           "${widget.model.author.value?.name}'s ${getModelContentType(widget.model) == 'chat' ? 'Message' : getModelContentType(widget.model)[0].toUpperCase() + getModelContentType(widget.model).substring(1)}",
-      bottomBar: AppButton(
+      bottomBar: LabButton(
         onTap: () {
           Navigator.of(context).pop(
             (amount: amount, message: message),
@@ -139,18 +139,18 @@ class _AppZapModalState extends State<AppZapModal> {
         inactiveGradient: theme.colors.blurple,
         pressedGradient: theme.colors.blurple,
         children: [
-          AppText.med16(
+          LabText.med16(
             'Zap',
             color: theme.colors.whiteEnforced,
           ),
         ],
       ),
       children: [
-        AppContainer(
+        LabContainer(
           child: Column(
             children: [
-              const AppGap.s4(),
-              AppZapSlider(
+              const LabGap.s4(),
+              LabZapSlider(
                 initialValue: amount,
                 otherZaps: widget.otherZaps,
                 profile: widget.model.author.value,

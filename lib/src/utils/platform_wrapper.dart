@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/widgets.dart';
 
 /// A widget that provides platform information to its descendants.
-class AppPlatformWrapper extends InheritedWidget {
+class LabPlatformWrapper extends InheritedWidget {
   final bool isWeb;
   final bool isAndroid;
   final bool isIOS;
@@ -10,7 +10,7 @@ class AppPlatformWrapper extends InheritedWidget {
   final bool isWindows;
   final bool isLinux;
 
-  const AppPlatformWrapper({
+  const LabPlatformWrapper({
     super.key,
     required super.child,
     required this.isWeb,
@@ -21,15 +21,15 @@ class AppPlatformWrapper extends InheritedWidget {
     required this.isLinux,
   });
 
-  static AppPlatformWrapper of(BuildContext context) {
+  static LabPlatformWrapper of(BuildContext context) {
     final wrapper =
-        context.dependOnInheritedWidgetOfExactType<AppPlatformWrapper>();
+        context.dependOnInheritedWidgetOfExactType<LabPlatformWrapper>();
     assert(wrapper != null, 'No PlatformWrapper found in context');
     return wrapper!;
   }
 
   @override
-  bool updateShouldNotify(AppPlatformWrapper oldWidget) {
+  bool updateShouldNotify(LabPlatformWrapper oldWidget) {
     return isWeb != oldWidget.isWeb ||
         isAndroid != oldWidget.isAndroid ||
         isIOS != oldWidget.isIOS ||
@@ -40,7 +40,7 @@ class AppPlatformWrapper extends InheritedWidget {
 }
 
 /// Web implementation of PlatformWrapper
-class PlatformWrapperWeb extends AppPlatformWrapper {
+class PlatformWrapperWeb extends LabPlatformWrapper {
   const PlatformWrapperWeb({
     super.key,
     required super.child,
@@ -55,7 +55,7 @@ class PlatformWrapperWeb extends AppPlatformWrapper {
 }
 
 /// Native platform implementation of PlatformWrapper
-class PlatformWrapperNative extends AppPlatformWrapper {
+class PlatformWrapperNative extends LabPlatformWrapper {
   const PlatformWrapperNative({
     super.key,
     required super.child,
@@ -70,7 +70,7 @@ class PlatformWrapperNative extends AppPlatformWrapper {
 }
 
 /// Returns the appropriate PlatformWrapper implementation based on the platform.
-AppPlatformWrapper createPlatformWrapper({required Widget child}) {
+LabPlatformWrapper createPlatformWrapper({required Widget child}) {
   if (kIsWeb) {
     return PlatformWrapperWeb(child: child);
   }

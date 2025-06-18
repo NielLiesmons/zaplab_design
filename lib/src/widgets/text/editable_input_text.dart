@@ -4,13 +4,13 @@ import 'package:flutter/services.dart';
 
 bool isEditingInputText = false;
 
-class AppEditableInputText extends StatefulWidget {
+class LabEditableInputText extends StatefulWidget {
   final String text;
   final TextStyle? style;
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final ValueChanged<String>? onChanged;
-  final List<AppTextSelectionMenuItem>? contextMenuItems;
+  final List<LabTextSelectionMenuItem>? contextMenuItems;
   final List<Widget>? placeholder;
   final int? maxLines;
   final int? minLines;
@@ -18,7 +18,7 @@ class AppEditableInputText extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool obscureText;
 
-  const AppEditableInputText({
+  const LabEditableInputText({
     super.key,
     required this.text,
     this.style,
@@ -35,10 +35,10 @@ class AppEditableInputText extends StatefulWidget {
   });
 
   @override
-  State<AppEditableInputText> createState() => _AppEditableInputTextState();
+  State<LabEditableInputText> createState() => _LabEditableInputTextState();
 }
 
-class _AppEditableInputTextState extends State<AppEditableInputText>
+class _LabEditableInputTextState extends State<LabEditableInputText>
     implements custom.TextSelectionGestureDetectorBuilderDelegate {
   @override
   GlobalKey<EditableTextState> get editableTextKey => _editableTextKey;
@@ -126,7 +126,7 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final defaultStyle = theme.typography.reg16.copyWith();
 
     final textStyle = (widget.style ?? defaultStyle).copyWith(
@@ -140,7 +140,7 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
       ),
       child: SingleChildScrollView(
         clipBehavior: Clip.none,
-        physics: AppPlatformUtils.isMobile
+        physics: LabPlatformUtils.isMobile
             ? const ClampingScrollPhysics()
             : const AlwaysScrollableScrollPhysics(),
         child: Stack(
@@ -217,7 +217,7 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
                   maxLines: widget.maxLines,
                   minLines: widget.minLines,
                   textAlign: TextAlign.left,
-                  selectionControls: AppTextSelectionControls(),
+                  selectionControls: LabTextSelectionControls(),
                   enableInteractiveSelection: true,
                   showSelectionHandles: true,
                   showCursor: true,
@@ -232,7 +232,7 @@ class _AppEditableInputTextState extends State<AppEditableInputText>
                   contextMenuBuilder: widget.contextMenuItems == null
                       ? null
                       : (context, editableTextState) {
-                          return AppTextSelectionMenu(
+                          return LabTextSelectionMenu(
                             position: editableTextState
                                 .contextMenuAnchors.primaryAnchor,
                             editableTextState: editableTextState,

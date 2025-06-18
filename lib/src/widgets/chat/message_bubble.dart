@@ -21,7 +21,7 @@ class MessageBubbleScope extends InheritedWidget {
       oldWidget.isOutgoing != isOutgoing;
 }
 
-class AppMessageBubble extends StatefulWidget {
+class LabMessageBubble extends StatefulWidget {
   final ChatMessage? message;
   final Comment? reply;
   final bool showHeader;
@@ -39,7 +39,7 @@ class AppMessageBubble extends StatefulWidget {
   final LinkTapHandler onLinkTap;
   final Function(Profile) onProfileTap;
 
-  const AppMessageBubble({
+  const LabMessageBubble({
     super.key,
     this.message,
     this.reply,
@@ -60,17 +60,17 @@ class AppMessageBubble extends StatefulWidget {
   });
 
   @override
-  State<AppMessageBubble> createState() => _AppMessageBubbleState();
+  State<LabMessageBubble> createState() => _LabMessageBubbleState();
 }
 
-class _AppMessageBubbleState extends State<AppMessageBubble> {
+class _LabMessageBubbleState extends State<LabMessageBubble> {
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    final theme = LabTheme.of(context);
     final isInsideModal = ModalScope.of(context);
 
     // Analyze content type
-    final contentType = AppShortTextRenderer.analyzeContent(
+    final contentType = LabShortTextRenderer.analyzeContent(
         widget.message != null
             ? widget.message!.content
             : widget.reply!.content);
@@ -79,7 +79,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
       builder: (context, constraints) {
         return ShortTextContent(
           contentType: contentType,
-          child: AppSwipeContainer(
+          child: LabSwipeContainer(
             isTransparent: (contentType.isSingleContent) ? true : false,
             decoration: BoxDecoration(
               color: contentType.isSingleContent
@@ -105,15 +105,15 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                     : theme.radius.rad16,
               ),
             ),
-            leftContent: AppIcon.s16(
+            leftContent: LabIcon.s16(
               theme.icons.characters.reply,
               outlineColor: theme.colors.white66,
-              outlineThickness: AppLineThicknessData.normal().medium,
+              outlineThickness: LabLineThicknessData.normal().medium,
             ),
-            rightContent: AppIcon.s10(
+            rightContent: LabIcon.s10(
               theme.icons.characters.chevronUp,
               outlineColor: theme.colors.white66,
-              outlineThickness: AppLineThicknessData.normal().medium,
+              outlineThickness: LabLineThicknessData.normal().medium,
             ),
             onSwipeLeft: () => widget.onReply(
                 widget.message != null ? widget.message! : widget.reply!),
@@ -129,14 +129,14 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                         maxWidth: bubbleConstraints.maxWidth,
                         minWidth: theme.sizes.s80,
                       ),
-                      child: AppContainer(
+                      child: LabContainer(
                         padding: contentType.isSingleContent
-                            ? const AppEdgeInsets.all(AppGapSize.none)
-                            : const AppEdgeInsets.only(
-                                left: AppGapSize.s8,
-                                right: AppGapSize.s8,
-                                top: AppGapSize.s4,
-                                bottom: AppGapSize.s2,
+                            ? const LabEdgeInsets.all(LabGapSize.none)
+                            : const LabEdgeInsets.only(
+                                left: LabGapSize.s8,
+                                right: LabGapSize.s8,
+                                top: LabGapSize.s4,
+                                bottom: LabGapSize.s2,
                               ),
                         child: Column(
                           crossAxisAlignment: widget.isOutgoing
@@ -149,11 +149,11 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                               children: [
                                 if (widget.showHeader &&
                                     !widget.isOutgoing) ...[
-                                  AppContainer(
-                                    padding: const AppEdgeInsets.only(
-                                      left: AppGapSize.s4,
-                                      right: AppGapSize.s4,
-                                      top: AppGapSize.s4,
+                                  LabContainer(
+                                    padding: const LabEdgeInsets.only(
+                                      left: LabGapSize.s4,
+                                      right: LabGapSize.s4,
+                                      top: LabGapSize.s4,
                                     ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
@@ -162,7 +162,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        AppText.bold12(
+                                        LabText.bold12(
                                           widget.message != null
                                               ? widget.message!.author.value!
                                                       .name ??
@@ -180,7 +180,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                                       .pubkey)),
                                           textOverflow: TextOverflow.ellipsis,
                                         ),
-                                        AppText.reg12(
+                                        LabText.reg12(
                                           TimestampFormatter.format(
                                               widget.message != null
                                                   ? widget.message!.createdAt
@@ -191,15 +191,15 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                         if (ShortTextContent.of(context) ==
                                             ShortTextContentType
                                                 .singleImageStack)
-                                          const AppGap.s56(),
+                                          const LabGap.s56(),
                                       ],
                                     ),
                                   ),
                                 ],
-                                if (!widget.showHeader) const AppGap.s2(),
+                                if (!widget.showHeader) const LabGap.s2(),
                                 if (contentType.isSingleContent)
-                                  const AppGap.s4(),
-                                AppShortTextRenderer(
+                                  const LabGap.s4(),
+                                LabShortTextRenderer(
                                   content: widget.message != null
                                       ? widget.message!.content
                                       : widget.reply!.content,
@@ -216,14 +216,14 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                             /*
                             if (widget.message.zaps.isNotEmpty ||
                                 widget.message.reactions.isNotEmpty) ...[
-                              const AppGap.s2(),
-                              AppContainer(
+                              const LabGap.s2(),
+                              LabContainer(
                                 padding: contentType.isSingleContent
-                                    ? const AppEdgeInsets.symmetric(
-                                        horizontal: AppGapSize.s8,
-                                        vertical: AppGapSize.s8,
+                                    ? const LabEdgeInsets.symmetric(
+                                        horizontal: LabGapSize.s8,
+                                        vertical: LabGapSize.s8,
                                       )
-                                    : const AppEdgeInsets.all(AppGapSize.none),
+                                    : const LabEdgeInsets.all(LabGapSize.none),
                                 decoration: contentType.isSingleContent
                                     ? BoxDecoration(
                                         color: isInsideModal
@@ -248,7 +248,7 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                         ),
                                       )
                                     : null,
-                                child: AppInteractionPills(
+                                child: LabInteractionPills(
                                   nevent: widget.message.id,
                                   zaps: const [],
                                   reactions: const [],
@@ -257,32 +257,32 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                 ),
                               ),
                               !contentType.isSingleContent
-                                  ? const AppGap.s6()
+                                  ? const LabGap.s6()
                                   : const SizedBox.shrink(),
                             ],
                             */
                             if (widget.onSendAgain != null) ...[
-                              AppContainer(
-                                padding: const AppEdgeInsets.symmetric(
-                                  horizontal: AppGapSize.s4,
-                                  vertical: AppGapSize.s8,
+                              LabContainer(
+                                padding: const LabEdgeInsets.symmetric(
+                                  horizontal: LabGapSize.s4,
+                                  vertical: LabGapSize.s8,
                                 ),
                                 child: Row(
                                   children: [
-                                    AppIcon.s20(
+                                    LabIcon.s20(
                                       theme.icons.characters.info,
                                       outlineColor: theme.colors.white33,
                                       outlineThickness:
-                                          AppLineThicknessData.normal().medium,
+                                          LabLineThicknessData.normal().medium,
                                     ),
-                                    const AppGap.s8(),
-                                    AppText.reg12(
+                                    const LabGap.s8(),
+                                    LabText.reg12(
                                       'Sending Failed',
                                       color: theme.colors.white66,
                                     ),
-                                    const AppGap.s4(),
+                                    const LabGap.s4(),
                                     Spacer(),
-                                    AppSmallButton(
+                                    LabSmallButton(
                                       onTap: () => widget.onSendAgain!(
                                           widget.message != null
                                               ? widget.message!
@@ -290,15 +290,15 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                                       rounded: true,
                                       inactiveColor: theme.colors.white16,
                                       children: [
-                                        AppIcon.s12(
+                                        LabIcon.s12(
                                           theme.icons.characters.send,
                                           outlineColor: theme.colors.white66,
                                           outlineThickness:
-                                              AppLineThicknessData.normal()
+                                              LabLineThicknessData.normal()
                                                   .medium,
                                         ),
-                                        const AppGap.s8(),
-                                        AppText.reg12(
+                                        const LabGap.s8(),
+                                        LabText.reg12(
                                           'Send Again',
                                           color: theme.colors.white66,
                                         ),
@@ -309,21 +309,21 @@ class _AppMessageBubbleState extends State<AppMessageBubble> {
                               ),
                             ],
                             if (widget.onSendAgain != null)
-                              AppContainer(
-                                padding: const AppEdgeInsets.symmetric(
-                                  horizontal: AppGapSize.s4,
-                                  vertical: AppGapSize.s8,
+                              LabContainer(
+                                padding: const LabEdgeInsets.symmetric(
+                                  horizontal: LabGapSize.s4,
+                                  vertical: LabGapSize.s8,
                                 ),
                                 child: Row(
                                   children: [
-                                    AppIcon.s20(
+                                    LabIcon.s20(
                                       theme.icons.characters.send,
                                       outlineColor: theme.colors.white66,
                                       outlineThickness:
-                                          AppLineThicknessData.normal().medium,
+                                          LabLineThicknessData.normal().medium,
                                     ),
-                                    const AppGap.s4(),
-                                    AppText.reg14(
+                                    const LabGap.s4(),
+                                    LabText.reg14(
                                       'Send again',
                                       color: theme.colors.white66,
                                     ),

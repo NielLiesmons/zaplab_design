@@ -2,8 +2,8 @@ import 'package:zaplab_design/src/utils/named.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/rendering.dart';
 
-class AppRadiusData extends Equatable {
-  const AppRadiusData({
+class LabRadiusData extends Equatable {
+  const LabRadiusData({
     required this.rad4,
     required this.rad8,
     required this.rad12,
@@ -13,7 +13,7 @@ class AppRadiusData extends Equatable {
     required this.rad40,
   });
 
-  const AppRadiusData.normal()
+  const LabRadiusData.normal()
       : rad4 = const Radius.circular(4),
         rad8 = const Radius.circular(8),
         rad12 = const Radius.circular(12),
@@ -30,7 +30,7 @@ class AppRadiusData extends Equatable {
   final Radius rad32;
   final Radius rad40;
 
-  AppBorderRadiusData asBorderRadius() => AppBorderRadiusData(this);
+  LabBorderRadiusData asBorderRadius() => LabBorderRadiusData(this);
 
   @override
   List<Object?> get props => [
@@ -44,8 +44,8 @@ class AppRadiusData extends Equatable {
       ];
 }
 
-class AppBorderRadiusData extends Equatable {
-  const AppBorderRadiusData(this._radius);
+class LabBorderRadiusData extends Equatable {
+  const LabBorderRadiusData(this._radius);
 
   BorderRadius get rad4 => BorderRadius.all(_radius.rad4);
   BorderRadius get rad8 => BorderRadius.all(_radius.rad8);
@@ -55,7 +55,7 @@ class AppBorderRadiusData extends Equatable {
   BorderRadius get rad32 => BorderRadius.all(_radius.rad32);
   BorderRadius get rad40 => BorderRadius.all(_radius.rad40);
 
-  final AppRadiusData _radius;
+  final LabRadiusData _radius;
 
   @override
   List<Object?> get props => [_radius];
