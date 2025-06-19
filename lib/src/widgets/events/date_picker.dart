@@ -169,11 +169,12 @@ class _LabDatePickerState extends State<LabDatePicker> {
       }
     }
 
-    return LabPanel(
-      padding: const LabEdgeInsets.all(LabGapSize.none),
+    return LabContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const LabDivider(),
+
           LabContainer(
             padding: const LabEdgeInsets.only(
               left: LabGapSize.s20,
@@ -196,6 +197,7 @@ class _LabDatePickerState extends State<LabDatePicker> {
 
           _buildCalendarGrid(theme, currentDay),
           const LabGap.s10(),
+          const LabDivider(),
         ],
       ),
     );
@@ -217,7 +219,7 @@ class _LabDatePickerState extends State<LabDatePicker> {
 
     // Generate calendar weeks
     final calendarWeeks = <Widget>[];
-    final dateBoxHeight = widget.dateBoxHeight ?? 32.0;
+    final dateBoxHeight = widget.dateBoxHeight ?? 30.0;
 
     // Calculate total weeks needed (always 6 weeks to fill the grid)
     const totalWeeks = 6;

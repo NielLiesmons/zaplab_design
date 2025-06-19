@@ -73,6 +73,8 @@ export 'communities/community_welcome_header.dart';
 
 // Events
 export 'events/date_picker.dart';
+export 'events/date_picker_modal.dart';
+export 'events/time_picker.dart';
 
 // Forum
 export 'forum/feed_forum.dart';

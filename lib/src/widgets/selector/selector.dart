@@ -4,6 +4,7 @@ class LabSelector extends StatefulWidget {
   final List<LabSelectorButton> children;
   final bool emphasized;
   final bool small;
+  final bool isLight;
   final ValueChanged<int>? onChanged;
   final int? initialIndex;
 
@@ -12,6 +13,7 @@ class LabSelector extends StatefulWidget {
     required this.children,
     this.emphasized = false,
     this.small = false,
+    this.isLight = false,
     this.onChanged,
     this.initialIndex,
   });
@@ -43,9 +45,11 @@ class _LabSelectorState extends State<LabSelector> {
     return LabContainer(
       padding: const LabEdgeInsets.all(LabGapSize.s8),
       decoration: BoxDecoration(
-        color: isInsideModal || isInsideScope
-            ? theme.colors.black33
-            : theme.colors.gray66,
+        color: widget.isLight
+            ? theme.colors.white8
+            : isInsideModal || isInsideScope
+                ? theme.colors.black33
+                : theme.colors.gray66,
         borderRadius: widget.emphasized
             ? theme.radius.asBorderRadius().rad24
             : theme.radius.asBorderRadius().rad16,
