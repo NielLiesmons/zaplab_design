@@ -174,8 +174,8 @@ class _LabTimePickerState extends State<LabTimePicker> {
                     decoration: BoxDecoration(
                       borderRadius: theme.radius.asBorderRadius().rad16,
                       border: Border.all(
-                        color: theme.colors.white33,
-                        width: 1,
+                        color: theme.colors.white16,
+                        width: LabLineThicknessData.normal().medium,
                       ),
                     ),
                     padding: const LabEdgeInsets.all(LabGapSize.s8),
@@ -188,10 +188,12 @@ class _LabTimePickerState extends State<LabTimePicker> {
                               .padLeft(2, '0'),
                           color: theme.colors.white,
                         ),
+                        const LabGap.s4(),
                         LabText.h1(
                           ":",
                           color: theme.colors.white66,
                         ),
+                        const LabGap.s4(),
                         LabText.h1(
                           _selectedTime.minute.toString().padLeft(2, '0'),
                           color: theme.colors.white,

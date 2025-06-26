@@ -214,7 +214,7 @@ class LabProfilePic extends StatelessWidget {
                 color: theme.colors.white16,
                 width: thickness,
               ),
-              color: theme.colors.gray,
+              color: theme.colors.white8,
             ),
             child: ClipOval(
               child: _effectiveUrl != null && _effectiveUrl!.isNotEmpty
@@ -232,13 +232,13 @@ class LabProfilePic extends StatelessWidget {
                             (name != null && pubkey != null)) {
                           return Container(
                             color: Color(_getProfileColor())
-                                .withValues(alpha: 0.66),
+                                .withValues(alpha: 0.24),
                             child: _effectiveName?.isNotEmpty == true
                                 ? Center(
                                     child: Text(
                                       _effectiveName![0].toUpperCase(),
                                       style: TextStyle(
-                                        color: theme.colors.white66,
+                                        color: Color(_getProfileColor()),
                                         fontSize: resolvedSize * 0.56,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -263,13 +263,14 @@ class LabProfilePic extends StatelessWidget {
                     )
                   : profile != null || (name != null && pubkey != null)
                       ? Container(
-                          color: Color(_getProfileColor()),
+                          color:
+                              Color(_getProfileColor()).withValues(alpha: 0.24),
                           child: _effectiveName?.isNotEmpty == true
                               ? Center(
                                   child: Text(
                                     _effectiveName![0].toUpperCase(),
                                     style: TextStyle(
-                                      color: theme.colors.white66,
+                                      color: Color(_getProfileColor()),
                                       fontSize: resolvedSize * 0.56,
                                       fontWeight: FontWeight.bold,
                                     ),

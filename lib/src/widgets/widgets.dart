@@ -74,7 +74,12 @@ export 'communities/community_welcome_header.dart';
 // Events
 export 'events/date_picker.dart';
 export 'events/date_picker_modal.dart';
+export 'events/dates_display.dart';
+export 'events/dates_input_display.dart';
 export 'events/time_picker.dart';
+
+// Files
+export 'files/extension_icon.dart';
 
 // Forum
 export 'forum/feed_forum.dart';
@@ -92,6 +97,7 @@ export 'images/full_width_image.dart';
 export 'images/image_card.dart';
 export 'images/image_slider.dart';
 export 'images/image_stack.dart';
+export 'images/image_upload_card.dart';
 export 'images/opened_images.dart';
 
 // Interactions
@@ -176,6 +182,7 @@ export 'tasks/feed_task.dart';
 export 'tasks/task_box.dart';
 
 // Text
+export 'text/long_text/long_text_bar.dart';
 export 'text/long_text/long_text_element.dart';
 export 'text/long_text/long_text_renderer.dart';
 export 'text/long_text/ndown_parser.dart';

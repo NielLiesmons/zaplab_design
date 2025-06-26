@@ -1,45 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
-import 'package:flutter/material.dart';
-import 'package:zaplab_design/src/widgets/tasks/task_box.dart';
-
-class LShapePainter extends CustomPainter {
-  final Color color;
-  final double strokeWidth;
-  final double cornerRadius;
-
-  LShapePainter({
-    required this.color,
-    this.strokeWidth = 1.0,
-    this.cornerRadius = 8.0,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = strokeWidth
-      ..style = PaintingStyle.stroke;
-
-    final path = Path()
-      ..moveTo(0, 0)
-      ..lineTo(0, size.height - cornerRadius)
-      ..arcToPoint(
-        Offset(cornerRadius, size.height),
-        radius: Radius.circular(cornerRadius),
-        clockwise: false,
-      )
-      ..lineTo(size.width, size.height);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(LShapePainter oldDelegate) =>
-      color != oldDelegate.color ||
-      strokeWidth != oldDelegate.strokeWidth ||
-      cornerRadius != oldDelegate.cornerRadius;
-}
 
 class LabFeedTask extends StatelessWidget {
   final Task task;
@@ -117,7 +77,7 @@ class LabFeedTask extends StatelessWidget {
                       ),
                       child: (subTasks != null || taggedModels != null)
                           ? CustomPaint(
-                              painter: LShapePainter(
+                              painter: LabLShapePainter(
                                 color: theme.colors.white33,
                                 strokeWidth:
                                     LabLineThicknessData.normal().medium,
@@ -183,26 +143,26 @@ class LabFeedTask extends StatelessWidget {
                                     const LabGap.s8(),
                                   ],
                                 ),
-                              Row(
-                                children: [
-                                  LabContainer(
-                                    padding: const LabEdgeInsets.symmetric(
-                                      horizontal: LabGapSize.s8,
-                                      vertical: LabGapSize.s6,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: theme.colors.gray33,
-                                      borderRadius:
-                                          theme.radius.asBorderRadius().rad8,
-                                    ),
-                                    child: LabText.reg12(
-                                      '${subTasks?.length} Subtasks',
-                                      color: theme.colors.white33,
-                                    ),
-                                  ),
-                                  const LabGap.s8(),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     LabContainer(
+                              //       padding: const LabEdgeInsets.symmetric(
+                              //         horizontal: LabGapSize.s8,
+                              //         vertical: LabGapSize.s6,
+                              //       ),
+                              //       decoration: BoxDecoration(
+                              //         color: theme.colors.gray33,
+                              //         borderRadius:
+                              //             theme.radius.asBorderRadius().rad8,
+                              //       ),
+                              //       child: LabText.reg12(
+                              //         '${subTasks?.length} Subtasks',
+                              //         color: theme.colors.white33,
+                              //       ),
+                              //     ),
+                              //     const LabGap.s8(),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),

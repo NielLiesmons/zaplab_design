@@ -20,12 +20,16 @@ RGBColor hexToColor(String hex) {
   // Get hue value between 0 and 355
   final hue = (number % BigInt.from(360)).toInt();
 
-  // Convert HSV to RGB
+// Convert HSV to RGB
   final h = hue / 60;
 
-  // Dynamic saturation and value based on hue
-  final s = (hue >= 216 && hue <= 273) ? 0.90 : 0.80;
-  final v = (hue >= 32 && hue <= 204) ? 0.65 : 0.85;
+  // Adjustements to make the color readable at all times
+  const s = 0.70;
+  final v = (hue >= 32 && hue <= 204)
+      ? 0.75
+      : (hue >= 216 && hue <= 273)
+          ? 0.96
+          : 0.90;
 
   final c = v * s;
   final x = c * (1 - (h % 2 - 1).abs());

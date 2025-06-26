@@ -6,6 +6,7 @@ import 'package:models/models.dart';
 class LabLongTextRenderer extends StatelessWidget {
   final String content;
   final String? language;
+  final bool? serif;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -17,6 +18,7 @@ class LabLongTextRenderer extends StatelessWidget {
     super.key,
     required this.content,
     this.language,
+    this.serif = true,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -63,48 +65,30 @@ class LabLongTextRenderer extends StatelessWidget {
       LongTextElementType.heading1 => const LabEdgeInsets.only(
           top: LabGapSize.s4,
           bottom: LabGapSize.s6,
-          left: LabGapSize.s16,
-          right: LabGapSize.s16,
         ),
       LongTextElementType.heading2 => const LabEdgeInsets.only(
           bottom: LabGapSize.s6,
-          left: LabGapSize.s16,
-          right: LabGapSize.s16,
         ),
       LongTextElementType.heading3 => const LabEdgeInsets.only(
           bottom: LabGapSize.s6,
-          left: LabGapSize.s16,
-          right: LabGapSize.s16,
         ),
       LongTextElementType.heading4 => const LabEdgeInsets.only(
           bottom: LabGapSize.s6,
-          left: LabGapSize.s16,
-          right: LabGapSize.s16,
         ),
       LongTextElementType.heading5 => const LabEdgeInsets.only(
           bottom: LabGapSize.s6,
-          left: LabGapSize.s16,
-          right: LabGapSize.s16,
         ),
       LongTextElementType.listItem => const LabEdgeInsets.only(
           bottom: LabGapSize.s6,
-          left: LabGapSize.s16,
-          right: LabGapSize.s16,
         ),
       LongTextElementType.orderedListItem => const LabEdgeInsets.only(
           bottom: LabGapSize.s6,
-          left: LabGapSize.s16,
-          right: LabGapSize.s16,
         ),
       LongTextElementType.checkListItem => const LabEdgeInsets.only(
           bottom: LabGapSize.s6,
-          left: LabGapSize.s16,
-          right: LabGapSize.s16,
         ),
       LongTextElementType.horizontalRule => const LabEdgeInsets.only(
           bottom: LabGapSize.none,
-          left: LabGapSize.s16,
-          right: LabGapSize.s16,
         ),
       LongTextElementType.image => const LabEdgeInsets.only(
           bottom: LabGapSize.s8,
@@ -112,13 +96,9 @@ class LabLongTextRenderer extends StatelessWidget {
       LongTextElementType.nostrModel => const LabEdgeInsets.only(
           top: LabGapSize.s4,
           bottom: LabGapSize.s8,
-          left: LabGapSize.s16,
-          right: LabGapSize.s16,
         ),
       _ => const LabEdgeInsets.only(
           bottom: LabGapSize.s10,
-          left: LabGapSize.s16,
-          right: LabGapSize.s16,
         ),
     };
 
@@ -306,10 +286,15 @@ class LabLongTextRenderer extends StatelessWidget {
                         scale: scaleFactor,
                         child: Text(
                           '#${child.content}',
-                          style: theme.typography.regArticle.copyWith(
-                            color: theme.colors.blurpleLightColor,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: serif!
+                              ? theme.typography.regArticle.copyWith(
+                                  color: theme.colors.blurpleLightColor,
+                                  fontWeight: FontWeight.bold,
+                                )
+                              : theme.typography.regWiki.copyWith(
+                                  color: theme.colors.blurpleLightColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
                         ),
                       );
                     },
@@ -322,31 +307,52 @@ class LabLongTextRenderer extends StatelessWidget {
       } else if (child.type == LongTextElementType.link) {
         return TextSpan(
           text: child.attributes?['text'] ?? child.content,
-          style: theme.typography.regArticle.copyWith(
-            color: theme.colors.blurpleLightColor,
-          ),
+          style: serif!
+              ? theme.typography.boldArticle.copyWith(
+                  color: theme.colors.blurpleLightColor,
+                )
+              : theme.typography.boldWiki.copyWith(
+                  color: theme.colors.blurpleLightColor,
+                ),
           recognizer: TapGestureRecognizer()
             ..onTap = () => onLinkTap(child.content),
         );
       } else {
         return TextSpan(
           text: child.content,
-          style: theme.typography.regArticle.copyWith(
-            color: theme.colors.white,
-            fontWeight: (child.attributes?['style'] == 'bold' ||
-                    child.attributes?['style'] == 'bold-italic')
-                ? FontWeight.bold
-                : null,
-            fontStyle: (child.attributes?['style'] == 'italic' ||
-                    child.attributes?['style'] == 'bold-italic')
-                ? FontStyle.italic
-                : null,
-            decoration: switch (child.attributes?['style']) {
-              'underline' => TextDecoration.underline,
-              'line-through' => TextDecoration.lineThrough,
-              _ => null,
-            },
-          ),
+          style: serif!
+              ? theme.typography.regArticle.copyWith(
+                  color: theme.colors.white,
+                  fontWeight: (child.attributes?['style'] == 'bold' ||
+                          child.attributes?['style'] == 'bold-italic')
+                      ? FontWeight.bold
+                      : null,
+                  fontStyle: (child.attributes?['style'] == 'italic' ||
+                          child.attributes?['style'] == 'bold-italic')
+                      ? FontStyle.italic
+                      : null,
+                  decoration: switch (child.attributes?['style']) {
+                    'underline' => TextDecoration.underline,
+                    'line-through' => TextDecoration.lineThrough,
+                    _ => null,
+                  },
+                )
+              : theme.typography.regWiki.copyWith(
+                  color: theme.colors.white,
+                  fontWeight: (child.attributes?['style'] == 'bold' ||
+                          child.attributes?['style'] == 'bold-italic')
+                      ? FontWeight.bold
+                      : null,
+                  fontStyle: (child.attributes?['style'] == 'italic' ||
+                          child.attributes?['style'] == 'bold-italic')
+                      ? FontStyle.italic
+                      : null,
+                  decoration: switch (child.attributes?['style']) {
+                    'underline' => TextDecoration.underline,
+                    'line-through' => TextDecoration.lineThrough,
+                    _ => null,
+                  },
+                ),
         );
       }
     }).toList();
@@ -388,7 +394,7 @@ class LabLongTextRenderer extends StatelessWidget {
                 : number;
         return Padding(
           padding: EdgeInsets.only(
-            left: element.level * 12,
+            left: (element.level - 1) * 12,
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -397,10 +403,15 @@ class LabLongTextRenderer extends StatelessWidget {
                 padding: const LabEdgeInsets.only(
                   right: LabGapSize.s8,
                 ),
-                child: LabText.regArticle(
-                  displayNumber,
-                  color: theme.colors.white66,
-                ),
+                child: serif!
+                    ? LabText.regArticle(
+                        displayNumber,
+                        color: theme.colors.white66,
+                      )
+                    : LabText.regWiki(
+                        displayNumber,
+                        color: theme.colors.white66,
+                      ),
               ),
               Expanded(
                 child: element.children != null
@@ -409,9 +420,13 @@ class LabLongTextRenderer extends StatelessWidget {
                           children:
                               _buildInlineElements(context, element.children!),
                         ),
-                        style: theme.typography.regArticle.copyWith(
-                          color: theme.colors.white,
-                        ),
+                        style: serif!
+                            ? theme.typography.regArticle.copyWith(
+                                color: theme.colors.white,
+                              )
+                            : theme.typography.regWiki.copyWith(
+                                color: theme.colors.white,
+                              ),
                         showContextMenu: true,
                         selectionControls: LabTextSelectionControls(),
                         contextMenuItems: [
@@ -422,10 +437,15 @@ class LabLongTextRenderer extends StatelessWidget {
                           ),
                         ],
                       )
-                    : LabText.regArticle(
-                        element.content,
-                        color: theme.colors.white,
-                      ),
+                    : serif!
+                        ? LabText.regArticle(
+                            element.content,
+                            color: theme.colors.white,
+                          )
+                        : LabText.regWiki(
+                            element.content,
+                            color: theme.colors.white,
+                          ),
               ),
             ],
           ),
@@ -433,7 +453,7 @@ class LabLongTextRenderer extends StatelessWidget {
       case LongTextElementType.checkListItem:
         return Padding(
           padding: EdgeInsets.only(
-            left: element.level * 16,
+            left: (element.level - 1) * 16,
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -442,7 +462,7 @@ class LabLongTextRenderer extends StatelessWidget {
                 value: element.checked ?? false,
                 onChanged: null,
               ),
-              const LabGap.s8(),
+              const LabGap.s12(),
               Expanded(
                 child: element.children != null
                     ? LabSelectableText.rich(
@@ -450,9 +470,13 @@ class LabLongTextRenderer extends StatelessWidget {
                           children:
                               _buildInlineElements(context, element.children!),
                         ),
-                        style: theme.typography.regArticle.copyWith(
-                          color: theme.colors.white,
-                        ),
+                        style: serif!
+                            ? theme.typography.regArticle.copyWith(
+                                color: theme.colors.white,
+                              )
+                            : theme.typography.regWiki.copyWith(
+                                color: theme.colors.white,
+                              ),
                         showContextMenu: true,
                         selectionControls: LabTextSelectionControls(),
                         contextMenuItems: [
@@ -463,10 +487,15 @@ class LabLongTextRenderer extends StatelessWidget {
                           ),
                         ],
                       )
-                    : LabText.regArticle(
-                        element.content,
-                        color: theme.colors.white,
-                      ),
+                    : serif!
+                        ? LabText.regArticle(
+                            element.content,
+                            color: theme.colors.white,
+                          )
+                        : LabText.regWiki(
+                            element.content,
+                            color: theme.colors.white,
+                          ),
               ),
             ],
           ),
@@ -482,10 +511,15 @@ class LabLongTextRenderer extends StatelessWidget {
                   left: 16,
                   top: 4,
                 ),
-                child: LabText.regArticle(
-                  element.attributes!['description']!,
-                  color: theme.colors.white66,
-                ),
+                child: serif!
+                    ? LabText.regArticle(
+                        element.attributes!['description']!,
+                        color: theme.colors.white66,
+                      )
+                    : LabText.regWiki(
+                        element.attributes!['description']!,
+                        color: theme.colors.white66,
+                      ),
               ),
           ],
         );
@@ -498,11 +532,17 @@ class LabLongTextRenderer extends StatelessWidget {
         if (element.attributes?['role'] == 'lead') {
           return LabSelectableText(
             text: element.content,
-            style: theme.typography.regArticle.copyWith(
-              color: theme.colors.white,
-              fontSize: 17,
-              fontStyle: FontStyle.italic,
-            ),
+            style: serif!
+                ? theme.typography.regArticle.copyWith(
+                    color: theme.colors.white,
+                    fontSize: 17,
+                    fontStyle: FontStyle.italic,
+                  )
+                : theme.typography.regWiki.copyWith(
+                    color: theme.colors.white,
+                    fontSize: 17,
+                    fontStyle: FontStyle.italic,
+                  ),
           );
         }
         if (element.children != null) {
@@ -515,9 +555,13 @@ class LabLongTextRenderer extends StatelessWidget {
                 paragraphPieces.add(
                   LabSelectableText.rich(
                     TextSpan(children: List.from(currentSpans)),
-                    style: theme.typography.regArticle.copyWith(
-                      color: theme.colors.white,
-                    ),
+                    style: serif!
+                        ? theme.typography.regArticle.copyWith(
+                            color: theme.colors.white,
+                          )
+                        : theme.typography.regWiki.copyWith(
+                            color: theme.colors.white,
+                          ),
                   ),
                 );
                 currentSpans.clear();
@@ -553,9 +597,13 @@ class LabLongTextRenderer extends StatelessWidget {
             paragraphPieces.add(
               LabSelectableText.rich(
                 TextSpan(children: List.from(currentSpans)),
-                style: theme.typography.regArticle.copyWith(
-                  color: theme.colors.white,
-                ),
+                style: serif!
+                    ? theme.typography.regArticle.copyWith(
+                        color: theme.colors.white,
+                      )
+                    : theme.typography.regWiki.copyWith(
+                        color: theme.colors.white,
+                      ),
                 showContextMenu: true,
                 selectionControls: LabTextSelectionControls(),
                 contextMenuItems: [
@@ -576,9 +624,13 @@ class LabLongTextRenderer extends StatelessWidget {
         }
         return LabSelectableText(
           text: element.content,
-          style: theme.typography.regArticle.copyWith(
-            color: theme.colors.white,
-          ),
+          style: serif!
+              ? theme.typography.regArticle.copyWith(
+                  color: theme.colors.white,
+                )
+              : theme.typography.regWiki.copyWith(
+                  color: theme.colors.white,
+                ),
         );
       case LongTextElementType.image:
         return LabFullWidthImage(
@@ -588,14 +640,25 @@ class LabLongTextRenderer extends StatelessWidget {
       case LongTextElementType.styledText:
         return Text(
           element.content,
-          style: theme.typography.regArticle.copyWith(
-            color: theme.colors.white,
-            fontWeight:
-                element.attributes?['style'] == 'bold' ? FontWeight.bold : null,
-            fontStyle: element.attributes?['style'] == 'italic'
-                ? FontStyle.italic
-                : null,
-          ),
+          style: serif!
+              ? theme.typography.regArticle.copyWith(
+                  color: theme.colors.white,
+                  fontWeight: element.attributes?['style'] == 'bold'
+                      ? FontWeight.bold
+                      : null,
+                  fontStyle: element.attributes?['style'] == 'italic'
+                      ? FontStyle.italic
+                      : null,
+                )
+              : theme.typography.regWiki.copyWith(
+                  color: theme.colors.white,
+                  fontWeight: element.attributes?['style'] == 'bold'
+                      ? FontWeight.bold
+                      : null,
+                  fontStyle: element.attributes?['style'] == 'italic'
+                      ? FontStyle.italic
+                      : null,
+                ),
         );
       case LongTextElementType.blockQuote:
         return LabContainer(
@@ -621,7 +684,9 @@ class LabLongTextRenderer extends StatelessWidget {
                             children: _buildInlineElements(
                                 context, element.children!),
                           ),
-                          style: theme.typography.regArticle.copyWith(),
+                          style: serif!
+                              ? theme.typography.regArticle.copyWith()
+                              : theme.typography.regWiki.copyWith(),
                         )
                       : LabSelectableText.rich(
                           TextSpan(
@@ -632,7 +697,9 @@ class LabLongTextRenderer extends StatelessWidget {
                               )
                             ]),
                           ),
-                          style: theme.typography.regArticle.copyWith(),
+                          style: serif!
+                              ? theme.typography.regArticle.copyWith()
+                              : theme.typography.regWiki.copyWith(),
                         ),
                 ),
               ],
@@ -640,7 +707,9 @@ class LabLongTextRenderer extends StatelessWidget {
           ),
         );
       default:
-        return LabText.regArticle(element.content);
+        return serif!
+            ? LabText.regArticle(element.content)
+            : LabText.regWiki(element.content);
     }
   }
 

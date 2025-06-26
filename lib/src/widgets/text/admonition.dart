@@ -14,6 +14,7 @@ class LabAdmonition extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
+    final isInsideModal = ModalScope.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +24,7 @@ class LabAdmonition extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             LabPanel(
-              color: theme.colors.gray66,
+              color: isInsideModal ? theme.colors.white8 : theme.colors.gray66,
               padding: const LabEdgeInsets.only(
                 left: LabGapSize.s12,
                 right: LabGapSize.s12,

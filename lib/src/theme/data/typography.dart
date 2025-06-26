@@ -20,6 +20,9 @@ class LabTypographyData extends Equatable {
     required this.bold10,
     required this.med10,
     required this.reg10,
+    required this.bold8,
+    required this.med8,
+    required this.reg8,
     required this.link,
 
     /// Long Form Typography
@@ -199,6 +202,39 @@ class LabTypographyData extends Equatable {
           package: 'zaplab_design',
           fontWeight: FontWeight.w400, // regular
           fontSize: 10,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        bold8: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 8,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        med8: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w500,
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 8,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        reg8: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 8,
           height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
@@ -525,6 +561,39 @@ class LabTypographyData extends Equatable {
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
+        bold8: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 7.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        med8: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w500,
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 7.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        reg8: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 7.5,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
         link: TextStyle(
           fontFamily: 'Inter',
           package: 'zaplab_design',
@@ -846,6 +915,39 @@ class LabTypographyData extends Equatable {
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
+        bold8: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w600, // technically semibold
+          fontSize: 9,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        med8: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w500,
+          fontVariations: [
+            FontVariation('wght', 500),
+          ], // medium
+          fontSize: 9,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        reg8: TextStyle(
+          fontFamily: 'Inter',
+          package: 'zaplab_design',
+          fontWeight: FontWeight.w400, // regular
+          fontSize: 9,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
         link: TextStyle(
           fontFamily: 'Inter',
           package: 'zaplab_design',
@@ -1017,6 +1119,9 @@ class LabTypographyData extends Equatable {
   final TextStyle bold10;
   final TextStyle med10;
   final TextStyle reg10;
+  final TextStyle bold8;
+  final TextStyle med8;
+  final TextStyle reg8;
   final TextStyle link;
 
   /// Long Form Typography
@@ -1052,6 +1157,9 @@ class LabTypographyData extends Equatable {
         bold10.named('bold10'),
         med10.named('med10'),
         reg10.named('reg10'),
+        bold8.named('bold8'),
+        med8.named('med8'),
+        reg8.named('reg8'),
         link.named('link'),
 
         /// Long Form Typography

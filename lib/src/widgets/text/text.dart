@@ -18,6 +18,9 @@ enum LabTextLevel {
   bold10,
   med10,
   reg10,
+  bold8,
+  med8,
+  reg8,
   link,
 
   /// Long Form Typography
@@ -214,6 +217,39 @@ class LabText extends StatelessWidget {
     this.textOverflow,
     this.textAlign,
   }) : level = LabTextLevel.reg10;
+
+  const LabText.bold8(
+    this.data, {
+    super.key,
+    this.color,
+    this.gradient,
+    this.fontSize,
+    this.maxLines,
+    this.textOverflow,
+    this.textAlign,
+  }) : level = LabTextLevel.bold8;
+
+  const LabText.med8(
+    this.data, {
+    super.key,
+    this.color,
+    this.gradient,
+    this.fontSize,
+    this.maxLines,
+    this.textOverflow,
+    this.textAlign,
+  }) : level = LabTextLevel.med8;
+
+  const LabText.reg8(
+    this.data, {
+    super.key,
+    this.color,
+    this.gradient,
+    this.fontSize,
+    this.maxLines,
+    this.textOverflow,
+    this.textAlign,
+  }) : level = LabTextLevel.reg8;
 
   const LabText.link(
     this.data, {
@@ -445,6 +481,12 @@ class LabText extends StatelessWidget {
         return theme.typography.med10;
       case LabTextLevel.reg10:
         return theme.typography.reg10;
+      case LabTextLevel.bold8:
+        return theme.typography.bold8;
+      case LabTextLevel.med8:
+        return theme.typography.med8;
+      case LabTextLevel.reg8:
+        return theme.typography.reg8;
       case LabTextLevel.link:
         return theme.typography.link;
       case LabTextLevel.longformh1:

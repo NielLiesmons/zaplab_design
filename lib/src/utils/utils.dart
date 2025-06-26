@@ -1,7 +1,9 @@
 // Utils
 export 'duration_formatter.dart';
 export 'emoji_list.dart';
+export 'extension_color.dart';
 export 'key_generator.dart';
+export 'l_shape_painter.dart';
 export 'named.dart';
 export 'npub_color.dart';
 export 'npub_formatter.dart';

@@ -3,6 +3,17 @@ import 'package:tap_builder/tap_builder.dart';
 import 'dart:ui';
 
 class LabPanelButton extends StatelessWidget {
+  final Widget child;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+  final double? width;
+  final double? height;
+  final Color? color;
+  final Gradient? gradient;
+  final LabEdgeInsets? padding;
+  final BorderRadius? radius;
+  final int? count;
+  final bool isLight;
   const LabPanelButton({
     super.key,
     required this.child,
@@ -17,18 +28,6 @@ class LabPanelButton extends StatelessWidget {
     this.count,
     this.isLight = false,
   });
-
-  final Widget child;
-  final VoidCallback? onTap;
-  final VoidCallback? onLongPress;
-  final double? width;
-  final double? height;
-  final Color? color;
-  final Gradient? gradient;
-  final LabEdgeInsets? padding;
-  final BorderRadius? radius;
-  final int? count;
-  final bool isLight;
 
   @override
   Widget build(BuildContext context) {

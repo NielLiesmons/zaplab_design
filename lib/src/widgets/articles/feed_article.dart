@@ -66,8 +66,12 @@ class LabFeedArticle extends StatelessWidget {
                                 return const LabSkeletonLoader();
                               },
                               errorBuilder: (context, error, stackTrace) {
-                                print('Error loading image: $error');
-                                return const LabSkeletonLoader();
+                                return Center(
+                                  child: LabText(
+                                    "Image not found",
+                                    color: theme.colors.white33,
+                                  ),
+                                );
                               },
                             ),
                           );

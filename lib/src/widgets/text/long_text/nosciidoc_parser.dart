@@ -284,7 +284,7 @@ class LabNosciiDocParser {
 
       // Handle paragraph with styled text
       if (!line.startsWith('=') &&
-          !line.startsWith('*') &&
+          !RegExp(r'^\*+\s').hasMatch(line) &&
           !line.startsWith('.') &&
           !line.startsWith('NOTE:') &&
           !line.startsWith('TIP:') &&
@@ -364,8 +364,10 @@ class LabNosciiDocParser {
         RegExp(r'\*_(.*?)_\*'); // Only match *_text_* pattern
     final RegExp combinedPattern2 =
         RegExp(r'_\*(.*?)\*_'); // Only match _*text*_ pattern
-    final RegExp boldPattern =
-        RegExp(r'\*(?!_)(.*?)(?<!_)\*'); // Match * but not *_ or _*
+    final RegExp boldPattern = RegExp(
+        r'\*\*([^*]+)\*\*|' // Markdown bold (this needs to checked first for it to work)
+        r'\*(?!_)(.*?)(?<!_)\*' // AsciiDoc bold
+        );
     final RegExp italicPattern =
         RegExp(r'_(?!\*)(.*?)(?<!\*)_'); // Match _ but not _* or *_
     final RegExp underlinePattern = RegExp(r'\[\.underline\]#(.*?)#');
@@ -379,7 +381,7 @@ class LabNosciiDocParser {
       caseSensitive: false,
     );
     final RegExp monospacePattern = RegExp(r'`([^`]+)`');
-    final RegExp namedLinkPattern = RegExp(r'([^:]+):([^\[]+)\[\]');
+    final RegExp namedLinkPattern = RegExp(r'(https?://[^\s\[]+)\[([^\]]+)\]');
     int currentPosition = 0;
 
     while (currentPosition < text.length) {
@@ -453,7 +455,9 @@ class LabNosciiDocParser {
           firstMatch == combined2Match ||
           firstMatch == underlineMatch ||
           firstMatch == lineThroughMatch) {
-        final String content = firstMatch.group(1) ?? '';
+        final String content = firstMatch == boldMatch
+            ? (firstMatch.group(1) ?? firstMatch.group(2))!
+            : firstMatch.group(1)!;
         final String style =
             (firstMatch == combined1Match || firstMatch == combined2Match)
                 ? 'bold-italic'
@@ -499,7 +503,7 @@ class LabNosciiDocParser {
         styledElements.add(LongTextElement(
           type: LongTextElementType.link,
           content: firstMatch.group(2)!,
-          attributes: {'text': firstMatch.group(1)!},
+          attributes: {'url': firstMatch.group(1)!},
         ));
       } else if (firstMatch == monospaceMatch) {
         styledElements.add(LongTextElement(

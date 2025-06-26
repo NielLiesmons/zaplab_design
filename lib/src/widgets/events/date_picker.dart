@@ -56,7 +56,7 @@ class _LabDatePickerState extends State<LabDatePicker> {
       Scrollable.ensureVisible(
         context,
         alignment: 0.0, // Align to left edge
-        duration: const Duration(milliseconds: 300),
+        duration: LabDurationsData.normal().normal,
         curve: Curves.easeInOut,
       );
     }

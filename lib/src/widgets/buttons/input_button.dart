@@ -5,7 +5,7 @@ class LabInputButton extends StatelessWidget {
   final VoidCallback? onTap;
   final List<Widget> children;
   final Color? color;
-  final double? height;
+  final double? minHeight;
   final bool? topAlignment;
 
   const LabInputButton({
@@ -13,7 +13,7 @@ class LabInputButton extends StatelessWidget {
     this.onTap,
     required this.children,
     this.color,
-    this.height,
+    this.minHeight,
     this.topAlignment = false,
   });
 
@@ -39,7 +39,9 @@ class LabInputButton extends StatelessWidget {
             enabled: true,
             selected: true,
             child: LabContainer(
-              height: height ?? theme.sizes.s38,
+              constraints: BoxConstraints(
+                minHeight: minHeight ?? theme.sizes.s38,
+              ),
               decoration: BoxDecoration(
                 color: color ??
                     (isInsideModal || isInsideScope

@@ -101,8 +101,9 @@ class LabMail extends StatelessWidget {
               vertical: LabGapSize.none,
               horizontal: LabGapSize.s4,
             ),
-            child: LabShortTextRenderer(
+            child: LabLongTextRenderer(
               content: mail.content,
+              serif: false,
               onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,
               onResolveEmoji: onResolveEmoji,
