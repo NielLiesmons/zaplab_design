@@ -341,25 +341,28 @@ class LabTabBarState extends State<LabTabBar> with TickerProviderStateMixin {
                             bottom: 0,
                             child: Stack(
                               children: [
-                                ShaderMask(
-                                  shaderCallback: (Rect bounds) {
-                                    return ui.Gradient.linear(
-                                      Offset(0, bounds.center.dy),
-                                      Offset(theme.sizes.s64, bounds.center.dy),
-                                      [
-                                        const Color(0xFFFFFFFF),
-                                        const Color(0x00000000),
-                                      ],
-                                      [0.0, 1.0],
-                                    );
-                                  },
-                                  blendMode: BlendMode.dstIn,
-                                  child: LabContainer(
-                                    width: theme.sizes.s64,
-                                    decoration: BoxDecoration(
-                                      color: ModalScope.of(context)
-                                          ? theme.colors.gray66
-                                          : theme.colors.black,
+                                IgnorePointer(
+                                  child: ShaderMask(
+                                    shaderCallback: (Rect bounds) {
+                                      return ui.Gradient.linear(
+                                        Offset(0, bounds.center.dy),
+                                        Offset(
+                                            theme.sizes.s64, bounds.center.dy),
+                                        [
+                                          const Color(0xFFFFFFFF),
+                                          const Color(0x00000000),
+                                        ],
+                                        [0.0, 1.0],
+                                      );
+                                    },
+                                    blendMode: BlendMode.dstIn,
+                                    child: LabContainer(
+                                      width: theme.sizes.s64,
+                                      decoration: BoxDecoration(
+                                        color: ModalScope.of(context)
+                                            ? theme.colors.gray66
+                                            : theme.colors.black,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -438,26 +441,28 @@ class LabTabBarState extends State<LabTabBar> with TickerProviderStateMixin {
                             bottom: 0,
                             child: Stack(
                               children: [
-                                ShaderMask(
-                                  shaderCallback: (Rect bounds) {
-                                    return ui.Gradient.linear(
-                                      Offset(bounds.width - theme.sizes.s64,
-                                          bounds.center.dy),
-                                      Offset(bounds.width, bounds.center.dy),
-                                      [
-                                        const Color(0x00000000),
-                                        const Color(0xFFFFFFFF),
-                                      ],
-                                      [0.0, 1.0],
-                                    );
-                                  },
-                                  blendMode: BlendMode.dstIn,
-                                  child: LabContainer(
-                                    width: theme.sizes.s64,
-                                    decoration: BoxDecoration(
-                                      color: ModalScope.of(context)
-                                          ? theme.colors.gray66
-                                          : theme.colors.black,
+                                IgnorePointer(
+                                  child: ShaderMask(
+                                    shaderCallback: (Rect bounds) {
+                                      return ui.Gradient.linear(
+                                        Offset(bounds.width - theme.sizes.s64,
+                                            bounds.center.dy),
+                                        Offset(bounds.width, bounds.center.dy),
+                                        [
+                                          const Color(0x00000000),
+                                          const Color(0xFFFFFFFF),
+                                        ],
+                                        [0.0, 1.0],
+                                      );
+                                    },
+                                    blendMode: BlendMode.dstIn,
+                                    child: LabContainer(
+                                      width: theme.sizes.s64,
+                                      decoration: BoxDecoration(
+                                        color: ModalScope.of(context)
+                                            ? theme.colors.gray66
+                                            : theme.colors.black,
+                                      ),
                                     ),
                                   ),
                                 ),

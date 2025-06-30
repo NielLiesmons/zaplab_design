@@ -133,6 +133,7 @@ class LabFeedForumPost extends StatelessWidget {
                           ),
                           const LabGap.s2(),
                           LabShortTextRenderer(
+                            model: forumPost,
                             content: forumPost.content,
                             onResolveEvent: onResolveEvent,
                             onResolveProfile: onResolveProfile,

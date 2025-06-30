@@ -115,8 +115,9 @@ class LabFeedThread extends StatelessWidget {
                                 ),
                             ],
                           ),
-                          const LabGap.s2(),
+                          const LabGap.s4(),
                           LabShortTextRenderer(
+                            model: thread ?? reply!,
                             content: thread != null
                                 ? thread!.content
                                 : reply!.content,

@@ -31,6 +31,8 @@ String getModelContentType(Model? model) {
 String getModelName(Model? model) {
   final type = getModelContentType(model);
   if (type == 'nostr') return 'Nostr Publication';
+  if (type == 'chat') return 'Message';
+  if (type == 'forum') return 'Forum Post';
   return type[0].toUpperCase() + type.substring(1);
 }
 
@@ -63,7 +65,8 @@ typedef NostrProfileResolver = Future<({Profile profile, VoidCallback? onTap})>
 typedef NostrProfileSearch = Future<List<Profile>> Function(String query);
 
 // Emoji
-typedef NostrEmojiResolver = Future<String> Function(String identifier);
+typedef NostrEmojiResolver = Future<String> Function(
+    String identifier, Model model);
 typedef NostrEmojiSearch = Future<List<Emoji>> Function(String query);
 
 // Hashtag
@@ -334,6 +337,97 @@ class PartialMail extends RegularPartialModel<Mail> {
       for (final pubkey in recipientPubkeys) {
         event.addTagValue('p', pubkey);
       }
+    }
+  }
+}
+
+// Poll
+
+class Poll extends RegularModel<Poll> {
+  Poll.fromMap(super.map, super.ref) : super.fromMap();
+
+  String get content => event.content;
+
+  List<({String id, String label})> get options {
+    final options = <({String id, String label})>[];
+    for (final tag in event.tags.where((tag) => tag[0] == 'option')) {
+      if (tag.length >= 3) {
+        options.add((id: tag[1], label: tag[2]));
+      }
+    }
+    return options;
+  }
+
+  String get pollType => event.getFirstTagValue('polltype') ?? 'singlechoice';
+
+  bool get isSingleChoice => pollType == 'singlechoice';
+
+  bool get isMultipleChoice => pollType == 'multiplechoice';
+
+  DateTime? get endsAt {
+    final timestamp = event.getFirstTagValue('endsAt')?.toInt();
+    return timestamp?.toDate();
+  }
+
+  bool get hasEnded {
+    final endTime = endsAt;
+    return endTime != null && DateTime.now().isAfter(endTime);
+  }
+
+  Duration? get timeRemaining {
+    final endTime = endsAt;
+    if (endTime == null) return null;
+    final remaining = endTime.difference(DateTime.now());
+    return remaining.isNegative ? Duration.zero : remaining;
+  }
+}
+
+class PartialPoll extends RegularPartialModel<Poll> {
+  PartialPoll({
+    required String content,
+    required List<({String id, String label})> options,
+    Set<String>? relayUrls,
+    String pollType = 'singlechoice',
+    DateTime? endsAt,
+  }) {
+    event.content = content;
+    for (final option in options) {
+      event.addTag('option', [option.id, option.label]);
+    }
+    event.addTagValue('polltype', pollType);
+    if (endsAt != null) {
+      event.addTagValue('endsAt', endsAt.toSeconds().toString());
+    }
+  }
+}
+
+class PollResponse extends RegularModel<PollResponse> {
+  PollResponse.fromMap(super.map, super.ref) : super.fromMap();
+
+  String get content => event.content;
+
+  // Get the poll event ID this response is for
+  String? get pollEventId => event.getFirstTagValue('e');
+
+  // Get all selected option IDs
+  List<String> get selectedOptionIds {
+    return event.tags
+        .where((tag) => tag[0] == 'response')
+        .map((tag) => tag[1])
+        .toList();
+  }
+}
+
+class PartialPollResponse extends RegularPartialModel<PollResponse> {
+  PartialPollResponse({
+    required String pollEventId,
+    required List<String> selectedOptionIds,
+    String content = '',
+  }) {
+    event.content = content;
+    event.addTagValue('e', pollEventId);
+    for (final optionId in selectedOptionIds) {
+      event.addTagValue('response', optionId);
     }
   }
 }

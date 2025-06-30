@@ -18,6 +18,7 @@ class LabLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
+    final isInsideModal = ModalScope.of(context);
 
     return TapBuilder(
       onTap: onTap,
@@ -44,7 +45,9 @@ class LabLabel extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected || isEmphasized
                       ? theme.colors.blurpleColor33
-                      : theme.colors.white8,
+                      : isInsideModal
+                          ? theme.colors.white16
+                          : theme.colors.white8,
                   borderRadius: BorderRadius.only(
                     topLeft: theme.radius.rad12,
                     bottomLeft: theme.radius.rad12,
@@ -80,7 +83,9 @@ class LabLabel extends StatelessWidget {
                 painter: HouseShapePainter(
                   color: isSelected || isEmphasized
                       ? theme.colors.blurpleColor33
-                      : theme.colors.white8,
+                      : isInsideModal
+                          ? theme.colors.white16
+                          : theme.colors.white8,
                 ),
               ),
             ],

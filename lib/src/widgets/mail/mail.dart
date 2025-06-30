@@ -102,6 +102,7 @@ class LabMail extends StatelessWidget {
               horizontal: LabGapSize.s4,
             ),
             child: LabLongTextRenderer(
+              model: mail,
               content: mail.content,
               serif: false,
               onResolveEvent: onResolveEvent,

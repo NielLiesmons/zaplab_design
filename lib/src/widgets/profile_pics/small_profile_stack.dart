@@ -5,11 +5,13 @@ import 'package:models/models.dart';
 class LabSmallProfileStack extends StatelessWidget {
   final List<Profile> profiles;
   final Profile? activeProfile;
+  final String? description;
   final VoidCallback onTap;
   LabSmallProfileStack({
     super.key,
     required this.profiles,
     this.activeProfile,
+    this.description,
     VoidCallback? onTap,
   }) : onTap = onTap ?? (() {});
 
@@ -20,7 +22,8 @@ class LabSmallProfileStack extends StatelessWidget {
   }
 
   String _getDisplayText() {
-    if (profiles.isEmpty) return 'No Recipients';
+    if (description != null) return description!;
+    if (profiles.isEmpty) return '0 Profiles';
 
     final isactiveProfileFirst = activeProfile != null &&
         profiles.isNotEmpty &&
@@ -71,19 +74,34 @@ class LabSmallProfileStack extends StatelessWidget {
                     clipBehavior: Clip.none,
                     children: [
                       Transform.translate(
-                        offset: Offset(
-                            theme.sizes.s8 + (_visibleProfiles.length - 1) * 16,
-                            0),
+                        offset: profiles.isEmpty
+                            ? Offset.zero
+                            : Offset(
+                                theme.sizes.s8 +
+                                    (_visibleProfiles.length - 1) * 16,
+                                0),
                         child: LabContainer(
                           height: theme.sizes.s20,
-                          padding: const LabEdgeInsets.only(
-                            left: LabGapSize.s20,
-                            right: LabGapSize.s12,
+                          padding: LabEdgeInsets.only(
+                            left: profiles.isEmpty
+                                ? LabGapSize.s10
+                                : LabGapSize.s20,
+                            right: profiles.isEmpty
+                                ? LabGapSize.s10
+                                : LabGapSize.s12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: profiles.isEmpty
+                                ? theme.colors.white8
+                                : theme.colors.white16,
+                            borderRadius: theme.radius.asBorderRadius().rad24,
                           ),
                           child: Center(
                             child: LabText.reg12(
                               _getDisplayText(),
-                              color: theme.colors.white66,
+                              color: profiles.isEmpty
+                                  ? theme.colors.white33
+                                  : theme.colors.white66,
                               textOverflow: TextOverflow.ellipsis,
                             ),
                           ),

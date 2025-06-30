@@ -79,8 +79,10 @@ class LabBottomBarProfile extends StatelessWidget {
                           ),
                           const LabGap.s12(),
                           LabText.med14(
-                              'Mail ${profile.name ?? formatNpub(profile.npub)}',
-                              color: theme.colors.white33),
+                            'Mail ${profile.name ?? formatNpub(profile.npub)}',
+                            color: theme.colors.white33,
+                            textOverflow: TextOverflow.ellipsis,
+                          ),
                           const Spacer(),
                         ],
                       ),

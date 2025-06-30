@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:models/models.dart';
 
 class LabLongTextRenderer extends StatelessWidget {
+  final Model model;
   final String content;
   final String? language;
   final bool? serif;
@@ -16,6 +17,7 @@ class LabLongTextRenderer extends StatelessWidget {
 
   const LabLongTextRenderer({
     super.key,
+    required this.model,
     required this.content,
     this.language,
     this.serif = true,
@@ -37,7 +39,6 @@ class LabLongTextRenderer extends StatelessWidget {
     final elements = parser.parse(content);
 
     return LabContainer(
-      padding: const LabEdgeInsets.symmetric(vertical: LabGapSize.s8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -198,7 +199,7 @@ class LabLongTextRenderer extends StatelessWidget {
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
               child: FutureBuilder<String>(
-                future: onResolveEmoji(child.content),
+                future: onResolveEmoji(child.content, model),
                 builder: (context, snapshot) {
                   return LabContainer(
                     padding: const LabEdgeInsets.symmetric(

@@ -132,6 +132,7 @@ class LabFeedMail extends StatelessWidget {
                             ),
                       const LabGap.s2(),
                       LabCompactTextRenderer(
+                        model: mail,
                         content: mail.content,
                         onResolveEvent: onResolveEvent,
                         onResolveProfile: onResolveProfile,

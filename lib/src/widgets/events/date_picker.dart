@@ -53,12 +53,19 @@ class _LabDatePickerState extends State<LabDatePicker> {
     final key = _buttonKeys[keyString];
     final context = key?.currentContext;
     if (context != null) {
-      Scrollable.ensureVisible(
-        context,
-        alignment: 0.0, // Align to left edge
-        duration: LabDurationsData.normal().normal,
-        curve: Curves.easeInOut,
-      );
+      final RenderBox box = context.findRenderObject() as RenderBox;
+      final RenderBox? scrollBox =
+          _scrollController.position.context.storageContext.findRenderObject()
+              as RenderBox?;
+      if (scrollBox != null) {
+        final position = box.localToGlobal(Offset.zero, ancestor: scrollBox);
+        final double targetOffset = _scrollController.offset + position.dx;
+        _scrollController.animateTo(
+          targetOffset,
+          duration: LabDurationsData.normal().normal,
+          curve: Curves.easeInOut,
+        );
+      }
     }
   }
 

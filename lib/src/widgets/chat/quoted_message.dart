@@ -101,6 +101,7 @@ class LabQuotedMessage extends StatelessWidget {
                             left: LabGapSize.s2,
                           ),
                           child: LabCompactTextRenderer(
+                            model: chatMessage != null ? chatMessage! : reply!,
                             content: chatMessage != null
                                 ? chatMessage!.content
                                 : reply!.content,

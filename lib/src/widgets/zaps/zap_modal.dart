@@ -57,8 +57,7 @@ class LabZapModal extends StatefulWidget {
     return LabModal.show<({double amount, String message})>(
       context,
       title: 'Zap',
-      description:
-          "${model.author.value?.name}'s ${getModelContentType(model) == 'chat' ? 'Message' : getModelContentType(model)[0].toUpperCase() + getModelContentType(model).substring(1)}",
+      description: "${model.author.value?.name}'s ${getModelName(model)}",
       children: [
         StatefulBuilder(
           builder: (context, setState) {

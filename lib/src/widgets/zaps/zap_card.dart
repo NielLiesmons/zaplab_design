@@ -87,6 +87,7 @@ class LabZapCard extends StatelessWidget {
                 vertical: LabGapSize.s8,
               ),
               child: LabCompactTextRenderer(
+                model: zap!,
                 content: isCashuZap ? cashuZap!.content : zap!.event.content,
                 onResolveEvent: onResolveEvent,
                 onResolveProfile: onResolveProfile,

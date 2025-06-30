@@ -76,11 +76,12 @@ class LabBottomBarMail extends StatelessWidget {
                     child: Center(
                       child: draftMessage != null
                           ? LabCompactTextRenderer(
+                              model: model,
                               content: draftMessage!.event.content,
                               maxLines: 1,
                               onResolveEvent: onResolveEvent,
                               onResolveProfile: onResolveProfile,
-                              onResolveEmoji: (_) async => '',
+                              onResolveEmoji: onResolveEmoji,
                               isMedium: false,
                               isWhite: true,
                             )

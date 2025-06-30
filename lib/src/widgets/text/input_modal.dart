@@ -55,114 +55,117 @@ class LabInputModal extends StatelessWidget {
     final bottomPadding =
         LabPlatformUtils.isMobile ? LabGapSize.s4 : LabGapSize.s16;
 
-    return Stack(
-      children: [
-        // Backdrop with tap to dismiss
-        GestureDetector(
-          onTap: () {
-            if (Navigator.of(context).canPop()) {
-              Navigator.of(context).pop();
-            }
-          },
-          onVerticalDragUpdate: (details) {
-            // Only handle drag on the backdrop, not the modal content
-            final RenderBox box = context.findRenderObject() as RenderBox;
-            final localPosition = box.globalToLocal(details.globalPosition);
-            final modalHeight =
-                box.size.height * 0.7; // Approximate modal height
+    return ModalScope(
+      isInsideModal: true,
+      child: Stack(
+        children: [
+          // Backdrop with tap to dismiss
+          GestureDetector(
+            onTap: () {
+              if (Navigator.of(context).canPop()) {
+                Navigator.of(context).pop();
+              }
+            },
+            onVerticalDragUpdate: (details) {
+              // Only handle drag on the backdrop, not the modal content
+              final RenderBox box = context.findRenderObject() as RenderBox;
+              final localPosition = box.globalToLocal(details.globalPosition);
+              final modalHeight =
+                  box.size.height * 0.7; // Approximate modal height
 
-            // Only trigger if dragging on the backdrop area (above the modal)
-            if (localPosition.dy < modalHeight &&
-                details.delta.dy > 0 &&
-                Navigator.of(context).canPop()) {
-              Navigator.of(context).pop();
-            }
-          },
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-            child: LabContainer(
-              decoration: BoxDecoration(color: theme.colors.black16),
+              // Only trigger if dragging on the backdrop area (above the modal)
+              if (localPosition.dy < modalHeight &&
+                  details.delta.dy > 0 &&
+                  Navigator.of(context).canPop()) {
+                Navigator.of(context).pop();
+              }
+            },
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+              child: LabContainer(
+                decoration: BoxDecoration(color: theme.colors.black16),
+              ),
             ),
           ),
-        ),
-        // Modal content
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: ValueListenableBuilder<double>(
-            valueListenable: modalOffset,
-            builder: (context, offset, child) {
-              return Transform.translate(
-                offset: Offset(0, offset - keyboardHeight),
-                child: GestureDetector(
-                  onVerticalDragUpdate: LabPlatformUtils.isMobile
-                      ? (details) {
-                          if (details.delta.dy > 0) {
-                            modalOffset.value += details.delta.dy;
-                            if (modalOffset.value > 40 &&
-                                Navigator.of(context).canPop()) {
-                              Navigator.of(context).pop();
+          // Modal content
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ValueListenableBuilder<double>(
+              valueListenable: modalOffset,
+              builder: (context, offset, child) {
+                return Transform.translate(
+                  offset: Offset(0, offset - keyboardHeight),
+                  child: GestureDetector(
+                    onVerticalDragUpdate: LabPlatformUtils.isMobile
+                        ? (details) {
+                            if (details.delta.dy > 0) {
+                              modalOffset.value += details.delta.dy;
+                              if (modalOffset.value > 40 &&
+                                  Navigator.of(context).canPop()) {
+                                Navigator.of(context).pop();
+                              }
                             }
                           }
-                        }
-                      : null,
-                  onVerticalDragEnd: LabPlatformUtils.isMobile
-                      ? (details) {
-                          if (modalOffset.value > 0 &&
-                              modalOffset.value <= 160) {
-                            modalOffset.value = 0;
+                        : null,
+                    onVerticalDragEnd: LabPlatformUtils.isMobile
+                        ? (details) {
+                            if (modalOffset.value > 0 &&
+                                modalOffset.value <= 160) {
+                              modalOffset.value = 0;
+                            }
                           }
-                        }
-                      : null,
-                  child: LabContainer(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(theme.radius.rad32.x),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: theme.colors.black16,
-                          blurRadius: 32,
-                          offset: const Offset(0, -12),
+                        : null,
+                    child: LabContainer(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(theme.radius.rad32.x),
                         ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(theme.radius.rad32.x),
+                        boxShadow: [
+                          BoxShadow(
+                            color: theme.colors.black16,
+                            blurRadius: 32,
+                            offset: const Offset(0, -12),
+                          ),
+                        ],
                       ),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                        child: LabContainer(
-                          decoration: BoxDecoration(
-                            color: theme.colors.gray66,
-                            border: Border(
-                              top: BorderSide(
-                                color: theme.colors.white16,
-                                width: LabLineThicknessData.normal().thin,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(theme.radius.rad32.x),
+                        ),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                          child: LabContainer(
+                            decoration: BoxDecoration(
+                              color: theme.colors.gray66,
+                              border: Border(
+                                top: BorderSide(
+                                  color: theme.colors.white16,
+                                  width: LabLineThicknessData.normal().thin,
+                                ),
                               ),
                             ),
-                          ),
-                          padding: LabEdgeInsets.only(
-                            top: LabGapSize.s16,
-                            bottom: bottomPadding,
-                            left: LabGapSize.s16,
-                            right: LabGapSize.s16,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: children,
+                            padding: LabEdgeInsets.only(
+                              top: LabGapSize.s16,
+                              bottom: bottomPadding,
+                              left: LabGapSize.s16,
+                              right: LabGapSize.s16,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: children,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -200,6 +200,9 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                 if (contentType.isSingleContent)
                                   const LabGap.s4(),
                                 LabShortTextRenderer(
+                                  model: widget.message != null
+                                      ? widget.message!
+                                      : widget.reply!,
                                   content: widget.message != null
                                       ? widget.message!.content
                                       : widget.reply!.content,

@@ -6,6 +6,9 @@ class LabNotificationCard extends StatelessWidget {
   final void Function(Model) onActions;
   final void Function(Model) onReply;
   final bool isUnread;
+  final NostrEventResolver onResolveEvent;
+  final NostrProfileResolver onResolveProfile;
+  final NostrEmojiResolver onResolveEmoji;
 
   const LabNotificationCard({
     super.key,
@@ -13,6 +16,9 @@ class LabNotificationCard extends StatelessWidget {
     required this.onReply,
     required this.onActions,
     this.isUnread = false,
+    required this.onResolveEvent,
+    required this.onResolveProfile,
+    required this.onResolveEmoji,
   });
 
   @override
@@ -147,23 +153,15 @@ class LabNotificationCard extends StatelessWidget {
                         ],
                       ),
                       LabCompactTextRenderer(
+                        model: model,
                         content:
                             "This is a reply on an Article your current profile published ",
                         isMedium: true,
                         isWhite: true,
                         maxLines: 6,
-                        onResolveEvent: (model) {
-                          print(model);
-                          return Future.value(null); //TODO: Implement
-                        },
-                        onResolveProfile: (profile) {
-                          print(profile);
-                          return Future.value(null); //TODO: Implement
-                        },
-                        onResolveEmoji: (emoji) {
-                          print(emoji);
-                          return Future.value(null); //TODO: Implement
-                        },
+                        onResolveEvent: onResolveEvent!,
+                        onResolveProfile: onResolveProfile!,
+                        onResolveEmoji: onResolveEmoji!,
                       ),
                     ],
                   ),

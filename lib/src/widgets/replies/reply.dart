@@ -118,6 +118,7 @@ class LabReply extends StatelessWidget {
               horizontal: LabGapSize.s4,
             ),
             child: LabShortTextRenderer(
+              model: reply,
               content: reply.content,
               onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,

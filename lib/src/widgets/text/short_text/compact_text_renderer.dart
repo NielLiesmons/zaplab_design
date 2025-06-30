@@ -2,6 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
 class LabCompactTextRenderer extends StatelessWidget {
+  final Model model;
   final String content;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
@@ -14,6 +15,7 @@ class LabCompactTextRenderer extends StatelessWidget {
 
   const LabCompactTextRenderer({
     super.key,
+    required this.model,
     required this.content,
     required this.onResolveEvent,
     required this.onResolveProfile,
@@ -121,7 +123,7 @@ class LabCompactTextRenderer extends StatelessWidget {
         spans.add(WidgetSpan(
           alignment: PlaceholderAlignment.middle,
           child: FutureBuilder<String>(
-            future: onResolveEmoji(element.content),
+            future: onResolveEmoji(element.content, model),
             builder: (context, snapshot) {
               return LabContainer(
                 child: LabEmojiImage(
@@ -424,7 +426,7 @@ class LabCompactTextRenderer extends StatelessWidget {
             spans.add(WidgetSpan(
               alignment: PlaceholderAlignment.middle,
               child: FutureBuilder<String>(
-                future: onResolveEmoji(child.content),
+                future: onResolveEmoji(child.content, model),
                 builder: (context, snapshot) {
                   return LabContainer(
                     child: LabEmojiImage(

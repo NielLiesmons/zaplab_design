@@ -57,6 +57,7 @@ class LabThreadCard extends StatelessWidget {
           const LabGap.s6(),
           LabContainer(
             child: LabCompactTextRenderer(
+              model: thread,
               content: thread.content,
               onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,

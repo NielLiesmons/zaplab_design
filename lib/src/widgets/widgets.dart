@@ -138,6 +138,11 @@ export 'models/model_empty_state_card.dart';
 // Notifications
 export 'notifications/notification_card.dart';
 
+// Polls
+export 'polls/feed_poll.dart';
+export 'polls/poll_button.dart';
+export 'polls/poll.dart';
+
 // Profiles
 export 'profiles/current_profile_card.dart';
 export 'profiles/npub_display.dart';

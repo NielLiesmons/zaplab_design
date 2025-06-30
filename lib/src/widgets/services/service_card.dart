@@ -94,8 +94,12 @@ class LabServiceCard extends StatelessWidget {
                             return const LabSkeletonLoader();
                           },
                           errorBuilder: (context, error, stackTrace) {
-                            print('Error loading image: $error');
-                            return const LabSkeletonLoader();
+                            return Center(
+                              child: LabText(
+                                "Image not found",
+                                color: theme.colors.white33,
+                              ),
+                            );
                           },
                         ),
                       ),
@@ -143,8 +147,7 @@ class LabServiceCard extends StatelessWidget {
                                       width: theme.sizes.s8,
                                       decoration: BoxDecoration(
                                         gradient: theme.colors.blurple,
-                                        borderRadius:
-                                            BorderRadius.circular(100),
+                                        shape: BoxShape.circle,
                                       ),
                                     ),
                                 ],

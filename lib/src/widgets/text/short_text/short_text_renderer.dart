@@ -25,6 +25,7 @@ class ShortTextContent extends InheritedWidget {
   final ShortTextContentType contentType;
 
   const ShortTextContent({
+    super.key,
     required this.contentType,
     required super.child,
   });
@@ -43,6 +44,7 @@ class ShortTextContent extends InheritedWidget {
 
 class LabShortTextRenderer extends StatelessWidget {
   final String content;
+  final Model model;
   final NostrEventResolver onResolveEvent;
   final NostrProfileResolver onResolveProfile;
   final NostrEmojiResolver onResolveEmoji;
@@ -53,6 +55,7 @@ class LabShortTextRenderer extends StatelessWidget {
   const LabShortTextRenderer({
     super.key,
     required this.content,
+    required this.model,
     required this.onResolveEvent,
     required this.onResolveProfile,
     required this.onResolveEmoji,
@@ -151,6 +154,7 @@ class LabShortTextRenderer extends StatelessWidget {
   Widget _buildElementWithSpacing(
       LabShortTextElement element, BuildContext context) {
     final (isInsideMessageBubble, _) = MessageBubbleScope.of(context);
+
     final contentType = ShortTextContent.of(context);
 
     final LabEdgeInsets spacing = switch (element.type) {
@@ -203,13 +207,13 @@ class LabShortTextRenderer extends StatelessWidget {
 
       case LabShortTextElementType.emoji:
         return FutureBuilder<String>(
-          future: onResolveEmoji(element.content),
+          future: onResolveEmoji(element.content, model),
           builder: (context, snapshot) {
             return LabContainer(
               padding: const LabEdgeInsets.symmetric(horizontal: LabGapSize.s2),
               child: LabEmojiImage(
                 emojiUrl: snapshot.data ?? '',
-                emojiName: snapshot.data ?? '',
+                emojiName: element.content,
                 size: ShortTextContent.of(context) ==
                         ShortTextContentType.singleEmoji
                     ? 80
@@ -224,6 +228,7 @@ class LabShortTextRenderer extends StatelessWidget {
           element.content,
           style: theme.typography.reg14.copyWith(
             color: theme.colors.white,
+            height: 1.0,
             fontSize:
                 ShortTextContent.of(context) == ShortTextContentType.singleEmoji
                     ? 64
@@ -356,12 +361,13 @@ class LabShortTextRenderer extends StatelessWidget {
                     if (element.children![i].type ==
                         LabShortTextElementType.emoji)
                       FutureBuilder<String>(
-                        future: onResolveEmoji(element.children![i].content),
+                        future:
+                            onResolveEmoji(element.children![i].content, model),
                         builder: (context, snapshot) {
                           return LabEmojiImage(
                             emojiUrl: snapshot.data ?? '',
                             emojiName: snapshot.data ?? '',
-                            size: 96,
+                            size: 80,
                             opacity: 1.0,
                           );
                         },
@@ -372,11 +378,12 @@ class LabShortTextRenderer extends StatelessWidget {
                         element.children![i].content,
                         style: theme.typography.reg14.copyWith(
                           color: theme.colors.white,
-                          fontSize: 64,
+                          height: 1.0,
+                          fontSize: 72,
                         ),
                       ),
-                    if (i == 0 && element.children!.length == 2)
-                      const LabGap.s4(),
+                    if (i == 0 && element.children!.length > 1)
+                      const LabGap.s12(),
                   ],
                 ],
               ),
@@ -485,7 +492,7 @@ class LabShortTextRenderer extends StatelessWidget {
                       child.content,
                       style: theme.typography.reg14.copyWith(
                         color: theme.colors.white,
-                        fontSize: 64,
+                        fontSize: 72,
                       ),
                     ),
                   ),
@@ -526,7 +533,7 @@ class LabShortTextRenderer extends StatelessWidget {
                 paragraphPieces.add(const LabGap.s2());
                 paragraphPieces.add(
                   FutureBuilder<String>(
-                    future: onResolveEmoji(child.content),
+                    future: onResolveEmoji(child.content, model),
                     builder: (context, snapshot) {
                       return LabContainer(
                         padding: const LabEdgeInsets.symmetric(
@@ -558,7 +565,7 @@ class LabShortTextRenderer extends StatelessWidget {
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
                       child: FutureBuilder<String>(
-                        future: onResolveEmoji(child.content),
+                        future: onResolveEmoji(child.content, model),
                         builder: (context, snapshot) {
                           return LabContainer(
                             padding: const LabEdgeInsets.symmetric(
@@ -931,7 +938,7 @@ class LabShortTextRenderer extends StatelessWidget {
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
               child: FutureBuilder<String>(
-                future: onResolveEmoji(child.content),
+                future: onResolveEmoji(child.content, model),
                 builder: (context, snapshot) {
                   return LabContainer(
                     padding: const LabEdgeInsets.symmetric(
@@ -1115,7 +1122,7 @@ class LabShortTextRenderer extends StatelessWidget {
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
               child: FutureBuilder<String>(
-                future: onResolveEmoji(element.content),
+                future: onResolveEmoji(element.content, model),
                 builder: (context, snapshot) {
                   return LabContainer(
                     padding: const LabEdgeInsets.symmetric(

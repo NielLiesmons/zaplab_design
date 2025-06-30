@@ -197,6 +197,7 @@ class LabCommunityHomePanel extends StatelessWidget {
                                                           Flexible(
                                                             child:
                                                                 LabCompactTextRenderer(
+                                                              model: lastModel!,
                                                               content: lastModel ==
                                                                       null
                                                                   ? ''

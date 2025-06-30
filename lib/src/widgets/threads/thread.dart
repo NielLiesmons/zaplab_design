@@ -82,6 +82,7 @@ class LabThread extends StatelessWidget {
               horizontal: LabGapSize.s4,
             ),
             child: LabShortTextRenderer(
+              model: thread,
               content: thread.content,
               onResolveEvent: onResolveEvent,
               onResolveProfile: onResolveProfile,

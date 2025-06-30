@@ -74,9 +74,9 @@ class LabModelCard extends StatelessWidget {
         constraints: BoxConstraints(minWidth: minWidth),
         child: LabQuotedMessage(
           chatMessage: model as ChatMessage,
-          onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
-          onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
-          onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
+          onResolveEvent: onResolveEvent!,
+          onResolveProfile: onResolveProfile!,
+          onResolveEmoji: onResolveEmoji!,
           onTap: onTap == null
               ? null
               : (message) {
@@ -93,9 +93,9 @@ class LabModelCard extends StatelessWidget {
         constraints: BoxConstraints(minWidth: minWidth),
         child: LabZapCard(
           zap: model as Zap,
-          onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
-          onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
-          onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
+          onResolveEvent: onResolveEvent!,
+          onResolveProfile: onResolveProfile!,
+          onResolveEmoji: onResolveEmoji!,
           onTap: onTap,
           onProfileTap: onProfileTap,
         ),
@@ -109,9 +109,9 @@ class LabModelCard extends StatelessWidget {
           thread: model as Note,
           onTap: onTap,
           onProfileTap: onProfileTap,
-          onResolveEvent: onResolveEvent ?? (_) => Future.value(null),
-          onResolveProfile: onResolveProfile ?? (_) => Future.value(null),
-          onResolveEmoji: onResolveEmoji ?? (_) => Future.value(null),
+          onResolveEvent: onResolveEvent!,
+          onResolveProfile: onResolveProfile!,
+          onResolveEmoji: onResolveEmoji!,
         ),
       );
     }
@@ -143,13 +143,11 @@ class LabModelCard extends StatelessWidget {
                       const LabGap.s10(),
                       Expanded(
                         child: LabCompactTextRenderer(
+                          model: model!,
                           content: getModelDisplayText(model),
-                          onResolveEvent:
-                              onResolveEvent ?? (_) => Future.value(null),
-                          onResolveProfile:
-                              onResolveProfile ?? (_) => Future.value(null),
-                          onResolveEmoji:
-                              onResolveEmoji ?? (_) => Future.value(null),
+                          onResolveEvent: onResolveEvent!,
+                          onResolveProfile: onResolveProfile!,
+                          onResolveEmoji: onResolveEmoji!,
                         ),
                       ),
                     ],

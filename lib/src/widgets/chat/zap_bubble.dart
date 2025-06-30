@@ -199,6 +199,7 @@ class _LabZapBubbleState extends State<LabZapBubble> {
                                   ],
                                   const LabGap.s2(),
                                   LabShortTextRenderer(
+                                    model: widget.cashuZap,
                                     content: widget.cashuZap.event.content,
                                     onResolveEvent: widget.onResolveEvent,
                                     onResolveProfile: widget.onResolveProfile,

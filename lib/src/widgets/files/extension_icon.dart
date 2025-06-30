@@ -32,6 +32,9 @@ class LabExtensionIcon extends StatelessWidget {
             color: theme.colors.white8,
             borderRadius: theme.radius.asBorderRadius().rad12,
           ),
+          child: Center(
+            child: LabText.bold10(displayText, color: theme.colors.white),
+          ),
         ),
         LabContainer(
             width: theme.sizes.s38,
@@ -40,7 +43,9 @@ class LabExtensionIcon extends StatelessWidget {
               color: color.withValues(alpha: 0.16),
               borderRadius: theme.radius.asBorderRadius().rad12,
             ),
-            child: Center(child: LabText.bold10(displayText, color: color))),
+            child: Center(
+                child: LabText.bold10(displayText,
+                    color: color.withValues(alpha: 0.90)))),
       ],
     );
   }
