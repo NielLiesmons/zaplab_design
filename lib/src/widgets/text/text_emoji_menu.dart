@@ -60,7 +60,7 @@ class _LabTextEmojiMenuState extends State<LabTextEmojiMenu> {
 
     // Calculate x offset based on which third of the screen we're in
     final double xOffset = switch (selectionThird) {
-      0 => 0, // Left third - align with cursor
+      0 => -64, // Left third - align with cursor
       1 => -(menuWidth / 2), // Middle third - center menu
       2 => -menuWidth, // Right third - align right edge with cursor
       _ => 0,

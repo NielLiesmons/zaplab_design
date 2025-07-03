@@ -41,6 +41,7 @@ export 'bottom_bars/bottom_bar_long_text.dart';
 export 'bottom_bars/bottom_bar_content_feed.dart';
 export 'bottom_bars/bottom_bar_home.dart';
 export 'bottom_bars/bottom_bar_mail.dart';
+export 'bottom_bars/bottom_bar_product.dart';
 export 'bottom_bars/bottom_bar_profile.dart';
 export 'bottom_bars/bottom_bar_reply.dart';
 export 'bottom_bars/bottom_bar_safe_area.dart';
@@ -142,6 +143,9 @@ export 'notifications/notification_card.dart';
 export 'polls/feed_poll.dart';
 export 'polls/poll_button.dart';
 export 'polls/poll.dart';
+
+// Products
+export 'products/product_header.dart';
 
 // Profiles
 export 'profiles/current_profile_card.dart';

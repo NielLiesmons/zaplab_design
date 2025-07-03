@@ -32,7 +32,8 @@ class _LabTextMentionMenuState extends State<LabTextMentionMenu> {
   final ScrollController _scrollController = ScrollController();
 
   double _calculateWidth(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final theme = LabTheme.of(context);
+    final screenWidth = MediaQuery.of(context).size.width / theme.system.scale;
     final selectionX = widget.position.dx;
     final thirdOfScreen = screenWidth / 3;
 
@@ -52,14 +53,15 @@ class _LabTextMentionMenuState extends State<LabTextMentionMenu> {
 
   Offset _calculatePosition(
       BuildContext context, double menuWidth, double menuHeight) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final theme = LabTheme.of(context);
+    final screenWidth = MediaQuery.of(context).size.width / theme.system.scale;
     final selectionX = widget.position.dx;
     final thirdOfScreen = screenWidth / 3;
     final selectionThird = (selectionX / thirdOfScreen).floor();
 
     // Calculate x offset based on which third of the screen we're in
     final double xOffset = switch (selectionThird) {
-      0 => 0, // Left third - align with cursor
+      0 => -64, // Left third - align with cursor
       1 => -(menuWidth / 2), // Middle third - center menu
       2 => -menuWidth, // Right third - align right edge with cursor
       _ => 0,
@@ -151,14 +153,14 @@ class _LabTextMentionMenuState extends State<LabTextMentionMenu> {
                           right: 0,
                           bottom: 0,
                           height: 24,
-                          child: Container(
+                          child: LabContainer(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [
-                                  const Color(0x000000),
-                                  theme.colors.black16,
+                                  const Color(0x00000000),
+                                  theme.colors.black33,
                                 ],
                               ),
                             ),

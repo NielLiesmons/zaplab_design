@@ -23,8 +23,10 @@ class LabSupportersStage extends StatelessWidget {
             children: [
               LabProfilePic.s56(topThreeSupporters[0].author.value),
               const SizedBox(height: 8),
-              SizedBox(
+              LabContainer(
                 width: double.infinity,
+                padding:
+                    const LabEdgeInsets.symmetric(horizontal: LabGapSize.s12),
                 child: LabText.med14(
                   topThreeSupporters[0].author.value?.name ??
                       formatNpub(
@@ -72,8 +74,10 @@ class LabSupportersStage extends StatelessWidget {
             children: [
               LabProfilePic.s56(topThreeSupporters[1].author.value),
               const SizedBox(height: 8),
-              SizedBox(
+              LabContainer(
                 width: double.infinity,
+                padding:
+                    const LabEdgeInsets.symmetric(horizontal: LabGapSize.s12),
                 child: LabText.med14(
                   topThreeSupporters[1].author.value?.name ??
                       formatNpub(
@@ -121,8 +125,10 @@ class LabSupportersStage extends StatelessWidget {
             children: [
               LabProfilePic.s56(topThreeSupporters[2].author.value),
               const SizedBox(height: 8),
-              SizedBox(
+              LabContainer(
                 width: double.infinity,
+                padding:
+                    const LabEdgeInsets.symmetric(horizontal: LabGapSize.s12),
                 child: LabText.med14(
                   topThreeSupporters[2].author.value?.name ??
                       formatNpub(

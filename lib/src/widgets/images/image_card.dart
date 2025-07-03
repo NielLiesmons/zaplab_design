@@ -39,7 +39,7 @@ class LabImageCard extends StatelessWidget {
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               color: theme.colors.gray66,
-              borderRadius: theme.radius.asBorderRadius().rad16,
+              borderRadius: theme.radius.asBorderRadius().rad12,
               border: Border.all(
                 color: theme.colors.white16,
                 width: LabLineThicknessData.normal().thin,

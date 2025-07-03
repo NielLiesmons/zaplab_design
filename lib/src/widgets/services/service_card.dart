@@ -172,7 +172,11 @@ class LabServiceCard extends StatelessWidget {
                   ),
                   if (service.content.isNotEmpty)
                     LabContainer(
-                      padding: const LabEdgeInsets.all(LabGapSize.s6),
+                      padding: const LabEdgeInsets.only(
+                          top: LabGapSize.s6,
+                          bottom: LabGapSize.s2,
+                          left: LabGapSize.s2,
+                          right: LabGapSize.s2),
                       child: LabText.reg14(
                         service.summary ?? "No summary specified",
                         maxLines: 2,

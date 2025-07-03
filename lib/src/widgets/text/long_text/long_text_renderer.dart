@@ -395,7 +395,7 @@ class LabLongTextRenderer extends StatelessWidget {
                 : number;
         return Padding(
           padding: EdgeInsets.only(
-            left: (element.level - 1) * 12,
+            left: (element.level) * 12,
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -454,7 +454,7 @@ class LabLongTextRenderer extends StatelessWidget {
       case LongTextElementType.checkListItem:
         return Padding(
           padding: EdgeInsets.only(
-            left: (element.level - 1) * 16,
+            left: (element.level) * 16,
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

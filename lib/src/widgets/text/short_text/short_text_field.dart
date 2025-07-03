@@ -4,6 +4,7 @@ import 'package:models/models.dart';
 class LabShortTextField extends StatefulWidget {
   final List<Widget>? placeholder;
   final void Function(String)? onChanged;
+  final void Function(String)? onRawTextChanged;
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final TextStyle? style;
@@ -30,6 +31,7 @@ class LabShortTextField extends StatefulWidget {
     super.key,
     this.placeholder,
     this.onChanged,
+    this.onRawTextChanged,
     this.controller,
     this.focusNode,
     this.style,
@@ -56,6 +58,7 @@ class LabShortTextField extends StatefulWidget {
   LabShortTextField copyWith({
     List<Widget>? placeholder,
     void Function(String)? onChanged,
+    void Function(String)? onRawTextChanged,
     TextEditingController? controller,
     FocusNode? focusNode,
     TextStyle? style,
@@ -80,6 +83,7 @@ class LabShortTextField extends StatefulWidget {
     return LabShortTextField(
       placeholder: placeholder ?? this.placeholder,
       onChanged: onChanged ?? this.onChanged,
+      onRawTextChanged: onRawTextChanged ?? this.onRawTextChanged,
       controller: controller ?? this.controller,
       focusNode: focusNode ?? this.focusNode,
       style: style ?? this.style,
@@ -173,18 +177,18 @@ class _LabShortTextFieldState extends State<LabShortTextField> {
               ),
             ),
           ShaderMask(
-            shaderCallback: (bounds) => LinearGradient(
+            shaderCallback: (bounds) => const LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                const Color(0x00FFFFFF),
-                const Color(0x99FFFFFF),
-                const Color(0xFFFFFFFF),
-                const Color(0xFFFFFFFF),
-                const Color(0x99FFFFFF),
-                const Color(0x00FFFFFF),
+                Color(0x00FFFFFF),
+                Color(0x99FFFFFF),
+                Color(0xFFFFFFFF),
+                Color(0xFFFFFFFF),
+                Color(0x99FFFFFF),
+                Color(0x00FFFFFF),
               ],
-              stops: const [0.00, 0.03, 0.06, 0.94, 0.97, 1.00],
+              stops: [0.00, 0.03, 0.06, 0.94, 0.97, 1.00],
             ).createShader(bounds),
             child: LabContainer(
               clipBehavior: Clip.hardEdge,
@@ -203,6 +207,7 @@ class _LabShortTextFieldState extends State<LabShortTextField> {
                 controller: widget.controller,
                 focusNode: widget.focusNode,
                 onChanged: widget.onChanged,
+                onRawTextChanged: widget.onRawTextChanged,
                 contextMenuItems: widget.contextMenuItems,
                 placeholder: widget.placeholder,
                 onSearchProfiles: widget.onSearchProfiles,

@@ -62,12 +62,12 @@ String getModelDisplayText(Model<dynamic>? model) {
 // Profile
 typedef NostrProfileResolver = Future<({Profile profile, VoidCallback? onTap})>
     Function(String npub);
-typedef NostrProfileSearch = Future<List<Profile>> Function(String query);
+typedef NostrProfileSearch = Future<List<Profile>> Function(String queryText);
 
 // Emoji
 typedef NostrEmojiResolver = Future<String> Function(
     String identifier, Model model);
-typedef NostrEmojiSearch = Future<List<Emoji>> Function(String query);
+typedef NostrEmojiSearch = Future<List<Emoji>> Function(String queryText);
 
 // Hashtag
 typedef NostrHashtagResolver = Future<void Function()?> Function(
@@ -496,67 +496,6 @@ class PartialBadge extends ParameterizableReplaceablePartialEvent<Badge> {
   }
 }
 
-class BadgeAward extends RegularModel<BadgeAward> {
-  BadgeAward.fromMap(super.map, super.ref) : super.fromMap();
-
-  String get badgeDefinition => event.getFirstTagValue('a')!;
-  Set<String> get awardedPubkeys => event.getTagSetValues('p');
-}
-
-class PartialBadgeAward extends RegularPartialModel<BadgeAward> {
-  PartialBadgeAward({
-    required String badgeDefinition,
-    required Set<String> awardedPubkeys,
-  }) {
-    this.badgeDefinition = badgeDefinition;
-    this.awardedPubkeys = awardedPubkeys;
-  }
-
-  set badgeDefinition(String value) => event.addTagValue('a', value);
-  set awardedPubkeys(Set<String> value) {
-    for (final pubkey in value) {
-      event.addTagValue('p', pubkey);
-    }
-  }
-}
-
-class ProfileBadges extends ParameterizableReplaceableModel<ProfileBadges> {
-  ProfileBadges.fromMap(super.map, super.ref) : super.fromMap();
-
-  List<({String definition, String award})> get badges {
-    final badges = <({String definition, String award})>[];
-    final tags = event.tags;
-
-    for (var i = 0; i < tags.length - 1; i++) {
-      if (tags[i][0] == 'a' && tags[i + 1][0] == 'e') {
-        badges.add((
-          definition: tags[i][1],
-          award: tags[i + 1][1],
-        ));
-      }
-    }
-
-    return badges;
-  }
-}
-
-class PartialProfileBadges
-    extends ParameterizableReplaceablePartialEvent<ProfileBadges> {
-  PartialProfileBadges({
-    required List<({String definition, String award})> badges,
-  }) {
-    this.badges = badges;
-  }
-
-  set badges(List<({String definition, String award})> value) {
-    event.addTagValue('d', 'profile_badges');
-    for (final badge in value) {
-      event.addTagValue('a', badge.definition);
-      event.addTagValue('e', badge.award);
-    }
-  }
-}
-
 // CashuZap
 
 class CashuZap extends RegularModel<CashuZap> {
@@ -685,6 +624,71 @@ class PartialService extends ParameterizableReplaceablePartialEvent<Service> {
     }
   }
   set title(String value) => event.addTagValue('title', value);
+  set summary(String? value) => event.addTagValue('summary', value);
+  set slug(String value) => event.addTagValue('d', value);
+  set content(String value) => event.content = value;
+  set images(Set<String> value) {
+    for (final url in value) {
+      event.addTagValue('images', url);
+    }
+  }
+
+  set publishedAt(DateTime? value) =>
+      event.addTagValue('published_at', value?.toSeconds().toString());
+}
+
+// Product
+
+class Product extends ParameterizableReplaceableModel<Product> {
+  Product.fromMap(super.map, super.ref) : super.fromMap();
+  String? get title => event.getFirstTagValue('title');
+  String? get price => event.getFirstTagValue('price');
+  String get content => event.content;
+  String? get summary => event.getFirstTagValue('summary');
+  Set<String> get images => event.getTagSetValues('images');
+  String get slug => event.getFirstTagValue('d')!;
+  DateTime? get publishedAt =>
+      event.getFirstTagValue('published_at')?.toInt()?.toDate();
+
+  PartialProduct copyWith({
+    String? title,
+    String? price,
+    String? content,
+    String? summary,
+    Set<String>? images,
+    DateTime? publishedAt,
+  }) {
+    return PartialProduct(
+      title ?? this.title ?? '',
+      content ?? event.content,
+      price: price ?? this.price ?? '',
+      summary: summary ?? this.summary,
+      images: images ?? this.images,
+      publishedAt: publishedAt ?? this.publishedAt,
+    );
+  }
+}
+
+class PartialProduct extends ParameterizableReplaceablePartialEvent<Product> {
+  PartialProduct(String title, String content,
+      {DateTime? publishedAt,
+      String? price,
+      String? slug,
+      String? summary,
+      Set<String>? images}) {
+    this.title = title;
+    this.price = price ?? "21";
+    this.summary = summary;
+    this.publishedAt = publishedAt;
+    this.slug = slug ?? Utils.generateRandomHex64();
+    event.content = content;
+    if (images != null) {
+      this.images = images;
+    }
+  }
+  set title(String value) => event.addTagValue('title', value);
+  set price(String value) => event.addTagValue('price', value);
+
   set summary(String? value) => event.addTagValue('summary', value);
   set slug(String value) => event.addTagValue('d', value);
   set content(String value) => event.content = value;

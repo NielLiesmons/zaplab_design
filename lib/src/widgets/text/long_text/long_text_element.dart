@@ -41,4 +41,22 @@ class LongTextElement {
     this.checked,
     this.children,
   });
+
+  LongTextElement copyWith({
+    LongTextElementType? type,
+    String? content,
+    Map<String, String>? attributes,
+    int? level,
+    bool? checked,
+    List<LongTextElement>? children,
+  }) {
+    return LongTextElement(
+      type: type ?? this.type,
+      content: content ?? this.content,
+      attributes: attributes ?? this.attributes,
+      level: level ?? this.level,
+      checked: checked ?? this.checked,
+      children: children ?? this.children,
+    );
+  }
 }

@@ -92,21 +92,37 @@ class LabTextSelectionControls extends TextSelectionControls {
     // Use the leftmost point (start of selection) for positioning
     final startPoint = endpoints.first.point;
 
+    // Check if we should show the style menu (when text is selected and editable)
+    final isEditable = editableTextState.widget.readOnly != true;
+    final hasSelection =
+        !editableTextState.textEditingValue.selection.isCollapsed;
+    final showStyleMenu = isEditable && hasSelection;
+
+    // Adjust vertical offset when style menu is shown
+    final styleMenuOffset = showStyleMenu ? 48.0 : 0.0;
+
     return CompositedTransformFollower(
       link: editableTextState.renderEditable.startHandleLayerLink,
       offset: Offset(
-          startPoint.dx <= MediaQuery.of(context).size.width / 3
+          startPoint.dx <=
+                  (MediaQuery.of(context).size.width / theme.system.scale) / 3
               ? 0
               : // Left third
-              startPoint.dx >= (MediaQuery.of(context).size.width * 2 / 3)
+              startPoint.dx >=
+                      ((MediaQuery.of(context).size.width /
+                              theme.system.scale) *
+                          2 /
+                          3)
                   ? -(2 * theme.sizes.s104)
                   : // Right third
                   -theme.sizes.s104, // Middle third
-          -textLineHeight - theme.sizes.s56),
+          -textLineHeight - theme.sizes.s56 - styleMenuOffset),
       showWhenUnlinked: false,
       child: LabTextSelectionMenu(
         position: selectionMidpoint,
         editableTextState: editableTextState,
+        showStyleMenu: showStyleMenu,
+        clipboardStatus: clipboardStatus,
       ),
     );
   }

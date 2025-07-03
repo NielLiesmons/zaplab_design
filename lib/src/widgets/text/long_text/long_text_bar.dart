@@ -74,8 +74,11 @@ List<Widget> _buildContentTypeRows(BuildContext context) {
 }
 
 class LabLongTextBar extends StatelessWidget {
+  final void Function(LongTextElementType)? onBlockTypeSelected;
+
   const LabLongTextBar({
     super.key,
+    this.onBlockTypeSelected,
   });
 
   @override
@@ -102,7 +105,11 @@ class LabLongTextBar extends StatelessWidget {
                       children: [
                         Expanded(
                           child: LabPanelButton(
-                            onTap: () {},
+                            onTap: () {
+                              onBlockTypeSelected
+                                  ?.call(LongTextElementType.heading1);
+                              Navigator.of(context).pop();
+                            },
                             padding: const LabEdgeInsets.symmetric(
                               horizontal: LabGapSize.s16,
                             ),

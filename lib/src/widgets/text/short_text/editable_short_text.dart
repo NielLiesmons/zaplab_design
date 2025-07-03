@@ -5,12 +5,46 @@ import 'package:models/models.dart';
 
 bool isEditingText = false;
 
+// Styling range data structure
+class StylingRange {
+  final int start;
+  final int end;
+  final TextStyle style;
+
+  StylingRange({
+    required this.start,
+    required this.end,
+    required this.style,
+  });
+
+  bool contains(int offset) => offset >= start && offset < end;
+  bool overlaps(int start, int end) => this.start < end && this.end > start;
+}
+
+// Change tracking enums and classes
+enum ChangeType { insertion, deletion, replacement, unknown }
+
+class ChangeInfo {
+  final ChangeType type;
+  final int offset;
+  final int oldLength;
+  final int newLength;
+
+  ChangeInfo({
+    required this.type,
+    required this.offset,
+    required this.oldLength,
+    required this.newLength,
+  });
+}
+
 class LabEditableShortText extends StatefulWidget {
   final String text;
   final TextStyle? style;
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onRawTextChanged;
   final List<LabTextSelectionMenuItem>? contextMenuItems;
   final List<Widget>? placeholder;
   final NostrProfileSearch onSearchProfiles;
@@ -26,6 +60,7 @@ class LabEditableShortText extends StatefulWidget {
     this.controller,
     this.focusNode,
     this.onChanged,
+    this.onRawTextChanged,
     this.contextMenuItems,
     this.placeholder,
     required this.onSearchProfiles,
@@ -42,6 +77,7 @@ class LabEditableShortText extends StatefulWidget {
 class InlineSpanController extends TextEditingController {
   final Map<String, WidgetBuilder> triggerSpans;
   final Map<int, InlineSpan> _activeSpans = {};
+  final List<StylingRange> _stylingRanges = [];
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
   final BuildContext context;
@@ -49,13 +85,20 @@ class InlineSpanController extends TextEditingController {
   bool _isUpdating = false;
   bool _isNotifying = false;
 
+  // Track previous text state for change detection
+  String _previousText = '';
+  TextSelection _previousSelection = TextSelection.collapsed(offset: 0);
+
   InlineSpanController({
     super.text,
     required this.triggerSpans,
     required this.onSearchProfiles,
     required this.onSearchEmojis,
     required this.context,
-  });
+  }) {
+    _previousText = text;
+    _previousSelection = TextSelection.collapsed(offset: text.length);
+  }
 
   bool hasSpanAt(int offset) {
     return _activeSpans.containsKey(offset);
@@ -119,6 +162,12 @@ class InlineSpanController extends TextEditingController {
         if (nextTriggerIndex == -1) break;
 
         // Find the corresponding span for this trigger
+        if (spans.isEmpty) {
+          // No spans to update, skip this trigger
+          lastTriggerIndex = nextTriggerIndex;
+          continue;
+        }
+
         final span = spans.firstWhere(
           (s) => s.key == lastTriggerIndex + 1 || s.key == nextTriggerIndex,
           orElse: () => spans.first,
@@ -147,7 +196,7 @@ class InlineSpanController extends TextEditingController {
     TextStyle? style,
     required bool withComposing,
   }) {
-    if (_activeSpans.isEmpty) {
+    if (_activeSpans.isEmpty && _stylingRanges.isEmpty) {
       return TextSpan(
         style: style,
         text: text,
@@ -156,35 +205,94 @@ class InlineSpanController extends TextEditingController {
 
     final List<InlineSpan> children = [];
     int lastOffset = 0;
+    final baseStyle = style ?? const TextStyle();
 
-    final sortedOffsets = _activeSpans.keys.toList()..sort();
+    // Get all widget spans (mentions, emojis) and sort them
+    final sortedWidgetOffsets = _activeSpans.keys.toList()..sort();
 
-    for (final offset in sortedOffsets) {
-      // Add text before the span
-      if (offset > lastOffset && offset <= text.length) {
-        children.add(TextSpan(
-          style: style,
-          text: text.substring(lastOffset, offset),
-        ));
+    // Process text character by character, handling widget spans and styling
+    for (int i = 0; i < text.length; i++) {
+      final char = text[i];
+
+      // Check if this position has a widget span
+      if (_activeSpans.containsKey(i)) {
+        // Add text before the widget span with appropriate styling
+        if (i > lastOffset) {
+          final textBefore = text.substring(lastOffset, i);
+          final styledText =
+              _applyStylingToText(textBefore, lastOffset, baseStyle);
+          children.addAll(styledText);
+        }
+
+        // Add the widget span
+        children.add(_activeSpans[i]!);
+        lastOffset = i + 1;
+        continue;
       }
-
-      // Add the span
-      children.add(_activeSpans[offset]!);
-      lastOffset = offset + 1;
     }
 
-    // Add remaining text after the last span
+    // Add remaining text after the last span with styling
     if (lastOffset < text.length) {
-      children.add(TextSpan(
-        style: style,
-        text: text.substring(lastOffset),
-      ));
+      final remainingText = text.substring(lastOffset);
+      final styledText =
+          _applyStylingToText(remainingText, lastOffset, baseStyle);
+      children.addAll(styledText);
     }
 
     return TextSpan(
       style: style,
       children: children,
     );
+  }
+
+  List<InlineSpan> _applyStylingToText(
+      String text, int textStartOffset, TextStyle baseStyle) {
+    if (_stylingRanges.isEmpty) {
+      return [TextSpan(style: baseStyle, text: text)];
+    }
+
+    final List<InlineSpan> spans = [];
+    int lastOffset = 0;
+
+    for (int i = 0; i < text.length; i++) {
+      final globalOffset = textStartOffset + i;
+      final applicableRanges = _stylingRanges
+          .where((range) => range.contains(globalOffset))
+          .toList();
+
+      if (applicableRanges.isNotEmpty) {
+        // Add text before this styled character
+        if (i > lastOffset) {
+          spans.add(TextSpan(
+            style: baseStyle,
+            text: text.substring(lastOffset, i),
+          ));
+        }
+
+        // Create combined style from all applicable ranges
+        TextStyle combinedStyle = baseStyle;
+        for (final range in applicableRanges) {
+          combinedStyle = combinedStyle.merge(range.style);
+        }
+
+        // Add the styled character
+        spans.add(TextSpan(
+          style: combinedStyle,
+          text: text[i],
+        ));
+        lastOffset = i + 1;
+      }
+    }
+
+    // Add remaining unstyled text
+    if (lastOffset < text.length) {
+      spans.add(TextSpan(
+        style: baseStyle,
+        text: text.substring(lastOffset),
+      ));
+    }
+
+    return spans;
   }
 
   void insertSpan(int offset, String trigger) {
@@ -237,6 +345,280 @@ class InlineSpanController extends TextEditingController {
 
   void clearSpans() {
     _activeSpans.clear();
+    notifyListeners();
+  }
+
+  void clearStyling() {
+    _stylingRanges.clear();
+    notifyListeners();
+  }
+
+  /// Update styling ranges when text changes (insertions/deletions)
+  void _updateStylingRanges(String oldText, String newText,
+      TextSelection oldSelection, TextSelection newSelection) {
+    final List<StylingRange> updatedRanges = [];
+
+    // Detect the type of change
+    final changeType =
+        _detectChangeType(oldText, newText, oldSelection, newSelection);
+
+    switch (changeType.type) {
+      case ChangeType.insertion:
+        _handleInsertion(changeType, updatedRanges);
+        break;
+      case ChangeType.deletion:
+        _handleDeletion(changeType, updatedRanges);
+        break;
+      case ChangeType.replacement:
+        _handleReplacement(changeType, updatedRanges);
+        break;
+      case ChangeType.unknown:
+        // For unknown changes, try to preserve as much styling as possible
+        _handleUnknownChange(changeType, updatedRanges);
+        break;
+    }
+
+    _stylingRanges.clear();
+    _stylingRanges.addAll(updatedRanges);
+  }
+
+  /// Detect what type of change occurred
+  ChangeInfo _detectChangeType(String oldText, String newText,
+      TextSelection oldSelection, TextSelection newSelection) {
+    final oldLength = oldText.length;
+    final newLength = newText.length;
+    final lengthDiff = newLength - oldLength;
+
+    if (lengthDiff > 0) {
+      // Insertion
+      final insertOffset = newSelection.baseOffset - lengthDiff;
+      return ChangeInfo(
+        type: ChangeType.insertion,
+        offset: insertOffset,
+        oldLength: 0,
+        newLength: lengthDiff,
+      );
+    } else if (lengthDiff < 0) {
+      // Deletion
+      final deleteOffset = newSelection.baseOffset;
+      return ChangeInfo(
+        type: ChangeType.deletion,
+        offset: deleteOffset,
+        oldLength: -lengthDiff,
+        newLength: 0,
+      );
+    } else {
+      // Same length - could be replacement or cursor movement
+      // For now, treat as unknown
+      return ChangeInfo(
+        type: ChangeType.unknown,
+        offset: 0,
+        oldLength: 0,
+        newLength: 0,
+      );
+    }
+  }
+
+  void _handleInsertion(ChangeInfo change, List<StylingRange> updatedRanges) {
+    for (final range in _stylingRanges) {
+      if (range.end <= change.offset) {
+        // Range is before insertion, keep as is
+        updatedRanges.add(range);
+      } else if (range.start >= change.offset) {
+        // Range is after insertion, shift by insertion length
+        updatedRanges.add(StylingRange(
+          start: range.start + change.newLength,
+          end: range.end + change.newLength,
+          style: range.style,
+        ));
+      } else if (range.start < change.offset && range.end > change.offset) {
+        // Range spans insertion point, extend the range
+        updatedRanges.add(StylingRange(
+          start: range.start,
+          end: range.end + change.newLength,
+          style: range.style,
+        ));
+      }
+    }
+  }
+
+  void _handleDeletion(ChangeInfo change, List<StylingRange> updatedRanges) {
+    for (final range in _stylingRanges) {
+      if (range.end <= change.offset) {
+        // Range is before deletion, keep as is
+        updatedRanges.add(range);
+      } else if (range.start >= change.offset + change.oldLength) {
+        // Range is after deletion, shift by deletion length
+        updatedRanges.add(StylingRange(
+          start: range.start - change.oldLength,
+          end: range.end - change.oldLength,
+          style: range.style,
+        ));
+      } else if (range.start < change.offset &&
+          range.end > change.offset + change.oldLength) {
+        // Range spans deletion, shrink the range
+        updatedRanges.add(StylingRange(
+          start: range.start,
+          end: range.end - change.oldLength,
+          style: range.style,
+        ));
+      } else if (range.start >= change.offset &&
+          range.end <= change.offset + change.oldLength) {
+        // Range is completely within deletion, remove it
+        continue;
+      } else if (range.start < change.offset &&
+          range.end <= change.offset + change.oldLength) {
+        // Range starts before but ends within deletion, truncate
+        updatedRanges.add(StylingRange(
+          start: range.start,
+          end: change.offset,
+          style: range.style,
+        ));
+      } else if (range.start >= change.offset &&
+          range.start < change.offset + change.oldLength &&
+          range.end > change.offset + change.oldLength) {
+        // Range starts within deletion but ends after, adjust start
+        updatedRanges.add(StylingRange(
+          start: change.offset,
+          end: range.end - change.oldLength,
+          style: range.style,
+        ));
+      }
+    }
+  }
+
+  void _handleReplacement(ChangeInfo change, List<StylingRange> updatedRanges) {
+    // Treat replacement as deletion + insertion
+    _handleDeletion(change, updatedRanges);
+    final tempRanges = List<StylingRange>.from(updatedRanges);
+    updatedRanges.clear();
+
+    // Now handle the insertion part
+    for (final range in tempRanges) {
+      if (range.end <= change.offset) {
+        updatedRanges.add(range);
+      } else if (range.start >= change.offset) {
+        updatedRanges.add(StylingRange(
+          start: range.start + change.newLength,
+          end: range.end + change.newLength,
+          style: range.style,
+        ));
+      } else if (range.start < change.offset && range.end > change.offset) {
+        updatedRanges.add(StylingRange(
+          start: range.start,
+          end: range.end + change.newLength,
+          style: range.style,
+        ));
+      }
+    }
+  }
+
+  void _handleUnknownChange(
+      ChangeInfo change, List<StylingRange> updatedRanges) {
+    // For unknown changes, try to preserve styling by adjusting ranges
+    // This is a fallback that may not be perfect but should work for most cases
+    for (final range in _stylingRanges) {
+      if (range.end <= text.length) {
+        updatedRanges.add(range);
+      }
+    }
+  }
+
+  /// Apply bold styling to selected text
+  void applyBold(TextSelection selection) {
+    if (!selection.isValid || selection.isCollapsed) return;
+
+    final start = selection.start;
+    final end = selection.end;
+
+    // Add bold styling range
+    _stylingRanges.add(StylingRange(
+      start: start,
+      end: end,
+      style: const TextStyle(fontWeight: FontWeight.bold),
+    ));
+
+    // Keep cursor at the end of selection (natural position)
+    this.selection = TextSelection.collapsed(offset: end);
+    notifyListeners();
+  }
+
+  /// Apply italic styling to selected text
+  void applyItalic(TextSelection selection) {
+    if (!selection.isValid || selection.isCollapsed) return;
+
+    final start = selection.start;
+    final end = selection.end;
+
+    // Add italic styling range
+    _stylingRanges.add(StylingRange(
+      start: start,
+      end: end,
+      style: const TextStyle(fontStyle: FontStyle.italic),
+    ));
+
+    // Keep cursor at the end of selection (natural position)
+    this.selection = TextSelection.collapsed(offset: end);
+    notifyListeners();
+  }
+
+  /// Apply underline styling to selected text
+  void applyUnderline(TextSelection selection) {
+    if (!selection.isValid || selection.isCollapsed) return;
+
+    final start = selection.start;
+    final end = selection.end;
+
+    // Add underline styling range
+    _stylingRanges.add(StylingRange(
+      start: start,
+      end: end,
+      style: const TextStyle(decoration: TextDecoration.underline),
+    ));
+
+    // Keep cursor at the end of selection (natural position)
+    this.selection = TextSelection.collapsed(offset: end);
+    notifyListeners();
+  }
+
+  /// Apply strikethrough styling to selected text
+  void applyStrikethrough(TextSelection selection) {
+    if (!selection.isValid || selection.isCollapsed) return;
+
+    final start = selection.start;
+    final end = selection.end;
+
+    // Add strikethrough styling range
+    _stylingRanges.add(StylingRange(
+      start: start,
+      end: end,
+      style: const TextStyle(decoration: TextDecoration.lineThrough),
+    ));
+
+    // Keep cursor at the end of selection (natural position)
+    this.selection = TextSelection.collapsed(offset: end);
+    notifyListeners();
+  }
+
+  /// Apply code/monospace styling to selected text
+  void applyCode(TextSelection selection) {
+    if (!selection.isValid || selection.isCollapsed) return;
+
+    final start = selection.start;
+    final end = selection.end;
+
+    // Add code styling range
+    _stylingRanges.add(StylingRange(
+      start: start,
+      end: end,
+      style: const TextStyle(
+        fontFamily: 'monospace',
+        backgroundColor: Color(0x1AFFFFFF), // Light background
+      ),
+    ));
+
+    // Keep cursor at the end of selection (natural position)
+    this.selection = TextSelection.collapsed(offset: end);
     notifyListeners();
   }
 }
@@ -379,10 +761,22 @@ class _LabEditableShortTextState extends State<LabEditableShortText>
     if (!selection.isValid) return;
 
     final offset = selection.baseOffset;
-    final previousLength = _controller.text.length;
 
-    print(
-        'Text changed: "$text" (length: ${text.length}, previous: $previousLength)');
+    // Update styling ranges when text changes
+    if (_controller._previousText.isNotEmpty) {
+      _controller._updateStylingRanges(
+        _controller._previousText,
+        text,
+        _controller._previousSelection,
+        selection,
+      );
+    }
+
+    // Update previous state for next change detection
+    _controller._previousText = text;
+    _controller._previousSelection = selection;
+
+    print('Text changed: "$text" (length: ${text.length})');
     print('Current offset: $offset');
     print('Active spans: ${_controller._activeSpans.keys.toList()}');
 
@@ -903,6 +1297,61 @@ class _LabEditableShortTextState extends State<LabEditableShortText>
 
                     final offset = selection.baseOffset;
 
+                    // Handle Enter, Tab, and Space keys to cancel mention/emoji selection
+                    if (event.logicalKey == LogicalKeyboardKey.enter ||
+                        event.logicalKey == LogicalKeyboardKey.tab ||
+                        event.logicalKey == LogicalKeyboardKey.space) {
+                      if (_mentionStartOffset != null ||
+                          _emojiStartOffset != null) {
+                        // Cancel mention/emoji selection
+                        if (_mentionStartOffset != null) {
+                          print('Enter/Tab pressed, canceling mention');
+                          // Remove the @ character and any text after it
+                          final newText = _controller.text
+                              .replaceRange(_mentionStartOffset!, offset, '');
+                          final newOffset =
+                              _mentionStartOffset!; // Cursor goes back to where @ was
+
+                          _controller.value = TextEditingValue(
+                            text: newText,
+                            selection:
+                                TextSelection.collapsed(offset: newOffset),
+                          );
+
+                          // Clear the span and reset mention state
+                          _controller._activeSpans.remove(offset);
+                          _mentionStartOffset = null;
+                          _currentMentionText = '';
+                          _showPlaceholder.value = false;
+                          _mentionOverlay?.remove();
+                          _mentionOverlay = null;
+                        }
+                        if (_emojiStartOffset != null) {
+                          print('Enter/Tab pressed, canceling emoji');
+                          // Remove the : character and any text after it
+                          final newText = _controller.text
+                              .replaceRange(_emojiStartOffset!, offset, '');
+                          final newOffset =
+                              _emojiStartOffset!; // Cursor goes back to where : was
+
+                          _controller.value = TextEditingValue(
+                            text: newText,
+                            selection:
+                                TextSelection.collapsed(offset: newOffset),
+                          );
+
+                          // Clear the span and reset emoji state
+                          _controller._activeSpans.remove(offset);
+                          _emojiStartOffset = null;
+                          _currentEmojiText = '';
+                          _showPlaceholder.value = false;
+                          _emojiOverlay?.remove();
+                          _emojiOverlay = null;
+                        }
+                        return;
+                      }
+                    }
+
                     // Find the next span before and after the current offset
                     int? nextSpanBefore;
                     int? nextSpanAfter;
@@ -913,6 +1362,45 @@ class _LabEditableShortTextState extends State<LabEditableShortText>
                       } else if (spanOffset > offset) {
                         nextSpanAfter = spanOffset;
                         break;
+                      }
+                    }
+
+                    // Handle backspace/delete on spans (mentions and emojis only)
+                    if (event.logicalKey == LogicalKeyboardKey.backspace) {
+                      // Check if cursor is at the start of a span
+                      if (_controller._activeSpans.containsKey(offset)) {
+                        print('Backspace on span at offset $offset');
+                        // Remove the span and the character at that position
+                        _controller._activeSpans.remove(offset);
+
+                        // Remove the character from the text
+                        final newText = _controller.text
+                            .replaceRange(offset, offset + 1, '');
+                        final newOffset = offset;
+
+                        _controller.value = TextEditingValue(
+                          text: newText,
+                          selection: TextSelection.collapsed(offset: newOffset),
+                        );
+                        return;
+                      }
+                    } else if (event.logicalKey == LogicalKeyboardKey.delete) {
+                      // Check if cursor is at the start of a span
+                      if (_controller._activeSpans.containsKey(offset)) {
+                        print('Delete on span at offset $offset');
+                        // Remove the span and the character at that position
+                        _controller._activeSpans.remove(offset);
+
+                        // Remove the character from the text
+                        final newText = _controller.text
+                            .replaceRange(offset, offset + 1, '');
+                        final newOffset = offset;
+
+                        _controller.value = TextEditingValue(
+                          text: newText,
+                          selection: TextSelection.collapsed(offset: newOffset),
+                        );
+                        return;
                       }
                     }
 

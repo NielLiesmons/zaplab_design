@@ -60,8 +60,8 @@ class LabServiceHeader extends StatelessWidget {
             ],
           ),
         ),
-        const LabDivider(),
         if (service.images.isNotEmpty) ...[
+          const LabDivider(),
           LabImageSlider(images: service.images.toList()),
           const LabDivider(),
         ],

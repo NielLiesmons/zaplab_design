@@ -308,7 +308,7 @@ class LabTypographyData extends Equatable {
         boldArticle: TextStyle(
           fontFamily: 'Lora',
           package: 'zaplab_design',
-          fontWeight: FontWeight.w600, // technically semibold
+          fontWeight: FontWeight.w800,
           fontSize: 16,
           height: 1.9,
           letterSpacing: 0.15,
@@ -342,9 +342,9 @@ class LabTypographyData extends Equatable {
         boldWiki: TextStyle(
           fontFamily: 'Inter',
           package: 'zaplab_design',
-          fontWeight: FontWeight.w600, // technically semibold
+          fontWeight: FontWeight.w800,
           fontSize: 16,
-          height: 1.5,
+          height: 1.9,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
@@ -354,7 +354,7 @@ class LabTypographyData extends Equatable {
           package: 'zaplab_design',
           fontWeight: FontWeight.w400, // regular
           fontSize: 16,
-          height: 1.5,
+          height: 1.9,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
@@ -366,7 +366,7 @@ class LabTypographyData extends Equatable {
             FontVariation('wght', 500),
           ], // medium
           fontSize: 16,
-          height: 1.5,
+          height: 1.9,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
@@ -662,7 +662,7 @@ class LabTypographyData extends Equatable {
         boldArticle: TextStyle(
           fontFamily: 'Lora',
           package: 'zaplab_design',
-          fontWeight: FontWeight.w600, // technically semibold
+          fontWeight: FontWeight.w800,
           fontSize: 15,
           height: 1.9,
           letterSpacing: 0.15,
@@ -696,9 +696,9 @@ class LabTypographyData extends Equatable {
         boldWiki: TextStyle(
           fontFamily: 'Inter',
           package: 'zaplab_design',
-          fontWeight: FontWeight.w600, // technically semibold
+          fontWeight: FontWeight.w800,
           fontSize: 15,
-          height: 1.5,
+          height: 1.9,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
@@ -708,7 +708,7 @@ class LabTypographyData extends Equatable {
           package: 'zaplab_design',
           fontWeight: FontWeight.w400, // regular
           fontSize: 15,
-          height: 1.5,
+          height: 1.9,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
@@ -720,7 +720,7 @@ class LabTypographyData extends Equatable {
             FontVariation('wght', 500),
           ], // medium
           fontSize: 15,
-          height: 1.5,
+          height: 1.9,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
@@ -1016,7 +1016,7 @@ class LabTypographyData extends Equatable {
         boldArticle: TextStyle(
           fontFamily: 'Lora',
           package: 'zaplab_design',
-          fontWeight: FontWeight.w600, // technically semibold
+          fontWeight: FontWeight.w800,
           fontSize: 16.5,
           height: 1.9,
           letterSpacing: 0.15,
@@ -1050,9 +1050,9 @@ class LabTypographyData extends Equatable {
         boldWiki: TextStyle(
           fontFamily: 'Inter',
           package: 'zaplab_design',
-          fontWeight: FontWeight.w600, // technically semibold
+          fontWeight: FontWeight.w800,
           fontSize: 16.5,
-          height: 1.5,
+          height: 1.9,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
@@ -1062,7 +1062,7 @@ class LabTypographyData extends Equatable {
           package: 'zaplab_design',
           fontWeight: FontWeight.w400, // regular
           fontSize: 16.5,
-          height: 1.5,
+          height: 1.9,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
@@ -1074,7 +1074,7 @@ class LabTypographyData extends Equatable {
             FontVariation('wght', 500),
           ], // medium
           fontSize: 16.5,
-          height: 1.5,
+          height: 1.9,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
