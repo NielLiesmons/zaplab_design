@@ -5,16 +5,16 @@ class TabData {
   final Widget content;
   final Widget icon;
   final int? count;
-  final Widget? settingsContent;
-  final String? settingsDescription;
+  final Widget? optionssContent;
+  final String? optionsDescription;
   final Widget? bottomBar;
   const TabData({
     required this.label,
     required this.content,
     required this.icon,
     this.count,
-    this.settingsContent,
-    this.settingsDescription,
+    this.optionssContent,
+    this.optionsDescription,
     this.bottomBar,
   });
 }
@@ -90,8 +90,8 @@ class _LabTabViewState extends State<LabTabView> with TickerProviderStateMixin {
     );
   }
 
-  Future<void> _showSettingsModal(BuildContext context, TabData tab) async {
-    if (tab.settingsContent == null) return;
+  Future<void> _showOptionssModal(BuildContext context, TabData tab) async {
+    if (tab.optionssContent == null) return;
     final theme = LabTheme.of(context);
     final rootContext = Navigator.of(context, rootNavigator: true).context;
     final isInsideModal = ModalScope.of(context);
@@ -100,8 +100,8 @@ class _LabTabViewState extends State<LabTabView> with TickerProviderStateMixin {
       await LabModal.showInOtherModal(
         rootContext,
         title: tab.label,
-        description: tab.settingsDescription,
-        children: [tab.settingsContent!],
+        description: tab.optionsDescription,
+        children: [tab.optionssContent!],
         bottomBar: LabButton(
           onTap: () => Navigator.of(context).pop(),
           gradient: theme.colors.blurple,
@@ -118,8 +118,8 @@ class _LabTabViewState extends State<LabTabView> with TickerProviderStateMixin {
       await LabModal.show(
         rootContext,
         title: tab.label,
-        description: tab.settingsDescription,
-        children: [tab.settingsContent!],
+        description: tab.optionsDescription,
+        children: [tab.optionssContent!],
         bottomBar: LabButton(
           onTap: () => Navigator.of(context).pop(),
           gradient: theme.colors.blurple,
@@ -165,7 +165,7 @@ class _LabTabViewState extends State<LabTabView> with TickerProviderStateMixin {
                     widget.controller.animateTo(index);
                   },
                   onTabLongPress: (index) {
-                    _showSettingsModal(context, widget.tabs[index]);
+                    _showOptionssModal(context, widget.tabs[index]);
                   },
                   onExpansionChanged: (expanded) async {
                     setState(() => _isExpanded = expanded);

@@ -306,16 +306,18 @@ class LabTabBarState extends State<LabTabBar> with TickerProviderStateMixin {
                                 count: widget.tabs[i].count,
                                 icon: widget.tabs[i].icon,
                                 isSelected: i == widget.selectedIndex,
+                                hasOptions:
+                                    widget.tabs[i].optionssContent != null,
                                 onTap: () {
                                   if (i == widget.selectedIndex &&
-                                      widget.tabs[i].settingsContent != null) {
+                                      widget.tabs[i].optionssContent != null) {
                                     widget.onTabLongPress(i);
                                   } else {
                                     widget.onTabSelected(i);
                                   }
                                 },
                                 onLongPress:
-                                    widget.tabs[i].settingsContent != null
+                                    widget.tabs[i].optionssContent != null
                                         ? () => widget.onTabLongPress(i)
                                         : null,
                               ),

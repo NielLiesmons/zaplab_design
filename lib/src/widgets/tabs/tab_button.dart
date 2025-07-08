@@ -2,6 +2,13 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class LabTabButton extends StatelessWidget {
+  final String label;
+  final Widget icon;
+  final int? count;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+  final bool isSelected;
+  final bool hasOptions;
   const LabTabButton({
     super.key,
     required this.label,
@@ -10,14 +17,8 @@ class LabTabButton extends StatelessWidget {
     this.count,
     this.onLongPress,
     this.isSelected = false,
+    this.hasOptions = false,
   });
-
-  final String label;
-  final Widget icon;
-  final int? count;
-  final VoidCallback? onTap;
-  final VoidCallback? onLongPress;
-  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +49,9 @@ class LabTabButton extends StatelessWidget {
               color: isSelected ? null : inactiveColor,
               borderRadius: theme.radius.asBorderRadius().rad32,
             ),
-            padding: const LabEdgeInsets.symmetric(
-              horizontal: LabGapSize.s16,
+            padding: LabEdgeInsets.only(
+              left: LabGapSize.s16,
+              right: hasOptions ? LabGapSize.s12 : LabGapSize.s16,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -69,6 +71,23 @@ class LabTabButton extends StatelessWidget {
                         : theme.colors.white66,
                   ),
                 ],
+                if (hasOptions == true && isSelected == true) const LabGap.s4(),
+                if (hasOptions == true && isSelected == true)
+                  LabContainer(
+                    padding: const LabEdgeInsets.only(
+                      top: LabGapSize.s2,
+                    ),
+                    child: Transform.scale(
+                      scale: 0.8,
+                      child: LabIcon.s8(
+                        theme.icons.characters.chevronDown,
+                        outlineColor: theme.colors.whiteEnforced.withValues(
+                          alpha: 0.66,
+                        ),
+                        outlineThickness: LabLineThicknessData.normal().medium,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
