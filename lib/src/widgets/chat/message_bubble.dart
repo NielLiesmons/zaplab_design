@@ -75,6 +75,8 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
             ? widget.message!.content
             : widget.reply!.content);
 
+    final isLight = theme.colors.white != const Color(0xFFFFFFFF);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return ShortTextContent(
@@ -162,23 +164,50 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        LabText.bold12(
-                                          widget.message != null
-                                              ? widget.message!.author.value!
-                                                      .name ??
-                                                  formatNpub(widget.message!
-                                                      .author.value!.pubkey)
-                                              : widget.reply!.author.value!
-                                                      .name ??
-                                                  formatNpub(widget.reply!
-                                                      .author.value!.pubkey),
-                                          color: Color(npubToColor(
+                                        Stack(
+                                          children: [
+                                            LabText.bold12(
                                               widget.message != null
                                                   ? widget.message!.author
-                                                      .value!.pubkey
+                                                          .value!.name ??
+                                                      formatNpub(widget.message!
+                                                          .author.value!.pubkey)
                                                   : widget.reply!.author.value!
-                                                      .pubkey)),
-                                          textOverflow: TextOverflow.ellipsis,
+                                                          .name ??
+                                                      formatNpub(widget
+                                                          .reply!
+                                                          .author
+                                                          .value!
+                                                          .pubkey),
+                                              color: Color(npubToColor(
+                                                  widget.message != null
+                                                      ? widget.message!.author
+                                                          .value!.pubkey
+                                                      : widget.reply!.author
+                                                          .value!.pubkey)),
+                                              textOverflow:
+                                                  TextOverflow.ellipsis,
+                                            ),
+                                            LabText.bold12(
+                                              widget.message != null
+                                                  ? widget.message!.author
+                                                          .value!.name ??
+                                                      formatNpub(widget.message!
+                                                          .author.value!.pubkey)
+                                                  : widget.reply!.author.value!
+                                                          .name ??
+                                                      formatNpub(widget
+                                                          .reply!
+                                                          .author
+                                                          .value!
+                                                          .pubkey),
+                                              color: isLight
+                                                  ? theme.colors.white33
+                                                  : const Color(0x00000000),
+                                              textOverflow:
+                                                  TextOverflow.ellipsis,
+                                            ),
+                                          ],
                                         ),
                                         LabText.reg12(
                                           TimestampFormatter.format(

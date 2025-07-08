@@ -39,7 +39,7 @@ class _LabZapBubbleState extends State<LabZapBubble> {
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
-    final isLight = theme.colors.white == const Color(0xFF000000);
+    final isLight = theme.colors.white != const Color(0xFFFFFFFF);
 
     return LabContainer(
       padding: const LabEdgeInsets.symmetric(
@@ -72,7 +72,13 @@ class _LabZapBubbleState extends State<LabZapBubble> {
                 children: [
                   LabSwipeContainer(
                     decoration: BoxDecoration(
-                      gradient: theme.colors.graydient16,
+                      gradient: theme.colors.gold16,
+                      border: Border.all(
+                        color: isLight
+                            ? theme.colors.goldColor
+                            : theme.colors.goldColor66,
+                        width: LabLineThicknessData.normal().medium,
+                      ),
                       borderRadius: BorderRadius.only(
                         topLeft: theme.radius.rad16,
                         topRight: theme.radius.rad16,
@@ -107,10 +113,12 @@ class _LabZapBubbleState extends State<LabZapBubble> {
                                 minWidth: theme.sizes.s80,
                               ),
                               child: LabContainer(
+                                decoration:
+                                    BoxDecoration(color: theme.colors.black16),
                                 padding: const LabEdgeInsets.only(
                                   left: LabGapSize.s8,
                                   right: LabGapSize.s8,
-                                  top: LabGapSize.s8,
+                                  top: LabGapSize.s6,
                                   bottom: LabGapSize.s2,
                                 ),
                                 child: Column(
@@ -160,9 +168,8 @@ class _LabZapBubbleState extends State<LabZapBubble> {
                                                               .author
                                                               .value!
                                                               .pubkey),
-                                                      color: isLight
-                                                          ? theme.colors.white33
-                                                          : theme.colors.white8,
+                                                      color:
+                                                          theme.colors.white8,
                                                       textOverflow:
                                                           TextOverflow.ellipsis,
                                                     ),
@@ -170,33 +177,32 @@ class _LabZapBubbleState extends State<LabZapBubble> {
                                                 ),
                                               ),
                                             const LabGap.s4(),
-                                            LabContainer(
-                                              padding:
-                                                  const LabEdgeInsets.symmetric(
-                                                horizontal: LabGapSize.s8,
-                                                vertical: LabGapSize.s2,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: theme.colors.black33,
-                                                borderRadius: theme.radius
-                                                    .asBorderRadius()
-                                                    .rad16,
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  LabIcon.s10(
-                                                    theme.icons.characters.zap,
-                                                    gradient: theme.colors.gold,
-                                                  ),
-                                                  const LabGap.s6(),
-                                                  LabAmount(
-                                                    widget.cashuZap.amount
-                                                        .toDouble(),
-                                                    level: LabTextLevel.bold12,
-                                                    color: theme.colors.white,
-                                                  ),
-                                                ],
-                                              ),
+                                            Row(
+                                              children: [
+                                                Stack(
+                                                  children: [
+                                                    LabIcon.s12(
+                                                      theme
+                                                          .icons.characters.zap,
+                                                      gradient:
+                                                          theme.colors.gold,
+                                                    ),
+                                                    LabIcon.s12(
+                                                      theme
+                                                          .icons.characters.zap,
+                                                      color:
+                                                          theme.colors.white8,
+                                                    ),
+                                                  ],
+                                                ),
+                                                const LabGap.s4(),
+                                                LabAmount(
+                                                  widget.cashuZap.amount
+                                                      .toDouble(),
+                                                  level: LabTextLevel.bold14,
+                                                  color: theme.colors.white,
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
