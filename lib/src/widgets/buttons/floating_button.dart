@@ -22,7 +22,7 @@ class LabFloatingButton extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
         child: LabButton(
           onTap: onTap,
-          inactiveColor: theme.colors.white16,
+          color: theme.colors.white16,
           square: true,
           children: [icon],
         ),

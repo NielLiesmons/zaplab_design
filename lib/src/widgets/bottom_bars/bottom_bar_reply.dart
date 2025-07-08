@@ -115,7 +115,7 @@ class LabBottomBarReply extends StatelessWidget {
         const LabGap.s12(),
         LabButton(
           square: true,
-          inactiveColor: theme.colors.black33,
+          color: theme.colors.black33,
           onTap: () => onActions(model),
           children: [
             Column(

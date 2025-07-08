@@ -26,7 +26,7 @@ class LabBottomBarProfile extends StatelessWidget {
       child: Row(
         children: [
           LabButton(
-            inactiveGradient: theme.colors.blurple,
+            gradient: theme.colors.blurple,
             onTap: () => onAddLabelTap(profile),
             children: [
               LabIcon.s12(
@@ -95,7 +95,7 @@ class LabBottomBarProfile extends StatelessWidget {
           const LabGap.s12(),
           LabButton(
             square: true,
-            inactiveColor: theme.colors.black33,
+            color: theme.colors.black33,
             onTap: () => onActions(profile),
             children: [
               Column(

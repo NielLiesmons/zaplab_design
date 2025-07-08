@@ -745,3 +745,48 @@ class PartialTask extends ParameterizableReplaceablePartialEvent<Task> {
   set publishedAt(DateTime? value) =>
       event.addTagValue('published_at', value?.toSeconds().toString());
 }
+
+// Calendar Event
+
+class CalendarEvent extends ParameterizableReplaceableModel<CalendarEvent> {
+  CalendarEvent.fromMap(super.map, super.ref) : super.fromMap();
+  String? get name => event.getFirstTagValue('name');
+  String get content => event.content;
+  String? get imageUrl => event.getFirstTagValue('imageUrl');
+  String get slug => event.getFirstTagValue('d')!;
+  DateTime? get publishedAt =>
+      event.getFirstTagValue('published_at')?.toInt()?.toDate();
+
+  PartialCalendarEvent copyWith({
+    String? name,
+    String? content,
+    String? imageUrl,
+    DateTime? publishedAt,
+  }) {
+    return PartialCalendarEvent(
+      name ?? this.name ?? '',
+      content ?? event.content,
+      imageUrl: imageUrl ?? this.imageUrl,
+      publishedAt: publishedAt ?? this.publishedAt,
+    );
+  }
+}
+
+class PartialCalendarEvent
+    extends ParameterizableReplaceablePartialEvent<CalendarEvent> {
+  PartialCalendarEvent(String name, String content,
+      {DateTime? publishedAt, String? slug, String? imageUrl}) {
+    this.name = name;
+    this.publishedAt = publishedAt;
+    this.slug = slug ?? Utils.generateRandomHex64();
+    this.imageUrl = imageUrl;
+    event.content = content;
+  }
+  set name(String value) => event.addTagValue('name', value);
+  set slug(String value) => event.addTagValue('d', value);
+  set content(String value) => event.content = value;
+  set imageUrl(String? value) => event.addTagValue('imageUrl',
+      value); // This data should actually come from a separate event, not as part of the kind 35000
+  set publishedAt(DateTime? value) =>
+      event.addTagValue('published_at', value?.toSeconds().toString());
+}

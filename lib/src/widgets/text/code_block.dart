@@ -110,7 +110,7 @@ class _LabCodeBlockState extends State<LabCodeBlock>
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                   child: LabSmallButton(
-                    inactiveColor: isInsideModal
+                    color: isInsideModal
                         ? theme.colors.white8
                         : theme.colors.white16,
                     square: true,

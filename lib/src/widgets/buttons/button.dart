@@ -8,10 +8,10 @@ class LabButton extends StatelessWidget {
     this.text,
     this.onTap,
     this.onLongPress,
-    this.inactiveGradient,
+    this.gradient,
     this.hoveredGradient,
     this.pressedGradient,
-    this.inactiveColor,
+    this.color,
     this.hoveredColor,
     this.pressedColor,
     this.square = false,
@@ -22,10 +22,10 @@ class LabButton extends StatelessWidget {
   final String? text;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
-  final Gradient? inactiveGradient;
+  final Gradient? gradient;
   final Gradient? hoveredGradient;
   final Gradient? pressedGradient;
-  final Color? inactiveColor;
+  final Color? color;
   final Color? hoveredColor;
   final Color? pressedColor;
   final bool square;
@@ -38,15 +38,13 @@ class LabButton extends StatelessWidget {
     final defaultGradient = theme.colors.blurple;
 
     final effectiveInactiveGradient =
-        inactiveColor != null ? null : (inactiveGradient ?? defaultGradient);
-    final effectiveHoveredGradient = inactiveColor != null
-        ? null
-        : (hoveredGradient ?? effectiveInactiveGradient);
-    final effectivePressedGradient = inactiveColor != null
-        ? null
-        : (pressedGradient ?? effectiveInactiveGradient);
+        color != null ? null : (gradient ?? defaultGradient);
+    final effectiveHoveredGradient =
+        color != null ? null : (hoveredGradient ?? effectiveInactiveGradient);
+    final effectivePressedGradient =
+        color != null ? null : (pressedGradient ?? effectiveInactiveGradient);
 
-    final effectiveInactiveColor = inactiveColor;
+    final effectiveInactiveColor = color;
     final effectiveHoveredColor = hoveredColor ?? effectiveInactiveColor;
     final effectivePressedColor = pressedColor ?? effectiveInactiveColor;
 

@@ -26,7 +26,7 @@ class LabBottomBarProduct extends StatelessWidget {
       child: Row(
         children: [
           LabButton(
-            inactiveColor: theme.colors.white16,
+            color: theme.colors.white16,
             square: true,
             onTap: () => onAddLabelTap(product),
             children: [
@@ -89,7 +89,7 @@ class LabBottomBarProduct extends StatelessWidget {
           const LabGap.s12(),
           LabButton(
             square: true,
-            inactiveColor: theme.colors.black33,
+            color: theme.colors.black33,
             onTap: () => onActions(product),
             children: [
               Column(

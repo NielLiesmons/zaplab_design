@@ -28,7 +28,7 @@ class LabBottomBarLongText extends StatelessWidget {
       child: Row(
         children: [
           LabButton(
-            inactiveGradient: theme.colors.blurple,
+            gradient: theme.colors.blurple,
             onTap: () => onZapTap(model),
             square: true,
             children: [
@@ -40,7 +40,7 @@ class LabBottomBarLongText extends StatelessWidget {
           ),
           const LabGap.s12(),
           LabButton(
-            inactiveColor: theme.colors.white16,
+            color: theme.colors.white16,
             onTap: () => onPlayTap(model),
             square: true,
             children: [
@@ -105,7 +105,7 @@ class LabBottomBarLongText extends StatelessWidget {
           const LabGap.s12(),
           LabButton(
             square: true,
-            inactiveColor: theme.colors.black33,
+            color: theme.colors.black33,
             onTap: () => onActions(model),
             children: [
               Column(

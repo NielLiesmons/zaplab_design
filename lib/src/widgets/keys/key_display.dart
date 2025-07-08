@@ -130,7 +130,7 @@ class _LabKeyDisplayState extends State<LabKeyDisplay>
             ),
             const Spacer(),
             LabSmallButton(
-              inactiveColor: theme.colors.white8,
+              color: theme.colors.white8,
               onTap: _copyToClipboard,
               children: [
                 if (_copied)

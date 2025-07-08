@@ -379,7 +379,7 @@ class LabTabBarState extends State<LabTabBar> with TickerProviderStateMixin {
                                         child: LabSmallButton(
                                           rounded: true,
                                           square: true,
-                                          inactiveColor: theme.colors.white16,
+                                          color: theme.colors.white16,
                                           onTap: _scrollController
                                                       .position.pixels <=
                                                   0
@@ -479,7 +479,7 @@ class LabTabBarState extends State<LabTabBar> with TickerProviderStateMixin {
                                         child: LabSmallButton(
                                           rounded: true,
                                           square: true,
-                                          inactiveColor: theme.colors.white16,
+                                          color: theme.colors.white16,
                                           onTap: () {
                                             _scrollController.animateTo(
                                               _scrollController

@@ -34,7 +34,7 @@ class LabBottomBarMail extends StatelessWidget {
       child: Row(
         children: [
           LabButton(
-            inactiveColor: theme.colors.white16,
+            color: theme.colors.white16,
             square: true,
             onTap: () => onAddTap(model),
             children: [
@@ -110,7 +110,7 @@ class LabBottomBarMail extends StatelessWidget {
           const LabGap.s12(),
           LabButton(
             square: true,
-            inactiveColor: theme.colors.black33,
+            color: theme.colors.black33,
             onTap: () => onActions(model),
             children: [
               Column(

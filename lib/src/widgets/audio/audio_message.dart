@@ -185,8 +185,7 @@ class _LabAudioMessageState extends State<LabAudioMessage>
               LabSmallButton(
                 square: true,
                 rounded: true,
-                inactiveColor:
-                    _isLoading ? theme.colors.white8 : theme.colors.white16,
+                color: _isLoading ? theme.colors.white8 : theme.colors.white16,
                 onTap: _isLoading
                     ? null
                     : () {

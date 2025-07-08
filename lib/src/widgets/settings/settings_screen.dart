@@ -419,7 +419,7 @@ class LabSettingsScreenState extends State<LabSettingsScreen>
           padding: const LabEdgeInsets.all(LabGapSize.s16),
           child: LabButton(
             onTap: widget.onDisconnectTap,
-            inactiveColor: theme.colors.gray66,
+            color: theme.colors.gray66,
             children: [
               LabText.med14('Disconnect Profile', color: theme.colors.white66)
             ],

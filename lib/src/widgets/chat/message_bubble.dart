@@ -291,7 +291,7 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                               ? widget.message!
                                               : widget.reply!),
                                       rounded: true,
-                                      inactiveColor: theme.colors.white16,
+                                      color: theme.colors.white16,
                                       children: [
                                         LabIcon.s12(
                                           theme.icons.characters.send,

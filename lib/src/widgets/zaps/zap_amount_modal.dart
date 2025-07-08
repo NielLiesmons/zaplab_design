@@ -299,6 +299,11 @@ class _LabZapAmountModalState extends State<LabZapAmountModal> {
                                   margin: const LabEdgeInsets.only(
                                       right: LabGapSize.s8),
                                   child: LabSmallButton(
+                                    onTap: () {
+                                      _amount.value = amount;
+                                      widget.onAmountChanged?.call(amount);
+                                    },
+                                    color: theme.colors.white8,
                                     children: [
                                       LabIcon.s12(
                                         theme.icons.characters.zap,
@@ -311,12 +316,6 @@ class _LabZapAmountModalState extends State<LabZapAmountModal> {
                                         color: theme.colors.white66,
                                       ),
                                     ],
-                                    onTap: () {
-                                      _amount.value = amount;
-                                      widget.onAmountChanged?.call(amount);
-                                    },
-                                    inactiveColor: theme.colors.white8,
-                                    pressedColor: theme.colors.white8,
                                   ),
                                 ),
                             ],

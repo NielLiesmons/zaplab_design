@@ -104,7 +104,7 @@ class _LabTabViewState extends State<LabTabView> with TickerProviderStateMixin {
         children: [tab.settingsContent!],
         bottomBar: LabButton(
           onTap: () => Navigator.of(context).pop(),
-          inactiveGradient: theme.colors.blurple,
+          gradient: theme.colors.blurple,
           pressedGradient: theme.colors.blurple,
           children: [
             LabText.med16(
@@ -122,7 +122,7 @@ class _LabTabViewState extends State<LabTabView> with TickerProviderStateMixin {
         children: [tab.settingsContent!],
         bottomBar: LabButton(
           onTap: () => Navigator.of(context).pop(),
-          inactiveGradient: theme.colors.blurple,
+          gradient: theme.colors.blurple,
           pressedGradient: theme.colors.blurple,
           children: [
             LabText.med16(

@@ -61,7 +61,7 @@ class AppactiveProfileCard extends StatelessWidget {
               LabSmallButton(
                 onTap: onView,
                 rounded: true,
-                inactiveColor: theme.colors.white8,
+                color: theme.colors.white8,
                 children: [
                   const LabGap.s4(),
                   LabText.med12(
@@ -75,7 +75,7 @@ class AppactiveProfileCard extends StatelessWidget {
               LabSmallButton(
                 onTap: onEdit,
                 rounded: true,
-                inactiveColor: theme.colors.white8,
+                color: theme.colors.white8,
                 children: [
                   const LabGap.s4(),
                   LabText.med12(
@@ -90,7 +90,7 @@ class AppactiveProfileCard extends StatelessWidget {
                 onTap: onShare,
                 rounded: true,
                 square: true,
-                inactiveColor: theme.colors.white8,
+                color: theme.colors.white8,
                 children: [
                   LabIcon.s16(
                     theme.icons.characters.share,

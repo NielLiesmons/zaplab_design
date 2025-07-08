@@ -74,7 +74,7 @@ class LabOtherProfileCard extends StatelessWidget {
               LabSmallButton(
                 onTap: onSelect,
                 rounded: true,
-                inactiveColor: theme.colors.white8,
+                color: theme.colors.white8,
                 children: [
                   const LabGap.s4(),
                   LabText.med12(
@@ -89,7 +89,7 @@ class LabOtherProfileCard extends StatelessWidget {
                 onTap: onShare,
                 rounded: true,
                 square: true,
-                inactiveColor: theme.colors.white8,
+                color: theme.colors.white8,
                 children: [
                   LabIcon.s16(
                     theme.icons.characters.share,

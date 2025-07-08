@@ -109,9 +109,22 @@ class LabShortTextField extends StatefulWidget {
 
   @override
   State<LabShortTextField> createState() => _LabShortTextFieldState();
+
+  // Static method to access the editor state from parent widgets
+  static LabEditableShortTextState? getEditorState(BuildContext context) {
+    final state = context.findAncestorStateOfType<_LabShortTextFieldState>();
+    return state?.editorState;
+  }
 }
 
 class _LabShortTextFieldState extends State<LabShortTextField> {
+  // Global key to access the editor state
+  final GlobalKey<LabEditableShortTextState> _editorKey =
+      GlobalKey<LabEditableShortTextState>();
+
+  // Public getter to access the editor state
+  LabEditableShortTextState? get editorState => _editorKey.currentState;
+
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
@@ -202,6 +215,7 @@ class _LabShortTextFieldState extends State<LabShortTextField> {
                 borderRadius: theme.radius.asBorderRadius().rad16,
               ),
               child: LabEditableShortText(
+                key: _editorKey,
                 text: widget.controller?.text ?? '',
                 style: textStyle,
                 controller: widget.controller,
@@ -232,7 +246,7 @@ class _LabShortTextFieldState extends State<LabShortTextField> {
                     LabSmallButton(
                       square: true,
                       onTap: widget.onCameraTap,
-                      inactiveColor: theme.colors.white8,
+                      color: theme.colors.white8,
                       pressedColor: theme.colors.white8,
                       children: [
                         LabIcon.s16(
@@ -245,7 +259,7 @@ class _LabShortTextFieldState extends State<LabShortTextField> {
                     LabSmallButton(
                       square: true,
                       onTap: widget.onEmojiTap,
-                      inactiveColor: theme.colors.white8,
+                      color: theme.colors.white8,
                       pressedColor: theme.colors.white8,
                       children: [
                         LabIcon.s18(
@@ -258,7 +272,7 @@ class _LabShortTextFieldState extends State<LabShortTextField> {
                     LabSmallButton(
                       square: true,
                       onTap: widget.onGifTap,
-                      inactiveColor: theme.colors.white8,
+                      color: theme.colors.white8,
                       pressedColor: theme.colors.white8,
                       children: [
                         LabIcon.s12(
@@ -271,7 +285,7 @@ class _LabShortTextFieldState extends State<LabShortTextField> {
                     LabSmallButton(
                       square: true,
                       onTap: widget.onAddTap,
-                      inactiveColor: theme.colors.white8,
+                      color: theme.colors.white8,
                       pressedColor: theme.colors.white8,
                       children: [
                         LabIcon.s16(
@@ -289,7 +303,7 @@ class _LabShortTextFieldState extends State<LabShortTextField> {
                     widget.onDoneTap?.call();
                     widget.onSendTap?.call();
                   },
-                  inactiveGradient: theme.colors.blurple,
+                  gradient: theme.colors.blurple,
                   pressedGradient: theme.colors.blurple,
                   onChevronTap: widget.onChevronTap,
                   children: [

@@ -35,7 +35,7 @@ class LabBottomBarHome extends StatelessWidget {
           if (onAddTap != null)
             LabButton(
               square: true,
-              inactiveColor: theme.colors.white16,
+              color: theme.colors.white16,
               onTap: onAddTap,
               children: [
                 LabIcon.s12(theme.icons.characters.plus,
@@ -97,7 +97,7 @@ class LabBottomBarHome extends StatelessWidget {
           const LabGap.s12(),
           LabButton(
             square: true,
-            inactiveColor: theme.colors.black33,
+            color: theme.colors.black33,
             onTap: onActions,
             children: [
               Column(

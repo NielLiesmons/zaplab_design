@@ -30,21 +30,18 @@ class LabModelEmptyStateCard extends StatelessWidget {
           LabText.h2('No ${getModelNameFromContentType(contentType)}s yet',
               color: theme.colors.white33),
           const LabGap.s16(),
-          LabButton(
-              onTap: onCreateTap,
-              inactiveColor: theme.colors.white16,
-              children: [
-                LabIcon(
-                  theme.icons.characters.plus,
-                  outlineColor: theme.colors.white66,
-                  outlineThickness: LabLineThicknessData.normal().thick,
-                ),
-                const LabGap.s12(),
-                LabText.med14(
-                  "Create ${getModelNameFromContentType(contentType)}",
-                  color: theme.colors.white66,
-                )
-              ])
+          LabButton(onTap: onCreateTap, color: theme.colors.white16, children: [
+            LabIcon(
+              theme.icons.characters.plus,
+              outlineColor: theme.colors.white66,
+              outlineThickness: LabLineThicknessData.normal().thick,
+            ),
+            const LabGap.s12(),
+            LabText.med14(
+              "Create ${getModelNameFromContentType(contentType)}",
+              color: theme.colors.white66,
+            )
+          ])
         ],
       ),
     );

@@ -100,7 +100,7 @@ class LabZapModal extends StatefulWidget {
         onTap: () => Navigator.of(context).pop(
           (amount: amount, message: message),
         ),
-        inactiveGradient: LabTheme.of(context).colors.blurple,
+        gradient: LabTheme.of(context).colors.blurple,
         pressedGradient: LabTheme.of(context).colors.blurple,
       ),
     );
@@ -135,7 +135,7 @@ class _LabZapModalState extends State<LabZapModal> {
             (amount: amount, message: message),
           );
         },
-        inactiveGradient: theme.colors.blurple,
+        gradient: theme.colors.blurple,
         pressedGradient: theme.colors.blurple,
         children: [
           LabText.med16(

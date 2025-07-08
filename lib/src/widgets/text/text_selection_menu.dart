@@ -288,7 +288,6 @@ class _LabTextSelectionMenuState extends State<LabTextSelectionMenu>
     final theme = LabTheme.of(context);
     final menuWidth = _calculateWidth(context);
     final items = widget.menuItems ?? _getMenuItems();
-    final showStylingBar = widget.showStyleMenu;
 
     return Align(
       alignment: Alignment.topLeft,
@@ -301,7 +300,7 @@ class _LabTextSelectionMenuState extends State<LabTextSelectionMenu>
           mainAxisSize: MainAxisSize.min,
           children: [
             // Styling bar (top row)
-            if (showStylingBar) ...[
+            if (widget.showStyleMenu) ...[
               ClipRRect(
                 borderRadius: theme.radius.asBorderRadius().rad8,
                 child: BackdropFilter(

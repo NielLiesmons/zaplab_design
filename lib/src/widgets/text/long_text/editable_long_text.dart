@@ -41,7 +41,7 @@ class ChangeInfo {
 // Inline widget types
 enum InlineWidgetType { mention, emoji }
 
-class LabEditableShortText extends StatefulWidget {
+class LabEditableLongText extends StatefulWidget {
   final String text;
   final TextStyle? style;
   final TextEditingController? controller;
@@ -57,13 +57,13 @@ class LabEditableShortText extends StatefulWidget {
   final NostrEmojiResolver onResolveEmoji;
 
   // Static key for accessing the state from parent widgets
-  static final GlobalKey<LabEditableShortTextState> _key =
-      GlobalKey<LabEditableShortTextState>();
+  static final GlobalKey<LabEditableLongTextState> _key =
+      GlobalKey<LabEditableLongTextState>();
 
   // Getter to access the state from parent widgets
-  static LabEditableShortTextState? get state => _key.currentState;
+  static LabEditableLongTextState? get state => _key.currentState;
 
-  const LabEditableShortText({
+  const LabEditableLongText({
     super.key,
     required this.text,
     this.style,
@@ -81,39 +81,12 @@ class LabEditableShortText extends StatefulWidget {
   });
 
   @override
-  State<LabEditableShortText> createState() => LabEditableShortTextState();
-}
-
-// Data structure for storing widget data alongside visual widgets
-class WidgetData {
-  final String type; // 'profile' or 'emoji'
-  final String npub; // For profiles
-  final String emojiName; // For emojis
-  final String emojiUrl; // For emojis
-
-  WidgetData.profile({required this.npub})
-      : type = 'profile',
-        emojiName = '',
-        emojiUrl = '';
-
-  WidgetData.emoji({required this.emojiName, required this.emojiUrl})
-      : type = 'emoji',
-        npub = '';
-
-  @override
-  String toString() {
-    if (type == 'profile') {
-      return 'WidgetData.profile(npub: $npub)';
-    } else {
-      return 'WidgetData.emoji(name: $emojiName, url: $emojiUrl)';
-    }
-  }
+  State<LabEditableLongText> createState() => LabEditableLongTextState();
 }
 
 class InlineSpanController extends TextEditingController {
   final Map<String, WidgetBuilder> triggerSpans;
   final Map<int, InlineSpan> _activeSpans = {};
-  final Map<int, WidgetData> _widgetData = {}; // Store data alongside widgets
   final List<StylingRange> _stylingRanges = [];
   final NostrProfileSearch onSearchProfiles;
   final NostrEmojiSearch onSearchEmojis;
@@ -360,10 +333,6 @@ class InlineSpanController extends TextEditingController {
           isEditableText: true,
         ),
       );
-
-      // Store the profile data alongside the widget
-      _widgetData[offset] = WidgetData.profile(npub: npub);
-
       notifyListeners();
     } catch (e) {
       print('Error inserting nostr profile: $e');
@@ -382,13 +351,6 @@ class InlineSpanController extends TextEditingController {
           size: 24,
         ),
       );
-
-      // Store the emoji data alongside the widget
-      _widgetData[offset] = WidgetData.emoji(
-        emojiName: emojiName,
-        emojiUrl: emojiUrl,
-      );
-
       notifyListeners();
     } catch (e) {
       print('Error inserting emoji: $e');
@@ -397,72 +359,7 @@ class InlineSpanController extends TextEditingController {
 
   void clearSpans() {
     _activeSpans.clear();
-    _widgetData.clear(); // Clear data when clearing spans
     notifyListeners();
-  }
-
-  /// Get the text formatted for Nostr publishing
-  /// This converts visual widgets back to nostr:npub1... and :emoji-name: format
-  String getTextForPublishing() {
-    if (_activeSpans.isEmpty) {
-      return text; // No widgets, return text as-is
-    }
-
-    final StringBuffer result = StringBuffer();
-    int lastOffset = 0;
-
-    // Sort widget positions to process them in order
-    final sortedPositions = _activeSpans.keys.toList()..sort();
-
-    for (final position in sortedPositions) {
-      // Add text before this widget
-      if (position > lastOffset) {
-        result.write(text.substring(lastOffset, position));
-      }
-
-      // Add the Nostr-formatted representation
-      final widgetData = _widgetData[position];
-      if (widgetData != null) {
-        if (widgetData.type == 'profile') {
-          result.write('nostr:${widgetData.npub}');
-        } else if (widgetData.type == 'emoji') {
-          result.write(':${widgetData.emojiName}:');
-        }
-      }
-
-      lastOffset = position + 1;
-    }
-
-    // Add remaining text after the last widget
-    if (lastOffset < text.length) {
-      result.write(text.substring(lastOffset));
-    }
-
-    return result.toString();
-  }
-
-  /// Get all profile npubs in the text
-  List<String> getProfileNpubs() {
-    return _widgetData.values
-        .where((data) => data.type == 'profile')
-        .map((data) => data.npub)
-        .toList();
-  }
-
-  /// Get all emoji names in the text
-  List<String> getEmojiNames() {
-    return _widgetData.values
-        .where((data) => data.type == 'emoji')
-        .map((data) => data.emojiName)
-        .toList();
-  }
-
-  /// Get all emoji data (names and URLs) for Nostr event JSON tags
-  List<({String name, String url})> getEmojiData() {
-    return _widgetData.values
-        .where((data) => data.type == 'emoji')
-        .map((data) => (name: data.emojiName, url: data.emojiUrl))
-        .toList();
   }
 
   void clearStyling() {
@@ -740,7 +637,7 @@ class InlineSpanController extends TextEditingController {
   }
 }
 
-class LabEditableShortTextState extends State<LabEditableShortText>
+class LabEditableLongTextState extends State<LabEditableLongText>
     implements custom.TextSelectionGestureDetectorBuilderDelegate {
   @override
   GlobalKey<EditableTextState> get editableTextKey => _editableTextKey;
@@ -1598,8 +1495,6 @@ class LabEditableShortTextState extends State<LabEditableShortText>
 
                         // Clear the span and reset inline widget state
                         _controller._activeSpans.remove(offset);
-                        _controller._widgetData
-                            .remove(offset); // Clear widget data too
                         _inlineWidgetStartOffset = null;
                         _currentInlineWidgetText = '';
                         _currentWidgetType = null;
@@ -1630,8 +1525,6 @@ class LabEditableShortTextState extends State<LabEditableShortText>
                         print('Backspace on span at offset $offset');
                         // Remove the span and the character at that position
                         _controller._activeSpans.remove(offset);
-                        _controller._widgetData
-                            .remove(offset); // Clear widget data too
 
                         // Remove the character from the text
                         final newText = _controller.text
@@ -1650,8 +1543,6 @@ class LabEditableShortTextState extends State<LabEditableShortText>
                         print('Delete on span at offset $offset');
                         // Remove the span and the character at that position
                         _controller._activeSpans.remove(offset);
-                        _controller._widgetData
-                            .remove(offset); // Clear widget data too
 
                         // Remove the character from the text
                         final newText = _controller.text
@@ -1732,45 +1623,5 @@ class LabEditableShortTextState extends State<LabEditableShortText>
         ),
       ),
     );
-  }
-
-  // ===== PUBLIC API FOR PARENT WIDGETS =====
-
-  /// Get the current text formatted for Nostr publishing
-  /// Returns text with nostr:npub1... and :emoji-name: format
-  String getTextForPublishing() {
-    return _controller.getTextForPublishing();
-  }
-
-  /// Get all profile npubs in the current text
-  List<String> getProfileNpubs() {
-    return _controller.getProfileNpubs();
-  }
-
-  /// Get all emoji names in the current text
-  List<String> getEmojiNames() {
-    return _controller.getEmojiNames();
-  }
-
-  /// Get all emoji data (names and URLs) for Nostr event JSON tags
-  List<({String name, String url})> getEmojiData() {
-    return _controller.getEmojiData();
-  }
-
-  /// Get the current raw text (without formatting)
-  String getCurrentText() {
-    return _controller.text;
-  }
-
-  /// Insert a profile mention at the current cursor position
-  void insertProfileMention(({Profile profile, VoidCallback? onTap}) profile) {
-    final selection = _controller.selection;
-    if (!selection.isValid) return;
-
-    final offset = selection.baseOffset;
-    _controller.insertNostrProfile(offset, profile.profile.npub, profile);
-
-    // Move cursor after the inserted widget
-    _controller.selection = TextSelection.collapsed(offset: offset + 1);
   }
 }

@@ -2,6 +2,7 @@ import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:math' as math;
 import 'dart:ui';
 import 'package:tap_builder/tap_builder.dart';
+import 'time_amount_modal.dart';
 
 class LabTime {
   final int hour24; // 0-23
@@ -59,6 +60,7 @@ class LabTimePicker extends StatefulWidget {
   final double? size;
   final bool allowAllDay;
   final Function(bool)? onAllDayChanged;
+  final bool initialAllDay;
 
   const LabTimePicker({
     super.key,
@@ -67,6 +69,7 @@ class LabTimePicker extends StatefulWidget {
     this.size,
     this.allowAllDay = true,
     this.onAllDayChanged,
+    this.initialAllDay = false,
   });
 
   @override
@@ -83,6 +86,7 @@ class _LabTimePickerState extends State<LabTimePicker> {
     super.initState();
     _selectedTime = widget.initialTime ?? LabTime.now();
     _clockSize = widget.size ?? 180.0;
+    _isAllDay = widget.initialAllDay;
   }
 
   void _selectHour(int hour) {
@@ -144,7 +148,7 @@ class _LabTimePickerState extends State<LabTimePicker> {
 
                   // Center dot
                   Center(
-                    child: Container(
+                    child: LabContainer(
                       width: 8,
                       height: 8,
                       decoration: BoxDecoration(
@@ -168,38 +172,56 @@ class _LabTimePickerState extends State<LabTimePicker> {
                 ImageFiltered(
                   enabled: _isAllDay,
                   imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                  child: LabContainer(
-                    width: 128,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: theme.radius.asBorderRadius().rad16,
-                      border: Border.all(
-                        color: theme.colors.white16,
-                        width: LabLineThicknessData.normal().medium,
-                      ),
-                    ),
-                    padding: const LabEdgeInsets.all(LabGapSize.s8),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        LabText.h1(
-                          _selectedTime.displayHour24
-                              .toString()
-                              .padLeft(2, '0'),
-                          color: theme.colors.white,
+                  child: TapBuilder(
+                    onTap: _isAllDay
+                        ? null
+                        : () async {
+                            await LabTimeAmountModal.show(
+                              context,
+                              initialTime: _selectedTime,
+                              onTimeChanged: (time) {
+                                setState(() {
+                                  _selectedTime = time;
+                                  widget.onTimeSelected?.call(time);
+                                });
+                              },
+                            );
+                          },
+                    builder: (context, state, hasFocus) {
+                      return LabContainer(
+                        width: 128,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: theme.radius.asBorderRadius().rad16,
+                          border: Border.all(
+                            color: theme.colors.white16,
+                            width: LabLineThicknessData.normal().medium,
+                          ),
                         ),
-                        const LabGap.s4(),
-                        LabText.h1(
-                          ":",
-                          color: theme.colors.white66,
+                        padding: const LabEdgeInsets.all(LabGapSize.s8),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            LabText.h1(
+                              _selectedTime.displayHour24
+                                  .toString()
+                                  .padLeft(2, '0'),
+                              color: theme.colors.white,
+                            ),
+                            const LabGap.s4(),
+                            LabText.h1(
+                              ":",
+                              color: theme.colors.white66,
+                            ),
+                            const LabGap.s4(),
+                            LabText.h1(
+                              _selectedTime.minute.toString().padLeft(2, '0'),
+                              color: theme.colors.white,
+                            ),
+                          ],
                         ),
-                        const LabGap.s4(),
-                        LabText.h1(
-                          _selectedTime.minute.toString().padLeft(2, '0'),
-                          color: theme.colors.white,
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                 ),
                 const LabGap.s16(),
@@ -296,7 +318,7 @@ class _LabTimePickerState extends State<LabTimePicker> {
     final buttons = <Widget>[];
     final radius = _clockSize / 2;
     const buttonRadius = 14.0;
-    final outerRadius = radius - buttonRadius - 6;
+    final outerRadius = radius - buttonRadius - 4;
 
     for (int clockPosition = 1; clockPosition <= 12; clockPosition++) {
       final angle = (clockPosition - 3) * (2 * math.pi / 12);
@@ -319,7 +341,7 @@ class _LabTimePickerState extends State<LabTimePicker> {
           child: TapBuilder(
             onTap: () => _selectHour(hour24),
             builder: (context, state, isFocused) {
-              return Container(
+              return LabContainer(
                 width: buttonRadius * 2,
                 height: buttonRadius * 2,
                 decoration: BoxDecoration(
@@ -350,7 +372,7 @@ class _LabTimePickerState extends State<LabTimePicker> {
     final buttons = <Widget>[];
     final radius = _clockSize / 2;
     const buttonRadius = 10.5;
-    final innerRadius = radius - buttonRadius - 36;
+    final innerRadius = radius - buttonRadius - 34;
 
     for (int i = 0; i < 12; i++) {
       final minute = i * 5;
@@ -366,7 +388,7 @@ class _LabTimePickerState extends State<LabTimePicker> {
           child: TapBuilder(
             onTap: () => _selectMinute(minute),
             builder: (context, state, isFocused) {
-              return Container(
+              return LabContainer(
                 width: buttonRadius * 2,
                 height: buttonRadius * 2,
                 decoration: BoxDecoration(
@@ -397,13 +419,30 @@ class _LabTimePickerState extends State<LabTimePicker> {
     final lines = <Widget>[];
     final radius = _clockSize / 2;
 
-    // Hour selection line
+    // Hour selection line - layered effect
     final hourAngle = (_selectedTime.hour12 - 3) * (2 * math.pi / 12);
-    final hourRadius =
-        radius - 34; // Reduced from previous value to stop at circle edge
+    final hourRadius = radius - 65; // Longer line
     final hourEndX = radius + hourRadius * math.cos(hourAngle);
     final hourEndY = radius + hourRadius * math.sin(hourAngle);
+    final hourOverlayRadius = radius - 32;
+    final hourOverlayEndX = radius + hourOverlayRadius * math.cos(hourAngle);
+    final hourOverlayEndY = radius + hourOverlayRadius * math.sin(hourAngle);
 
+    lines.add(
+      CustomPaint(
+        size: Size(_clockSize, _clockSize),
+        painter: LinePainter(
+          startX: radius,
+          startY: radius,
+          endX: hourOverlayEndX,
+          endY: hourOverlayEndY,
+          color: theme.colors.blurpleColor33,
+          width: LabLineThicknessData.normal().thick,
+        ),
+      ),
+    );
+
+    // Base hour line (longer, thinner)
     lines.add(
       CustomPaint(
         size: Size(_clockSize, _clockSize),
@@ -418,13 +457,14 @@ class _LabTimePickerState extends State<LabTimePicker> {
       ),
     );
 
-    // Minute selection line
+    // Minute selection line - layered effect
     final minuteAngle = (_selectedTime.minute / 5) * (2 * math.pi / 12) -
         (3 * 2 * math.pi / 12);
-    final minuteRadius = radius - 58; // Reduced to stop at inner circle edge
+    final minuteRadius = radius - 54; // Longer line
     final minuteEndX = radius + minuteRadius * math.cos(minuteAngle);
     final minuteEndY = radius + minuteRadius * math.sin(minuteAngle);
 
+    // Base minute line (longer, thinner)
     lines.add(
       CustomPaint(
         size: Size(_clockSize, _clockSize),
