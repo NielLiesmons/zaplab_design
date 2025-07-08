@@ -138,7 +138,7 @@ class _DateTimePickerContentState extends State<_DateTimePickerContent> {
       children: [
         const LabGap.s12(),
         if (widget.startAndEndDate) ...[
-          LabText.h1(isSelectingEnd ? "End Date" : "Start Date"),
+          LabText.h1(isSelectingEnd ? "End" : "Start"),
         ] else ...[
           const LabText.h1("Date & Time"),
         ],

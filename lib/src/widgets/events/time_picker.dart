@@ -255,7 +255,7 @@ class _LabTimePickerState extends State<LabTimePicker> {
                     },
                     children: [
                       LabSelectorButton(
-                        selectedContent: [
+                        selectedContent: const [
                           LabText.med12('AM'),
                         ],
                         unselectedContent: [
@@ -264,7 +264,7 @@ class _LabTimePickerState extends State<LabTimePicker> {
                         isSelected: _selectedTime.isAM,
                       ),
                       LabSelectorButton(
-                        selectedContent: [
+                        selectedContent: const [
                           LabText.med12('PM'),
                         ],
                         unselectedContent: [
@@ -275,37 +275,38 @@ class _LabTimePickerState extends State<LabTimePicker> {
                     ],
                   ),
                 ),
-                const LabGap.s16(),
-                LabPanel(
-                  padding: const LabEdgeInsets.all(LabGapSize.s12),
-                  color: theme.colors.white8,
-                  child: Row(
-                    children: [
-                      Opacity(
-                        opacity: widget.allowAllDay ? 1 : 0.66,
-                        child: LabSwitch(
-                          value: _isAllDay,
-                          onChanged: widget.allowAllDay
-                              ? (value) {
-                                  WidgetsBinding.instance
-                                      .addPostFrameCallback((_) {
-                                    setState(() => _isAllDay = value);
-                                    widget.onAllDayChanged?.call(value);
-                                  });
-                                }
-                              : null,
+                if (widget.allowAllDay) const LabGap.s16(),
+                if (widget.allowAllDay)
+                  LabPanel(
+                    padding: const LabEdgeInsets.all(LabGapSize.s12),
+                    color: theme.colors.white8,
+                    child: Row(
+                      children: [
+                        Opacity(
+                          opacity: widget.allowAllDay ? 1 : 0.66,
+                          child: LabSwitch(
+                            value: _isAllDay,
+                            onChanged: widget.allowAllDay
+                                ? (value) {
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      setState(() => _isAllDay = value);
+                                      widget.onAllDayChanged?.call(value);
+                                    });
+                                  }
+                                : null,
+                          ),
                         ),
-                      ),
-                      const LabGap.s12(),
-                      LabText.reg14(
-                        'All Day',
-                        color: widget.allowAllDay
-                            ? theme.colors.white
-                            : theme.colors.white33,
-                      ),
-                    ],
+                        const LabGap.s12(),
+                        LabText.reg14(
+                          'All Day',
+                          color: widget.allowAllDay
+                              ? theme.colors.white
+                              : theme.colors.white33,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -419,9 +420,8 @@ class _LabTimePickerState extends State<LabTimePicker> {
     final lines = <Widget>[];
     final radius = _clockSize / 2;
 
-    // Hour selection line - layered effect
     final hourAngle = (_selectedTime.hour12 - 3) * (2 * math.pi / 12);
-    final hourRadius = radius - 65; // Longer line
+    final hourRadius = radius - 62; // Longer line
     final hourEndX = radius + hourRadius * math.cos(hourAngle);
     final hourEndY = radius + hourRadius * math.sin(hourAngle);
     final hourOverlayRadius = radius - 32;
@@ -442,7 +442,6 @@ class _LabTimePickerState extends State<LabTimePicker> {
       ),
     );
 
-    // Base hour line (longer, thinner)
     lines.add(
       CustomPaint(
         size: Size(_clockSize, _clockSize),
@@ -457,14 +456,12 @@ class _LabTimePickerState extends State<LabTimePicker> {
       ),
     );
 
-    // Minute selection line - layered effect
     final minuteAngle = (_selectedTime.minute / 5) * (2 * math.pi / 12) -
         (3 * 2 * math.pi / 12);
     final minuteRadius = radius - 54; // Longer line
     final minuteEndX = radius + minuteRadius * math.cos(minuteAngle);
     final minuteEndY = radius + minuteRadius * math.sin(minuteAngle);
 
-    // Base minute line (longer, thinner)
     lines.add(
       CustomPaint(
         size: Size(_clockSize, _clockSize),

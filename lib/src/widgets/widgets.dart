@@ -76,6 +76,7 @@ export 'communities/community_welcome_header.dart';
 export 'events/date_picker.dart';
 export 'events/date_picker_modal.dart';
 export 'events/dates_display.dart';
+export 'events/date_input_display.dart';
 export 'events/dates_input_display.dart';
 export 'events/time_picker.dart';
 
