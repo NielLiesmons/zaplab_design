@@ -85,10 +85,10 @@ class LabGroupHomePanel extends StatelessWidget {
                             child: BackdropFilter(
                               filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                               child: LabContainer(
-                                width: 20,
-                                height: 20,
+                                width: theme.sizes.s20,
+                                height: theme.sizes.s20,
                                 decoration: BoxDecoration(
-                                  gradient: theme.colors.gold16,
+                                  gradient: theme.colors.graydient16,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Center(

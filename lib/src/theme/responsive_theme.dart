@@ -31,6 +31,7 @@ class LabResponsiveTheme extends StatefulWidget {
     this.formFactor,
     this.textScale,
     this.systemScale,
+    this.colorsOverride,
   });
 
   final LabThemeColorMode? colorMode;
@@ -38,6 +39,7 @@ class LabResponsiveTheme extends StatefulWidget {
   final LabTextScale? textScale;
   final LabSystemScale? systemScale;
   final Widget child;
+  final LabColorsOverride? colorsOverride;
 
   static LabResponsiveThemeState of(BuildContext context) {
     return context.findAncestorStateOfType<LabResponsiveThemeState>()!;
@@ -135,9 +137,12 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
 
     final colorMode = this.colorMode;
     theme = switch (colorMode) {
-      LabThemeColorMode.dark => theme.withColors(LabColorsData.dark()),
-      LabThemeColorMode.gray => theme.withColors(LabColorsData.gray()),
-      LabThemeColorMode.light => theme.withColors(LabColorsData.light()),
+      LabThemeColorMode.dark =>
+        theme.withColors(LabColorsData.dark(widget.colorsOverride)),
+      LabThemeColorMode.gray =>
+        theme.withColors(LabColorsData.gray(widget.colorsOverride)),
+      LabThemeColorMode.light =>
+        theme.withColors(LabColorsData.light(widget.colorsOverride)),
     };
 
     var formFactor =

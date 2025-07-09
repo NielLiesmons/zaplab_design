@@ -51,7 +51,7 @@ class LabTabButton extends StatelessWidget {
             ),
             padding: LabEdgeInsets.only(
               left: LabGapSize.s16,
-              right: hasOptions ? LabGapSize.s12 : LabGapSize.s16,
+              right: hasOptions && isSelected ? LabGapSize.s12 : LabGapSize.s16,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -71,11 +71,11 @@ class LabTabButton extends StatelessWidget {
                         : theme.colors.white66,
                   ),
                 ],
-                if (hasOptions == true && isSelected == true) const LabGap.s4(),
                 if (hasOptions == true && isSelected == true)
                   LabContainer(
                     padding: const LabEdgeInsets.only(
                       top: LabGapSize.s2,
+                      left: LabGapSize.s6,
                     ),
                     child: Transform.scale(
                       scale: 0.8,

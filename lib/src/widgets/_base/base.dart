@@ -33,6 +33,7 @@ class LabBase extends StatelessWidget {
   final VoidCallback? onProfilesTap;
   final Widget? historyMenu;
   final Profile? activeProfile;
+  final LabColorsOverride? colorsOverride;
 
   LabBase({
     super.key,
@@ -55,6 +56,7 @@ class LabBase extends StatelessWidget {
     this.onProfilesTap,
     this.historyMenu,
     this.activeProfile,
+    this.colorsOverride,
   }) {
     // Initialize window settings for desktop platforms
     if (LabPlatformUtils.isDesktop) {
@@ -84,6 +86,7 @@ class LabBase extends StatelessWidget {
         colorMode: colorMode,
         textScale: textScale,
         systemScale: systemScale,
+        colorsOverride: colorsOverride,
         child: _LabBaseContent(
           title: title,
           routerConfig: routerConfig,
