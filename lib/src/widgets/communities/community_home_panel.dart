@@ -194,28 +194,27 @@ class LabCommunityHomePanel extends StatelessWidget {
                                                                 .colors.white66,
                                                           ),
                                                           const LabGap.s4(),
-                                                          Flexible(
-                                                            child:
-                                                                LabCompactTextRenderer(
-                                                              model: lastModel!,
-                                                              content: lastModel ==
-                                                                      null
-                                                                  ? ''
-                                                                  : lastModel
-                                                                          is ChatMessage
-                                                                      ? (lastModel
-                                                                              as ChatMessage)
-                                                                          .content
-                                                                      : 'nostr:nevent1${lastModel!.id}',
-                                                              onResolveEvent:
-                                                                  onResolveEvent,
-                                                              onResolveProfile:
-                                                                  onResolveProfile,
-                                                              onResolveEmoji:
-                                                                  onResolveEmoji,
-                                                              maxLines: 1,
+                                                          if (lastModel != null)
+                                                            Flexible(
+                                                              child:
+                                                                  LabCompactTextRenderer(
+                                                                model:
+                                                                    lastModel!,
+                                                                content: lastModel
+                                                                        is ChatMessage
+                                                                    ? (lastModel
+                                                                            as ChatMessage)
+                                                                        .content
+                                                                    : 'nostr:nevent1${lastModel!.id}',
+                                                                onResolveEvent:
+                                                                    onResolveEvent,
+                                                                onResolveProfile:
+                                                                    onResolveProfile,
+                                                                onResolveEmoji:
+                                                                    onResolveEmoji,
+                                                                maxLines: 1,
+                                                              ),
                                                             ),
-                                                          ),
                                                         ],
                                                       ),
                                                     ),

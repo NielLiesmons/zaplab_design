@@ -64,7 +64,7 @@ class LabCommunityCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      LabText.med14(community.name),
+                      LabText.med14(community.name ?? 'Loading...'),
                       const LabGap.s2(),
                       LabText.reg12(community.description ?? '',
                           color: theme.colors.white66,

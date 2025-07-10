@@ -1,5 +1,4 @@
 import 'package:models/models.dart';
-import 'package:bech32/bech32.dart';
 
 class RGBColor {
   final int r;
@@ -80,30 +79,10 @@ int profileToColor(Profile profile) {
   return hexToColor(profile.pubkey).toIntWithAlpha();
 }
 
-String npubToHex(String npub) {
-  try {
-    if (npub.startsWith('npub1')) {
-      // If it's already a Bech32 npub, decode it
-      final decoded = const Bech32Codec().decode(npub);
-      final data = decoded.data;
-      final converted = convertBits(data, 5, 8, false);
-      return converted
-          .map((byte) => byte.toRadixString(16).padLeft(2, '0'))
-          .join('');
-    } else {
-      // If it's already hex, return it directly
-      return npub;
-    }
-  } catch (e) {
-    print('Error decoding npub: $e'); // Debug print
-    return '000000';
-  }
-}
-
 String npubToHexColor(String npub) {
-  return hexToColor(npubToHex(npub)).toHex();
+  return hexToColor(npub.decodeShareable()).toHex();
 }
 
 int npubToColor(String npub) {
-  return hexToColor(npubToHex(npub)).toIntWithAlpha();
+  return hexToColor(npub.decodeShareable()).toIntWithAlpha();
 }

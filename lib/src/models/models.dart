@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:models/models.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'dart:convert';
 
 // Model
@@ -49,7 +48,7 @@ String getModelDisplayText(Model<dynamic>? model) {
     Model<App>() => (model as App).name ?? 'App Name',
     Model<Book>() => (model as Book).title ?? 'Book Title',
     Model<Repository>() => (model as Repository).name ?? 'Repo Name',
-    Model<Community>() => (model as Community).name,
+    Model<Community>() => (model as Community).name ?? 'Loading...',
     Model<Job>() => (model as Job).title ?? 'Job Title',
     Model<Service>() => (model as Service).title ?? 'Service Title',
     Model<Mail>() => (model as Mail).title ?? 'Mail Title',

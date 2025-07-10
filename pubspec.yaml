@@ -19,15 +19,18 @@ dependencies:
   window_manager: ^0.4.3
   just_audio: ^0.9.36
   just_waveform: ^0.0.6
-  models:
-    git:
-      url: https://github.com/purplebase/models
-      ref: 217fdc3
-
+  models: ^0.3.0
   crypto: ^3.0.3
   hex: ^0.2.0
   bip39: ^1.0.6
   pointycastle: ^3.7.3
+
+dependency_overrides:
+  models:
+    # path: ../models
+    git:
+      url: https://github.com/purplebase/models
+      ref: 93578f2
 
 dev_dependencies:
   flutter_lints: ^4.0.0
