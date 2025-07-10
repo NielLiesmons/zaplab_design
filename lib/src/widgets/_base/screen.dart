@@ -30,6 +30,8 @@ class LabScreen extends StatefulWidget {
   final bool customTopBar;
   final bool noTopGap;
   final ScrollController? scrollController;
+  final bool startAtBottom;
+  final bool showScrollToBottomButton;
 
   const LabScreen({
     super.key,
@@ -42,6 +44,8 @@ class LabScreen extends StatefulWidget {
     this.customTopBar = false,
     this.noTopGap = false,
     this.scrollController,
+    this.startAtBottom = false,
+    this.showScrollToBottomButton = true,
   });
 
   static Future<T?> show<T>({
@@ -112,11 +116,13 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
   bool _showTopBarContent = false;
   bool _isInitialDrag = true;
   bool _isPopping = false;
+  bool _showScrollToBottomButton = false;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_handleScroll);
+    final controller = widget.scrollController ?? _scrollController;
+    controller.addListener(_handleScroll);
     _animationControllerOpen = AnimationController(
       duration: const Duration(milliseconds: 100),
       vsync: this,
@@ -132,6 +138,25 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
     // Wait for the initial slide-in animation from the PageRouteBuilder
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() => _showTopZone = true);
+
+      // If startAtBottom is true, scroll to bottom after initial build
+      if (widget.startAtBottom) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              final controller = widget.scrollController ?? _scrollController;
+              if (controller.hasClients) {
+                final maxScroll = controller.position.maxScrollExtent;
+                final currentOffset = controller.offset;
+                print(
+                    'DEBUG: startAtBottom - maxScroll=$maxScroll, currentOffset=$currentOffset');
+                controller.jumpTo(maxScroll);
+                print('DEBUG: After jumpTo - newOffset=${controller.offset}');
+              }
+            });
+          });
+        });
+      }
     });
   }
 
@@ -155,16 +180,36 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
       widget.history.isEmpty || !LabPlatformUtils.isMobile;
 
   void _handleScroll() {
+    final controller = widget.scrollController ?? _scrollController;
+
     setState(() {
-      _isAtTop = _scrollController.offset <= 0;
-      _showTopBarContent =
-          widget.alwaysShowTopBar || _scrollController.offset > 2;
+      _isAtTop = controller.offset <= 0;
+      _showTopBarContent = widget.alwaysShowTopBar || controller.offset > 2;
+
+      // Show scroll button when scrolling past 100px
+      if (widget.showScrollToBottomButton && controller.hasClients) {
+        if (widget.startAtBottom) {
+          // If started at bottom, show button when scrolling up past 100px
+          _showScrollToBottomButton =
+              controller.offset < controller.position.maxScrollExtent - 320;
+        } else {
+          // If started at top, show button when scrolling down past 100px
+          _showScrollToBottomButton = controller.offset > 320;
+        }
+      }
     });
 
-    final maxScroll = _scrollController.position.maxScrollExtent;
+    final maxScroll = controller.position.maxScrollExtent;
     if (maxScroll > 0) {
-      final progress = _scrollController.offset / maxScroll;
+      final progress = controller.offset / maxScroll;
       ScrollProgressNotification(progress, context).dispatch();
+
+      // Debug logging for bottom detection
+      if (widget.startAtBottom) {
+        final distanceFromBottom = maxScroll - controller.offset;
+        print(
+            'DEBUG: Distance from bottom = $distanceFromBottom, offset=${controller.offset}, maxScroll=$maxScroll');
+      }
     }
   }
 
@@ -859,6 +904,44 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
                   ),
                 ),
         ),
+
+        // Floating scroll to bottom button
+        if (widget.showScrollToBottomButton && _showScrollToBottomButton)
+          Positioned(
+            right: theme.sizes.s16,
+            bottom: theme.sizes.s16 +
+                (widget.bottomBarContent != null ? 70.0 : 0.0) +
+                MediaQuery.of(context).padding.bottom,
+            child: LabFloatingButton(
+              icon: LabIcon.s12(
+                widget.startAtBottom
+                    ? theme.icons.characters.arrowDown
+                    : theme.icons.characters.arrowUp,
+                outlineThickness: LabLineThicknessData.normal().medium,
+                outlineColor: theme.colors.white66,
+              ),
+              onTap: () {
+                final controller = widget.scrollController ?? _scrollController;
+                if (controller.hasClients) {
+                  if (widget.startAtBottom) {
+                    // If started at bottom, scroll to bottom
+                    controller.animateTo(
+                      controller.position.maxScrollExtent,
+                      duration: LabDurationsData.normal().normal,
+                      curve: Curves.easeOut,
+                    );
+                  } else {
+                    // If started at top, scroll to top
+                    controller.animateTo(
+                      0,
+                      duration: LabDurationsData.normal().normal,
+                      curve: Curves.easeOut,
+                    );
+                  }
+                }
+              },
+            ),
+          ),
       ],
     );
   }

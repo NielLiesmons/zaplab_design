@@ -1,6 +1,7 @@
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
+import 'dart:ui';
 
 enum LabProfilePicSize {
   s12,
@@ -214,81 +215,107 @@ class LabProfilePic extends StatelessWidget {
                 color: theme.colors.white16,
                 width: thickness,
               ),
-              color: theme.colors.gray,
+              color: theme.colors.gray66,
             ),
             child: ClipOval(
-              child: _effectiveUrl != null && _effectiveUrl!.isNotEmpty
-                  ? Image.network(
-                      _effectiveUrl!,
-                      width: resolvedSize,
-                      height: resolvedSize,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return const LabSkeletonLoader();
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        if (profile != null ||
-                            (name != null && pubkey != null)) {
-                          return Container(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                child: _effectiveUrl != null && _effectiveUrl!.isNotEmpty
+                    ? Image.network(
+                        _effectiveUrl!,
+                        width: resolvedSize,
+                        height: resolvedSize,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          return const LabSkeletonLoader();
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          if (profile != null ||
+                              (name != null && pubkey != null)) {
+                            return Container(
+                              color: Color(_getProfileColor())
+                                  .withValues(alpha: 0.24),
+                              child: _effectiveName?.isNotEmpty == true
+                                  ? Center(
+                                      child: Stack(
+                                        children: [
+                                          Text(
+                                            _effectiveName![0].toUpperCase(),
+                                            style: TextStyle(
+                                              color: Color(_getProfileColor()),
+                                              fontSize: resolvedSize * 0.56,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            _effectiveName![0].toUpperCase(),
+                                            style: TextStyle(
+                                              color: theme.colors.white16,
+                                              fontSize: resolvedSize * 0.56,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : null,
+                            );
+                          }
+                          final fallbackIconSize = resolvedSize * 0.6;
+                          return Center(
+                            child: Text(
+                              icons.characters.profile,
+                              style: TextStyle(
+                                fontFamily: icons.fontFamily,
+                                package: icons.fontPackage,
+                                fontSize: fallbackIconSize,
+                                color: theme.colors.white33,
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    : profile != null || (name != null && pubkey != null)
+                        ? Container(
                             color: Color(_getProfileColor())
                                 .withValues(alpha: 0.24),
                             child: _effectiveName?.isNotEmpty == true
                                 ? Center(
-                                    child: Text(
-                                      _effectiveName![0].toUpperCase(),
-                                      style: TextStyle(
-                                        color: Color(_getProfileColor()),
-                                        fontSize: resolvedSize * 0.56,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    child: Stack(
+                                      children: [
+                                        Text(
+                                          _effectiveName![0].toUpperCase(),
+                                          style: TextStyle(
+                                            color: Color(_getProfileColor()),
+                                            fontSize: resolvedSize * 0.56,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          _effectiveName![0].toUpperCase(),
+                                          style: TextStyle(
+                                            color: theme.colors.white16,
+                                            fontSize: resolvedSize * 0.56,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   )
                                 : null,
-                          );
-                        }
-                        final fallbackIconSize = resolvedSize * 0.6;
-                        return Center(
-                          child: Text(
-                            icons.characters.profile,
-                            style: TextStyle(
-                              fontFamily: icons.fontFamily,
-                              package: icons.fontPackage,
-                              fontSize: fallbackIconSize,
-                              color: theme.colors.white33,
+                          )
+                        : Center(
+                            child: Text(
+                              icons.characters.profile,
+                              style: TextStyle(
+                                fontFamily: icons.fontFamily,
+                                package: icons.fontPackage,
+                                fontSize: resolvedSize * 0.6,
+                                color: theme.colors.white33,
+                              ),
                             ),
                           ),
-                        );
-                      },
-                    )
-                  : profile != null || (name != null && pubkey != null)
-                      ? Container(
-                          color:
-                              Color(_getProfileColor()).withValues(alpha: 0.24),
-                          child: _effectiveName?.isNotEmpty == true
-                              ? Center(
-                                  child: Text(
-                                    _effectiveName![0].toUpperCase(),
-                                    style: TextStyle(
-                                      color: Color(_getProfileColor()),
-                                      fontSize: resolvedSize * 0.56,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              : null,
-                        )
-                      : Center(
-                          child: Text(
-                            icons.characters.profile,
-                            style: TextStyle(
-                              fontFamily: icons.fontFamily,
-                              package: icons.fontPackage,
-                              fontSize: resolvedSize * 0.6,
-                              color: theme.colors.white33,
-                            ),
-                          ),
-                        ),
+              ),
             ),
           ),
         );

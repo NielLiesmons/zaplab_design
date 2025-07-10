@@ -17,8 +17,8 @@ class LabNewMessagesDivider extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           // Divider that spans the full width
-          Expanded(
-            child: const LabDivider(),
+          const Expanded(
+            child: LabDivider(),
           ),
           // Centered text container
           LabContainer(
@@ -35,8 +35,8 @@ class LabNewMessagesDivider extends StatelessWidget {
               color: theme.colors.white,
             ),
           ),
-          Expanded(
-            child: const LabDivider(),
+          const Expanded(
+            child: LabDivider(),
           ),
         ],
       ),

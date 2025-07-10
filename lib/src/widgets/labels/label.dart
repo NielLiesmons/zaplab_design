@@ -69,7 +69,7 @@ class LabLabel extends StatelessWidget {
                       child: LabText.reg14(
                         text,
                         color: isSelected || isEmphasized
-                            ? LabColorsData.dark().white
+                            ? theme.colors.white
                             : theme.colors.white66,
                         textOverflow: TextOverflow.ellipsis,
                       ),

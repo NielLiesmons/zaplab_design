@@ -209,6 +209,7 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                             ),
                                           ],
                                         ),
+                                        const LabGap.s12(),
                                         LabText.reg12(
                                           TimestampFormatter.format(
                                               widget.message != null

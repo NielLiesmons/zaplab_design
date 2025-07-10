@@ -66,7 +66,7 @@ class LabSmallLabel extends StatelessWidget {
                       child: LabText.reg12(
                         text,
                         color: isSelected || isEmphasized
-                            ? LabColorsData.dark().white
+                            ? theme.colors.white
                             : theme.colors.white66,
                         textOverflow: TextOverflow.ellipsis,
                       ),
@@ -108,17 +108,17 @@ class HouseShapePainter2 extends CustomPainter {
       ..moveTo(0, 0)
       ..lineTo(4, 0)
       ..arcToPoint(
-        Offset(12, 4),
+        const Offset(12, 4),
         radius: const Radius.circular(16),
       )
       ..lineTo(18, 10)
       ..arcToPoint(
-        Offset(18, 14),
+        const Offset(18, 14),
         radius: const Radius.circular(4),
       )
       ..lineTo(12, 20)
       ..arcToPoint(
-        Offset(4, 24),
+        const Offset(4, 24),
         radius: const Radius.circular(16),
       )
       // Line to last point (0,32)
