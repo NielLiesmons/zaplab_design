@@ -227,6 +227,9 @@ class LabProfilePic extends StatelessWidget {
                         height: resolvedSize,
                         fit: BoxFit.cover,
                         loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          }
                           return const LabSkeletonLoader();
                         },
                         errorBuilder: (context, error, stackTrace) {
