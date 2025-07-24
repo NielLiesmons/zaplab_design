@@ -603,14 +603,8 @@ class LabShortTextRenderer extends StatelessWidget {
                           ({Profile profile, VoidCallback? onTap})>(
                         future: onResolveProfile(child.content),
                         builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return LabText.reg12(
-                              '@${child.content}',
-                              color: theme.colors.blurpleLightColor,
-                            );
-                          }
                           return LabProfileInline(
-                            profile: snapshot.data!.profile,
+                            profile: snapshot.data?.profile,
                             onTap: snapshot.data?.onTap,
                           );
                         },

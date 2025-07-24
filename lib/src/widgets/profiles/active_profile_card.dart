@@ -1,20 +1,21 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 
-class LabOtherProfileCard extends StatelessWidget {
+class LabActivePorfileCard extends StatelessWidget {
   final Profile? profile;
   final String? pubkey;
-  final VoidCallback? onSelect;
-  final VoidCallback? onShare;
+  final VoidCallback? onEdit;
   final VoidCallback? onView;
+  final VoidCallback? onShare;
   final VoidCallback? onComplete;
-  const LabOtherProfileCard({
+
+  const LabActivePorfileCard({
     super.key,
     this.profile,
     this.pubkey,
-    this.onSelect,
-    this.onShare,
+    this.onEdit,
     this.onView,
+    this.onShare,
     this.onComplete,
   });
 
@@ -24,15 +25,10 @@ class LabOtherProfileCard extends StatelessWidget {
 
     return LabContainer(
       width: 256,
-      height: 144,
       padding: const LabEdgeInsets.all(LabGapSize.s16),
       decoration: BoxDecoration(
-        color: theme.colors.gray33,
+        color: theme.colors.gray66,
         borderRadius: theme.radius.asBorderRadius().rad16,
-        border: Border.all(
-          color: theme.colors.gray,
-          width: LabLineThicknessData.normal().medium,
-        ),
       ),
       child: Column(
         children: [
@@ -44,9 +40,7 @@ class LabOtherProfileCard extends StatelessWidget {
                   height: theme.sizes.s56,
                   child: Center(
                     child: profile != null
-                        ? LabProfilePic.s48(
-                            profile!.author.value,
-                          )
+                        ? LabProfilePic.s48(profile!.author.value)
                         : LabProfilePic.fromUrl(
                             '',
                             size: LabProfilePicSize.s48,
@@ -54,44 +48,55 @@ class LabOtherProfileCard extends StatelessWidget {
                   ),
                 ),
                 const LabGap.s12(),
-                MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: onView,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        LabText.bold16(
-                          profile != null
-                              ? profile!.author.value?.name ??
-                                  formatNpub(profile!.author.value?.npub ?? '')
-                              : formatNpub(Utils.encodeShareableFromString(
-                                  pubkey ?? '',
-                                  type: 'npub')),
-                          color: theme.colors.white,
-                          maxLines: 1,
-                          textOverflow: TextOverflow.ellipsis,
-                        ),
-                        LabNpubDisplay(profile: profile, pubkey: pubkey),
-                      ],
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LabText.bold16(
+                      profile != null
+                          ? profile!.author.value?.name ??
+                              formatNpub(profile!.author.value?.npub ?? '')
+                          : formatNpub(
+                              Utils.encodeShareableFromString(
+                                pubkey ?? '',
+                                type: 'npub',
+                              ),
+                            ),
+                      color: theme.colors.white,
+                      maxLines: 1,
+                      textOverflow: TextOverflow.ellipsis,
                     ),
-                  ),
+                    LabNpubDisplay(profile: profile, pubkey: pubkey),
+                  ],
                 ),
               ],
             ),
           ),
-          const Spacer(),
+          const LabGap.s40(),
           Row(
             children: [
               if (profile != null) ...[
                 LabSmallButton(
-                  onTap: onSelect,
+                  onTap: onView,
                   rounded: true,
                   color: theme.colors.white8,
                   children: [
                     const LabGap.s4(),
                     LabText.med12(
-                      'Select',
+                      'View',
+                      color: theme.colors.white66,
+                    ),
+                    const LabGap.s4(),
+                  ],
+                ),
+                const LabGap.s12(),
+                LabSmallButton(
+                  onTap: onEdit,
+                  rounded: true,
+                  color: theme.colors.white8,
+                  children: [
+                    const LabGap.s4(),
+                    LabText.med12(
+                      'Edit',
                       color: theme.colors.white66,
                     ),
                     const LabGap.s4(),

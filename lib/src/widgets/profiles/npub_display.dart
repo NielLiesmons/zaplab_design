@@ -4,12 +4,14 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class LabNpubDisplay extends StatefulWidget {
-  final Profile profile;
+  final Profile? profile;
+  final String? pubkey;
   final bool copyable;
 
   const LabNpubDisplay({
     super.key,
-    required this.profile,
+    this.profile,
+    this.pubkey,
     this.copyable = true,
   });
 
@@ -21,8 +23,9 @@ class _LabNpubDisplayState extends State<LabNpubDisplay> {
   bool _showCheck = false;
 
   void _handleTap() {
-    final npub = widget.profile.npub;
-    if (npub != null) {
+    final npub = widget.profile?.npub ??
+        Utils.encodeShareableFromString(widget.pubkey ?? '', type: 'npub');
+    if (npub.isNotEmpty) {
       Clipboard.setData(ClipboardData(text: npub));
       setState(() {
         _showCheck = true;
@@ -48,7 +51,11 @@ class _LabNpubDisplayState extends State<LabNpubDisplay> {
           height: theme.sizes.s8,
           width: theme.sizes.s8,
           decoration: BoxDecoration(
-            color: Color(profileToColor(widget.profile)),
+            color: widget.profile != null
+                ? Color(profileToColor(widget.profile!))
+                : Color(npubToColor(Utils.encodeShareableFromString(
+                    widget.pubkey ?? '',
+                    type: 'npub'))),
             borderRadius: BorderRadius.circular(100),
             border: Border.all(
               color: theme.colors.white16,
@@ -58,7 +65,10 @@ class _LabNpubDisplayState extends State<LabNpubDisplay> {
         ),
         const LabGap.s8(),
         LabText.med12(
-          formatNpub(widget.profile.npub),
+          widget.profile != null
+              ? formatNpub(widget.profile!.npub)
+              : Utils.encodeShareableFromString(widget.pubkey ?? '',
+                  type: 'npub'),
           color: theme.colors.white66,
         ),
         const SizedBox(width: 8),
@@ -91,7 +101,11 @@ class _LabNpubDisplayState extends State<LabNpubDisplay> {
               height: theme.sizes.s8,
               width: theme.sizes.s8,
               decoration: BoxDecoration(
-                color: Color(profileToColor(widget.profile)),
+                color: widget.profile != null
+                    ? Color(profileToColor(widget.profile!))
+                    : Color(npubToColor(Utils.encodeShareableFromString(
+                        widget.pubkey ?? '',
+                        type: 'npub'))),
                 borderRadius: BorderRadius.circular(100),
                 border: Border.all(
                   color: theme.colors.white16,
@@ -101,7 +115,11 @@ class _LabNpubDisplayState extends State<LabNpubDisplay> {
             ),
             const LabGap.s8(),
             LabText.med12(
-              formatNpub(widget.profile.npub),
+              widget.profile != null
+                  ? formatNpub(widget.profile!.npub)
+                  : formatNpub(Utils.encodeShareableFromString(
+                      widget.pubkey ?? '',
+                      type: 'npub')),
               color: theme.colors.white66,
             ),
             const SizedBox(width: 8),

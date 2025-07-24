@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class LabImageStack extends StatefulWidget {
   final List<String> images;
@@ -150,19 +151,19 @@ class _LabImageStackState extends State<LabImageStack> {
                         ),
                         child: Opacity(
                           opacity: 0.6,
-                          child: Image.network(
-                            widget.images[2],
+                          child: CachedNetworkImage(
+                            imageUrl: widget.images[2],
                             fit: BoxFit.cover,
                             width: containerSize.width - 80,
                             height: containerSize.height - 80,
-                            alignment: Alignment.center,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return const LabSkeletonLoader();
-                            },
-                            errorBuilder: (context, error, stackTrace) {
-                              return const LabSkeletonLoader();
-                            },
+                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                const LabSkeletonLoader(),
+                            errorWidget: (context, url, error) => Center(
+                              child: LabText(
+                                "Image not found",
+                                color: theme.colors.white33,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -204,19 +205,19 @@ class _LabImageStackState extends State<LabImageStack> {
                         ),
                         child: Opacity(
                           opacity: 0.8,
-                          child: Image.network(
-                            widget.images[1],
+                          child: CachedNetworkImage(
+                            imageUrl: widget.images[1],
                             fit: BoxFit.cover,
                             width: containerSize.width - 40,
                             height: containerSize.height - 40,
-                            alignment: Alignment.center,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return const LabSkeletonLoader();
-                            },
-                            errorBuilder: (context, error, stackTrace) {
-                              return const LabSkeletonLoader();
-                            },
+                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                const LabSkeletonLoader(),
+                            errorWidget: (context, url, error) => Center(
+                              child: LabText(
+                                "Image not found",
+                                color: theme.colors.white33,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -249,19 +250,19 @@ class _LabImageStackState extends State<LabImageStack> {
                     ),
                     child: Stack(
                       children: [
-                        Image.network(
-                          widget.images[0],
+                        CachedNetworkImage(
+                          imageUrl: widget.images[0],
                           fit: BoxFit.cover,
                           width: containerSize.width,
                           height: containerSize.height,
-                          alignment: Alignment.center,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return const LabSkeletonLoader();
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            return const LabSkeletonLoader();
-                          },
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                              const LabSkeletonLoader(),
+                          errorWidget: (context, url, error) => Center(
+                            child: LabText(
+                              "Image not found",
+                              color: theme.colors.white33,
+                            ),
+                          ),
                         ),
                         // Counter for additional images
                         if (widget.images.length > 1)

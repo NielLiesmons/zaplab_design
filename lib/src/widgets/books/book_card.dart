@@ -1,5 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 // import 'package:models/models.dart';
 
 class LabBookCard extends StatelessWidget {
@@ -41,21 +42,16 @@ class LabBookCard extends StatelessWidget {
                     color: theme.colors.gray33,
                     borderRadius: theme.radius.asBorderRadius().rad8,
                   ),
-                  child: Image.network(
-                    book.imageUrl ?? '',
+                  child: CachedNetworkImage(
+                    imageUrl: book.imageUrl ?? '',
                     fit: BoxFit.cover,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return const LabSkeletonLoader();
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      print('Error loading asset: $error');
-                      return LabContainer(
-                        decoration: BoxDecoration(
-                          color: theme.colors.gray33,
-                        ),
-                      );
-                    },
+                    progressIndicatorBuilder: (context, url, downloadProgress) =>
+                        const LabSkeletonLoader(),
+                    errorWidget: (context, url, error) => LabContainer(
+                      decoration: BoxDecoration(
+                        color: theme.colors.gray33,
+                      ),
+                    ),
                   ),
                 ),
                 const LabGap.s12(),

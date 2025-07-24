@@ -1,6 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class LabFeedArticle extends StatelessWidget {
   final Article article;
@@ -57,22 +58,17 @@ class LabFeedArticle extends StatelessWidget {
                                 width: LabLineThicknessData.normal().thin,
                               ),
                             ),
-                            child: Image.network(
-                              article.imageUrl!,
+                            child: CachedNetworkImage(
+                              imageUrl: article.imageUrl!,
                               fit: BoxFit.cover,
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return const LabSkeletonLoader();
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                return Center(
-                                  child: LabText(
-                                    "Image not found",
-                                    color: theme.colors.white33,
-                                  ),
-                                );
-                              },
+                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                  const LabSkeletonLoader(),
+                              errorWidget: (context, url, error) => Center(
+                                child: LabText(
+                                  "Image not found",
+                                  color: theme.colors.white33,
+                                ),
+                              ),
                             ),
                           );
                         }
@@ -89,18 +85,12 @@ class LabFeedArticle extends StatelessWidget {
                                 width: LabLineThicknessData.normal().thin,
                               ),
                             ),
-                            child: Image.network(
-                              article.imageUrl!,
+                            child: CachedNetworkImage(
+                              imageUrl: article.imageUrl!,
                               fit: BoxFit.cover,
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return const LabSkeletonLoader();
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                print('Error loading image: $error');
-                                return const LabSkeletonLoader();
-                              },
+                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                  const LabSkeletonLoader(),
+                              errorWidget: (context, url, error) => const LabSkeletonLoader(),
                             ),
                           ),
                         );
@@ -145,7 +135,7 @@ class LabFeedArticle extends StatelessWidget {
                                           textOverflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      const LabGap.s4(),
+                                      const LabGap.s12(),
                                       if (isUnread)
                                         LabContainer(
                                           margin: const LabEdgeInsets.only(

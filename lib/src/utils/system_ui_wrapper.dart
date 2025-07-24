@@ -20,13 +20,14 @@ class LabScrollBehavior extends ScrollBehavior {
 
   @override
   ScrollBehavior copyWith({
-    ScrollPhysics? physics,
     bool? scrollbars,
     bool? overscroll,
     Set<PointerDeviceKind>? dragDevices,
-    TargetPlatform? platform,
-    Set<LogicalKeyboardKey>? pointerAxisModifiers,
     MultitouchDragStrategy? multitouchDragStrategy,
+    Set<LogicalKeyboardKey>? pointerAxisModifiers,
+    ScrollPhysics? physics,
+    TargetPlatform? platform,
+    ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior,
   }) {
     return const LabScrollBehavior();
   }

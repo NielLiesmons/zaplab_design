@@ -1,5 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class LabProfileHeader extends StatelessWidget {
   const LabProfileHeader({
@@ -28,15 +29,12 @@ class LabProfileHeader extends StatelessWidget {
                 color: Color(profileToColor(profile)).withValues(alpha: 0.16),
               ),
               child: profile.banner != null && profile.banner!.isNotEmpty
-                  ? Image.network(
-                      profile.banner!,
+                  ? CachedNetworkImage(
+                      imageUrl: profile.banner!,
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const SizedBox.shrink();
-                      },
-                      loadingBuilder: (context, error, stackTrace) {
-                        return const LabSkeletonLoader();
-                      },
+                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                          const LabSkeletonLoader(),
+                      errorWidget: (context, url, error) => const SizedBox.shrink(),
                     )
                   : null,
             ),

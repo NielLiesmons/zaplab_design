@@ -3,7 +3,7 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
 
 class LabProfileInline extends StatelessWidget {
-  final Profile profile;
+  final Profile? profile;
   final void Function()? onTap;
   final bool? isArticle;
   final bool? isEditableText;
@@ -11,7 +11,7 @@ class LabProfileInline extends StatelessWidget {
 
   const LabProfileInline({
     super.key,
-    required this.profile,
+    this.profile,
     this.onTap,
     this.isArticle = false,
     this.isEditableText = false,
@@ -33,8 +33,8 @@ class LabProfileInline extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const LabGap.s2(),
-                if (profile.pictureUrl != null &&
-                    profile.pictureUrl!.isNotEmpty)
+                if (profile?.pictureUrl != null &&
+                    profile!.pictureUrl!.isNotEmpty)
                   Transform.translate(
                     offset: isArticle == false
                         ? const Offset(0, -0.1)
@@ -51,61 +51,40 @@ class LabProfileInline extends StatelessWidget {
                 Column(
                   children: [
                     isCompact ? const LabGap.s2() : const SizedBox.shrink(),
-                    profile.name!.isNotEmpty
-                        ? (isArticle == false)
-                            ? isEditableText == true
-                                ? LabText.med16(
-                                    profile.name!,
-                                    color: theme.colors.blurpleLightColor,
-                                    maxLines: 1,
-                                    textOverflow: TextOverflow.ellipsis,
-                                  )
-                                : isCompact
-                                    ? LabText.med12(
-                                        profile.name!,
-                                        color: theme.colors.blurpleLightColor66,
-                                        maxLines: 1,
-                                        textOverflow: TextOverflow.ellipsis,
-                                      )
-                                    : LabText.med14(
-                                        profile.name!,
-                                        color: theme.colors.blurpleLightColor,
-                                        maxLines: 1,
-                                        textOverflow: TextOverflow.ellipsis,
-                                      )
-                            : LabText.boldArticle(
-                                profile.name!,
+                    (isArticle == false)
+                        ? isEditableText == true
+                            ? LabText.med16(
+                                profile?.name ??
+                                    formatNpub(profile?.npub ?? "Profile..."),
                                 color: theme.colors.blurpleLightColor,
                                 maxLines: 1,
                                 textOverflow: TextOverflow.ellipsis,
                               )
-                        : (isArticle == false)
-                            ? isEditableText == true
-                                ? LabText.med16(
-                                    'ProfileName',
+                            : isCompact
+                                ? LabText.med12(
+                                    profile?.name ??
+                                        formatNpub(
+                                            profile?.npub ?? "Profile..."),
                                     color: theme.colors.blurpleLightColor66,
                                     maxLines: 1,
                                     textOverflow: TextOverflow.ellipsis,
                                   )
-                                : isCompact
-                                    ? LabText.med12(
-                                        'ProfileName',
-                                        color: theme.colors.blurpleLightColor66,
-                                        maxLines: 1,
-                                        textOverflow: TextOverflow.ellipsis,
-                                      )
-                                    : LabText.med14(
-                                        'ProfileName',
-                                        color: theme.colors.blurpleLightColor66,
-                                        maxLines: 1,
-                                        textOverflow: TextOverflow.ellipsis,
-                                      )
-                            : LabText.boldArticle(
-                                'ProfileName',
-                                color: theme.colors.blurpleLightColor66,
-                                maxLines: 1,
-                                textOverflow: TextOverflow.ellipsis,
-                              ),
+                                : LabText.med14(
+                                    profile != null
+                                        ? profile?.name ??
+                                            formatNpub(profile!.npub)
+                                        : "Profile...",
+                                    color: theme.colors.blurpleLightColor,
+                                    maxLines: 1,
+                                    textOverflow: TextOverflow.ellipsis,
+                                  )
+                        : LabText.boldArticle(
+                            profile?.name ??
+                                formatNpub(profile?.npub ?? "Profile..."),
+                            color: theme.colors.blurpleLightColor,
+                            maxLines: 1,
+                            textOverflow: TextOverflow.ellipsis,
+                          ),
                   ],
                 ),
               ],

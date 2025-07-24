@@ -70,7 +70,8 @@ class LabFeedThread extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         LabProfilePic.s38(
-                            thread?.author.value ?? reply!.author.value),
+                          thread?.author.value ?? reply?.author.value,
+                        ),
                         if (topThreeReplyProfiles.isNotEmpty)
                           Expanded(
                             child: LabDivider.vertical(

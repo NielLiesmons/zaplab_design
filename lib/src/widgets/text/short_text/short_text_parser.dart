@@ -54,25 +54,24 @@ class LabShortTextParser {
       }
 
       // Handle headings
-      if (line.startsWith('#')) {
-        final int level = _countLeadingHashes(line);
+      final headingMatch = RegExp(r'^(#{1,5})\s+(.+)').firstMatch(line);
+      if (headingMatch != null) {
+        final int level = headingMatch.group(1)!.length;
+        final String content = headingMatch.group(2)!.trim();
         print('Found heading with level $level: $line');
-        if (level >= 1 && level <= 5) {
-          final String content = line.replaceAll(RegExp(r'^#+\s*'), '').trim();
-          print('Creating heading element with content: $content');
-          elements.add(LabShortTextElement(
-            type: switch (level) {
-              1 => LabShortTextElementType.heading1,
-              2 => LabShortTextElementType.heading2,
-              3 => LabShortTextElementType.heading3,
-              4 => LabShortTextElementType.heading4,
-              5 => LabShortTextElementType.heading5,
-              _ => LabShortTextElementType.paragraph,
-            },
-            content: content,
-          ));
-          continue;
-        }
+        print('Creating heading element with content: $content');
+        elements.add(LabShortTextElement(
+          type: switch (level) {
+            1 => LabShortTextElementType.heading1,
+            2 => LabShortTextElementType.heading2,
+            3 => LabShortTextElementType.heading3,
+            4 => LabShortTextElementType.heading4,
+            5 => LabShortTextElementType.heading5,
+            _ => LabShortTextElementType.paragraph,
+          },
+          content: content,
+        ));
+        continue;
       }
 
       // Reset counters only when we hit a non-list item
@@ -311,13 +310,14 @@ class LabShortTextParser {
     while (currentPosition < text.length) {
       // First check for utfEmoji in the current text
       final utfEmojiMatch =
-          utfEmojiPattern.matchAsPrefix(text, currentPosition);
+          utfEmojiPattern.matchAsPrefix(text.substring(currentPosition));
       if (utfEmojiMatch != null) {
         // Add any text before the emoji
-        if (utfEmojiMatch.start > currentPosition) {
+        if (utfEmojiMatch.start > 0) {
           styledElements.add(LabShortTextElement(
             type: LabShortTextElementType.styledText,
-            content: text.substring(currentPosition, utfEmojiMatch.start),
+            content: text.substring(
+                currentPosition, currentPosition + utfEmojiMatch.start),
           ));
         }
         // Add the emoji
@@ -325,40 +325,38 @@ class LabShortTextParser {
           type: LabShortTextElementType.utfEmoji,
           content: utfEmojiMatch[0]!,
         ));
-        currentPosition = utfEmojiMatch.end;
+        currentPosition += utfEmojiMatch.end;
         continue;
       }
 
-      final Match? imageUrlMatch =
-          imageUrlPattern.matchAsPrefix(text, currentPosition);
-      final Match? audioUrlMatch =
-          audioUrlPattern.matchAsPrefix(text, currentPosition);
+      // Use substring for all matchers and offset indices
+      final String remainingText = text.substring(currentPosition);
+      final Match? imageUrlMatch = imageUrlPattern.matchAsPrefix(remainingText);
+      final Match? audioUrlMatch = audioUrlPattern.matchAsPrefix(remainingText);
       final Match? combined1Match =
-          combinedPattern.matchAsPrefix(text, currentPosition);
+          combinedPattern.matchAsPrefix(remainingText);
       final Match? combined2Match =
-          combinedPattern2.matchAsPrefix(text, currentPosition);
-      final Match? boldMatch = boldPattern.matchAsPrefix(text, currentPosition);
-      final Match? italicMatch =
-          italicPattern.matchAsPrefix(text, currentPosition);
+          combinedPattern2.matchAsPrefix(remainingText);
+      final Match? boldMatch = boldPattern.matchAsPrefix(remainingText);
+      final Match? italicMatch = italicPattern.matchAsPrefix(remainingText);
       final Match? underlineMatch =
-          underlinePattern.matchAsPrefix(text, currentPosition);
+          underlinePattern.matchAsPrefix(remainingText);
       final Match? lineThroughMatch =
-          lineThroughPattern.matchAsPrefix(text, currentPosition);
+          lineThroughPattern.matchAsPrefix(remainingText);
       final Match? monospaceMatch =
-          monospacePattern.matchAsPrefix(text, currentPosition);
+          monospacePattern.matchAsPrefix(remainingText);
       final Match? nostrModelMatch =
-          nostrModelPattern.matchAsPrefix(text, currentPosition);
+          nostrModelPattern.matchAsPrefix(remainingText);
       final Match? nostrProfileMatch =
-          nostrProfilePattern.matchAsPrefix(text, currentPosition);
-      final Match? emojiMatch =
-          emojiPattern.matchAsPrefix(text, currentPosition);
+          nostrProfilePattern.matchAsPrefix(remainingText);
+      final Match? emojiMatch = emojiPattern.matchAsPrefix(remainingText);
       final Match? markdownLinkMatch =
-          markdownLinkPattern.matchAsPrefix(text, currentPosition);
-      final Match? hashtagMatch =
-          hashtagPattern.matchAsPrefix(text, currentPosition);
-      final Match? urlMatch = urlPattern.matchAsPrefix(text, currentPosition);
+          markdownLinkPattern.matchAsPrefix(remainingText);
+      final Match? hashtagMatch = hashtagPattern.matchAsPrefix(remainingText);
+      final Match? urlMatch = urlPattern.matchAsPrefix(remainingText);
 
-      final List<Match?> matches = [
+      // Offset all matches to be relative to the original string
+      List<Match?> allMatches = [
         imageUrlMatch,
         audioUrlMatch,
         combined1Match,
@@ -372,11 +370,12 @@ class LabShortTextParser {
         nostrProfileMatch,
         emojiMatch,
         markdownLinkMatch,
+        hashtagMatch,
         urlMatch,
-      ].where((m) => m != null).toList();
+      ];
+      final List<Match?> matches = allMatches.where((m) => m != null).toList();
 
       if (matches.isEmpty) {
-        // If no matches found, add one character and continue
         if (currentPosition < text.length) {
           styledElements.add(LabShortTextElement(
             type: LabShortTextElementType.styledText,
@@ -387,8 +386,8 @@ class LabShortTextParser {
         continue;
       }
 
-      final Match firstMatch = matches.reduce((a, b) {
-        // If starts are equal, prioritize image URLs and audio URLs over regular URLs
+      // Find the first match (lowest start)
+      Match firstMatch = matches.reduce((a, b) {
         if (a!.start == b!.start) {
           if (a == imageUrlMatch) return a;
           if (b == imageUrlMatch) return b;
@@ -397,25 +396,27 @@ class LabShortTextParser {
         }
         return a.start < b.start ? a : b;
       })!;
+      // Offset start/end to original string
+      int matchStart = currentPosition + firstMatch.start;
+      int matchEnd = currentPosition + firstMatch.end;
 
       // Add any text before the match
-      if (firstMatch.start > currentPosition) {
+      if (matchStart > currentPosition) {
         styledElements.add(LabShortTextElement(
           type: LabShortTextElementType.styledText,
-          content: text.substring(currentPosition, firstMatch.start),
+          content: text.substring(currentPosition, matchStart),
         ));
       }
 
+      // Now handle the match as before, but use matchStart/matchEnd for substringing if needed
       if (firstMatch == boldMatch ||
           firstMatch == italicMatch ||
           firstMatch == combined1Match ||
           firstMatch == combined2Match ||
           firstMatch == underlineMatch ||
           firstMatch == lineThroughMatch) {
-        // Get content from the appropriate capture group
         final String content = firstMatch == boldMatch
-            ? (firstMatch.group(1) ??
-                firstMatch.group(2))! // Try both capture groups
+            ? (firstMatch.group(1) ?? firstMatch.group(2))!
             : firstMatch.group(1)!;
         final String style =
             (firstMatch == combined1Match || firstMatch == combined2Match)
@@ -427,7 +428,6 @@ class LabShortTextParser {
                         : firstMatch == underlineMatch
                             ? 'underline'
                             : 'line-through';
-
         styledElements.add(LabShortTextElement(
           type: LabShortTextElementType.styledText,
           content: content,
@@ -453,9 +453,7 @@ class LabShortTextParser {
           type: LabShortTextElementType.nostrModel,
           content: firstMatch[0]!.trim(),
         ));
-
-        // Skip any whitespace after the match before continuing
-        int nextPosition = firstMatch.end;
+        int nextPosition = matchEnd;
         while (nextPosition < text.length && text[nextPosition] == ' ') {
           nextPosition++;
         }
@@ -509,7 +507,7 @@ class LabShortTextParser {
         ));
 
         // Skip any whitespace after the match before continuing
-        int nextPosition = firstMatch.end;
+        int nextPosition = matchEnd;
         while (nextPosition < text.length && text[nextPosition] == ' ') {
           nextPosition++;
         }
@@ -528,7 +526,8 @@ class LabShortTextParser {
         ));
       }
 
-      currentPosition = firstMatch.end;
+      currentPosition = matchEnd;
+      continue;
     }
 
     return styledElements;

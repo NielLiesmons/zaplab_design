@@ -1,6 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'dart:async';
 import 'dart:math' as math;
+import 'package:cached_network_image/cached_network_image.dart';
 
 class LabFullWidthImage extends StatefulWidget {
   final String url;
@@ -26,7 +27,7 @@ class _LabFullWidthImageState extends State<LabFullWidthImage> {
   }
 
   Future<Size> _getImageSize() async {
-    final image = NetworkImage(widget.url);
+    final image = CachedNetworkImageProvider(widget.url);
     final completer = Completer<Size>();
 
     image.resolve(ImageConfiguration.empty).addListener(
@@ -94,22 +95,20 @@ class _LabFullWidthImageState extends State<LabFullWidthImage> {
                       ),
                     ),
                     child: Center(
-                      child: Image.network(
-                        widget.url,
+                      child: CachedNetworkImage(
+                        imageUrl: widget.url,
                         fit: useMaxHeight ? BoxFit.contain : BoxFit.cover,
                         width: constraints.maxWidth,
                         height: useMaxHeight ? maxHeight : height,
-                        loadingBuilder: (context, error, stackTrace) {
-                          return const LabSkeletonLoader();
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          return Center(
-                            child: LabText(
-                              "Image not found",
-                              color: theme.colors.white33,
-                            ),
-                          );
-                        },
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                                const LabSkeletonLoader(),
+                        errorWidget: (context, url, error) => Center(
+                          child: LabText(
+                            "Image not found",
+                            color: theme.colors.white33,
+                          ),
+                        ),
                       ),
                     ),
                   );

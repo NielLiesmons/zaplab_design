@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class LabEmojiImage extends StatelessWidget {
   final String emojiUrl;
@@ -71,22 +72,17 @@ class LabEmojiImage extends StatelessWidget {
 
     return Opacity(
       opacity: opacity,
-      child: Image.network(
-        emojiUrl,
+      child: CachedNetworkImage(
+        imageUrl: emojiUrl,
         width: size,
         height: size,
-        fit: BoxFit.contain,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return const LabSkeletonLoader();
-        },
-        errorBuilder: (context, error, stackTrace) {
-          return LabIcon(
-            theme.icons.characters.emojiFill,
-            size: _getClosestIconSize(size),
-            color: theme.colors.white33,
-          );
-        },
+        progressIndicatorBuilder: (context, url, downloadProgress) =>
+            const LabSkeletonLoader(),
+        errorWidget: (context, url, error) => LabIcon(
+          theme.icons.characters.emojiFill,
+          size: _getClosestIconSize(size),
+          color: theme.colors.white33,
+        ),
       ),
     );
   }

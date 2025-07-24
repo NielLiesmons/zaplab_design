@@ -149,7 +149,7 @@ export 'polls/poll.dart';
 export 'products/product_header.dart';
 
 // Profiles
-export 'profiles/current_profile_card.dart';
+export 'profiles/active_profile_card.dart';
 export 'profiles/npub_display.dart';
 export 'profiles/other_profile_card.dart';
 export 'profiles/profile_header.dart';

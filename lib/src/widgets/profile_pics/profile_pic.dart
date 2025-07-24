@@ -2,6 +2,7 @@ import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 
 enum LabProfilePicSize {
   s12,
@@ -186,6 +187,15 @@ class LabProfilePic extends StatelessWidget {
 
   String? get _effectiveName => name ?? profile?.name;
 
+  String _getProfileInitial() {
+    if (name != null && name!.isNotEmpty) {
+      return name![0].toUpperCase();
+    } else if (pubkey != null && pubkey!.isNotEmpty) {
+      return pubkey![0].toUpperCase();
+    }
+    return '?';
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
@@ -221,63 +231,71 @@ class LabProfilePic extends StatelessWidget {
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
                 child: _effectiveUrl != null && _effectiveUrl!.isNotEmpty
-                    ? Image.network(
-                        _effectiveUrl!,
-                        width: resolvedSize,
-                        height: resolvedSize,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          }
-                          return const LabSkeletonLoader();
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          if (profile != null ||
-                              (name != null && pubkey != null)) {
-                            return Container(
-                              color: Color(_getProfileColor())
-                                  .withValues(alpha: 0.24),
-                              child: _effectiveName?.isNotEmpty == true
-                                  ? Center(
-                                      child: Stack(
-                                        children: [
-                                          Text(
-                                            _effectiveName![0].toUpperCase(),
-                                            style: TextStyle(
-                                              color: Color(_getProfileColor()),
-                                              fontSize: resolvedSize * 0.56,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                    ? (_effectiveUrl!.startsWith('assets/')
+                        ? Image.asset(
+                            _effectiveUrl!,
+                            fit: BoxFit.cover,
+                            width: resolvedSize,
+                            height: resolvedSize,
+                          )
+                        : CachedNetworkImage(
+                            imageUrl: _effectiveUrl!,
+                            width: resolvedSize,
+                            height: resolvedSize,
+                            fit: BoxFit.cover,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) {
+                              return const LabSkeletonLoader();
+                            },
+                            errorWidget: (context, url, error) {
+                              if (profile != null ||
+                                  (name != null && pubkey != null)) {
+                                return Container(
+                                  color: Color(_getProfileColor())
+                                      .withValues(alpha: 0.24),
+                                  child: _effectiveName?.isNotEmpty == true
+                                      ? Center(
+                                          child: Stack(
+                                            children: [
+                                              Text(
+                                                _effectiveName![0]
+                                                    .toUpperCase(),
+                                                style: TextStyle(
+                                                  color:
+                                                      Color(_getProfileColor()),
+                                                  fontSize: resolvedSize * 0.56,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                _effectiveName![0]
+                                                    .toUpperCase(),
+                                                style: TextStyle(
+                                                  color: theme.colors.white16,
+                                                  fontSize: resolvedSize * 0.56,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Text(
-                                            _effectiveName![0].toUpperCase(),
-                                            style: TextStyle(
-                                              color: theme.colors.white16,
-                                              fontSize: resolvedSize * 0.56,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  : null,
-                            );
-                          }
-                          final fallbackIconSize = resolvedSize * 0.6;
-                          return Center(
-                            child: Text(
-                              icons.characters.profile,
-                              style: TextStyle(
-                                fontFamily: icons.fontFamily,
-                                package: icons.fontPackage,
-                                fontSize: fallbackIconSize,
-                                color: theme.colors.white33,
-                              ),
-                            ),
-                          );
-                        },
-                      )
+                                        )
+                                      : null,
+                                );
+                              }
+                              final fallbackIconSize = resolvedSize * 0.6;
+                              return Center(
+                                child: Text(
+                                  icons.characters.profile,
+                                  style: TextStyle(
+                                    fontFamily: icons.fontFamily,
+                                    package: icons.fontPackage,
+                                    fontSize: fallbackIconSize,
+                                    color: theme.colors.white33,
+                                  ),
+                                ),
+                              );
+                            },
+                          ))
                     : profile != null || (name != null && pubkey != null)
                         ? Container(
                             color: Color(_getProfileColor())

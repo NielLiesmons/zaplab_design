@@ -436,20 +436,6 @@ class _LabTimePickerState extends State<LabTimePicker> {
           startY: radius,
           endX: hourOverlayEndX,
           endY: hourOverlayEndY,
-          color: theme.colors.blurpleColor33,
-          width: LabLineThicknessData.normal().thick,
-        ),
-      ),
-    );
-
-    lines.add(
-      CustomPaint(
-        size: Size(_clockSize, _clockSize),
-        painter: LinePainter(
-          startX: radius,
-          startY: radius,
-          endX: hourEndX,
-          endY: hourEndY,
           color: theme.colors.blurpleColor,
           width: LabLineThicknessData.normal().thick,
         ),

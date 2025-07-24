@@ -6,7 +6,7 @@ class LabSupportersStage extends StatelessWidget {
 
   const LabSupportersStage({
     super.key,
-    required this.topThreeSupporters,
+    this.topThreeSupporters = const [],
   });
 
   @override
@@ -21,22 +21,24 @@ class LabSupportersStage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              LabProfilePic.s56(topThreeSupporters[0].author.value),
-              const SizedBox(height: 8),
-              LabContainer(
-                width: double.infinity,
-                padding:
-                    const LabEdgeInsets.symmetric(horizontal: LabGapSize.s12),
-                child: LabText.med14(
-                  topThreeSupporters[0].author.value?.name ??
-                      formatNpub(
-                          topThreeSupporters[0].author.value?.npub ?? ''),
-                  color: theme.colors.white,
-                  maxLines: 2,
-                  textOverflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
+              if (topThreeSupporters.length > 1) ...[
+                LabProfilePic.s56(topThreeSupporters[1].author.value),
+                const SizedBox(height: 8),
+                LabContainer(
+                  width: double.infinity,
+                  padding:
+                      const LabEdgeInsets.symmetric(horizontal: LabGapSize.s12),
+                  child: LabText.med14(
+                    topThreeSupporters[1].author.value?.name ??
+                        formatNpub(
+                            topThreeSupporters[1].author.value?.npub ?? ''),
+                    color: theme.colors.white,
+                    maxLines: 2,
+                    textOverflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
+              ],
               const SizedBox(height: 8),
               Flexible(
                 fit: FlexFit.loose,
@@ -72,22 +74,24 @@ class LabSupportersStage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              LabProfilePic.s56(topThreeSupporters[1].author.value),
-              const SizedBox(height: 8),
-              LabContainer(
-                width: double.infinity,
-                padding:
-                    const LabEdgeInsets.symmetric(horizontal: LabGapSize.s12),
-                child: LabText.med14(
-                  topThreeSupporters[1].author.value?.name ??
-                      formatNpub(
-                          topThreeSupporters[1].author.value?.npub ?? ''),
-                  color: theme.colors.white,
-                  maxLines: 2,
-                  textOverflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
+              if (topThreeSupporters.isNotEmpty) ...[
+                LabProfilePic.s56(topThreeSupporters[0].author.value),
+                const SizedBox(height: 8),
+                LabContainer(
+                  width: double.infinity,
+                  padding:
+                      const LabEdgeInsets.symmetric(horizontal: LabGapSize.s12),
+                  child: LabText.med14(
+                    topThreeSupporters[0].author.value?.name ??
+                        formatNpub(
+                            topThreeSupporters[1].author.value?.npub ?? ''),
+                    color: theme.colors.white,
+                    maxLines: 2,
+                    textOverflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
+              ],
               const SizedBox(height: 8),
               Flexible(
                 fit: FlexFit.loose,
@@ -123,22 +127,24 @@ class LabSupportersStage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              LabProfilePic.s56(topThreeSupporters[2].author.value),
-              const SizedBox(height: 8),
-              LabContainer(
-                width: double.infinity,
-                padding:
-                    const LabEdgeInsets.symmetric(horizontal: LabGapSize.s12),
-                child: LabText.med14(
-                  topThreeSupporters[2].author.value?.name ??
-                      formatNpub(
-                          topThreeSupporters[2].author.value?.npub ?? ''),
-                  color: theme.colors.white,
-                  maxLines: 2,
-                  textOverflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
+              if (topThreeSupporters.length > 2) ...[
+                LabProfilePic.s56(topThreeSupporters[2].author.value),
+                const SizedBox(height: 8),
+                LabContainer(
+                  width: double.infinity,
+                  padding:
+                      const LabEdgeInsets.symmetric(horizontal: LabGapSize.s12),
+                  child: LabText.med14(
+                    topThreeSupporters[2].author.value?.name ??
+                        formatNpub(
+                            topThreeSupporters[2].author.value?.npub ?? ''),
+                    color: theme.colors.white,
+                    maxLines: 2,
+                    textOverflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
+              ],
               const SizedBox(height: 8),
               Flexible(
                 fit: FlexFit.loose,

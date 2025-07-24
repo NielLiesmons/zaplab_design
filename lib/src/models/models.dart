@@ -40,6 +40,14 @@ String getModelNameFromContentType(String contenType) {
   return contenType[0].toUpperCase() + contenType.substring(1);
 }
 
+getCommunitySectionNameFromContentType(String contentType) {
+  return '${contentType[0].toUpperCase()}${contentType.substring(1)}s';
+}
+
+getContentTyepFromCommunitySectionName(String communitySectionName) {
+  return communitySectionName.toLowerCase().replaceAll(RegExp(r's$'), '');
+}
+
 String getModelDisplayText(Model<dynamic>? model) {
   return switch (model) {
     Model<Article>() => (model as Article).title ?? '',
@@ -285,7 +293,7 @@ class Job extends ParameterizableReplaceableModel<Job> {
   }
 }
 
-class PartialJob extends ParameterizableReplaceablePartialEvent<Job> {
+class PartialJob extends ParameterizableReplaceablePartialModel<Job> {
   PartialJob(String title, String content,
       {DateTime? publishedAt,
       String? slug,
@@ -460,7 +468,7 @@ class Badge extends ParameterizableReplaceableModel<Badge> {
   }
 }
 
-class PartialBadge extends ParameterizableReplaceablePartialEvent<Badge> {
+class PartialBadge extends ParameterizableReplaceablePartialModel<Badge> {
   PartialBadge({
     required String slug,
     String? name,
@@ -561,7 +569,7 @@ class Repository extends ParameterizableReplaceableModel<Repository> {
 }
 
 class PartialRepository
-    extends ParameterizableReplaceablePartialEvent<Repository> {
+    extends ParameterizableReplaceablePartialModel<Repository> {
   PartialRepository(String name, String description,
       {DateTime? publishedAt, String? slug}) {
     this.name = name;
@@ -607,7 +615,7 @@ class Service extends ParameterizableReplaceableModel<Service> {
   }
 }
 
-class PartialService extends ParameterizableReplaceablePartialEvent<Service> {
+class PartialService extends ParameterizableReplaceablePartialModel<Service> {
   PartialService(String title, String content,
       {DateTime? publishedAt,
       String? slug,
@@ -668,7 +676,7 @@ class Product extends ParameterizableReplaceableModel<Product> {
   }
 }
 
-class PartialProduct extends ParameterizableReplaceablePartialEvent<Product> {
+class PartialProduct extends ParameterizableReplaceablePartialModel<Product> {
   PartialProduct(String title, String content,
       {DateTime? publishedAt,
       String? price,
@@ -727,7 +735,7 @@ class Task extends ParameterizableReplaceableModel<Task> {
   }
 }
 
-class PartialTask extends ParameterizableReplaceablePartialEvent<Task> {
+class PartialTask extends ParameterizableReplaceablePartialModel<Task> {
   PartialTask(String title, String content,
       {DateTime? publishedAt, String? slug, String? status}) {
     this.title = title;
@@ -772,7 +780,7 @@ class CalendarEvent extends ParameterizableReplaceableModel<CalendarEvent> {
 }
 
 class PartialCalendarEvent
-    extends ParameterizableReplaceablePartialEvent<CalendarEvent> {
+    extends ParameterizableReplaceablePartialModel<CalendarEvent> {
   PartialCalendarEvent(String name, String content,
       {DateTime? publishedAt, String? slug, String? imageUrl}) {
     this.name = name;

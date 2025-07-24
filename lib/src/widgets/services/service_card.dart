@@ -1,6 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class LabServiceCard extends StatelessWidget {
   final Service service;
@@ -55,21 +56,17 @@ class LabServiceCard extends StatelessWidget {
                             width: LabLineThicknessData.normal().thin,
                           ),
                         ),
-                        child: Image.network(
-                          service.images.first,
+                        child: CachedNetworkImage(
+                          imageUrl: service.images.first,
                           fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return const LabSkeletonLoader();
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            return Center(
-                              child: LabText(
-                                "Image not found",
-                                color: theme.colors.white33,
-                              ),
-                            );
-                          },
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                            const LabSkeletonLoader(),
+                          errorWidget: (context, url, error) => Center(
+                            child: LabText(
+                              "Image not found",
+                              color: theme.colors.white33,
+                            ),
+                          ),
                         ),
                       );
                     }
@@ -86,21 +83,17 @@ class LabServiceCard extends StatelessWidget {
                             width: LabLineThicknessData.normal().thin,
                           ),
                         ),
-                        child: Image.network(
-                          service.images.first,
+                        child: CachedNetworkImage(
+                          imageUrl: service.images.first,
                           fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return const LabSkeletonLoader();
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            return Center(
-                              child: LabText(
-                                "Image not found",
-                                color: theme.colors.white33,
-                              ),
-                            );
-                          },
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                            const LabSkeletonLoader(),
+                          errorWidget: (context, url, error) => Center(
+                            child: LabText(
+                              "Image not found",
+                              color: theme.colors.white33,
+                            ),
+                          ),
                         ),
                       ),
                     );

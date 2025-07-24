@@ -1,6 +1,7 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 enum LabProfilePicLiveSize {
   s38,
@@ -128,46 +129,55 @@ class LabProfilePicLive extends StatelessWidget {
                 ),
                 child: ClipOval(
                   child: _effectiveUrl != null && _effectiveUrl!.isNotEmpty
-                      ? Image.network(
-                          _effectiveUrl!,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return const LabSkeletonLoader();
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            if (profile != null) {
-                              return Container(
-                                color: Color(profileToColor(profile!))
-                                    .withValues(alpha: 0.66),
-                                child: profile!.name?.isNotEmpty == true
-                                    ? Center(
-                                        child: Text(
-                                          profile!.name![0].toUpperCase(),
-                                          style: TextStyle(
-                                            color: theme.colors.white66,
-                                            fontSize: adjustedInnerSize2 * 0.56,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      )
-                                    : null,
-                              );
-                            }
-                            final fallbackIconSize = adjustedInnerSize2 * 0.6;
-                            return Center(
-                              child: Text(
-                                theme.icons.characters.profile,
-                                style: TextStyle(
-                                  fontFamily: theme.icons.fontFamily,
-                                  package: theme.icons.fontPackage,
-                                  fontSize: fallbackIconSize,
-                                  color: theme.colors.white33,
-                                ),
-                              ),
-                            );
-                          },
-                        )
+                      ? (_effectiveUrl != null &&
+                              _effectiveUrl!.startsWith('assets/')
+                          ? Image.asset(
+                              _effectiveUrl!,
+                              fit: BoxFit.cover,
+                              width: resolvedSize,
+                              height: resolvedSize,
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: _effectiveUrl!,
+                              fit: BoxFit.cover,
+                              width: resolvedSize,
+                              height: resolvedSize,
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                      const LabSkeletonLoader(),
+                              errorWidget: (context, url, error) {
+                                if (profile != null) {
+                                  return Container(
+                                    color: Color(profileToColor(profile!))
+                                        .withValues(alpha: 0.66),
+                                    child: profile!.name?.isNotEmpty == true
+                                        ? Center(
+                                            child: Text(
+                                              profile!.name![0].toUpperCase(),
+                                              style: TextStyle(
+                                                color: theme.colors.white66,
+                                                fontSize: resolvedSize * 0.56,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          )
+                                        : null,
+                                  );
+                                }
+                                final fallbackIconSize = resolvedSize * 0.6;
+                                return Center(
+                                  child: Text(
+                                    theme.icons.characters.profile,
+                                    style: TextStyle(
+                                      fontFamily: theme.icons.fontFamily,
+                                      package: theme.icons.fontPackage,
+                                      fontSize: fallbackIconSize,
+                                      color: theme.colors.white33,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ))
                       : profile != null
                           ? Container(
                               color: Color(profileToColor(profile!)),

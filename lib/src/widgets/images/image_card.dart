@@ -1,5 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class LabImageCard extends StatelessWidget {
   final String url;
@@ -47,28 +48,25 @@ class LabImageCard extends StatelessWidget {
             ),
             width: width,
             height: height ?? 180,
-            child: Image.network(
-              url,
+            child: CachedNetworkImage(
+              imageUrl: url,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return LabContainer(
-                  width: width ?? loadingWidth ?? 320,
-                  height: height ?? loadingHeight ?? 180,
-                  child: Center(
-                    child: LabText(
-                      "Image not found",
-                      color: theme.colors.white33,
-                    ),
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  LabContainer(
+                    width: width ?? loadingWidth ?? 320,
+                    height: height ?? loadingHeight ?? 180,
+                    child: const LabSkeletonLoader(),
                   ),
-                );
-              },
-              loadingBuilder: (context, error, stackTrace) {
-                return LabContainer(
-                  width: width ?? loadingWidth ?? 320,
-                  height: height ?? loadingHeight ?? 180,
-                  child: const LabSkeletonLoader(),
-                );
-              },
+              errorWidget: (context, url, error) => LabContainer(
+                width: width ?? loadingWidth ?? 320,
+                height: height ?? loadingHeight ?? 180,
+                child: Center(
+                  child: LabText(
+                    "Image not found",
+                    color: theme.colors.white33,
+                  ),
+                ),
+              ),
             ),
           ),
         );

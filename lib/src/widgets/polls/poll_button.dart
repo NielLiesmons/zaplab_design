@@ -115,25 +115,26 @@ class LabPollButton extends StatelessWidget {
                                 isSingleContent
                                     ? const LabGap.s8()
                                     : const LabGap.s2(),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: LabSmallProfileStack(
-                                        onTap: onVotesTap,
-                                        profiles: votes
-                                            .map((vote) => vote.author.value!)
-                                            .toList(),
-                                        description: votes.length == 1
-                                            ? '1 Vote'
-                                            : '${votes.length} Votes',
+                                if (votes.isNotEmpty)
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: LabSmallProfileStack(
+                                          onTap: onVotesTap,
+                                          profiles: votes
+                                              .map((vote) => vote.author.value!)
+                                              .toList(),
+                                          description: votes.length == 1
+                                              ? '1 Vote'
+                                              : '${votes.length} Votes',
+                                        ),
                                       ),
-                                    ),
-                                    LabText.reg14(
-                                      '${percentage.toString()}%',
-                                      color: theme.colors.white66,
-                                    ),
-                                  ],
-                                )
+                                      LabText.reg14(
+                                        '${percentage.toString()}%',
+                                        color: theme.colors.white66,
+                                      ),
+                                    ],
+                                  )
                               ],
                             );
                           },

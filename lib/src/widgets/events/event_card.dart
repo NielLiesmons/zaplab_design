@@ -1,5 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:ui';
 
 class LabEventCard extends StatelessWidget {
@@ -41,22 +42,18 @@ class LabEventCard extends StatelessWidget {
                         topRight: Radius.circular(14.6),
                       ),
                     ),
-                    child: Image.network(
-                      event.imageUrl!,
+                    child: CachedNetworkImage(
+                      imageUrl: event.imageUrl!,
                       fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return const LabSkeletonLoader();
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        print('Error loading image: $error');
-                        return Center(
-                          child: LabText(
-                            "Image not found",
-                            color: theme.colors.white33,
-                          ),
-                        );
-                      },
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) =>
+                              const LabSkeletonLoader(),
+                      errorWidget: (context, url, error) => Center(
+                        child: LabText(
+                          "Image not found",
+                          color: theme.colors.white33,
+                        ),
+                      ),
                     ),
                   ),
                 ),

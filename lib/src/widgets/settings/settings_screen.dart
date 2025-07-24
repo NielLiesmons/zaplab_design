@@ -4,13 +4,16 @@ import 'package:models/models.dart';
 
 class LabSettingsScreen extends StatefulWidget {
   // Profiles in use
-  final List<Profile> profiles;
-  final Function(Profile) onSelect;
+  final List<Profile>? profiles;
+  final Function(Profile)? onSelect;
   final VoidCallback? onAddProfile;
   final Function(Profile)? onViewProfile;
+  final List<String>? incompleteProfilePubkeys;
 
   // Current profile
-  final Profile activeProfile;
+  final Profile? activeProfile;
+  final String? activePubkey;
+  final VoidCallback? onCompleteProfile;
 
   // Settings sections
   // IF: you want to specify custom sections and/or widgets THEN: use this list
@@ -37,11 +40,14 @@ class LabSettingsScreen extends StatefulWidget {
 
   const LabSettingsScreen({
     super.key,
-    required this.profiles,
-    required this.onSelect,
+    this.profiles,
+    this.onSelect,
     this.onAddProfile,
     this.onViewProfile,
-    required this.activeProfile,
+    this.incompleteProfilePubkeys,
+    this.activeProfile,
+    this.activePubkey,
+    this.onCompleteProfile,
     this.settingSections,
     this.onHistoryTap,
     this.historyDescription,
@@ -150,13 +156,32 @@ class LabSettingsScreenState extends State<LabSettingsScreen>
     final theme = LabTheme.of(context);
     final activeProfile = _visuallyActiveProfile;
 
-    if (activeProfile == null) {
-      return const SizedBox.shrink();
-    }
-
     // Use custom sections if provided, otherwise build preset sections
     final sectionWidgets =
         widget.settingSections ?? _buildPresetSections(context);
+
+    // Build keysInUse: a list of maps with pubkey and optional profile
+    final Set<String> allPubkeys = {
+      if (widget.activePubkey != null) widget.activePubkey!,
+      ...?widget.profiles?.map((p) => p.pubkey),
+      ...?widget.incompleteProfilePubkeys,
+    };
+    final Map<String, Profile> profilesByPubkey = {
+      for (final p in widget.profiles ?? []) p.pubkey: p
+    };
+    final List<Map<String, dynamic>> keysInUse = [
+      for (final pubkey in allPubkeys)
+        {'pubkey': pubkey, 'profile': profilesByPubkey[pubkey]},
+    ];
+    final String? activePubkey = widget.activePubkey;
+    final activeEntry = keysInUse.firstWhere((e) => e['pubkey'] == activePubkey,
+        orElse: () => <String, dynamic>{});
+    final otherEntries =
+        keysInUse.where((e) => e['pubkey'] != activePubkey).toList();
+
+    print('[DEBUG] LabSettingsScreen activePubkey: $activePubkey');
+    print(
+        '[DEBUG] LabSettingsScreen activeEntry: pubkey=${activeEntry['pubkey']}, profilePubkey=${activeEntry['profile']?.pubkey}');
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,59 +195,67 @@ class LabSettingsScreenState extends State<LabSettingsScreen>
             clipBehavior: Clip.none,
             child: Row(
               children: [
-                ScaleTransition(
-                  scale: Tween<double>(
-                    begin: 1.0,
-                    end: 1.04,
-                  ).animate(CurvedAnimation(
-                    parent: _scaleController,
-                    curve: Curves.easeOut,
-                  )),
-                  child: AppactiveProfileCard(
-                    profile: activeProfile,
+                if (activeEntry != null)
+                  ScaleTransition(
+                    scale: Tween<double>(
+                      begin: 1.0,
+                      end: 1.04,
+                    ).animate(CurvedAnimation(
+                      parent: _scaleController,
+                      curve: Curves.easeOut,
+                    )),
+                    child: LabActivePorfileCard(
+                      profile: activeEntry['profile'],
+                      pubkey: activeEntry['pubkey'],
+                      onView: () {
+                        print(
+                            '[DEBUG] LabActivePorfileCard onView: pubkey=${activeEntry['pubkey']}');
+                        if (widget.onViewProfile != null) {
+                          widget.onViewProfile!(activeEntry['profile']);
+                        }
+                      },
+                      onEdit: () {
+                        // TODO: Implement edit profile
+                      },
+                      onShare: () {
+                        // TODO: Implement share profile
+                      },
+                      onComplete: () {
+                        // TODO: Implement complete profile
+                      },
+                    ),
+                  ),
+                for (final entry in otherEntries) ...[
+                  const LabGap.s16(),
+                  LabOtherProfileCard(
+                    profile: entry['profile'],
+                    pubkey: entry['pubkey'],
                     onView: () {
-                      widget.onViewProfile?.call(activeProfile);
+                      if (widget.onViewProfile != null) {
+                        widget.onViewProfile!(entry['profile']);
+                      }
                     },
-                    onEdit: () {
-                      // TODO: Implement edit profile
+                    onSelect: () {
+                      print(
+                          '[DEBUG] LabOtherProfileCard onSelect: pubkey=${entry['pubkey']}');
+                      setState(() {
+                        _visuallyActiveProfile = entry['profile'];
+                        _isLoading = true;
+                      });
+                      _animateProfileChange(() {
+                        if (widget.onSelect != null)
+                          widget.onSelect!(entry['profile']);
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      });
                     },
                     onShare: () {
                       // TODO: Implement share profile
                     },
                   ),
-                ),
-                // Other profiles
-                ...widget.profiles
-                    .where((p) => p.npub != activeProfile.npub)
-                    .map(
-                      (profile) => Row(
-                        children: [
-                          const LabGap.s16(),
-                          LabOtherProfileCard(
-                            profile: profile,
-                            onView: () {
-                              widget.onViewProfile?.call(profile);
-                            },
-                            onSelect: () {
-                              setState(() {
-                                _visuallyActiveProfile = profile;
-                                _isLoading = true;
-                              });
-                              _animateProfileChange(() {
-                                widget.onSelect(profile);
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                              });
-                            },
-                            onShare: () {
-                              // TODO: Implement share profile
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                // Add profile button
+                ],
+                // Add profile button, etc...
                 const LabGap.s16(),
                 TapBuilder(
                   onTap: widget.onAddProfile ?? () {},
