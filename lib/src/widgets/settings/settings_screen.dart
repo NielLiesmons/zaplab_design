@@ -6,6 +6,8 @@ class LabSettingsScreen extends StatefulWidget {
   // Profiles in use
   final List<Profile>? profiles;
   final Function(Profile)? onSelect;
+  final Function(String)?
+      onSelectIncomplete; // New callback for incomplete profiles
   final VoidCallback? onAddProfile;
   final Function(Profile)? onViewProfile;
   final List<String>? incompleteProfilePubkeys;
@@ -42,6 +44,7 @@ class LabSettingsScreen extends StatefulWidget {
     super.key,
     this.profiles,
     this.onSelect,
+    this.onSelectIncomplete,
     this.onAddProfile,
     this.onViewProfile,
     this.incompleteProfilePubkeys,
@@ -243,8 +246,17 @@ class LabSettingsScreenState extends State<LabSettingsScreen>
                         _isLoading = true;
                       });
                       _animateProfileChange(() {
-                        if (widget.onSelect != null)
-                          widget.onSelect!(entry['profile']);
+                        if (entry['profile'] != null) {
+                          // Complete profile
+                          if (widget.onSelect != null) {
+                            widget.onSelect!(entry['profile']);
+                          }
+                        } else {
+                          // Incomplete profile - we have pubkey but no profile data
+                          if (widget.onSelectIncomplete != null) {
+                            widget.onSelectIncomplete!(entry['pubkey']);
+                          }
+                        }
                         setState(() {
                           _isLoading = false;
                         });

@@ -31,6 +31,7 @@ enum LabTextLevel {
   longformh5,
   boldArticle,
   regArticle,
+  regArticleSmall,
   linkArticle,
   boldWiki,
   regWiki,
@@ -340,6 +341,17 @@ class LabText extends StatelessWidget {
     this.textAlign,
   }) : level = LabTextLevel.boldArticle;
 
+  const LabText.regArticleSmall(
+    this.data, {
+    super.key,
+    this.color,
+    this.gradient,
+    this.fontSize,
+    this.maxLines,
+    this.textOverflow,
+    this.textAlign,
+  }) : level = LabTextLevel.regArticleSmall;
+
   const LabText.linkArticle(
     this.data, {
     super.key,
@@ -503,6 +515,8 @@ class LabText extends StatelessWidget {
         return theme.typography.boldArticle;
       case LabTextLevel.regArticle:
         return theme.typography.regArticle;
+      case LabTextLevel.regArticleSmall:
+        return theme.typography.regArticleSmall;
       case LabTextLevel.linkArticle:
         return theme.typography.linkArticle;
       case LabTextLevel.boldWiki:

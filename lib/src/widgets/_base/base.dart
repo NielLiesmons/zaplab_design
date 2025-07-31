@@ -33,6 +33,7 @@ class LabBase extends StatelessWidget {
   final VoidCallback? onProfilesTap;
   final Widget? historyMenu;
   final Profile? activeProfile;
+  final String? activePubkey;
   final LabColorsOverride? colorsOverride;
 
   LabBase({
@@ -56,6 +57,7 @@ class LabBase extends StatelessWidget {
     this.onProfilesTap,
     this.historyMenu,
     this.activeProfile,
+    this.activePubkey,
     this.colorsOverride,
   }) {
     // Initialize window settings for desktop platforms
@@ -105,6 +107,7 @@ class LabBase extends StatelessWidget {
           onProfilesTap: onProfilesTap,
           historyWidget: historyMenu,
           activeProfile: activeProfile,
+          activePubkey: activePubkey,
         ),
       ),
     );
@@ -130,6 +133,7 @@ class _LabBaseContent extends StatefulWidget {
   final VoidCallback? onProfilesTap;
   final Widget? historyWidget;
   final Profile? activeProfile;
+  final String? activePubkey;
 
   const _LabBaseContent({
     required this.title,
@@ -149,6 +153,7 @@ class _LabBaseContent extends StatefulWidget {
     this.onProfilesTap,
     this.historyWidget,
     this.activeProfile,
+    this.activePubkey,
   });
 
   @override
@@ -332,9 +337,18 @@ class _LabBaseContentState extends State<_LabBaseContent>
                                       ),
                                     const Spacer(),
                                     if (widget.onProfilesTap != null &&
-                                        widget.activeProfile != null)
-                                      LabProfilePic.s38(widget.activeProfile!,
-                                          onTap: widget.onProfilesTap!),
+                                        (widget.activeProfile != null ||
+                                            widget.activePubkey != null))
+                                      widget.activeProfile != null
+                                          ? LabProfilePic.s38(
+                                              widget.activeProfile!,
+                                              onTap: widget.onProfilesTap!,
+                                            )
+                                          : LabProfilePic.fromPubkey(
+                                              widget.activePubkey!,
+                                              size: LabProfilePicSize.s38,
+                                              onTap: widget.onProfilesTap!,
+                                            ),
                                     const LabGap.s12(),
                                   ],
                                 ),

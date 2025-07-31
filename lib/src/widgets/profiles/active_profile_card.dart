@@ -41,8 +41,8 @@ class LabActivePorfileCard extends StatelessWidget {
                   child: Center(
                     child: profile != null
                         ? LabProfilePic.s48(profile!.author.value)
-                        : LabProfilePic.fromUrl(
-                            '',
+                        : LabProfilePic.fromPubkey(
+                            pubkey!,
                             size: LabProfilePicSize.s48,
                           ),
                   ),
@@ -119,14 +119,20 @@ class LabActivePorfileCard extends StatelessWidget {
                 LabSmallButton(
                   onTap: onComplete,
                   rounded: true,
-                  color: theme.colors.white8,
+                  gradient: theme.colors.blurple66,
                   children: [
                     LabText.med12(
-                      'Complete profile',
+                      'Reload',
                       color: theme.colors.white,
                     ),
                   ],
                 ),
+                const Spacer(),
+                LabText.med12(
+                  'Profile data not found',
+                  color: theme.colors.white33,
+                ),
+                const LabGap.s12(),
               ],
             ],
           ),

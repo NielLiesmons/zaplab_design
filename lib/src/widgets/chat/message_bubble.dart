@@ -168,39 +168,53 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                           children: [
                                             LabText.bold12(
                                               widget.message != null
-                                                  ? widget.message!.author
-                                                          .value!.name ??
-                                                      formatNpub(widget.message!
-                                                          .author.value!.pubkey)
-                                                  : widget.reply!.author.value!
-                                                          .name ??
+                                                  ? widget.message!.author.value
+                                                          ?.name ??
                                                       formatNpub(widget
-                                                          .reply!
-                                                          .author
-                                                          .value!
-                                                          .pubkey),
-                                              color: Color(npubToColor(
-                                                  widget.message != null
-                                                      ? widget.message!.author
-                                                          .value!.pubkey
-                                                      : widget.reply!.author
-                                                          .value!.pubkey)),
+                                                              .message!
+                                                              .author
+                                                              .value
+                                                              ?.npub ??
+                                                          'Profile...')
+                                                  : widget.reply!.author.value
+                                                          ?.name ??
+                                                      formatNpub(widget
+                                                              .reply!
+                                                              .author
+                                                              .value
+                                                              ?.npub ??
+                                                          'Profile...'),
+                                              color: Color(
+                                                npubToColor(
+                                                    widget.message != null
+                                                        ? widget.message!.author
+                                                                .value?.npub ??
+                                                            ''
+                                                        : widget.reply!.author
+                                                                .value?.npub ??
+                                                            ''),
+                                              ),
                                               textOverflow:
                                                   TextOverflow.ellipsis,
                                             ),
                                             LabText.bold12(
                                               widget.message != null
-                                                  ? widget.message!.author
-                                                          .value!.name ??
-                                                      formatNpub(widget.message!
-                                                          .author.value!.pubkey)
-                                                  : widget.reply!.author.value!
-                                                          .name ??
+                                                  ? widget.message!.author.value
+                                                          ?.name ??
                                                       formatNpub(widget
-                                                          .reply!
-                                                          .author
-                                                          .value!
-                                                          .pubkey),
+                                                              .message!
+                                                              .author
+                                                              .value
+                                                              ?.npub ??
+                                                          'Profile...')
+                                                  : widget.reply!.author.value
+                                                          ?.name ??
+                                                      formatNpub(widget
+                                                              .reply!
+                                                              .author
+                                                              .value
+                                                              ?.npub ??
+                                                          'Profile...'),
                                               color: isLight
                                                   ? theme.colors.white33
                                                   : const Color(0x00000000),

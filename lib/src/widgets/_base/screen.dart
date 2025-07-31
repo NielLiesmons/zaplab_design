@@ -29,6 +29,7 @@ class LabScreen extends StatefulWidget {
   final bool alwaysShowTopBar;
   final bool customTopBar;
   final bool noTopGap;
+  final bool scrollable;
   final ScrollController? scrollController;
   final bool startAtBottom;
   final bool showScrollToBottomButton;
@@ -43,6 +44,7 @@ class LabScreen extends StatefulWidget {
     this.alwaysShowTopBar = false,
     this.customTopBar = false,
     this.noTopGap = false,
+    this.scrollable = true,
     this.scrollController,
     this.startAtBottom = false,
     this.showScrollToBottomButton = true,
@@ -619,68 +621,81 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
                         body: Stack(
                           children: [
                             // Scrollable content that goes under the top bar
-                            Positioned(
-                              child: NotificationListener<ScrollNotification>(
-                                onNotification: (notification) {
-                                  if (notification.metrics.axis !=
-                                      Axis.vertical) {
-                                    return false; // Ignore horizontal scroll notifications
-                                  }
-
-                                  if (notification
-                                      is ScrollUpdateNotification) {
-                                    if (_isAtTop &&
-                                        notification.metrics.pixels < 0) {
-                                      if (notification.dragDetails != null) {
-                                        _handleDrag(
-                                            -notification.metrics.pixels * 0.2);
-                                        return true;
-                                      } else if (_currentDrag > 0) {
-                                        // Menu is partially open but no active drag
-                                        // Snap to nearest position based on current position
-                                        if (_currentDrag > _menuHeight * 0.33) {
-                                          _openMenu();
-                                        } else {
-                                          _closeMenu();
+                            widget.scrollable
+                                ? Positioned(
+                                    child: NotificationListener<
+                                        ScrollNotification>(
+                                      onNotification: (notification) {
+                                        if (notification.metrics.axis !=
+                                            Axis.vertical) {
+                                          return false; // Ignore horizontal scroll notifications
                                         }
-                                        return true;
-                                      }
-                                    }
-                                  }
-                                  return false;
-                                },
-                                child: SingleChildScrollView(
-                                  controller: widget.scrollController ??
-                                      _scrollController,
-                                  physics: const AlwaysScrollableScrollPhysics(
-                                    parent: BouncingScrollPhysics(),
-                                  ),
-                                  child: ConstrainedBox(
-                                    constraints: const BoxConstraints(
-                                      minHeight: 480,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        // Top padding to account for the gap and drag handle in the top bar
-                                        if (!widget.noTopGap)
-                                          !LabPlatformUtils.isMobile
-                                              ? const LabGap.s8()
-                                              : const LabGap.s10(),
-                                        // Actual content
-                                        widget.child,
-                                        if (widget.bottomBarContent != null)
-                                          SizedBox(
-                                            height: LabPlatformUtils.isMobile
-                                                ? 60
-                                                : 70,
+
+                                        if (notification
+                                            is ScrollUpdateNotification) {
+                                          if (_isAtTop &&
+                                              notification.metrics.pixels < 0) {
+                                            if (notification.dragDetails !=
+                                                null) {
+                                              _handleDrag(
+                                                  -notification.metrics.pixels *
+                                                      0.2);
+                                              return true;
+                                            } else if (_currentDrag > 0) {
+                                              // Menu is partially open but no active drag
+                                              // Snap to nearest position based on current position
+                                              if (_currentDrag >
+                                                  _menuHeight * 0.33) {
+                                                _openMenu();
+                                              } else {
+                                                _closeMenu();
+                                              }
+                                              return true;
+                                            }
+                                          }
+                                        }
+                                        return false;
+                                      },
+                                      child: SingleChildScrollView(
+                                        controller: widget.scrollController ??
+                                            _scrollController,
+                                        physics:
+                                            const AlwaysScrollableScrollPhysics(
+                                          parent: BouncingScrollPhysics(),
+                                        ),
+                                        child: ConstrainedBox(
+                                          constraints: const BoxConstraints(
+                                            minHeight: 480,
                                           ),
-                                        const LabBottomSafeArea(),
-                                      ],
+                                          child: Column(
+                                            children: [
+                                              // Top padding to account for the gap and drag handle in the top bar
+                                              if (!widget.noTopGap)
+                                                !LabPlatformUtils.isMobile
+                                                    ? const LabGap.s8()
+                                                    : const LabGap.s10(),
+                                              // Actual content
+                                              widget.child,
+                                              if (widget.bottomBarContent !=
+                                                  null)
+                                                SizedBox(
+                                                  height:
+                                                      LabPlatformUtils.isMobile
+                                                          ? 60
+                                                          : 70,
+                                                ),
+                                              const LabBottomSafeArea(),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                     ),
+                                  )
+                                : SingleChildScrollView(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    child: widget.child,
                                   ),
-                                ),
-                              ),
-                            ),
 
                             //Black bar that renders the top 8px of the screen always in black so that the blure of the top bar's white top border doesn't pick up on the screen content.
                             if (!widget.noTopGap)
@@ -780,75 +795,91 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
                                                     height: widget
                                                             .alwaysShowTopBar
                                                         ? null
-                                                        : !_scrollController
+                                                        : !(widget.scrollController ??
+                                                                        _scrollController)
                                                                     .hasClients ||
-                                                                _scrollController
+                                                                (widget.scrollController ??
+                                                                            _scrollController)
                                                                         .offset <
                                                                     2
                                                             ? 0.0
-                                                            : _scrollController
+                                                            : (widget.scrollController ??
+                                                                            _scrollController)
                                                                         .offset >
                                                                     68
                                                                 ? null
-                                                                : (_scrollController
+                                                                : ((widget.scrollController ??
+                                                                                _scrollController)
                                                                             .offset -
                                                                         2) /
                                                                     66 *
                                                                     68,
                                                     child: widget
                                                                 .alwaysShowTopBar ||
-                                                            (!_scrollController
+                                                            (!(widget.scrollController ??
+                                                                        _scrollController)
                                                                     .hasClients ||
-                                                                _scrollController
+                                                                (widget.scrollController ??
+                                                                            _scrollController)
                                                                         .offset >=
                                                                     68)
-                                                        ? GestureDetector(
-                                                            onTap: () {
-                                                              if (_scrollController
-                                                                  .hasClients) {
-                                                                _scrollController
-                                                                    .animateTo(
-                                                                  0,
-                                                                  duration: const Duration(
-                                                                      milliseconds:
-                                                                          300),
-                                                                  curve: Curves
-                                                                      .easeOut,
-                                                                );
-                                                              }
-                                                            },
-                                                            child: MouseRegion(
-                                                              cursor: LabPlatformUtils
-                                                                      .isDesktop
-                                                                  ? SystemMouseCursors
-                                                                      .click
-                                                                  : MouseCursor
-                                                                      .defer,
-                                                              child: Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .min,
-                                                                children: [
-                                                                  widget
-                                                                          .customTopBar
-                                                                      ? widget
-                                                                          .topBarContent!
-                                                                      : Column(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.min,
-                                                                          children: [
-                                                                            LabContainer(
-                                                                              padding: LabEdgeInsets.only(
-                                                                                left: LabGapSize.s12,
-                                                                                right: LabGapSize.s12,
-                                                                                bottom: LabPlatformUtils.isMobile ? LabGapSize.s12 : LabGapSize.s10,
+                                                        ? AbsorbPointer(
+                                                            absorbing:
+                                                                _currentDrag >
+                                                                    0,
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                final controller =
+                                                                    widget.scrollController ??
+                                                                        _scrollController;
+                                                                if (controller
+                                                                    .hasClients) {
+                                                                  controller
+                                                                      .animateTo(
+                                                                    0,
+                                                                    duration: const Duration(
+                                                                        milliseconds:
+                                                                            300),
+                                                                    curve: Curves
+                                                                        .easeOut,
+                                                                  );
+                                                                }
+                                                              },
+                                                              child:
+                                                                  MouseRegion(
+                                                                cursor: LabPlatformUtils
+                                                                        .isDesktop
+                                                                    ? SystemMouseCursors
+                                                                        .click
+                                                                    : MouseCursor
+                                                                        .defer,
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    widget
+                                                                            .customTopBar
+                                                                        ? widget
+                                                                            .topBarContent!
+                                                                        : Column(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.min,
+                                                                            children: [
+                                                                              LabContainer(
+                                                                                padding: LabEdgeInsets.only(
+                                                                                  left: LabGapSize.s12,
+                                                                                  right: LabGapSize.s12,
+                                                                                  bottom: LabPlatformUtils.isMobile ? LabGapSize.s12 : LabGapSize.s10,
+                                                                                ),
+                                                                                child: widget.topBarContent!,
                                                                               ),
-                                                                              child: widget.topBarContent!,
-                                                                            ),
-                                                                            const LabDivider(),
-                                                                          ],
-                                                                        ),
-                                                                ],
+                                                                              const LabDivider(),
+                                                                            ],
+                                                                          ),
+                                                                  ],
+                                                                ),
                                                               ),
                                                             ),
                                                           )

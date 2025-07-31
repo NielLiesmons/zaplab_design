@@ -48,7 +48,9 @@ class LabIconCharactersData extends Equatable {
     required this.bold,
     required this.camera,
     required this.check,
+    required this.checkList,
     required this.chevronDown,
+    required this.chevronDownFill,
     required this.chevronLeft,
     required this.chevronRight,
     required this.chevronUp,
@@ -145,7 +147,9 @@ class LabIconCharactersData extends Equatable {
         bell: String.fromCharCodes([58082, 58628]),
         camera: String.fromCharCodes([57344, 58649, 58941, 57564]),
         check: String.fromCharCodes([58788, 61009, 57353]),
+        checkList: String.fromCharCodes([57724, 60998, 57543]),
         chevronDown: String.fromCharCodes([57344, 59309, 61295, 57476]),
+        chevronDownFill: String.fromCharCodes([59129, 58101, 57505]),
         chevronLeft: String.fromCharCodes([57344, 59309, 60404, 57375]),
         chevronRight: String.fromCharCodes([57883, 58353, 57506]),
         chevronUp: String.fromCharCodes([58250, 60663, 57399]),
@@ -240,7 +244,9 @@ class LabIconCharactersData extends Equatable {
   final String bold;
   final String camera;
   final String check;
+  final String checkList;
   final String chevronDown;
+  final String chevronDownFill;
   final String chevronLeft;
   final String chevronRight;
   final String chevronUp;
@@ -336,7 +342,9 @@ class LabIconCharactersData extends Equatable {
         bell.named('bell'),
         camera.named('camera'),
         check.named('check'),
+        checkList.named('checkList'),
         chevronDown.named('chevronDown'),
+        chevronDownFill.named('chevronDownFill'),
         chevronLeft.named('chevronLeft'),
         chevronRight.named('chevronRight'),
         chevronUp.named('chevronUp'),

@@ -15,7 +15,7 @@ class LabEmojiImage extends StatelessWidget {
     this.opacity = 1.0,
   });
 
-  // Find the closest available icon size that's not larger than the requested size
+  // Find the closest available icon size that's one size smaller than the requested size
   LabIconSize _getClosestIconSize(double targetSize) {
     final availableSizes = [
       LabIconSize.s4,
@@ -33,10 +33,11 @@ class LabEmojiImage extends StatelessWidget {
       LabIconSize.s40,
     ];
 
-    // Find the largest size that's not bigger than the target
+    // Find the largest size that's not bigger than the target, then go one size smaller
     for (int i = availableSizes.length - 1; i >= 0; i--) {
       if (double.parse(availableSizes[i].name.substring(1)) <= targetSize) {
-        return availableSizes[i];
+        // Return one size smaller if possible, otherwise return the found size
+        return i > 0 ? availableSizes[i - 1] : availableSizes[i];
       }
     }
 
@@ -76,12 +77,26 @@ class LabEmojiImage extends StatelessWidget {
         imageUrl: emojiUrl,
         width: size,
         height: size,
-        progressIndicatorBuilder: (context, url, downloadProgress) =>
-            const LabSkeletonLoader(),
-        errorWidget: (context, url, error) => LabIcon(
-          theme.icons.characters.emojiFill,
-          size: _getClosestIconSize(size),
-          color: theme.colors.white33,
+        progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+          child: Stack(
+            children: [
+              ClipOval(
+                child: LabSkeletonLoader(),
+              ),
+              LabIcon(
+                theme.icons.characters.emojiFill,
+                size: _getClosestIconSize(size),
+                color: theme.colors.white16,
+              ),
+            ],
+          ),
+        ),
+        errorWidget: (context, url, error) => Center(
+          child: LabIcon(
+            theme.icons.characters.emojiFill,
+            size: _getClosestIconSize(size),
+            color: theme.colors.white33,
+          ),
         ),
       ),
     );
@@ -143,10 +158,12 @@ class LabEmojiContentType extends StatelessWidget {
         height: size,
         fit: BoxFit.contain,
         errorBuilder: (context, error, stackTrace) {
-          return LabIcon(
-            theme.icons.characters.emojiFill,
-            size: _getClosestIconSize(size),
-            color: theme.colors.white33,
+          return Center(
+            child: LabIcon(
+              theme.icons.characters.emojiFill,
+              size: _getClosestIconSize(size),
+              color: theme.colors.white33,
+            ),
           );
         },
       ),

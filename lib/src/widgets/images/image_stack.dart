@@ -117,7 +117,7 @@ class _LabImageStackState extends State<LabImageStack> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (isOutgoing) SizedBox(width: theme.sizes.s80),
+            if (isOutgoing) SizedBox(width: theme.sizes.s48),
             Stack(
               clipBehavior: Clip.none,
               children: [
@@ -156,8 +156,9 @@ class _LabImageStackState extends State<LabImageStack> {
                             fit: BoxFit.cover,
                             width: containerSize.width - 80,
                             height: containerSize.height - 80,
-                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                const LabSkeletonLoader(),
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                    const LabSkeletonLoader(),
                             errorWidget: (context, url, error) => Center(
                               child: LabText(
                                 "Image not found",
@@ -210,8 +211,9 @@ class _LabImageStackState extends State<LabImageStack> {
                             fit: BoxFit.cover,
                             width: containerSize.width - 40,
                             height: containerSize.height - 40,
-                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                const LabSkeletonLoader(),
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                    const LabSkeletonLoader(),
                             errorWidget: (context, url, error) => Center(
                               child: LabText(
                                 "Image not found",
@@ -255,8 +257,9 @@ class _LabImageStackState extends State<LabImageStack> {
                           fit: BoxFit.cover,
                           width: containerSize.width,
                           height: containerSize.height,
-                          progressIndicatorBuilder: (context, url, downloadProgress) =>
-                              const LabSkeletonLoader(),
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) =>
+                                  const LabSkeletonLoader(),
                           errorWidget: (context, url, error) => Center(
                             child: LabText(
                               "Image not found",
@@ -299,7 +302,7 @@ class _LabImageStackState extends State<LabImageStack> {
                 ),
               ],
             ),
-            if (!isOutgoing) SizedBox(width: theme.sizes.s80),
+            if (!isOutgoing) SizedBox(width: theme.sizes.s48),
           ],
         ),
       ),

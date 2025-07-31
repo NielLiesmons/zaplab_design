@@ -9,7 +9,7 @@ enum HostingStatus {
   Gradient getGradient(LabThemeData theme) {
     switch (this) {
       case HostingStatus.online:
-        return theme.colors.green;
+        return theme.colors.blurple;
       case HostingStatus.warning:
         return theme.colors.gold;
       case HostingStatus.offline:
@@ -80,13 +80,25 @@ class LabHostingIcon extends StatelessWidget {
                 child: Center(
                   child: Row(
                     children: [
-                      LabContainer(
-                        height: theme.sizes.s6,
-                        width: theme.sizes.s8,
-                        decoration: BoxDecoration(
-                          gradient: hostingStatuses![i].getGradient(theme),
-                          shape: BoxShape.circle,
-                        ),
+                      Stack(
+                        children: [
+                          LabContainer(
+                            height: theme.sizes.s6,
+                            width: theme.sizes.s8,
+                            decoration: BoxDecoration(
+                              gradient: hostingStatuses![i].getGradient(theme),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          LabContainer(
+                            height: theme.sizes.s6,
+                            width: theme.sizes.s8,
+                            decoration: BoxDecoration(
+                              color: theme.colors.white16,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ],
                       ),
                       const LabGap.s4(),
                       Expanded(

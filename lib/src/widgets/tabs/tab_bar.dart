@@ -101,16 +101,25 @@ class LabTabBarState extends State<LabTabBar> with TickerProviderStateMixin {
     // Check scrollability when scroll position changes
     _checkScrollability();
 
+    // Debug prints
+    final currentTabHasOptions = widget.selectedIndex < widget.tabs.length &&
+        widget.tabs[widget.selectedIndex].optionssContent != null;
+    print(
+        'DEBUG: Scroll pixels: ${_scrollController.position.pixels}, canOpenActionZone: $_canOpenActionZone, hasOptions: $currentTabHasOptions');
+
     if (_scrollController.position.pixels > 0.1) {
       _canOpenActionZone = false;
+      print('DEBUG: Disabled action zone due to scroll position');
     } else if (!_canOpenActionZone) {
       _startPositionTimer?.cancel();
       _startPositionTimer = Timer(const Duration(milliseconds: 20), () {
         _canOpenActionZone = true;
+        print('DEBUG: Re-enabled action zone after timer');
       });
     }
 
     final delta = _scrollController.position.pixels - _initialScrollPosition;
+    print('DEBUG: Delta: $delta, canOpenActionZone: $_canOpenActionZone');
     if (delta < 0 && _canOpenActionZone) {
       final progress = (-delta / theme.sizes.s56).clamp(0, 1);
 
@@ -131,9 +140,13 @@ class LabTabBarState extends State<LabTabBar> with TickerProviderStateMixin {
         curve: Curves.easeInOut,
       ));
 
+      print(
+          'DEBUG: Progress: $progress, previousScale: $previousScale, popControllerAnimating: ${_popController.isAnimating}');
+
       if (progress >= 0.99 &&
           previousScale < 0.99 &&
           !_popController.isAnimating) {
+        print('DEBUG: Triggering transition sequence');
         _triggerTransitionSequence(isButtonClick: false);
       }
 
@@ -142,6 +155,8 @@ class LabTabBarState extends State<LabTabBar> with TickerProviderStateMixin {
   }
 
   Future<void> _triggerTransitionSequence({bool isButtonClick = false}) async {
+    print(
+        'DEBUG: _triggerTransitionSequence called with isButtonClick: $isButtonClick');
     final width = MediaQuery.of(context).size.width;
     final theme = LabTheme.of(context);
 

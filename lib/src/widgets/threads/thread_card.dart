@@ -42,8 +42,12 @@ class LabThreadCard extends StatelessWidget {
                 const LabGap.s8(),
                 Expanded(
                   child: LabText.bold12(
-                    thread.author.value?.name ??
-                        formatNpub(thread.author.value?.pubkey ?? ''),
+                    thread.author.value != null
+                        ? thread.author.value?.name ??
+                            formatNpub(thread.author.value?.pubkey ?? '')
+                        : 'Profile Name...',
+                    maxLines: 1,
+                    textOverflow: TextOverflow.ellipsis,
                   ),
                 ),
                 LabText.reg12(

@@ -33,6 +33,7 @@ class LabTypographyData extends Equatable {
     required this.longformh5,
     required this.boldArticle,
     required this.regArticle,
+    required this.regArticleSmall,
     required this.linkArticle,
     required this.boldWiki,
     required this.regWiki,
@@ -323,6 +324,18 @@ class LabTypographyData extends Equatable {
           ],
           fontSize: 16,
           height: 1.9,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
+        regArticleSmall: TextStyle(
+          fontFamily: 'Lora',
+          package: 'zaplab_design',
+          fontVariations: [
+            FontVariation('wght', 450), // Custom weight for great reading
+          ],
+          fontSize: 14,
+          height: 1.5,
           letterSpacing: 0.15,
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
@@ -681,6 +694,18 @@ class LabTypographyData extends Equatable {
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
+        regArticleSmall: TextStyle(
+          fontFamily: 'Lora',
+          package: 'zaplab_design',
+          fontVariations: [
+            FontVariation('wght', 450), // Custom weight for great reading
+          ],
+          fontSize: 14,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
         linkArticle: TextStyle(
           fontFamily: 'Inter',
           package: 'zaplab_design',
@@ -1035,6 +1060,18 @@ class LabTypographyData extends Equatable {
           leadingDistribution: TextLeadingDistribution.even,
           decoration: TextDecoration.none,
         ),
+        regArticleSmall: TextStyle(
+          fontFamily: 'Lora',
+          package: 'zaplab_design',
+          fontVariations: [
+            FontVariation('wght', 450), // Custom weight for great reading
+          ],
+          fontSize: 14,
+          height: 1.5,
+          letterSpacing: 0.15,
+          leadingDistribution: TextLeadingDistribution.even,
+          decoration: TextDecoration.none,
+        ),
         linkArticle: TextStyle(
           fontFamily: 'Inter',
           package: 'zaplab_design',
@@ -1132,6 +1169,7 @@ class LabTypographyData extends Equatable {
   final TextStyle longformh5;
   final TextStyle boldArticle;
   final TextStyle regArticle;
+  final TextStyle regArticleSmall;
   final TextStyle linkArticle;
   final TextStyle boldWiki;
   final TextStyle regWiki;
@@ -1170,6 +1208,7 @@ class LabTypographyData extends Equatable {
         longformh5.named('longformh5'),
         boldArticle.named('boldArticle'),
         regArticle.named('regArticle'),
+        regArticleSmall.named('regArticleSmall'),
         linkArticle.named('linkArticle'),
         boldWiki.named('boldArticle'),
         regWiki.named('regWiki'),

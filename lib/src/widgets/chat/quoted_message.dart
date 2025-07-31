@@ -52,8 +52,8 @@ class LabQuotedMessage extends StatelessWidget {
                   width: LabLineThicknessData.normal().thick,
                   decoration: BoxDecoration(
                     color: Color(npubToColor(chatMessage != null
-                        ? chatMessage!.author.value?.pubkey ?? ''
-                        : reply!.author.value?.pubkey ?? '')),
+                        ? chatMessage!.author.value?.npub ?? ''
+                        : reply!.author.value?.npub ?? '')),
                   ),
                 ),
                 Expanded(

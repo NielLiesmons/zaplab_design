@@ -80,11 +80,10 @@ class LabTabButton extends StatelessWidget {
                     child: Transform.scale(
                       scale: 0.8,
                       child: LabIcon.s8(
-                        theme.icons.characters.chevronDown,
-                        outlineColor: theme.colors.whiteEnforced.withValues(
+                        theme.icons.characters.chevronDownFill,
+                        color: theme.colors.whiteEnforced.withValues(
                           alpha: 0.66,
                         ),
-                        outlineThickness: LabLineThicknessData.normal().medium,
                       ),
                     ),
                   ),

@@ -1,7 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:models/models.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 enum LabProfilePicSquareSize {
   s32,
@@ -18,6 +17,8 @@ enum LabProfilePicSquareSize {
 class LabProfilePicSquare extends StatelessWidget {
   final String? profilePicUrl;
   final Profile? profile;
+  final String? name;
+  final String? pubkey;
   final LabProfilePicSquareSize size;
   final VoidCallback onTap;
 
@@ -27,7 +28,9 @@ class LabProfilePicSquare extends StatelessWidget {
     this.size = LabProfilePicSquareSize.s56,
     VoidCallback? onTap,
   })  : onTap = onTap ?? (() {}),
-        profilePicUrl = null;
+        profilePicUrl = null,
+        name = null,
+        pubkey = null;
 
   LabProfilePicSquare.fromUrl(
     this.profilePicUrl, {
@@ -35,52 +38,112 @@ class LabProfilePicSquare extends StatelessWidget {
     this.size = LabProfilePicSquareSize.s56,
     VoidCallback? onTap,
   })  : onTap = onTap ?? (() {}),
-        profile = null;
+        profile = null,
+        name = null,
+        pubkey = null;
+
+  LabProfilePicSquare.fromPubkey(
+    this.pubkey, {
+    super.key,
+    this.size = LabProfilePicSquareSize.s56,
+    VoidCallback? onTap,
+  })  : onTap = onTap ?? (() {}),
+        name = null,
+        profile = null,
+        profilePicUrl = null;
+
+  LabProfilePicSquare.fromNameAndPubkey(
+    this.name,
+    this.pubkey, {
+    super.key,
+    this.size = LabProfilePicSquareSize.s56,
+    VoidCallback? onTap,
+  })  : onTap = onTap ?? (() {}),
+        profile = null,
+        profilePicUrl = null;
 
   LabProfilePicSquare.s32(this.profile, {super.key, VoidCallback? onTap})
       : size = LabProfilePicSquareSize.s32,
         onTap = onTap ?? (() {}),
-        profilePicUrl = null;
+        profilePicUrl = null,
+        name = null,
+        pubkey = null;
   LabProfilePicSquare.s38(this.profile, {super.key, VoidCallback? onTap})
       : size = LabProfilePicSquareSize.s38,
         onTap = onTap ?? (() {}),
-        profilePicUrl = null;
+        profilePicUrl = null,
+        name = null,
+        pubkey = null;
   LabProfilePicSquare.s48(this.profile, {super.key, VoidCallback? onTap})
       : size = LabProfilePicSquareSize.s48,
         onTap = onTap ?? (() {}),
-        profilePicUrl = null;
+        profilePicUrl = null,
+        name = null,
+        pubkey = null;
   LabProfilePicSquare.s56(this.profile, {super.key, VoidCallback? onTap})
       : size = LabProfilePicSquareSize.s56,
         onTap = onTap ?? (() {}),
-        profilePicUrl = null;
+        profilePicUrl = null,
+        name = null,
+        pubkey = null;
   LabProfilePicSquare.s64(this.profile, {super.key, VoidCallback? onTap})
       : size = LabProfilePicSquareSize.s64,
         onTap = onTap ?? (() {}),
-        profilePicUrl = null;
+        profilePicUrl = null,
+        name = null,
+        pubkey = null;
   LabProfilePicSquare.s72(this.profile, {super.key, VoidCallback? onTap})
       : size = LabProfilePicSquareSize.s72,
         onTap = onTap ?? (() {}),
-        profilePicUrl = null;
+        profilePicUrl = null,
+        name = null,
+        pubkey = null;
   LabProfilePicSquare.s80(this.profile, {super.key, VoidCallback? onTap})
       : size = LabProfilePicSquareSize.s80,
         onTap = onTap ?? (() {}),
-        profilePicUrl = null;
+        profilePicUrl = null,
+        name = null,
+        pubkey = null;
   LabProfilePicSquare.s96(this.profile, {super.key, VoidCallback? onTap})
       : size = LabProfilePicSquareSize.s96,
         onTap = onTap ?? (() {}),
-        profilePicUrl = null;
+        profilePicUrl = null,
+        name = null,
+        pubkey = null;
   LabProfilePicSquare.s104(this.profile, {super.key, VoidCallback? onTap})
       : size = LabProfilePicSquareSize.s104,
         onTap = onTap ?? (() {}),
-        profilePicUrl = null;
+        profilePicUrl = null,
+        name = null,
+        pubkey = null;
 
-  String? get _effectiveUrl => profilePicUrl ?? profile?.pictureUrl;
+  double _resolveSize(LabProfilePicSquareSize size, LabSizesData sizes) {
+    switch (size) {
+      case LabProfilePicSquareSize.s32:
+        return sizes.s32;
+      case LabProfilePicSquareSize.s38:
+        return sizes.s38;
+      case LabProfilePicSquareSize.s48:
+        return sizes.s48;
+      case LabProfilePicSquareSize.s56:
+        return sizes.s56;
+      case LabProfilePicSquareSize.s64:
+        return sizes.s64;
+      case LabProfilePicSquareSize.s72:
+        return sizes.s72;
+      case LabProfilePicSquareSize.s80:
+        return sizes.s80;
+      case LabProfilePicSquareSize.s96:
+        return sizes.s96;
+      case LabProfilePicSquareSize.s104:
+        return sizes.s104;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
     final sizes = theme.sizes;
-    final icons = theme.icons;
     final resolvedSize = _resolveSize(size, sizes);
     final thickness = LabLineThicknessData.normal().thin;
     final borderRadius = resolvedSize >= sizes.s72
@@ -114,110 +177,17 @@ class LabProfilePicSquare extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: borderRadius,
-              child: _effectiveUrl != null && _effectiveUrl!.isNotEmpty
-                  ? (_effectiveUrl != null &&
-                          _effectiveUrl!.startsWith('assets/')
-                      ? Image.asset(
-                          _effectiveUrl!,
-                          fit: BoxFit.cover,
-                          width: resolvedSize,
-                          height: resolvedSize,
-                        )
-                      : CachedNetworkImage(
-                          imageUrl: _effectiveUrl!,
-                          fit: BoxFit.cover,
-                          width: resolvedSize,
-                          height: resolvedSize,
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) =>
-                                  const LabSkeletonLoader(),
-                          errorWidget: (context, url, error) {
-                            if (profile != null) {
-                              return Container(
-                                color: Color(profileToColor(profile!))
-                                    .withValues(alpha: 0.66),
-                                child: profile!.name?.isNotEmpty == true
-                                    ? Center(
-                                        child: Text(
-                                          profile!.name![0].toUpperCase(),
-                                          style: TextStyle(
-                                            color: theme.colors.white66,
-                                            fontSize: resolvedSize * 0.56,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      )
-                                    : null,
-                              );
-                            }
-                            final fallbackIconSize = resolvedSize * 0.6;
-                            return Center(
-                              child: Text(
-                                icons.characters.profile,
-                                style: TextStyle(
-                                  fontFamily: icons.fontFamily,
-                                  package: icons.fontPackage,
-                                  fontSize: fallbackIconSize,
-                                  color: theme.colors.white33,
-                                ),
-                              ),
-                            );
-                          },
-                        ))
-                  : profile != null
-                      ? Container(
-                          color: Color(profileToColor(profile!)),
-                          child: profile!.name?.isNotEmpty == true
-                              ? Center(
-                                  child: Text(
-                                    profile!.name![0].toUpperCase(),
-                                    style: TextStyle(
-                                      color: theme.colors.white66,
-                                      fontSize: resolvedSize * 0.56,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              : null,
-                        )
-                      : Center(
-                          child: Text(
-                            icons.characters.profile,
-                            style: TextStyle(
-                              fontFamily: icons.fontFamily,
-                              package: icons.fontPackage,
-                              fontSize: resolvedSize * 0.6,
-                              color: theme.colors.white33,
-                            ),
-                          ),
-                        ),
+              child: LabProfilePicContent(
+                profile: profile,
+                name: name,
+                pubkey: pubkey,
+                profilePicUrl: profilePicUrl,
+                size: resolvedSize,
+              ),
             ),
           ),
         );
       },
     );
-  }
-
-  double _resolveSize(LabProfilePicSquareSize size, LabSizesData sizes) {
-    switch (size) {
-      case LabProfilePicSquareSize.s32:
-        return sizes.s32;
-      case LabProfilePicSquareSize.s38:
-        return sizes.s38;
-      case LabProfilePicSquareSize.s48:
-        return sizes.s48;
-      case LabProfilePicSquareSize.s56:
-        return sizes.s56;
-      case LabProfilePicSquareSize.s64:
-        return sizes.s64;
-      case LabProfilePicSquareSize.s72:
-        return sizes.s72;
-      case LabProfilePicSquareSize.s80:
-        return sizes.s80;
-      case LabProfilePicSquareSize.s96:
-        return sizes.s96;
-      case LabProfilePicSquareSize.s104:
-        return sizes.s104;
-    }
   }
 }

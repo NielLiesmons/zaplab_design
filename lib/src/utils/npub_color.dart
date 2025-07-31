@@ -14,6 +14,12 @@ class RGBColor {
 }
 
 RGBColor hexToColor(String hex) {
+  // Ensure hex string is valid
+  if (hex.isEmpty || !RegExp(r'^[0-9a-fA-F]+$').hasMatch(hex)) {
+    // Return a default gray color if hex is invalid
+    return RGBColor(128, 128, 128);
+  }
+
   final number = BigInt.parse(hex, radix: 16);
 
   // Get hue value between 0 and 355
@@ -80,9 +86,33 @@ int profileToColor(Profile profile) {
 }
 
 String npubToHexColor(String npub) {
-  return hexToColor(npub.decodeShareable()).toHex();
+  try {
+    final decodedPubkey = npub.decodeShareable();
+    // Ensure we have a valid hex string
+    if (decodedPubkey.isEmpty ||
+        !RegExp(r'^[0-9a-fA-F]+$').hasMatch(decodedPubkey)) {
+      // Fallback to a default color if decoding fails
+      return '#808080'; // Gray color
+    }
+    return hexToColor(decodedPubkey).toHex();
+  } catch (e) {
+    // Fallback to a default color if any error occurs
+    return '#808080'; // Gray color
+  }
 }
 
 int npubToColor(String npub) {
-  return hexToColor(npub.decodeShareable()).toIntWithAlpha();
+  try {
+    final decodedPubkey = npub.decodeShareable();
+    // Ensure we have a valid hex string
+    if (decodedPubkey.isEmpty ||
+        !RegExp(r'^[0-9a-fA-F]+$').hasMatch(decodedPubkey)) {
+      // Fallback to a default color if decoding fails
+      return 0xFF808080; // Gray color
+    }
+    return hexToColor(decodedPubkey).toIntWithAlpha();
+  } catch (e) {
+    // Fallback to a default color if any error occurs
+    return 0xFF808080; // Gray color
+  }
 }

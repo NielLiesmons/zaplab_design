@@ -90,13 +90,22 @@ class LabFeedThread extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              LabText.bold14(thread != null
-                                  ? thread!.author.value?.name ??
-                                      formatNpub(
-                                          thread!.author.value?.pubkey ?? '')
-                                  : reply!.author.value?.name ??
-                                      formatNpub(
-                                          reply!.author.value?.pubkey ?? '')),
+                              LabText.bold14(
+                                  thread != null
+                                      ? thread!.author.value != null
+                                          ? thread!.author.value?.name ??
+                                              formatNpub(thread!
+                                                      .author.value?.pubkey ??
+                                                  '')
+                                          : 'Profile Name...'
+                                      : reply!.author.value != null
+                                          ? reply!.author.value?.name ??
+                                              formatNpub(
+                                                  reply!.author.value?.pubkey ??
+                                                      '')
+                                          : 'Profile Name...',
+                                  maxLines: 1,
+                                  textOverflow: TextOverflow.ellipsis),
                               LabText.reg12(
                                 TimestampFormatter.format(
                                     thread != null

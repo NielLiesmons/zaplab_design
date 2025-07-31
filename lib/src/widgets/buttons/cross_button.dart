@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 
@@ -5,26 +6,31 @@ class LabCrossButton extends StatelessWidget {
   const LabCrossButton({
     super.key,
     required this.size,
+    this.isLight = true,
     this.onTap,
   });
 
   const LabCrossButton.s20({
     super.key,
     this.onTap,
+    this.isLight = true,
   }) : size = LabCrossButtonSize.s20;
 
   const LabCrossButton.s24({
     super.key,
     this.onTap,
+    this.isLight = true,
   }) : size = LabCrossButtonSize.s24;
 
   const LabCrossButton.s32({
     super.key,
     this.onTap,
+    this.isLight = true,
   }) : size = LabCrossButtonSize.s32;
 
   final VoidCallback? onTap;
   final LabCrossButtonSize size;
+  final bool isLight;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +48,7 @@ class LabCrossButton extends StatelessWidget {
           scale: scaleFactor,
           child: LabCrossButtonLayout(
             size: size,
+            isLight: isLight,
           ),
         );
       },
@@ -59,9 +66,11 @@ class LabCrossButtonLayout extends StatelessWidget {
   const LabCrossButtonLayout({
     super.key,
     required this.size,
+    required this.isLight,
   });
 
   final LabCrossButtonSize size;
+  final bool isLight;
 
   @override
   Widget build(BuildContext context) {
@@ -86,19 +95,23 @@ class LabCrossButtonLayout extends StatelessWidget {
         outlineThickness = LabLineThicknessData.normal().thick;
     }
 
-    return LabContainer(
-      width: buttonSize,
-      height: buttonSize,
-      decoration: BoxDecoration(
-        color: theme.colors.white8,
-        borderRadius: BorderRadius.circular(buttonSize / 2),
-      ),
-      child: Center(
-        child: LabIcon(
-          theme.icons.characters.cross,
-          size: iconSize,
-          outlineColor: theme.colors.white33,
-          outlineThickness: outlineThickness,
+    return ClipOval(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+        child: LabContainer(
+          width: buttonSize,
+          height: buttonSize,
+          decoration: BoxDecoration(
+            color: isLight ? theme.colors.white16 : theme.colors.gray66,
+          ),
+          child: Center(
+            child: LabIcon(
+              theme.icons.characters.cross,
+              size: iconSize,
+              outlineColor: theme.colors.white33,
+              outlineThickness: outlineThickness,
+            ),
+          ),
         ),
       ),
     );

@@ -729,8 +729,9 @@ class LabShortTextRenderer extends StatelessWidget {
                 }
                 paragraphPieces.add(const LabGap.s2());
                 paragraphPieces.add(
-                  LabImageStack(
-                    images: urls,
+                  SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: SizedBox.shrink(),
                   ),
                 );
                 paragraphPieces.add(const LabGap.s4());

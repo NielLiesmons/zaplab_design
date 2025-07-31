@@ -49,19 +49,7 @@ class LabCommunityHomePanel extends StatelessWidget {
       onTap: () => onNavigateToCommunity(community),
       builder: (context, state, hasFocus) {
         return Column(children: [
-          LabSwipeContainer(
-            leftContent: LabIcon.s16(
-              theme.icons.characters.plus,
-              outlineColor: theme.colors.white66,
-              outlineThickness: LabLineThicknessData.normal().medium,
-            ),
-            rightContent: LabIcon.s10(
-              theme.icons.characters.chevronUp,
-              outlineColor: theme.colors.white66,
-              outlineThickness: LabLineThicknessData.normal().medium,
-            ),
-            onSwipeLeft: () => onCreateNewPublication!(community),
-            onSwipeRight: () => onActions!(community),
+          LabContainer(
             padding: const LabEdgeInsets.symmetric(
               horizontal: LabGapSize.s12,
               vertical: LabGapSize.s12,

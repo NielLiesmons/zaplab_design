@@ -32,8 +32,9 @@ class LabFeedArticle extends StatelessWidget {
           children: [
             LabContainer(
               padding: LabEdgeInsets.only(
-                top:
-                    article.imageUrl == null ? LabGapSize.none : LabGapSize.s12,
+                top: article.imageUrl == null || article.imageUrl!.isEmpty
+                    ? LabGapSize.none
+                    : LabGapSize.s12,
                 bottom: LabGapSize.s12,
                 left: LabGapSize.s12,
                 right: LabGapSize.s12,
@@ -61,8 +62,9 @@ class LabFeedArticle extends StatelessWidget {
                             child: CachedNetworkImage(
                               imageUrl: article.imageUrl!,
                               fit: BoxFit.cover,
-                              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                  const LabSkeletonLoader(),
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                      const LabSkeletonLoader(),
                               errorWidget: (context, url, error) => Center(
                                 child: LabText(
                                   "Image not found",
@@ -88,9 +90,11 @@ class LabFeedArticle extends StatelessWidget {
                             child: CachedNetworkImage(
                               imageUrl: article.imageUrl!,
                               fit: BoxFit.cover,
-                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                      const LabSkeletonLoader(),
+                              errorWidget: (context, url, error) =>
                                   const LabSkeletonLoader(),
-                              errorWidget: (context, url, error) => const LabSkeletonLoader(),
                             ),
                           ),
                         );
@@ -156,10 +160,14 @@ class LabFeedArticle extends StatelessWidget {
                                         CrossAxisAlignment.center,
                                     children: [
                                       LabText.med12(
-                                          article.author.value?.name ??
-                                              formatNpub(article
-                                                      .author.value?.pubkey ??
-                                                  ''),
+                                          article.author.value != null
+                                              ? article.author.value?.name ??
+                                                  formatNpub(article.author
+                                                          .value?.pubkey ??
+                                                      '')
+                                              : 'Profile Name...',
+                                          maxLines: 1,
+                                          textOverflow: TextOverflow.ellipsis,
                                           color: theme.colors.white66),
                                       const Spacer(),
                                       LabText.reg12(
@@ -173,14 +181,12 @@ class LabFeedArticle extends StatelessWidget {
                                   const LabGap.s2(),
                                   if (article.summary != null &&
                                       article.summary!.isNotEmpty)
-                                    LabSelectableText(
-                                      text: article.summary!,
-                                      style:
-                                          theme.typography.regArticle.copyWith(
-                                        fontSize: 14,
-                                        height: 1.5,
-                                        color: theme.colors.white
-                                            .withValues(alpha: 0.5),
+                                    Opacity(
+                                      opacity: 0.5,
+                                      child: LabText.regArticleSmall(
+                                        article.summary!,
+                                        maxLines: 2,
+                                        textOverflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   // TODO: Implement Zaps and Reactions once HasMany is available

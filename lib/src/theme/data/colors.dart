@@ -26,8 +26,6 @@ class LabColorsOverride extends Equatable {
   final Color? blurpleColor33;
   final Color? goldColor;
   final Color? goldColor66;
-  final Color? greenColor;
-  final Color? greenColor66;
 
   final Gradient? blurple;
   final Gradient? blurple66;
@@ -41,10 +39,6 @@ class LabColorsOverride extends Equatable {
   final Gradient? gold66;
   final Gradient? gold33;
   final Gradient? gold16;
-  final Gradient? green;
-  final Gradient? green66;
-  final Gradient? green33;
-  final Gradient? green16;
   final Gradient? graydient;
   final Gradient? graydient66;
   final Gradient? graydient33;
@@ -72,8 +66,6 @@ class LabColorsOverride extends Equatable {
     this.blurpleColor33,
     this.goldColor,
     this.goldColor66,
-    this.greenColor,
-    this.greenColor66,
     this.blurple,
     this.blurple66,
     this.blurple33,
@@ -86,10 +78,6 @@ class LabColorsOverride extends Equatable {
     this.gold66,
     this.gold33,
     this.gold16,
-    this.green,
-    this.green66,
-    this.green33,
-    this.green16,
     this.graydient,
     this.graydient66,
     this.graydient33,
@@ -119,8 +107,6 @@ class LabColorsOverride extends Equatable {
         blurpleColor33,
         goldColor,
         goldColor66,
-        greenColor,
-        greenColor66,
         blurple,
         blurple66,
         blurple33,
@@ -133,10 +119,6 @@ class LabColorsOverride extends Equatable {
         gold66,
         gold33,
         gold16,
-        green,
-        green66,
-        green33,
-        green16,
         graydient,
         graydient66,
         graydient33,
@@ -167,8 +149,6 @@ class LabColorsData extends Equatable {
   final Color blurpleColor33;
   final Color goldColor;
   final Color goldColor66;
-  final Color greenColor;
-  final Color greenColor66;
 
   /// Linear Gradients
   final Gradient blurple;
@@ -183,10 +163,6 @@ class LabColorsData extends Equatable {
   final Gradient gold66;
   final Gradient gold33;
   final Gradient gold16;
-  final Gradient green;
-  final Gradient green66;
-  final Gradient green33;
-  final Gradient green16;
   final Gradient graydient;
   final Gradient graydient66;
   final Gradient graydient33;
@@ -214,8 +190,6 @@ class LabColorsData extends Equatable {
     required this.blurpleColor33,
     required this.goldColor,
     required this.goldColor66,
-    required this.greenColor,
-    required this.greenColor66,
     required this.blurple,
     required this.blurple66,
     required this.blurple33,
@@ -228,10 +202,6 @@ class LabColorsData extends Equatable {
     required this.gold66,
     required this.gold33,
     required this.gold16,
-    required this.green,
-    required this.green66,
-    required this.green33,
-    required this.green16,
     required this.graydient,
     required this.graydient66,
     required this.graydient33,
@@ -277,9 +247,6 @@ class LabColorsData extends Equatable {
         goldColor: override?.goldColor ?? const Color(0xFFF5C763),
         goldColor66: override?.goldColor66 ??
             const Color(0xFFF5C763).withValues(alpha: 0.66),
-        greenColor: override?.greenColor ?? const Color(0xFF45E076),
-        greenColor66: override?.greenColor66 ??
-            const Color(0xFF45E076).withValues(alpha: 0.66),
 
         /// Linear Gradients (top-left to bottom-right alignment)
         blurple: override?.blurple ??
@@ -384,34 +351,6 @@ class LabColorsData extends Equatable {
               end: Alignment.bottomRight,
             ),
 
-        green: override?.green ??
-            const LinearGradient(
-              colors: [Color(0xFF59F372), Color(0xFF30CB78)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-        green66: override?.green66 ??
-            LinearGradient(
-              colors: [
-                const Color(0xFF59F372).withValues(alpha: 0.66),
-                const Color(0xFF30CB78).withValues(alpha: 0.66)
-              ],
-            ),
-        green33: override?.green33 ??
-            LinearGradient(
-              colors: [
-                const Color(0xFF59F372).withValues(alpha: 0.33),
-                const Color(0xFF30CB78).withValues(alpha: 0.33)
-              ],
-            ),
-        green16: override?.green16 ??
-            LinearGradient(
-              colors: [
-                const Color(0xFF59F372).withValues(alpha: 0.16),
-                const Color(0xFF30CB78).withValues(alpha: 0.16)
-              ],
-            ),
-
         graydient: override?.graydient ??
             const LinearGradient(
               colors: [Color(0xFFFFFFFF), Color(0xFFDBDBFF)],
@@ -486,10 +425,6 @@ class LabColorsData extends Equatable {
         goldColor: override?.goldColor ?? const Color(0xFFE99C0A),
         goldColor66: override?.goldColor66 ??
             const Color(0xFFE99C0A).withValues(alpha: 0.66),
-        greenColor:
-            override?.greenColor ?? const Color.fromARGB(255, 11, 186, 66),
-        greenColor66: override?.greenColor66 ??
-            const Color.fromARGB(255, 11, 186, 66).withValues(alpha: 0.66),
 
         /// Linear Gradients (top-left to bottom-right alignment)
         blurple: override?.blurple ??
@@ -593,38 +528,6 @@ class LabColorsData extends Equatable {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-
-        green: override?.green ??
-            const LinearGradient(
-              colors: [
-                Color.fromARGB(255, 12, 196, 43),
-                Color.fromARGB(255, 13, 190, 95)
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-        green66: override?.green66 ??
-            LinearGradient(
-              colors: [
-                const Color.fromARGB(255, 12, 196, 43).withValues(alpha: 0.66),
-                const Color.fromARGB(255, 13, 190, 95).withValues(alpha: 0.66)
-              ],
-            ),
-        green33: override?.green33 ??
-            LinearGradient(
-              colors: [
-                const Color.fromARGB(255, 12, 196, 43).withValues(alpha: 0.33),
-                const Color.fromARGB(255, 13, 190, 95).withValues(alpha: 0.33)
-              ],
-            ),
-        green16: override?.green16 ??
-            LinearGradient(
-              colors: [
-                const Color.fromARGB(255, 12, 196, 43).withValues(alpha: 0.16),
-                const Color.fromARGB(255, 13, 190, 95).withValues(alpha: 0.16)
-              ],
-            ),
-
         graydient: override?.graydient ??
             const LinearGradient(
               colors: [Color(0xFF535367), Color(0xFF232323)],
@@ -699,9 +602,6 @@ class LabColorsData extends Equatable {
         goldColor: override?.goldColor ?? const Color(0xFFF5C763),
         goldColor66: override?.goldColor66 ??
             const Color(0xFFF5C763).withValues(alpha: 0.66),
-        greenColor: override?.greenColor ?? const Color(0xFF45E076),
-        greenColor66: override?.greenColor66 ??
-            const Color(0xFF45E076).withValues(alpha: 0.66),
 
         /// Linear Gradients (top-left to bottom-right alignment)
         blurple: override?.blurple ??
@@ -805,35 +705,6 @@ class LabColorsData extends Equatable {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-
-        green: override?.green ??
-            const LinearGradient(
-              colors: [Color(0xFF59F372), Color(0xFF30CB78)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-        green66: override?.green66 ??
-            LinearGradient(
-              colors: [
-                const Color(0xFF59F372).withValues(alpha: 0.66),
-                const Color(0xFF30CB78).withValues(alpha: 0.66)
-              ],
-            ),
-        green33: override?.green33 ??
-            LinearGradient(
-              colors: [
-                const Color(0xFF59F372).withValues(alpha: 0.33),
-                const Color(0xFF30CB78).withValues(alpha: 0.33)
-              ],
-            ),
-        green16: override?.green16 ??
-            LinearGradient(
-              colors: [
-                const Color(0xFF59F372).withValues(alpha: 0.16),
-                const Color(0xFF30CB78).withValues(alpha: 0.16)
-              ],
-            ),
-
         graydient: override?.graydient ??
             const LinearGradient(
               colors: [Color(0xFFFFFFFF), Color(0xFFDBDBFF)],
@@ -889,8 +760,6 @@ class LabColorsData extends Equatable {
         blurpleLightColor66.named('blurpleLightColor66'),
         goldColor.named('goldColor'),
         goldColor66.named('goldColor66'),
-        greenColor.named('greenColor'),
-        greenColor66.named('greenColor66'),
         blurple.named('blurple'),
         blurple66.named('blurple66'),
         blurple33.named('blurple33'),
@@ -903,10 +772,6 @@ class LabColorsData extends Equatable {
         gold66.named('gold66'),
         gold33.named('gold33'),
         gold16.named('gold16'),
-        green.named('green'),
-        green66.named('green66'),
-        green33.named('green33'),
-        green16.named('green16'),
         graydient.named('graydient'),
         graydient66.named('graydient66'),
         graydient33.named('graydient33'),

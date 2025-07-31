@@ -57,8 +57,14 @@ class LabThread extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        LabText.bold14(thread.author.value?.name ??
-                            formatNpub(thread.author.value?.pubkey ?? '')),
+                        LabText.bold14(
+                          thread.author.value != null
+                              ? thread.author.value?.name ??
+                                  formatNpub(thread.author.value?.pubkey ?? '')
+                              : 'Profile Name...',
+                          maxLines: 1,
+                          textOverflow: TextOverflow.ellipsis,
+                        ),
                         LabText.reg12(
                           TimestampFormatter.format(thread.createdAt,
                               format: TimestampFormat.relative),

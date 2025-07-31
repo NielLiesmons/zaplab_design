@@ -229,11 +229,12 @@ export 'threads/feed_thread.dart';
 export 'threads/thread.dart';
 export 'threads/thread_card.dart';
 
-// Toasts
-export 'toasts/toast.dart';
-export 'toasts/toast_alert.dart';
-export 'toasts/toast_info.dart';
-export 'toasts/toast_message.dart';
+// Toasts & Alerts
+export 'toasts & alerts/toast.dart';
+export 'toasts & alerts/toast_alert.dart';
+export 'toasts & alerts/toast_info.dart';
+export 'toasts & alerts/toast_message.dart';
+export 'toasts & alerts/confirmation_modal.dart';
 
 // Transitions
 export 'transitions/slide_in_screen.dart';

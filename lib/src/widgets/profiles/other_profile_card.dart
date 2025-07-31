@@ -47,8 +47,8 @@ class LabOtherProfileCard extends StatelessWidget {
                         ? LabProfilePic.s48(
                             profile!.author.value,
                           )
-                        : LabProfilePic.fromUrl(
-                            '',
+                        : LabProfilePic.fromPubkey(
+                            pubkey!,
                             size: LabProfilePicSize.s48,
                           ),
                   ),
@@ -83,21 +83,21 @@ class LabOtherProfileCard extends StatelessWidget {
           const Spacer(),
           Row(
             children: [
+              LabSmallButton(
+                onTap: onSelect,
+                rounded: true,
+                color: theme.colors.white8,
+                children: [
+                  const LabGap.s4(),
+                  LabText.med12(
+                    'Select',
+                    color: theme.colors.white66,
+                  ),
+                  const LabGap.s4(),
+                ],
+              ),
+              const Spacer(),
               if (profile != null) ...[
-                LabSmallButton(
-                  onTap: onSelect,
-                  rounded: true,
-                  color: theme.colors.white8,
-                  children: [
-                    const LabGap.s4(),
-                    LabText.med12(
-                      'Select',
-                      color: theme.colors.white66,
-                    ),
-                    const LabGap.s4(),
-                  ],
-                ),
-                const Spacer(),
                 LabSmallButton(
                   onTap: onShare,
                   rounded: true,
@@ -111,17 +111,11 @@ class LabOtherProfileCard extends StatelessWidget {
                   ],
                 ),
               ] else ...[
-                LabSmallButton(
-                  onTap: onComplete,
-                  rounded: true,
-                  color: theme.colors.white8,
-                  children: [
-                    LabText.med12(
-                      'Complete profile',
-                      color: theme.colors.white,
-                    ),
-                  ],
+                LabText.med12(
+                  'Profile not found',
+                  color: theme.colors.white33,
                 ),
+                const LabGap.s8(),
               ],
             ],
           ),
