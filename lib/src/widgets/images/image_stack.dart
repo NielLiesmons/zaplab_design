@@ -101,7 +101,7 @@ class _LabImageStackState extends State<LabImageStack> {
     if (widget.images.isEmpty) return const SizedBox.shrink();
 
     final containerSize = _calculateContainerSize();
-    final (_, isOutgoing) = MessageBubbleScope.of(context);
+    final (isInsideMessageBubble, isOutgoing) = MessageBubbleScope.of(context);
 
     final double horizontalOffset = _isHovered
         ? LabImageStack._stackHorizontalOffsetHover
@@ -117,7 +117,8 @@ class _LabImageStackState extends State<LabImageStack> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (isOutgoing) SizedBox(width: theme.sizes.s48),
+            if (isOutgoing && isInsideMessageBubble && widget.images.length > 1)
+              SizedBox(width: theme.sizes.s48),
             Stack(
               clipBehavior: Clip.none,
               children: [
@@ -302,7 +303,10 @@ class _LabImageStackState extends State<LabImageStack> {
                 ),
               ],
             ),
-            if (!isOutgoing) SizedBox(width: theme.sizes.s48),
+            if (!isOutgoing &&
+                isInsideMessageBubble &&
+                widget.images.length > 1)
+              SizedBox(width: theme.sizes.s48),
           ],
         ),
       ),

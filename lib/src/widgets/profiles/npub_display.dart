@@ -134,7 +134,7 @@ class _LabNpubDisplayState extends State<LabNpubDisplay> {
             outlineColor: theme.colors.blurpleLightColor,
             outlineThickness: LabLineThicknessData.normal().medium,
           ),
-        if (!_showCheck && widget.copyable)
+        if (!_showCheck && widget.copyable && _isHoveringColor)
           LabIcon.s14(
             theme.icons.characters.copy,
             outlineColor: theme.colors.white33,
@@ -202,13 +202,11 @@ class _LabNpubDisplayState extends State<LabNpubDisplay> {
                     ),
                   )
                 : LabText.med12(
-                    _showCheck
-                        ? 'Copied $_copiedType'
-                        : (widget.profile != null
-                            ? formatNpub(widget.profile!.npub)
-                            : formatNpub(Utils.encodeShareableFromString(
-                                widget.pubkey ?? '',
-                                type: 'npub'))),
+                    (widget.profile != null
+                        ? formatNpub(widget.profile!.npub)
+                        : formatNpub(Utils.encodeShareableFromString(
+                            widget.pubkey ?? '',
+                            type: 'npub'))),
                     color: theme.colors.white66,
                   ),
             const SizedBox(width: 8),
@@ -216,9 +214,11 @@ class _LabNpubDisplayState extends State<LabNpubDisplay> {
               LabIcon.s8(
                 theme.icons.characters.check,
                 outlineColor: theme.colors.blurpleLightColor,
-                outlineThickness: LabLineThicknessData.normal().medium,
+                outlineThickness: LabLineThicknessData.normal().thick,
               ),
-            if (!_showCheck && widget.copyable)
+            if (!_showCheck &&
+                widget.copyable &&
+                (_isHoveringColor || state == TapState.hover))
               LabIcon.s14(
                 theme.icons.characters.copy,
                 outlineColor: theme.colors.white33,

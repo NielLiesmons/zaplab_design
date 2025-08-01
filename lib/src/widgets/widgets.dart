@@ -61,7 +61,6 @@ export 'buttons/small_button.dart';
 
 // Chat
 export 'chat/message_bubble.dart';
-export 'chat/message_stack.dart';
 export 'chat/new_messages_divider.dart';
 export 'chat/quoted_message.dart';
 export 'chat/typing_bubble.dart';

@@ -170,7 +170,7 @@ class LabLongTextRenderer extends StatelessWidget {
             ),
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
-              child: FutureBuilder<({Profile profile, VoidCallback? onTap})>(
+              child: FutureBuilder<({Profile? profile, VoidCallback? onTap})>(
                 future: onResolveProfile(child.content),
                 builder: (context, snapshot) {
                   return LabProfileInline(
@@ -570,7 +570,7 @@ class LabLongTextRenderer extends StatelessWidget {
               paragraphPieces.add(const SizedBox(height: 8));
               paragraphPieces.add(
                 LabContainer(
-                  child: FutureBuilder<({Model model, VoidCallback? onTap})>(
+                  child: FutureBuilder<({Model? model, VoidCallback? onTap})>(
                     future: onResolveEvent(child.content),
                     builder: (context, snapshot) {
                       return ConstrainedBox(

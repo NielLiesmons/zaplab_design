@@ -691,10 +691,16 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
                                       ),
                                     ),
                                   )
-                                : SingleChildScrollView(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    child: widget.child,
+                                : Column(
+                                    children: [
+                                      // Top padding to account for the gap and drag handle in the top bar
+                                      if (!widget.noTopGap)
+                                        !LabPlatformUtils.isMobile
+                                            ? const LabGap.s8()
+                                            : const LabGap.s10(),
+                                      // Actual content
+                                      widget.child,
+                                    ],
                                   ),
 
                             //Black bar that renders the top 8px of the screen always in black so that the blure of the top bar's white top border doesn't pick up on the screen content.

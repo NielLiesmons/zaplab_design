@@ -249,7 +249,7 @@ class LabShortTextRenderer extends StatelessWidget {
       case LabShortTextElementType.codeBlock:
         return LabCodeBlock(
           code: element.content,
-          language: element.attributes?['language'] ?? 'plain',
+          language: element.attributes?['language'],
         );
 
       case LabShortTextElementType.listItem:
@@ -414,7 +414,7 @@ class LabShortTextRenderer extends StatelessWidget {
                   ? const LabGap.s2()
                   : const LabGap.s8());
               paragraphPieces.add(
-                FutureBuilder<({Model model, VoidCallback? onTap})>(
+                FutureBuilder<({Model? model, VoidCallback? onTap})>(
                   future: onResolveEvent(child.content),
                   builder: (context, snapshot) {
                     return ConstrainedBox(
@@ -600,7 +600,7 @@ class LabShortTextRenderer extends StatelessWidget {
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
                       child: FutureBuilder<
-                          ({Profile profile, VoidCallback? onTap})>(
+                          ({Profile? profile, VoidCallback? onTap})>(
                         future: onResolveProfile(child.content),
                         builder: (context, snapshot) {
                           return LabProfileInline(
@@ -708,7 +708,6 @@ class LabShortTextRenderer extends StatelessWidget {
                   ],
                 ));
               } else if (child.type == LabShortTextElementType.images) {
-                final urls = child.content.split('\n');
                 if (currentSpans.isNotEmpty) {
                   paragraphPieces.add(
                     LabContainer(
@@ -727,13 +726,7 @@ class LabShortTextRenderer extends StatelessWidget {
                   );
                   currentSpans.clear();
                 }
-                paragraphPieces.add(const LabGap.s2());
-                paragraphPieces.add(
-                  SingleChildScrollView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    child: SizedBox.shrink(),
-                  ),
-                );
+
                 paragraphPieces.add(const LabGap.s4());
               } else {
                 currentSpans.add(TextSpan(
@@ -899,7 +892,7 @@ class LabShortTextRenderer extends StatelessWidget {
             ),
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
-              child: FutureBuilder<({Profile profile, VoidCallback? onTap})>(
+              child: FutureBuilder<({Profile? profile, VoidCallback? onTap})>(
                 future: onResolveProfile(child.content),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -1087,7 +1080,7 @@ class LabShortTextRenderer extends StatelessWidget {
             ),
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
-              child: FutureBuilder<({Profile profile, VoidCallback? onTap})>(
+              child: FutureBuilder<({Profile? profile, VoidCallback? onTap})>(
                 future: onResolveProfile(element.content),
                 builder: (context, snapshot) {
                   return LabProfileInline(

@@ -19,6 +19,13 @@ class CodeBlockHighlighter extends StatelessWidget {
 
   String _formatJson(String jsonString) {
     try {
+      // Safety check: if the string is too long or contains problematic content, skip formatting
+      if (jsonString.length > 10000 ||
+          jsonString.contains('{id:') ||
+          jsonString.contains('sig: null')) {
+        return jsonString;
+      }
+
       final json = jsonDecode(jsonString);
       final encoder = JsonEncoder.withIndent('  ');
       return encoder.convert(json);
@@ -47,7 +54,16 @@ class CodeBlockHighlighter extends StatelessWidget {
     ];
 
     var currentPosition = 0;
+    var iterationCount = 0;
+    final maxIterations = formattedCode.length * 2; // Safety limit
+
     while (currentPosition < formattedCode.length) {
+      iterationCount++;
+      if (iterationCount > maxIterations) {
+        print('WARNING: Code block highlighter stuck in loop - breaking');
+        break;
+      }
+
       var matchFound = false;
 
       for (final (pattern, color) in patterns) {

@@ -3,7 +3,7 @@ import 'package:models/models.dart';
 import 'dart:convert';
 
 // Model
-typedef NostrEventResolver = Future<({Model model, VoidCallback? onTap})>
+typedef NostrEventResolver = Future<({Model? model, VoidCallback? onTap})>
     Function(String nevent);
 
 String getModelContentType(Model? model) {
@@ -67,7 +67,7 @@ String getModelDisplayText(Model<dynamic>? model) {
 }
 
 // Profile
-typedef NostrProfileResolver = Future<({Profile profile, VoidCallback? onTap})>
+typedef NostrProfileResolver = Future<({Profile? profile, VoidCallback? onTap})>
     Function(String npub);
 typedef NostrProfileSearch = Future<List<Profile>> Function(String queryText);
 

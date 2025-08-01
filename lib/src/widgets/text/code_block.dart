@@ -88,7 +88,8 @@ class _LabCodeBlockState extends State<LabCodeBlock>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                LabText.h3(widget.language ?? '', color: theme.colors.white33),
+                LabText.h3(widget.language?.toUpperCase() ?? '',
+                    color: theme.colors.white33),
                 const LabGap.s2(),
                 SingleChildScrollView(
                   clipBehavior: Clip.none,

@@ -154,7 +154,7 @@ class LabCompactTextRenderer extends StatelessWidget {
                 ),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
-                  child: FutureBuilder<({Model model, VoidCallback? onTap})>(
+                  child: FutureBuilder<({Model? model, VoidCallback? onTap})>(
                     future: onResolveEvent(child.content),
                     builder: (context, snapshot) {
                       return Row(
@@ -316,7 +316,7 @@ class LabCompactTextRenderer extends StatelessWidget {
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
                   child:
-                      FutureBuilder<({Profile profile, VoidCallback? onTap})>(
+                      FutureBuilder<({Profile? profile, VoidCallback? onTap})>(
                     future: onResolveProfile(child.content),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
