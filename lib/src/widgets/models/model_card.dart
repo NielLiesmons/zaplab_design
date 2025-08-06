@@ -123,7 +123,7 @@ class LabModelCard extends StatelessWidget {
           horizontal: LabGapSize.s12,
           vertical: LabGapSize.s10,
         ),
-        onTap: onTap!(model!),
+        onTap: onTap == null ? null : () => onTap!(model!),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

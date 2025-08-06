@@ -155,52 +155,62 @@ class LabCompactTextRenderer extends StatelessWidget {
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
                   child: FutureBuilder<({Model? model, VoidCallback? onTap})>(
-                    future: onResolveEvent(child.content),
+                    future: onResolveEvent(child.content).catchError((error) {
+                      print('Failed to resolve event $child.content: $error');
+                      return (model: null, onTap: null);
+                    }),
                     builder: (context, snapshot) {
                       return Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           LabEmojiContentType(
-                            contentType:
-                                getModelContentType(snapshot.data?.model),
+                            contentType: snapshot.data?.model == null
+                                ? 'unknown'
+                                : getModelContentType(snapshot.data?.model),
                             size: emojiSize,
                             opacity: 0.66,
                           ),
                           isMedium ? const LabGap.s8() : const LabGap.s6(),
                           isMedium
                               ? LabText.reg14(
-                                  getModelContentType(snapshot.data?.model) ==
-                                          'nostr'
+                                  snapshot.data?.model == null
                                       ? 'Nostr Publication  '
                                       : getModelContentType(
                                                   snapshot.data?.model) ==
-                                              'chat'
-                                          ? 'Message  '
+                                              'nostr'
+                                          ? 'Nostr Publication  '
                                           : getModelContentType(
-                                                      snapshot.data?.model)[0]
-                                                  .toUpperCase() +
-                                              getModelContentType(
-                                                      snapshot.data?.model)
-                                                  .substring(1) +
-                                              ("  "),
+                                                      snapshot.data?.model) ==
+                                                  'chat'
+                                              ? 'Message  '
+                                              : getModelContentType(snapshot
+                                                          .data?.model)[0]
+                                                      .toUpperCase() +
+                                                  getModelContentType(
+                                                          snapshot.data?.model)
+                                                      .substring(1) +
+                                                  ("  "),
                                   color:
                                       derivedTextColor.withValues(alpha: 0.44),
                                 )
                               : LabText.reg12(
-                                  getModelContentType(snapshot.data?.model) ==
-                                          'nostr'
+                                  snapshot.data?.model == null
                                       ? 'Nostr Publication  '
                                       : getModelContentType(
                                                   snapshot.data?.model) ==
-                                              'chat'
-                                          ? 'Message  '
+                                              'nostr'
+                                          ? 'Nostr Publication  '
                                           : getModelContentType(
-                                                      snapshot.data?.model)[0]
-                                                  .toUpperCase() +
-                                              getModelContentType(
-                                                      snapshot.data?.model)
-                                                  .substring(1) +
-                                              ("  "),
+                                                      snapshot.data?.model) ==
+                                                  'chat'
+                                              ? 'Message  '
+                                              : getModelContentType(snapshot
+                                                          .data?.model)[0]
+                                                      .toUpperCase() +
+                                                  getModelContentType(
+                                                          snapshot.data?.model)
+                                                      .substring(1) +
+                                                  ("  "),
                                   color:
                                       derivedTextColor.withValues(alpha: 0.44),
                                 ),

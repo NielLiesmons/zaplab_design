@@ -94,7 +94,7 @@ class LabInputModal extends StatelessWidget {
               valueListenable: modalOffset,
               builder: (context, offset, child) {
                 return Transform.translate(
-                  offset: Offset(0, offset - keyboardHeight),
+                  offset: Offset(0, offset),
                   child: GestureDetector(
                     onVerticalDragUpdate: LabPlatformUtils.isMobile
                         ? (details) {
@@ -150,10 +150,13 @@ class LabInputModal extends StatelessWidget {
                               left: LabGapSize.s16,
                               right: LabGapSize.s16,
                             ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: children,
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: keyboardHeight),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: children,
+                              ),
                             ),
                           ),
                         ),

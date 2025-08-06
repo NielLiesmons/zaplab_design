@@ -375,7 +375,8 @@ class LabShortTextParser {
     final RegExp underlinePattern = RegExp(r'__([^_]+)__');
     final RegExp lineThroughPattern = RegExp(r'~~([^~]+)~~');
     final RegExp monospacePattern = RegExp(r'`([^`]+)`');
-    final RegExp nostrModelPattern = RegExp(r'nostr:nevent1\w+');
+    final RegExp nostrModelPattern =
+        RegExp(r'(?:nostr:)?(?:nevent1|naddr1|note1)\w+');
     final RegExp nostrProfilePattern = RegExp(r'nostr:n(?:pub1|profile1)\w+');
     final RegExp emojiPattern = RegExp(r':([a-zA-Z0-9_-]+):');
     final RegExp markdownLinkPattern = RegExp(r'\[([^\]]+)\]\(([^)]+)\)');

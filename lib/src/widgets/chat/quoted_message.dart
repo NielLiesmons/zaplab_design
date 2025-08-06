@@ -21,6 +21,30 @@ class LabQuotedMessage extends StatelessWidget {
     this.onTap,
   });
 
+  String _getTrimmedContent(Model model) {
+    String content =
+        model is ChatMessage ? model.content : (model as Comment).content;
+
+    // Trim quoted message URI from content if it exists
+    if (model is ChatMessage && model.quotedMessage.value != null) {
+      try {
+        final quotedUri = 'nostr:nevent1${model.quotedMessage.value!.id}';
+        if (content.startsWith(quotedUri)) {
+          content = content.substring(quotedUri.length).trim();
+          // Remove leading newline if present
+          if (content.startsWith('\n')) {
+            content = content.substring(1);
+          }
+        }
+      } catch (e) {
+        print('Failed to trim quoted message URI in LabQuotedMessage: $e');
+        // Return the original content if we can't access the quoted message
+      }
+    }
+
+    return content;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
@@ -29,14 +53,12 @@ class LabQuotedMessage extends StatelessWidget {
       onTap: onTap == null
           ? null
           : () {
-              print('LabQuotedMessage: GestureDetector onTap called');
               onTap!(chatMessage != null ? chatMessage! : reply!);
             },
       child: TapBuilder(
         onTap: onTap == null
             ? null
             : () {
-                print('LabQuotedMessage: TapBuilder onTap called');
                 onTap!(chatMessage != null ? chatMessage! : reply!);
               },
         builder: (context, state, hasFocus) => LabContainer(
@@ -83,8 +105,11 @@ class LabQuotedMessage extends StatelessWidget {
                                       formatNpub(
                                           reply!.author.value?.pubkey ?? ''),
                               color: theme.colors.white66,
+                              maxLines: 1,
+                              textOverflow: TextOverflow.ellipsis,
                             ),
                             const Spacer(),
+                            const LabGap.s8(),
                             LabText.reg12(
                               TimestampFormatter.format(
                                   chatMessage != null
@@ -102,9 +127,7 @@ class LabQuotedMessage extends StatelessWidget {
                           ),
                           child: LabCompactTextRenderer(
                             model: chatMessage != null ? chatMessage! : reply!,
-                            content: chatMessage != null
-                                ? chatMessage!.content
-                                : reply!.content,
+                            content: _getTrimmedContent(chatMessage ?? reply!),
                             maxLines: 1,
                             shouldTruncate: true,
                             onResolveEvent: onResolveEvent,

@@ -38,6 +38,7 @@ class LabMessageBubble extends StatefulWidget {
   final NostrHashtagResolver onResolveHashtag;
   final LinkTapHandler onLinkTap;
   final Function(Profile) onProfileTap;
+  final bool showParentReply;
 
   const LabMessageBubble({
     super.key,
@@ -57,6 +58,7 @@ class LabMessageBubble extends StatefulWidget {
     required this.onResolveHashtag,
     required this.onLinkTap,
     required this.onProfileTap,
+    this.showParentReply = false,
   });
 
   @override
@@ -197,22 +199,30 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                           children: [
                                             LabText.bold12(
                                               widget.message != null
-                                                  ? widget.message!.author.value
-                                                          ?.name ??
-                                                      formatNpub(widget
-                                                              .message!
-                                                              .author
-                                                              .value
-                                                              ?.npub ??
-                                                          'Profile...')
-                                                  : widget.reply!.author.value
-                                                          ?.name ??
-                                                      formatNpub(widget
-                                                              .reply!
-                                                              .author
-                                                              .value
-                                                              ?.npub ??
-                                                          'Profile...'),
+                                                  ? widget.message!.author
+                                                              .value !=
+                                                          null
+                                                      ? widget.message!.author
+                                                              .value?.name ??
+                                                          formatNpub(widget
+                                                                  .message!
+                                                                  .author
+                                                                  .value
+                                                                  ?.npub ??
+                                                              '')
+                                                      : 'Profile...'
+                                                  : widget.reply!.author
+                                                              .value !=
+                                                          null
+                                                      ? widget.reply!.author
+                                                              .value?.name ??
+                                                          formatNpub(widget
+                                                                  .reply!
+                                                                  .author
+                                                                  .value
+                                                                  ?.npub ??
+                                                              '')
+                                                      : 'Profile...',
                                               color: Color(
                                                 npubToColor(
                                                     widget.message != null
@@ -269,18 +279,139 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                     ),
                                   ),
                                 ],
-                                if (!widget.isFirstInStack) const LabGap.s2(),
-                                if (contentType.isSingleContent)
-                                  const LabGap.s4(),
+
                                 Builder(
                                   builder: (context) {
+                                    bool hasQuotedMessage = false;
+                                    bool hasParentReply = false;
+
+                                    try {
+                                      if (widget.message != null) {
+                                        final quotedMessage =
+                                            widget.message!.quotedMessage.value;
+                                        hasQuotedMessage =
+                                            quotedMessage != null;
+                                      }
+                                    } catch (e) {
+                                      print(
+                                          'Failed to access quoted message: $e');
+                                    }
+
+                                    try {
+                                      if (widget.reply != null) {
+                                        final parentModel =
+                                            widget.reply!.parentModel.value;
+                                        hasParentReply = parentModel != null;
+                                      }
+                                    } catch (e) {
+                                      print(
+                                          'Failed to access parent model: $e');
+                                    }
+
+                                    if (hasQuotedMessage || hasParentReply) {
+                                      return const LabGap.s4();
+                                    } else {
+                                      return const LabGap.s2();
+                                    }
+                                  },
+                                ),
+                                if (contentType.isSingleContent)
+                                  const LabGap.s4(),
+                                // Show quoted message if it exists and isn't already in content
+                                Builder(
+                                  builder: (context) {
+                                    try {
+                                      if (widget.message != null &&
+                                          widget.message!.quotedMessage.value !=
+                                              null &&
+                                          widget.message!.quotedMessage.value
+                                              is ChatMessage &&
+                                          !widget.message!.content.contains(
+                                              'nostr:nevent1${widget.message!.quotedMessage.value!.id}')) {
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            LabQuotedMessage(
+                                              chatMessage: widget
+                                                  .message!.quotedMessage.value,
+                                              onResolveEvent:
+                                                  widget.onResolveEvent,
+                                              onResolveProfile:
+                                                  widget.onResolveProfile,
+                                              onResolveEmoji:
+                                                  widget.onResolveEmoji,
+                                              onTap: (model) =>
+                                                  widget.onReply(model),
+                                            ),
+                                            const LabGap.s4(),
+                                          ],
+                                        );
+                                      }
+                                    } catch (e) {
+                                      print(
+                                          'Failed to render quoted message: $e');
+                                    }
+                                    return const SizedBox.shrink();
+                                  },
+                                ),
+                                // Show parent reply if enabled and exists
+                                if (widget.showParentReply &&
+                                    widget.reply != null &&
+                                    widget.reply!.parentModel.value != null)
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      LabQuotedMessage(
+                                        reply: widget.reply!.parentModel.value
+                                            as Comment,
+                                        onResolveEvent: widget.onResolveEvent,
+                                        onResolveProfile:
+                                            widget.onResolveProfile,
+                                        onResolveEmoji: widget.onResolveEmoji,
+                                        onTap: (model) => widget.onReply(model),
+                                      ),
+                                      const LabGap.s4(),
+                                    ],
+                                  ),
+                                Builder(
+                                  builder: (context) {
+                                    // Trim quoted message URI from content if it exists
+                                    String contentToRender =
+                                        widget.message != null
+                                            ? widget.message!.content
+                                            : widget.reply!.content;
+
+                                    try {
+                                      if (widget.message != null &&
+                                          widget.message!.quotedMessage.value !=
+                                              null) {
+                                        final quotedUri =
+                                            'nostr:nevent1${widget.message!.quotedMessage.value!.id}';
+                                        if (contentToRender
+                                            .startsWith(quotedUri)) {
+                                          contentToRender = contentToRender
+                                              .substring(quotedUri.length)
+                                              .trim();
+                                          // Remove leading newline if present
+                                          if (contentToRender
+                                              .startsWith('\n')) {
+                                            contentToRender =
+                                                contentToRender.substring(1);
+                                          }
+                                        }
+                                      }
+                                    } catch (e) {
+                                      print(
+                                          'Failed to trim quoted message URI: $e');
+                                    }
+
                                     final renderer = LabShortTextRenderer(
                                       model: widget.message != null
                                           ? widget.message!
                                           : widget.reply!,
-                                      content: widget.message != null
-                                          ? widget.message!.content
-                                          : widget.reply!.content,
+                                      content: contentToRender,
                                       onResolveEvent: widget.onResolveEvent,
                                       onResolveProfile: widget.onResolveProfile,
                                       onResolveEmoji: widget.onResolveEmoji,

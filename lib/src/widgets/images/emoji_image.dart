@@ -31,13 +31,19 @@ class LabEmojiImage extends StatelessWidget {
       LabIconSize.s32,
       LabIconSize.s38,
       LabIconSize.s40,
+      LabIconSize.s48,
+      LabIconSize.s56,
+      LabIconSize.s64,
+      LabIconSize.s72,
+      LabIconSize.s80,
+      LabIconSize.s96,
     ];
 
     // Find the largest size that's not bigger than the target, then go one size smaller
     for (int i = availableSizes.length - 1; i >= 0; i--) {
       if (double.parse(availableSizes[i].name.substring(1)) <= targetSize) {
         // Return one size smaller if possible, otherwise return the found size
-        return i > 0 ? availableSizes[i - 1] : availableSizes[i];
+        return availableSizes[i];
       }
     }
 
@@ -80,8 +86,14 @@ class LabEmojiImage extends StatelessWidget {
         progressIndicatorBuilder: (context, url, downloadProgress) => Center(
           child: Stack(
             children: [
-              ClipOval(
-                child: LabSkeletonLoader(),
+              Center(
+                child: SizedBox(
+                  width: size,
+                  height: size,
+                  child: const ClipOval(
+                    child: LabSkeletonLoader(),
+                  ),
+                ),
               ),
               LabIcon(
                 theme.icons.characters.emojiFill,

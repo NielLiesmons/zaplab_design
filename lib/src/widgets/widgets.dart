@@ -236,6 +236,7 @@ export 'toasts & alerts/toast_message.dart';
 export 'toasts & alerts/confirmation_modal.dart';
 
 // Transitions
+export 'transitions/pop_in_modal.dart';
 export 'transitions/slide_in_screen.dart';
 export 'transitions/slide_in_modal.dart';
 
