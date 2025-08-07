@@ -26,6 +26,7 @@ class LabShortTextField extends StatefulWidget {
   final VoidCallback? onSendTap;
   final VoidCallback? onDoneTap;
   final VoidCallback? onChevronTap;
+  final VoidCallback? onDelete;
 
   const LabShortTextField({
     super.key,
@@ -53,6 +54,7 @@ class LabShortTextField extends StatefulWidget {
     this.onSendTap,
     this.onDoneTap,
     this.onChevronTap,
+    this.onDelete,
   });
 
   LabShortTextField copyWith({
@@ -79,6 +81,7 @@ class LabShortTextField extends StatefulWidget {
     VoidCallback? onSendTap,
     VoidCallback? onDoneTap,
     VoidCallback? onChevronTap,
+    VoidCallback? onDelete,
   }) {
     return LabShortTextField(
       placeholder: placeholder ?? this.placeholder,
@@ -104,6 +107,7 @@ class LabShortTextField extends StatefulWidget {
       onSendTap: onSendTap ?? this.onSendTap,
       onDoneTap: onDoneTap ?? this.onDoneTap,
       onChevronTap: onChevronTap ?? this.onChevronTap,
+      onDelete: onDelete ?? this.onDelete,
     );
   }
 
@@ -214,21 +218,40 @@ class _LabShortTextFieldState extends State<LabShortTextField> {
               decoration: BoxDecoration(
                 borderRadius: theme.radius.asBorderRadius().rad16,
               ),
-              child: LabEditableShortText(
-                key: _editorKey,
-                text: widget.controller?.text ?? '',
-                style: textStyle,
-                controller: widget.controller,
-                focusNode: widget.focusNode,
-                onChanged: widget.onChanged,
-                onRawTextChanged: widget.onRawTextChanged,
-                contextMenuItems: widget.contextMenuItems,
-                placeholder: widget.placeholder,
-                onSearchProfiles: widget.onSearchProfiles,
-                onSearchEmojis: widget.onSearchEmojis,
-                onResolveEvent: widget.onResolveEvent,
-                onResolveProfile: widget.onResolveProfile,
-                onResolveEmoji: widget.onResolveEmoji,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: LabEditableShortText(
+                      key: _editorKey,
+                      text: widget.controller?.text ?? '',
+                      style: textStyle,
+                      controller: widget.controller,
+                      focusNode: widget.focusNode,
+                      onChanged: widget.onChanged,
+                      onRawTextChanged: widget.onRawTextChanged,
+                      contextMenuItems: widget.contextMenuItems,
+                      placeholder: widget.placeholder,
+                      onSearchProfiles: widget.onSearchProfiles,
+                      onSearchEmojis: widget.onSearchEmojis,
+                      onResolveEvent: widget.onResolveEvent,
+                      onResolveProfile: widget.onResolveProfile,
+                      onResolveEmoji: widget.onResolveEmoji,
+                    ),
+                  ),
+                  if (widget.onDelete != null) ...[
+                    const LabGap.s12(),
+                    LabContainer(
+                      padding: const LabEdgeInsets.only(
+                        top: LabGapSize.s2,
+                      ),
+                      child: LabCrossButton.s20(
+                        isLight: false,
+                        onTap: widget.onDelete,
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ),
           ),
@@ -240,64 +263,70 @@ class _LabShortTextFieldState extends State<LabShortTextField> {
             ),
             child: Row(
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    LabSmallButton(
-                      square: true,
-                      onTap: widget.onCameraTap,
-                      color: theme.colors.white8,
-                      pressedColor: theme.colors.white8,
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        LabIcon.s16(
-                          theme.icons.characters.camera,
-                          color: theme.colors.white33,
+                        LabSmallButton(
+                          square: true,
+                          onTap: widget.onCameraTap,
+                          color: theme.colors.white8,
+                          pressedColor: theme.colors.white8,
+                          children: [
+                            LabIcon.s16(
+                              theme.icons.characters.camera,
+                              color: theme.colors.white33,
+                            ),
+                          ],
+                        ),
+                        const LabGap.s8(),
+                        LabSmallButton(
+                          square: true,
+                          onTap: widget.onEmojiTap,
+                          color: theme.colors.white8,
+                          pressedColor: theme.colors.white8,
+                          children: [
+                            LabIcon.s18(
+                              theme.icons.characters.emojiFill,
+                              color: theme.colors.white33,
+                            ),
+                          ],
+                        ),
+                        const LabGap.s8(),
+                        LabSmallButton(
+                          square: true,
+                          onTap: widget.onGifTap,
+                          color: theme.colors.white8,
+                          pressedColor: theme.colors.white8,
+                          children: [
+                            LabIcon.s12(
+                              theme.icons.characters.gif,
+                              color: theme.colors.white33,
+                            ),
+                          ],
+                        ),
+                        const LabGap.s8(),
+                        LabSmallButton(
+                          square: true,
+                          onTap: widget.onAddTap,
+                          color: theme.colors.white8,
+                          pressedColor: theme.colors.white8,
+                          children: [
+                            LabIcon.s16(
+                              theme.icons.characters.plus,
+                              outlineColor: theme.colors.white33,
+                              outlineThickness:
+                                  LabLineThicknessData.normal().thick,
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    const LabGap.s8(),
-                    LabSmallButton(
-                      square: true,
-                      onTap: widget.onEmojiTap,
-                      color: theme.colors.white8,
-                      pressedColor: theme.colors.white8,
-                      children: [
-                        LabIcon.s18(
-                          theme.icons.characters.emojiFill,
-                          color: theme.colors.white33,
-                        ),
-                      ],
-                    ),
-                    const LabGap.s8(),
-                    LabSmallButton(
-                      square: true,
-                      onTap: widget.onGifTap,
-                      color: theme.colors.white8,
-                      pressedColor: theme.colors.white8,
-                      children: [
-                        LabIcon.s12(
-                          theme.icons.characters.gif,
-                          color: theme.colors.white33,
-                        ),
-                      ],
-                    ),
-                    const LabGap.s8(),
-                    LabSmallButton(
-                      square: true,
-                      onTap: widget.onAddTap,
-                      color: theme.colors.white8,
-                      pressedColor: theme.colors.white8,
-                      children: [
-                        LabIcon.s16(
-                          theme.icons.characters.plus,
-                          outlineColor: theme.colors.white33,
-                          outlineThickness: LabLineThicknessData.normal().thick,
-                        ),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
-                const Spacer(),
                 LabSmallButton(
                   onTap: () {
                     widget.onDoneTap?.call();

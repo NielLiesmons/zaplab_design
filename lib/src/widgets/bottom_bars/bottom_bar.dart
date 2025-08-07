@@ -6,10 +6,13 @@ class LabBottomBar extends StatelessWidget {
     super.key,
     required this.child,
     bool? roundedTop,
-  }) : roundedTop = roundedTop ?? (LabPlatformUtils.isMobile);
+    bool? bottomSafeArea,
+  })  : roundedTop = roundedTop ?? (LabPlatformUtils.isMobile),
+        bottomSafeArea = bottomSafeArea ?? true;
 
   final Widget child;
   final bool roundedTop;
+  final bool bottomSafeArea;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +52,7 @@ class LabBottomBar extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   child,
-                  const LabBottomSafeArea(),
+                  bottomSafeArea ? const LabBottomSafeArea() : const SizedBox(),
                 ],
               ),
             ),

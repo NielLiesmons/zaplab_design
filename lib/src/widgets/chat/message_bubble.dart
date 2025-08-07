@@ -39,6 +39,7 @@ class LabMessageBubble extends StatefulWidget {
   final LinkTapHandler onLinkTap;
   final Function(Profile) onProfileTap;
   final bool showParentReply;
+  final bool isPublishing;
 
   const LabMessageBubble({
     super.key,
@@ -59,6 +60,7 @@ class LabMessageBubble extends StatefulWidget {
     required this.onLinkTap,
     required this.onProfileTap,
     this.showParentReply = false,
+    this.isPublishing = false,
   });
 
   @override
@@ -425,7 +427,17 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                 ),
                               ],
                             ),
-                            if (widget.onSendAgain != null) ...[
+                            if (widget.isPublishing) ...[
+                              const LabContainer(
+                                padding: LabEdgeInsets.symmetric(
+                                  horizontal: LabGapSize.s4,
+                                  vertical: LabGapSize.s8,
+                                ),
+                                child: LabProgressBar(
+                                  progress: 0.5,
+                                ),
+                              ),
+                            ] else if (widget.onSendAgain != null) ...[
                               LabContainer(
                                 padding: const LabEdgeInsets.symmetric(
                                   horizontal: LabGapSize.s4,
@@ -456,10 +468,7 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                       children: [
                                         LabIcon.s12(
                                           theme.icons.characters.send,
-                                          outlineColor: theme.colors.white66,
-                                          outlineThickness:
-                                              LabLineThicknessData.normal()
-                                                  .medium,
+                                          color: theme.colors.whiteEnforced,
                                         ),
                                         const LabGap.s8(),
                                         LabText.reg12(
@@ -472,28 +481,6 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                 ),
                               ),
                             ],
-                            if (widget.onSendAgain != null)
-                              LabContainer(
-                                padding: const LabEdgeInsets.symmetric(
-                                  horizontal: LabGapSize.s4,
-                                  vertical: LabGapSize.s8,
-                                ),
-                                child: Row(
-                                  children: [
-                                    LabIcon.s20(
-                                      theme.icons.characters.send,
-                                      outlineColor: theme.colors.white66,
-                                      outlineThickness:
-                                          LabLineThicknessData.normal().medium,
-                                    ),
-                                    const LabGap.s4(),
-                                    LabText.reg14(
-                                      'Send again',
-                                      color: theme.colors.white66,
-                                    ),
-                                  ],
-                                ),
-                              ),
                           ],
                         ),
                       ),

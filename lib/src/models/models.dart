@@ -23,6 +23,7 @@ String getModelContentType(Model? model) {
     Model<Community>() => 'community',
     Model<CashuZap>() => 'zap',
     Model<ForumPost>() => 'forum',
+    Model<Poll>() => 'poll',
     _ => 'unknown',
   };
 }
@@ -62,6 +63,7 @@ String getModelDisplayText(Model<dynamic>? model) {
     Model<Mail>() => (model as Mail).title ?? 'Mail Title',
     Model<Task>() => (model as Task).title ?? 'Task Title',
     Model<ForumPost>() => (model as ForumPost).title ?? 'Forum Post Title',
+    Model<Poll>() => (model as Poll).content,
     _ => model?.event.content ?? '',
   };
 }

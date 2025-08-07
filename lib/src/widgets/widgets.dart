@@ -5,6 +5,7 @@ export '_base/container.dart';
 export '_base/divider.dart';
 export '_base/drag_handle.dart';
 export '_base/gap.dart';
+export '_base/history_menu.dart';
 export '_base/icon.dart';
 export '_base/modal.dart';
 export '_base/padding.dart';

@@ -1,24 +1,6 @@
 import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
-import 'package:tap_builder/tap_builder.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:zaplab_design/src/notifications/scroll_progress_notification.dart';
-
-class HistoryItem {
-  const HistoryItem({
-    required this.modelType,
-    required this.modelId,
-    required this.displayText,
-    required this.timestamp,
-    this.onTap,
-  });
-
-  final String modelType;
-  final String modelId;
-  final String displayText;
-  final DateTime timestamp;
-  final VoidCallback? onTap;
-}
 
 class LabScreen extends StatefulWidget {
   final Widget child;
@@ -104,8 +86,6 @@ class LabScreen extends StatefulWidget {
 }
 
 class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
-  static const double _buttonHeight = 38.0;
-  static const double _buttonWidthDelta = 32.0;
   static const double _topBarHeight = 64.0;
 
   final ScrollController _scrollController = ScrollController();
@@ -258,7 +238,7 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
         if (mounted) {
           setState(() {
             _currentDrag = tween.value;
-            _showTopZone = _currentDrag <= 7.0;
+            _showTopZone = _currentDrag <= 12.0;
           });
         }
       });
@@ -343,9 +323,7 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
                     ? MediaQuery.of(context).padding.top + 2
                     : 22,
                 decoration: BoxDecoration(
-                  color: _currentDrag < 5
-                      ? theme.colors.black
-                      : theme.colors.black33,
+                  color: theme.colors.black,
                 ),
               ),
             ),
@@ -360,233 +338,37 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
                       left: 0,
                       right: 0,
                       top: 0,
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          final containerWidth = constraints.maxWidth;
-                          return GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () => Navigator.of(context).pop(),
-                            onVerticalDragUpdate: (details) {
-                              if (_currentDrag > 0) {
-                                if (details.primaryDelta! > 0 &&
-                                    Navigator.canPop(context) &&
-                                    LabPlatformUtils.isMobile) {
-                                  final now = DateTime.now();
-                                  if (_menuOpenedAt != null &&
-                                      now
-                                              .difference(_menuOpenedAt!)
-                                              .inMilliseconds >
-                                          800) {
-                                    Navigator.of(context).pop();
-                                  }
-                                } else {
-                                  _handleDrag(details.primaryDelta!);
-                                }
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => Navigator.of(context).pop(),
+                        onVerticalDragUpdate: (details) {
+                          if (_currentDrag > 0) {
+                            if (details.primaryDelta! > 0 &&
+                                Navigator.canPop(context) &&
+                                LabPlatformUtils.isMobile) {
+                              final now = DateTime.now();
+                              if (_menuOpenedAt != null &&
+                                  now
+                                          .difference(_menuOpenedAt!)
+                                          .inMilliseconds >
+                                      800) {
+                                Navigator.of(context).pop();
                               }
-                            },
-                            onHorizontalDragStart: (_) {},
-                            onHorizontalDragUpdate: (_) {},
-                            onHorizontalDragEnd: (_) {},
-                            child: LabContainer(
-                              height: _menuHeight,
-                              padding: const LabEdgeInsets.symmetric(
-                                horizontal: LabGapSize.s16,
-                                vertical: LabGapSize.none,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Transform.translate(
-                                    offset: Offset(
-                                        0,
-                                        -_buttonHeight *
-                                            (1 - progress) *
-                                            (0.3)),
-                                    child: TapBuilder(
-                                      onTap: widget.onHomeTap,
-                                      builder: (context, state, hasFocus) {
-                                        double scaleFactor = 1.0;
-                                        if (state == TapState.pressed) {
-                                          scaleFactor = 0.99;
-                                        } else if (state == TapState.hover) {
-                                          scaleFactor = 1.01;
-                                        }
-
-                                        return Transform.scale(
-                                          scale: scaleFactor,
-                                          child: LabContainer(
-                                            decoration: BoxDecoration(
-                                              color: theme.colors.white16,
-                                              borderRadius: theme.radius
-                                                  .asBorderRadius()
-                                                  .rad16,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: theme.colors.white16,
-                                                  blurRadius: theme.sizes.s56,
-                                                ),
-                                              ],
-                                            ),
-                                            padding: const LabEdgeInsets.all(
-                                                LabGapSize.s16),
-                                            child: LabIcon.s20(
-                                              theme.icons.characters.home,
-                                              color: theme.colors.white66,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  const LabGap.s24(),
-                                  Transform.translate(
-                                    offset: Offset(0,
-                                        -_buttonHeight * (1 - progress) * 0.8),
-                                    child: SizedBox(
-                                      height: _buttonHeight,
-                                      width: containerWidth -
-                                          (_buttonWidthDelta * 4),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: theme.radius.rad16,
-                                          topRight: theme.radius.rad16,
-                                        ),
-                                        child: BackdropFilter(
-                                          filter: ImageFilter.blur(
-                                              sigmaX: 24, sigmaY: 24),
-                                          child: LabContainer(
-                                            decoration: BoxDecoration(
-                                              color: theme.colors.white8,
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: theme.radius.rad16,
-                                                topRight: theme.radius.rad16,
-                                              ),
-                                              border: Border(
-                                                top: BorderSide(
-                                                  color: LabColorsData.dark()
-                                                      .white16,
-                                                  width: LabLineThicknessData
-                                                          .normal()
-                                                      .thin,
-                                                ),
-                                              ),
-                                            ),
-                                            padding:
-                                                const LabEdgeInsets.symmetric(
-                                              horizontal: LabGapSize.s16,
-                                            ),
-                                            child: Center(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  LabText.reg12(
-                                                    'More History...',
-                                                    color: theme.colors.white66,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  ...List.generate(
-                                    widget.history.length,
-                                    (index) => Transform.translate(
-                                      offset: Offset(
-                                          0,
-                                          -_buttonHeight *
-                                              (1 - progress) *
-                                              (index + 2)),
-                                      child: SizedBox(
-                                        height: _buttonHeight,
-                                        width: containerWidth -
-                                            (_buttonWidthDelta * (3 - index)),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: theme.radius.rad16,
-                                            topRight: theme.radius.rad16,
-                                          ),
-                                          child: BackdropFilter(
-                                            filter: ImageFilter.blur(
-                                                sigmaX: 24, sigmaY: 24),
-                                            child: TapBuilder(
-                                              onTap: () {
-                                                widget.history[index].onTap
-                                                    ?.call();
-                                              },
-                                              builder:
-                                                  (context, state, hasFocus) {
-                                                return LabContainer(
-                                                  decoration: BoxDecoration(
-                                                    color: theme.colors.white8,
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      topLeft:
-                                                          theme.radius.rad16,
-                                                      topRight:
-                                                          theme.radius.rad16,
-                                                    ),
-                                                    border: Border(
-                                                      top: BorderSide(
-                                                        color:
-                                                            LabColorsData.dark()
-                                                                .white16,
-                                                        width:
-                                                            LabLineThicknessData
-                                                                    .normal()
-                                                                .thin,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  padding: const LabEdgeInsets
-                                                      .symmetric(
-                                                    horizontal: LabGapSize.s16,
-                                                  ),
-                                                  child: Center(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        LabText.reg12(
-                                                          widget.history[index]
-                                                              .modelType,
-                                                          color: theme
-                                                              .colors.white66,
-                                                        ),
-                                                        const LabGap.s8(),
-                                                        Expanded(
-                                                          child: LabText.reg12(
-                                                            widget
-                                                                .history[index]
-                                                                .displayText,
-                                                            color: theme
-                                                                .colors.white,
-                                                            maxLines: 1,
-                                                            textOverflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
+                            } else {
+                              _handleDrag(details.primaryDelta!);
+                            }
+                          }
                         },
+                        onHorizontalDragStart: (_) {},
+                        onHorizontalDragUpdate: (_) {},
+                        onHorizontalDragEnd: (_) {},
+                        child: LabHistoryMenu(
+                          history: widget.history,
+                          currentDrag: _currentDrag,
+                          menuHeight: _menuHeight,
+                          onHomeTap: widget.onHomeTap,
+                          onTapOutside: () => Navigator.of(context).pop(),
+                        ),
                       ),
                     ),
                   // Main content
