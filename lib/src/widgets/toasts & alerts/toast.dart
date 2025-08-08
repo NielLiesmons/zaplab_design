@@ -148,7 +148,9 @@ class _LabToastState extends State<LabToast>
                                   : LabGapSize.s16,
                             ),
                             constraints: BoxConstraints(maxWidth: width),
-                            child: widget.children.first,
+                            child: Row(
+                              children: widget.children,
+                            ),
                           ),
                         ],
                       ),

@@ -1087,13 +1087,24 @@ class LabEditableShortTextState extends State<LabEditableShortText>
     final spanOffset = _inlineWidgetStartOffset ?? 0;
     final TextPosition position = TextPosition(offset: spanOffset);
 
-    // Get the offset of the trigger symbol
+    // Get the offset of the trigger symbol using the same method as text selection controls
     final Offset offset = renderEditable.getLocalRectForCaret(position).topLeft;
     final Offset globalOffset = renderBox.localToGlobal(offset);
 
-    // Position the menu above and slightly to the left of the trigger symbol
+    // Use the same positioning logic as text selection controls
+    final theme = LabTheme.of(context);
+    final screenWidth = MediaQuery.of(context).size.width / theme.system.scale;
+
+    // Calculate x offset based on which third of the screen we're in
+    final double xOffset = globalOffset.dx <= screenWidth / 3
+        ? 0 // Left third
+        : globalOffset.dx >= screenWidth * 2 / 3
+            ? -200 // Right third (adjust menu width as needed)
+            : -100; // Middle third (adjust menu width as needed)
+
+    // Position the menu above the trigger symbol
     final pos = Offset(
-      globalOffset.dx - 8, // Move 8 pixels to the left
+      globalOffset.dx + xOffset,
       globalOffset.dy - 64, // Move 64 pixels up
     );
 
@@ -1162,15 +1173,15 @@ class LabEditableShortTextState extends State<LabEditableShortText>
     // Then update the cursor position
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
-        // Remove the text after @ up to current cursor and add a space
+        // Remove the text after @ up to current cursor (no space added)
         final newText = text.replaceRange(
           _inlineWidgetStartOffset! + 1, // Start after the @
           currentOffset,
-          ' ', // Replace with a space
+          '', // Replace with nothing
         );
 
-        // Calculate new cursor position (after the space)
-        final newCursorPosition = _inlineWidgetStartOffset! + 2;
+        // Calculate new cursor position (after the mention)
+        final newCursorPosition = _inlineWidgetStartOffset! + 1;
 
         _controller.value = TextEditingValue(
           text: newText,
@@ -1185,9 +1196,9 @@ class LabEditableShortTextState extends State<LabEditableShortText>
         _inlineWidgetOverlay?.remove();
         _inlineWidgetOverlay = null;
 
-        // Ensure focus is maintained and cursor is visible
+        // Ensure focus is maintained but don't show toolbar
         _focusNode.requestFocus();
-        editableTextKey.currentState?.showToolbar();
+        editableTextKey.currentState?.hideToolbar();
       } catch (e) {
         print('Error in post frame callback: $e');
       }
@@ -1245,15 +1256,15 @@ class LabEditableShortTextState extends State<LabEditableShortText>
     // Then update the cursor position
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
-        // Remove the text after : up to current cursor and add a space
+        // Remove the text after : up to current cursor (no space added)
         final newText = text.replaceRange(
           _inlineWidgetStartOffset! + 1, // Start after the :
           currentOffset,
-          ' ', // Replace with a space
+          '', // Replace with nothing
         );
 
-        // Calculate new cursor position (after the space)
-        final newCursorPosition = _inlineWidgetStartOffset! + 2;
+        // Calculate new cursor position (after the emoji)
+        final newCursorPosition = _inlineWidgetStartOffset! + 1;
 
         _controller.value = TextEditingValue(
           text: newText,
@@ -1268,9 +1279,9 @@ class LabEditableShortTextState extends State<LabEditableShortText>
         _inlineWidgetOverlay?.remove();
         _inlineWidgetOverlay = null;
 
-        // Ensure focus is maintained and cursor is visible
+        // Ensure focus is maintained but don't show toolbar
         _focusNode.requestFocus();
-        editableTextKey.currentState?.showToolbar();
+        editableTextKey.currentState?.hideToolbar();
       } catch (e) {
         print('Error in post frame callback: $e');
       }
@@ -1320,18 +1331,17 @@ class LabEditableShortTextState extends State<LabEditableShortText>
     // Then update the cursor position
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
-        // Add a space after the emoji
-        final newText = text.replaceRange(currentOffset, currentOffset, ' ');
+        // Position cursor after the emoji (no space added)
         final newCursorPosition = currentOffset + 1;
 
         _controller.value = TextEditingValue(
-          text: newText,
+          text: text,
           selection: TextSelection.collapsed(offset: newCursorPosition),
         );
 
-        // Ensure focus is maintained and cursor is visible
+        // Ensure focus is maintained but don't show toolbar
         _focusNode.requestFocus();
-        editableTextKey.currentState?.showToolbar();
+        editableTextKey.currentState?.hideToolbar();
       } catch (e) {
         print('Error in post frame callback: $e');
       }
@@ -1353,18 +1363,17 @@ class LabEditableShortTextState extends State<LabEditableShortText>
     // Then update the cursor position
     WidgetsBinding.instance.addPostFrameCallback((_) {
       try {
-        // Add a space after the mention
-        final newText = text.replaceRange(currentOffset, currentOffset, ' ');
+        // Position cursor after the mention (no space added)
         final newCursorPosition = currentOffset + 1;
 
         _controller.value = TextEditingValue(
-          text: newText,
+          text: text,
           selection: TextSelection.collapsed(offset: newCursorPosition),
         );
 
-        // Ensure focus is maintained and cursor is visible
+        // Ensure focus is maintained but don't show toolbar
         _focusNode.requestFocus();
-        editableTextKey.currentState?.showToolbar();
+        editableTextKey.currentState?.hideToolbar();
       } catch (e) {
         print('Error in post frame callback: $e');
       }
@@ -1755,6 +1764,11 @@ class LabEditableShortTextState extends State<LabEditableShortText>
   /// Get all emoji data (names and URLs) for Nostr event JSON tags
   List<({String name, String url})> getEmojiData() {
     return _controller.getEmojiData();
+  }
+
+  /// Get all profile data (npubs) for Nostr event JSON tags
+  List<String> getProfileData() {
+    return _controller.getProfileNpubs();
   }
 
   /// Get the current raw text (without formatting)

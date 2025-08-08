@@ -422,15 +422,17 @@ class _LabTextSelectionMenuState extends State<LabTextSelectionMenu>
                             top: 0,
                             bottom: 0,
                             width: 32,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    theme.colors.black33.withValues(alpha: 0),
-                                    theme.colors.black33,
-                                  ],
+                            child: IgnorePointer(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      const Color(0x000000),
+                                      theme.colors.black33,
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

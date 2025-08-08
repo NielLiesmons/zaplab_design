@@ -7,6 +7,7 @@ class LabInteractionPills extends StatelessWidget {
   final List<Reaction> reactions;
   final void Function(Zap)? onZapTap;
   final void Function(Reaction)? onReactionTap;
+  final String? activePubkey;
 
   const LabInteractionPills({
     super.key,
@@ -14,6 +15,7 @@ class LabInteractionPills extends StatelessWidget {
     this.reactions = const [],
     this.onZapTap,
     this.onReactionTap,
+    this.activePubkey,
   });
 
   @override
@@ -28,12 +30,14 @@ class LabInteractionPills extends StatelessWidget {
     final sortedReactions = List.from(reactions)
       ..sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
 
-    final outgoingZaps = sortedZaps.where((zap) => zap.isOutgoing == true);
-    final incomingZaps = sortedZaps.where((zap) => zap.isOutgoing != true);
-    final outgoingReactions =
-        sortedReactions.where((reaction) => reaction.isOutgoing == true);
-    final incomingReactions =
-        sortedReactions.where((reaction) => reaction.isOutgoing != true);
+    final outgoingZaps =
+        sortedZaps.where((zap) => zap.author.value?.pubkey == activePubkey);
+    final incomingZaps =
+        sortedZaps.where((zap) => zap.author.value?.pubkey != activePubkey);
+    final outgoingReactions = sortedReactions
+        .where((reaction) => reaction.author.value?.pubkey == activePubkey);
+    final incomingReactions = sortedReactions
+        .where((reaction) => reaction.author.value?.pubkey != activePubkey);
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

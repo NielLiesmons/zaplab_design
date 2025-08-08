@@ -7,6 +7,7 @@ class LabInteractionBar extends StatefulWidget {
   final void Function(Zap)? onZapTap;
   final void Function(Reaction)? onReactionTap;
   final VoidCallback? onExpand;
+  final String? activePubkey;
 
   const LabInteractionBar({
     super.key,
@@ -15,6 +16,7 @@ class LabInteractionBar extends StatefulWidget {
     this.onZapTap,
     this.onReactionTap,
     this.onExpand,
+    this.activePubkey,
   });
 
   @override
@@ -135,6 +137,7 @@ class _LabInteractionBarState extends State<LabInteractionBar>
                       reactions: widget.reactions,
                       onZapTap: widget.onZapTap,
                       onReactionTap: widget.onReactionTap,
+                      activePubkey: widget.activePubkey,
                     ),
                   ],
                 ),

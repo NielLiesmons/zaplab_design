@@ -40,6 +40,7 @@ class LabMessageBubble extends StatefulWidget {
   final Function(Profile) onProfileTap;
   final bool showParentReply;
   final bool isPublishing;
+  final String? activePubkey;
 
   const LabMessageBubble({
     super.key,
@@ -61,6 +62,7 @@ class LabMessageBubble extends StatefulWidget {
     required this.onProfileTap,
     this.showParentReply = false,
     this.isPublishing = false,
+    this.activePubkey,
   });
 
   @override
@@ -327,28 +329,37 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                           widget.message!.quotedMessage.value !=
                                               null &&
                                           widget.message!.quotedMessage.value
-                                              is ChatMessage &&
-                                          !widget.message!.content.contains(
-                                              'nostr:nevent1${widget.message!.quotedMessage.value!.id}')) {
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            LabQuotedMessage(
-                                              chatMessage: widget
-                                                  .message!.quotedMessage.value,
-                                              onResolveEvent:
-                                                  widget.onResolveEvent,
-                                              onResolveProfile:
-                                                  widget.onResolveProfile,
-                                              onResolveEmoji:
-                                                  widget.onResolveEmoji,
-                                              onTap: (model) =>
-                                                  widget.onReply(model),
-                                            ),
-                                            const LabGap.s4(),
-                                          ],
-                                        );
+                                              is ChatMessage) {
+                                        // Check if the content contains a nostr:nevent1 URI
+                                        final content = widget.message!.content;
+                                        final hasNostrUri =
+                                            content.contains('nostr:nevent1');
+
+                                        // Show quoted message if there's a URI in content OR if there's a quoted message relationship
+                                        if (hasNostrUri ||
+                                            widget.message!.quotedMessage
+                                                    .value !=
+                                                null) {
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              LabQuotedMessage(
+                                                chatMessage: widget.message!
+                                                    .quotedMessage.value,
+                                                onResolveEvent:
+                                                    widget.onResolveEvent,
+                                                onResolveProfile:
+                                                    widget.onResolveProfile,
+                                                onResolveEmoji:
+                                                    widget.onResolveEmoji,
+                                                onTap: (model) =>
+                                                    widget.onReply(model),
+                                              ),
+                                              const LabGap.s4(),
+                                            ],
+                                          );
+                                        }
                                       }
                                     } catch (e) {
                                       print(
@@ -389,18 +400,25 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                       if (widget.message != null &&
                                           widget.message!.quotedMessage.value !=
                                               null) {
-                                        final quotedUri =
-                                            'nostr:nevent1${widget.message!.quotedMessage.value!.id}';
-                                        if (contentToRender
-                                            .startsWith(quotedUri)) {
-                                          contentToRender = contentToRender
-                                              .substring(quotedUri.length)
-                                              .trim();
-                                          // Remove leading newline if present
-                                          if (contentToRender
-                                              .startsWith('\n')) {
-                                            contentToRender =
-                                                contentToRender.substring(1);
+                                        // Look for nostr:nevent1 URI in the content
+                                        final content = widget.message!.content;
+                                        final nostrUriMatch =
+                                            RegExp(r'nostr:nevent1[a-zA-Z0-9]+')
+                                                .firstMatch(content);
+
+                                        if (nostrUriMatch != null) {
+                                          final quotedUri =
+                                              nostrUriMatch.group(0)!;
+                                          if (content.startsWith(quotedUri)) {
+                                            contentToRender = content
+                                                .substring(quotedUri.length)
+                                                .trim();
+                                            // Remove leading newline if present
+                                            if (contentToRender
+                                                .startsWith('\n')) {
+                                              contentToRender =
+                                                  contentToRender.substring(1);
+                                            }
                                           }
                                         }
                                       }
@@ -427,6 +445,22 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                 ),
                               ],
                             ),
+                            // Reactions and Zaps
+                            if (widget.message?.reactions.length != 0 ||
+                                widget.message?.zaps.length != 0) ...[
+                              LabContainer(
+                                padding: const LabEdgeInsets.only(
+                                  bottom: LabGapSize.s4,
+                                ),
+                                child: LabInteractionPills(
+                                  zaps: widget.message!.zaps.toList(),
+                                  reactions: widget.message!.reactions.toList(),
+                                  onZapTap: widget.onZapTap,
+                                  onReactionTap: widget.onReactionTap,
+                                  activePubkey: widget.activePubkey,
+                                ),
+                              ),
+                            ],
                             if (widget.isPublishing) ...[
                               const LabContainer(
                                 padding: LabEdgeInsets.symmetric(

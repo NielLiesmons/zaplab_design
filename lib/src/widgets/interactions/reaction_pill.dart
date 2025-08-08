@@ -62,8 +62,18 @@ class LabReactionPill extends StatelessWidget {
                     emojiName: reaction.emojiTag?.$1 ?? '',
                   )
                 else
-                  LabText.med16(
-                    reaction.event.content,
+                  LabContainer(
+                    height: 18,
+                    width: 18,
+                    child: Center(
+                      child: Text(
+                        reaction.event.content,
+                        style: const TextStyle(
+                          height: 1,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
                   ),
                 const LabGap.s6(),
                 LabProfilePic.s18(reaction.author.value),
