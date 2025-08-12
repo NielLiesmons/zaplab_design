@@ -16,6 +16,11 @@ class _LabSkeletonLoaderState extends State<LabSkeletonLoader>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
+  // Cache gradient creation to avoid recreating on every frame
+  LinearGradient? _cachedGradient;
+  Color? _lastWhite8;
+  Color? _lastWhite16;
+
   @override
   void initState() {
     super.initState();
@@ -38,18 +43,21 @@ class _LabSkeletonLoaderState extends State<LabSkeletonLoader>
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
+        // Create animated gradient on every frame for smooth animation
+        _cachedGradient = LinearGradient(
+          begin: Alignment(-6 + _controller.value * 8, -0.3),
+          end: Alignment(-2 + _controller.value * 8, 0.3),
+          colors: [
+            theme.colors.white8,
+            theme.colors.white16,
+            theme.colors.white8,
+          ],
+          stops: const [0.0, 0.5, 1.0],
+        );
+
         return LabContainer(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment(-6 + _controller.value * 8, -0.3),
-              end: Alignment(-2 + _controller.value * 8, 0.3),
-              colors: [
-                theme.colors.white8,
-                theme.colors.white16,
-                theme.colors.white8,
-              ],
-              stops: const [0.0, 0.5, 1.0],
-            ),
+            gradient: _cachedGradient,
           ),
           child: widget.child,
         );

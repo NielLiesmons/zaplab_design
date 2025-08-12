@@ -304,7 +304,7 @@ class _LabTextSelectionMenuState extends State<LabTextSelectionMenu>
               ClipRRect(
                 borderRadius: theme.radius.asBorderRadius().rad8,
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                   child: LabContainer(
                     height: theme.sizes.s38,
                     decoration: BoxDecoration(
@@ -448,7 +448,7 @@ class _LabTextSelectionMenuState extends State<LabTextSelectionMenu>
             ClipRRect(
               borderRadius: theme.radius.asBorderRadius().rad8,
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                 child: Stack(
                   children: [
                     LabContainer(

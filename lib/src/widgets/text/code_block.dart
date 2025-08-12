@@ -106,36 +106,29 @@ class _LabCodeBlockState extends State<LabCodeBlock>
             Positioned(
               top: 8,
               right: 8,
-              child: ClipRRect(
-                borderRadius: theme.radius.asBorderRadius().rad8,
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                  child: LabSmallButton(
-                    color: isInsideModal
-                        ? theme.colors.white8
-                        : theme.colors.white16,
-                    square: true,
-                    onTap: _handleCopy,
-                    children: [
-                      _showCheckmark
-                          ? ScaleTransition(
-                              scale: _scaleAnimation,
-                              child: LabIcon.s10(
-                                theme.icons.characters.check,
-                                outlineColor: theme.colors.white66,
-                                outlineThickness:
-                                    LabLineThicknessData.normal().thick,
-                              ),
-                            )
-                          : LabIcon.s18(
-                              theme.icons.characters.copy,
-                              outlineColor: theme.colors.white66,
-                              outlineThickness:
-                                  LabLineThicknessData.normal().medium,
-                            )
-                    ],
-                  ),
-                ),
+              child: LabSmallButton(
+                color:
+                    isInsideModal ? theme.colors.white8 : theme.colors.white16,
+                square: true,
+                onTap: _handleCopy,
+                children: [
+                  _showCheckmark
+                      ? ScaleTransition(
+                          scale: _scaleAnimation,
+                          child: LabIcon.s10(
+                            theme.icons.characters.check,
+                            outlineColor: theme.colors.white66,
+                            outlineThickness:
+                                LabLineThicknessData.normal().thick,
+                          ),
+                        )
+                      : LabIcon.s18(
+                          theme.icons.characters.copy,
+                          outlineColor: theme.colors.white66,
+                          outlineThickness:
+                              LabLineThicknessData.normal().medium,
+                        )
+                ],
               ),
             ),
         ],

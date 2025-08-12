@@ -69,7 +69,7 @@ class LabPanelButton extends StatelessWidget {
             child: ClipRRect(
               borderRadius: theme.radius.asBorderRadius().rad16,
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                 child: SizedBox(
                   height: theme.sizes.s20,
                   child: LabContainer(

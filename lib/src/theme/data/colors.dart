@@ -210,7 +210,6 @@ class LabColorsData extends Equatable {
 
   /// Dark mode
   factory LabColorsData.dark([LabColorsOverride? override]) => LabColorsData(
-        /// Colors (full or 66% / 33% transparent)
         white: override?.white ?? const Color(0xFFFFFFFF),
         white66: override?.white66 ??
             const Color(0xFFFFFFFF).withValues(alpha: 0.66),

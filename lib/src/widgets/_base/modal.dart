@@ -65,7 +65,7 @@ class LabModal extends StatelessWidget {
       PageRouteBuilder(
         opaque: false,
         barrierDismissible: true,
-        barrierColor: const Color(0x00000000),
+        barrierColor: theme.colors.black66,
         transitionDuration: theme.durations.normal,
         reverseTransitionDuration: theme.durations.normal,
         pageBuilder: (_, __, ___) => LabModal(
@@ -214,60 +214,50 @@ class LabModal extends StatelessWidget {
       builder: (context, needsCompactMode, child) {
         return ModalScope(
           isInsideModal: true,
-          child: Stack(
-            children: [
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                child: LabContainer(
-                  decoration: BoxDecoration(color: theme.colors.black16),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Stack(
-                  children: [
-                    if (handleNavigation)
-                      GestureDetector(
-                        onTap: () {
-                          if (Navigator.of(context).canPop()) {
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        onVerticalDragStart: (details) {
-                          if (details.localPosition.dy > 0 &&
-                              Navigator.of(context).canPop()) {
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        child: const LabContainer(
-                          decoration: BoxDecoration(color: Color(0x00000000)),
-                        ),
-                      ),
-                    if (needsCompactMode)
-                      _buildScrollableModal(
-                        context,
-                        theme,
-                        screenHeight,
-                        topBarVisible,
-                        modalOffset,
-                        resolvedTopBar,
-                        allChildren,
-                        initialChildSize: initialChildSize,
-                      )
-                    else
-                      _buildCompactModal(
-                        context,
-                        theme,
-                        resolvedTopBar,
-                        allChildren,
-                      ),
-                    if (needsCompactMode &&
-                        (bottomBar != null || LabPlatformUtils.isMobile))
-                      _buildBottomBarOverlay(context, theme),
-                  ],
-                ),
-              ),
-            ],
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Stack(
+              children: [
+                if (handleNavigation)
+                  GestureDetector(
+                    onTap: () {
+                      if (Navigator.of(context).canPop()) {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    onVerticalDragStart: (details) {
+                      if (details.localPosition.dy > 0 &&
+                          Navigator.of(context).canPop()) {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: const LabContainer(
+                      decoration: BoxDecoration(color: Color(0x00000000)),
+                    ),
+                  ),
+                if (needsCompactMode)
+                  _buildScrollableModal(
+                    context,
+                    theme,
+                    screenHeight,
+                    topBarVisible,
+                    modalOffset,
+                    resolvedTopBar,
+                    allChildren,
+                    initialChildSize: initialChildSize,
+                  )
+                else
+                  _buildCompactModal(
+                    context,
+                    theme,
+                    resolvedTopBar,
+                    allChildren,
+                  ),
+                if (needsCompactMode &&
+                    (bottomBar != null || LabPlatformUtils.isMobile))
+                  _buildBottomBarOverlay(context, theme),
+              ],
+            ),
           ),
         );
       },
@@ -345,60 +335,56 @@ class LabModal extends StatelessWidget {
                     ),
                   ),
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.vertical(
-                    top: const LabRadiusData.normal().rad32,
-                  ),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                    child: LabContainer(
-                      width: double.infinity,
-                      decoration: BoxDecoration(color: theme.colors.gray66),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (includePadding)
-                            LabContainer(
-                              padding: LabEdgeInsets.only(
-                                left: LabGapSize.s16,
-                                right: LabGapSize.s16,
-                                top: LabGapSize.s16,
-                                bottom: LabPlatformUtils.isMobile
-                                    ? LabGapSize.s12
-                                    : LabGapSize.s16,
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ...allChildren,
-                                  if (bottomBar == null)
-                                    const LabBottomSafeArea(),
-                                ],
-                              ),
-                            )
-                          else ...[
-                            ...allChildren,
-                            if (bottomBar == null) const LabBottomSafeArea(),
-                          ],
-                          if (bottomBar != null)
-                            LabContainer(
-                              padding: LabEdgeInsets.only(
-                                left: LabGapSize.s16,
-                                right: LabGapSize.s16,
-                                top: LabGapSize.none,
-                                bottom: bottomPadding,
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  bottomBar!,
-                                  const LabBottomSafeArea(),
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
+                child: LabContainer(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: theme.colors.gray,
+                    borderRadius: BorderRadius.vertical(
+                      top: const LabRadiusData.normal().rad32,
                     ),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (includePadding)
+                        LabContainer(
+                          padding: LabEdgeInsets.only(
+                            left: LabGapSize.s16,
+                            right: LabGapSize.s16,
+                            top: LabGapSize.s16,
+                            bottom: LabPlatformUtils.isMobile
+                                ? LabGapSize.s12
+                                : LabGapSize.s16,
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ...allChildren,
+                              if (bottomBar == null) const LabBottomSafeArea(),
+                            ],
+                          ),
+                        )
+                      else ...[
+                        ...allChildren,
+                        if (bottomBar == null) const LabBottomSafeArea(),
+                      ],
+                      if (bottomBar != null)
+                        LabContainer(
+                          padding: LabEdgeInsets.only(
+                            left: LabGapSize.s16,
+                            right: LabGapSize.s16,
+                            top: LabGapSize.none,
+                            bottom: bottomPadding,
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              bottomBar!,
+                              const LabBottomSafeArea(),
+                            ],
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ),
@@ -486,40 +472,35 @@ class LabModal extends StatelessWidget {
                             ),
                           ),
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.vertical(
-                            top: const LabRadiusData.normal().rad32,
-                          ),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                            child: LabContainer(
-                              width: double.infinity,
-                              decoration:
-                                  BoxDecoration(color: theme.colors.gray66),
-                              child: ListView(
-                                controller: scrollController,
-                                padding: bottomBar != null
-                                    ? EdgeInsets.only(
-                                        bottom: totalBottomPadding)
-                                    : EdgeInsets.zero,
-                                children: [
-                                  if (includePadding)
-                                    LabContainer(
-                                      padding: const LabEdgeInsets.s16(),
-                                      child: Column(
-                                        children: [
-                                          ...allChildren,
-                                          const LabBottomSafeArea(),
-                                        ],
-                                      ),
-                                    )
-                                  else ...[
-                                    ...allChildren,
-                                    const LabBottomSafeArea(),
-                                  ],
-                                ],
-                              ),
+                        child: LabContainer(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: theme.colors.gray,
+                            borderRadius: BorderRadius.vertical(
+                              top: const LabRadiusData.normal().rad32,
                             ),
+                          ),
+                          child: ListView(
+                            controller: scrollController,
+                            padding: bottomBar != null
+                                ? EdgeInsets.only(bottom: totalBottomPadding)
+                                : EdgeInsets.zero,
+                            children: [
+                              if (includePadding)
+                                LabContainer(
+                                  padding: const LabEdgeInsets.s16(),
+                                  child: Column(
+                                    children: [
+                                      ...allChildren,
+                                      const LabBottomSafeArea(),
+                                    ],
+                                  ),
+                                )
+                              else ...[
+                                ...allChildren,
+                                const LabBottomSafeArea(),
+                              ],
+                            ],
                           ),
                         ),
                       );
@@ -564,38 +545,26 @@ class LabModal extends StatelessWidget {
                             }
                           },
                           child: LabContainer(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.vertical(
-                                top: offset > 0
-                                    ? const LabRadiusData.normal().rad32
-                                    : Radius.zero,
-                              ),
-                              child: BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                                child: LabContainer(
-                                  decoration: BoxDecoration(
-                                    color: theme.colors.gray66,
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: theme.colors.white16,
-                                        width:
-                                            LabLineThicknessData.normal().thin,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const LabTopSafeArea(),
-                                      const LabGap.s4(),
-                                      const LabDragHandle(),
-                                      if (resolvedTopBar != null)
-                                        resolvedTopBar,
-                                    ],
-                                  ),
+                            decoration: BoxDecoration(
+                              color: theme.colors.gray66,
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: theme.colors.white16,
+                                  width: LabLineThicknessData.normal().thin,
                                 ),
                               ),
+                              borderRadius: BorderRadius.vertical(
+                                top: const LabRadiusData.normal().rad32,
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const LabTopSafeArea(),
+                                const LabGap.s4(),
+                                const LabDragHandle(),
+                                if (resolvedTopBar != null) resolvedTopBar,
+                              ],
                             ),
                           ),
                         ),
@@ -620,35 +589,30 @@ class LabModal extends StatelessWidget {
       left: 0,
       right: 0,
       child: LabContainer(
-        child: ClipRRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-            child: LabContainer(
-              padding: bottomBar != null
-                  ? LabEdgeInsets.only(
-                      left: LabGapSize.s16,
-                      right: LabGapSize.s16,
-                      top: LabGapSize.s16,
-                      bottom: bottomPadding,
-                    )
-                  : const LabEdgeInsets.all(LabGapSize.none),
-              decoration: BoxDecoration(
-                color: theme.colors.gray66,
-                border: Border(
-                  top: BorderSide(
-                    color: theme.colors.white16,
-                    width: LabLineThicknessData.normal().thin,
-                  ),
-                ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (bottomBar != null) bottomBar!,
-                  if (LabPlatformUtils.isMobile) const LabBottomSafeArea(),
-                ],
+        child: LabContainer(
+          padding: bottomBar != null
+              ? LabEdgeInsets.only(
+                  left: LabGapSize.s16,
+                  right: LabGapSize.s16,
+                  top: LabGapSize.s16,
+                  bottom: bottomPadding,
+                )
+              : const LabEdgeInsets.all(LabGapSize.none),
+          decoration: BoxDecoration(
+            color: theme.colors.gray66,
+            border: Border(
+              top: BorderSide(
+                color: theme.colors.white16,
+                width: LabLineThicknessData.normal().thin,
               ),
             ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (bottomBar != null) bottomBar!,
+              if (LabPlatformUtils.isMobile) const LabBottomSafeArea(),
+            ],
           ),
         ),
       ),

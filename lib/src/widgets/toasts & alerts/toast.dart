@@ -114,47 +114,39 @@ class _LabToastState extends State<LabToast>
                     _offset.value = 0;
                   }
                 },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.vertical(
-                    bottom: const LabRadiusData.normal().rad32,
-                  ),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                    child: LabContainer(
-                      width: width,
-                      decoration: BoxDecoration(
-                        color: theme.colors.gray66,
-                        borderRadius: BorderRadius.vertical(
-                          bottom: const LabRadiusData.normal().rad32,
-                        ),
-                        border: Border(
-                          bottom: BorderSide(
-                            color: theme.colors.white16,
-                            width: LabLineThicknessData.normal().thin,
-                          ),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const LabTopSafeArea(),
-                          LabContainer(
-                            padding: LabEdgeInsets.only(
-                              left: LabGapSize.s16,
-                              right: LabGapSize.s16,
-                              bottom: LabGapSize.s16,
-                              top: LabPlatformUtils.isMobile
-                                  ? LabGapSize.s4
-                                  : LabGapSize.s16,
-                            ),
-                            constraints: BoxConstraints(maxWidth: width),
-                            child: Row(
-                              children: widget.children,
-                            ),
-                          ),
-                        ],
+                child: LabContainer(
+                  width: width,
+                  decoration: BoxDecoration(
+                    color: theme.colors.gray66,
+                    borderRadius: BorderRadius.vertical(
+                      bottom: const LabRadiusData.normal().rad32,
+                    ),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: theme.colors.white16,
+                        width: LabLineThicknessData.normal().thin,
                       ),
                     ),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const LabTopSafeArea(),
+                      LabContainer(
+                        padding: LabEdgeInsets.only(
+                          left: LabGapSize.s16,
+                          right: LabGapSize.s16,
+                          bottom: LabGapSize.s16,
+                          top: LabPlatformUtils.isMobile
+                              ? LabGapSize.s4
+                              : LabGapSize.s16,
+                        ),
+                        constraints: BoxConstraints(maxWidth: width),
+                        child: Row(
+                          children: widget.children,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

@@ -64,11 +64,12 @@ class LabResponsiveTheme extends StatefulWidget {
   }
 
   static LabFormFactor formFactorOf(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
+    // Use specific MediaQuery method to avoid unnecessary rebuilds
+    final width = MediaQuery.sizeOf(context).width;
 
-    if (mediaQuery.size.width < 440) {
+    if (width < 440) {
       return LabFormFactor.small;
-    } else if (mediaQuery.size.width >= 440 && mediaQuery.size.width < 880) {
+    } else if (width >= 440 && width < 880) {
       return LabFormFactor.medium;
     } else {
       return LabFormFactor.big;
@@ -92,6 +93,10 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
   LabTextScale? _lastTextScale;
   LabSystemScale? _lastSystemScale;
   LabColorsOverride? _lastColorsOverride;
+
+  // Cache form factor calculation to avoid MediaQuery calls on every build
+  LabFormFactor? _cachedFormFactor;
+  double? _lastWidth;
 
   LabThemeColorMode get colorMode =>
       _colorMode ?? widget.colorMode ?? LabResponsiveTheme.colorModeOf(context);
@@ -138,7 +143,7 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
       return _cachedThemeData!;
     }
 
-    // Create new theme data
+    // Use cached normal theme data as base
     var theme = LabThemeData.normal();
 
     // Get system scale based on selection
@@ -151,13 +156,13 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
     // Apply typography based on text scale
     switch (currentTextScale) {
       case LabTextScale.small:
-        theme = theme.withTypography(LabTypographyData.small());
+        theme = theme.withTypography(LabTypographyData.small);
         break;
       case LabTextScale.large:
-        theme = theme.withTypography(LabTypographyData.large());
+        theme = theme.withTypography(LabTypographyData.large);
         break;
       default:
-        theme = theme.withTypography(LabTypographyData.normal());
+        theme = theme.withTypography(LabTypographyData.normal);
     }
 
     // Apply system scale to UI elements
@@ -186,9 +191,30 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
   @override
   Widget build(BuildContext context) {
     final theme = _createThemeData();
-    final formFactor =
-        widget.formFactor ?? LabResponsiveTheme.formFactorOf(context);
-    final finalTheme = theme.withFormFactor(formFactor);
+
+    // Cache form factor calculation to avoid MediaQuery calls on every build
+    if (widget.formFactor != null) {
+      return LabTheme(
+        data: theme.withFormFactor(widget.formFactor!),
+        child: widget.child,
+      );
+    }
+
+    // Only calculate form factor if not provided and cache it
+    final width = MediaQuery.sizeOf(context).width;
+    if (_cachedFormFactor == null ||
+        (_lastWidth != null && (width - _lastWidth!).abs() > 50)) {
+      if (width < 440) {
+        _cachedFormFactor = LabFormFactor.small;
+      } else if (width >= 440 && width < 880) {
+        _cachedFormFactor = LabFormFactor.medium;
+      } else {
+        _cachedFormFactor = LabFormFactor.big;
+      }
+      _lastWidth = width;
+    }
+
+    final finalTheme = theme.withFormFactor(_cachedFormFactor!);
 
     return LabTheme(
       data: finalTheme,

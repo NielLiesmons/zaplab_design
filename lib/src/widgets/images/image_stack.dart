@@ -277,8 +277,7 @@ class _LabImageStackState extends State<LabImageStack> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(13),
                               child: BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                                filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                                 child: LabContainer(
                                   height: theme.sizes.s28,
                                   padding: const LabEdgeInsets.symmetric(

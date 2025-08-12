@@ -34,28 +34,25 @@ class LabBottomBar extends StatelessWidget {
             ),
           ),
         ),
-        child: ClipRRect(
-          borderRadius: roundedTop
-              ? BorderRadius.vertical(top: const LabRadiusData.normal().rad32)
-              : BorderRadius.zero,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-            child: LabContainer(
-              padding: LabEdgeInsets.only(
-                left: LabGapSize.s16,
-                right: LabGapSize.s16,
-                top: LabGapSize.s16,
-                bottom: bottomPadding,
-              ),
-              decoration: BoxDecoration(color: theme.colors.gray66),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  child,
-                  bottomSafeArea ? const LabBottomSafeArea() : const SizedBox(),
-                ],
-              ),
+        child: LabContainer(
+          padding: LabEdgeInsets.only(
+            left: LabGapSize.s16,
+            right: LabGapSize.s16,
+            top: LabGapSize.s16,
+            bottom: bottomPadding,
+          ),
+          decoration: BoxDecoration(
+            color: theme.colors.gray,
+            borderRadius: BorderRadius.vertical(
+              top: const LabRadiusData.normal().rad32,
             ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              child,
+              bottomSafeArea ? const LabBottomSafeArea() : const SizedBox(),
+            ],
           ),
         ),
       ),

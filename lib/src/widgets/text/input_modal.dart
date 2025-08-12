@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
 
 class LabInputModal extends StatelessWidget {
@@ -80,11 +79,8 @@ class LabInputModal extends StatelessWidget {
                 Navigator.of(context).pop();
               }
             },
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-              child: LabContainer(
-                decoration: BoxDecoration(color: theme.colors.black16),
-              ),
+            child: LabContainer(
+              decoration: BoxDecoration(color: theme.colors.black33),
             ),
           ),
           // Modal content
@@ -128,36 +124,31 @@ class LabInputModal extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(theme.radius.rad32.x),
+                      child: LabContainer(
+                        decoration: BoxDecoration(
+                          color: theme.colors.gray,
+                          border: Border(
+                            top: BorderSide(
+                              color: theme.colors.white16,
+                              width: LabLineThicknessData.normal().thin,
+                            ),
+                          ),
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(theme.radius.rad32.x),
+                          ),
                         ),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                          child: LabContainer(
-                            decoration: BoxDecoration(
-                              color: theme.colors.gray66,
-                              border: Border(
-                                top: BorderSide(
-                                  color: theme.colors.white16,
-                                  width: LabLineThicknessData.normal().thin,
-                                ),
-                              ),
-                            ),
-                            padding: LabEdgeInsets.only(
-                              top: LabGapSize.s16,
-                              bottom: bottomPadding,
-                              left: LabGapSize.s16,
-                              right: LabGapSize.s16,
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(bottom: keyboardHeight),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: children,
-                              ),
-                            ),
+                        padding: LabEdgeInsets.only(
+                          top: LabGapSize.s16,
+                          bottom: bottomPadding,
+                          left: LabGapSize.s16,
+                          right: LabGapSize.s16,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: keyboardHeight),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: children,
                           ),
                         ),
                       ),

@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 import 'package:zaplab_design/zaplab_design.dart';
-import 'dart:ui';
 
 class LabSlideInScreen extends CustomTransitionPage {
   LabSlideInScreen({
@@ -14,13 +13,15 @@ class LabSlideInScreen extends CustomTransitionPage {
           reverseTransitionDuration: const Duration(milliseconds: 222),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             final theme = LabTheme.of(context);
+
             return Stack(
               children: [
-                BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                // ✅ SIMPLE: Translucent background instead of expensive blur
+                Positioned.fill(
                   child: LabContainer(
                     decoration: BoxDecoration(
-                      color: theme.colors.gray33,
+                      color: theme.colors.gray33
+                          .withValues(alpha: 0.8), // Translucent but no blur
                     ),
                   ),
                 ),

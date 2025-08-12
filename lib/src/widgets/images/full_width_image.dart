@@ -56,69 +56,66 @@ class _LabFullWidthImageState extends State<LabFullWidthImage> {
         opaque: false,
         barrierDismissible: true,
         pageBuilder: (context, animation, secondaryAnimation) {
-          return BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-            child: LabContainer(
-              decoration: BoxDecoration(
-                color: theme.colors.black66,
-              ),
-              child: Stack(
-                children: [
-                  // Background tap area (next to image)
-                  Positioned.fill(
-                    child: TapBuilder(
-                      onTap: () => Navigator.of(context).pop(),
-                      builder: (context, state, hasFocus) {
-                        return Container(
-                          color: theme.colors.black33,
-                        );
-                      },
-                    ),
+          return LabContainer(
+            decoration: BoxDecoration(
+              color: theme.colors.black66,
+            ),
+            child: Stack(
+              children: [
+                // Background tap area (next to image)
+                Positioned.fill(
+                  child: TapBuilder(
+                    onTap: () => Navigator.of(context).pop(),
+                    builder: (context, state, hasFocus) {
+                      return Container(
+                        color: theme.colors.black33,
+                      );
+                    },
                   ),
-                  // Full screen zoomable image with swipe detection
-                  Center(
-                    child: InteractiveViewer(
-                      minScale: 0.5,
-                      maxScale: 4.0,
-                      transformationController: _transformationController,
-                      onInteractionEnd: (details) {
-                        // Only exit on swipe down when at minimum scale (full width)
-                        final matrix = _transformationController.value;
-                        final scale = matrix.getMaxScaleOnAxis();
-                        if (scale <= 0.5 &&
-                            details.velocity.pixelsPerSecond.dy > 300) {
-                          Navigator.of(context).pop();
-                        }
-                      },
-                      child: CachedNetworkImage(
-                        imageUrl: widget.url,
-                        fit: BoxFit.contain,
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) =>
-                                const Center(child: LabLoadingDots()),
-                        errorWidget: (context, url, error) => Center(
-                          child: LabText(
-                            "Image not found",
-                            color: LabTheme.of(context).colors.white33,
-                          ),
+                ),
+                // Full screen zoomable image with swipe detection
+                Center(
+                  child: InteractiveViewer(
+                    minScale: 0.5,
+                    maxScale: 4.0,
+                    transformationController: _transformationController,
+                    onInteractionEnd: (details) {
+                      // Only exit on swipe down when at minimum scale (full width)
+                      final matrix = _transformationController.value;
+                      final scale = matrix.getMaxScaleOnAxis();
+                      if (scale <= 0.5 &&
+                          details.velocity.pixelsPerSecond.dy > 300) {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: CachedNetworkImage(
+                      imageUrl: widget.url,
+                      fit: BoxFit.contain,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) =>
+                              const Center(child: LabLoadingDots()),
+                      errorWidget: (context, url, error) => Center(
+                        child: LabText(
+                          "Image not found",
+                          color: LabTheme.of(context).colors.white33,
                         ),
                       ),
                     ),
                   ),
-                  // Close button
-                  Positioned(
-                    top: MediaQuery.of(context).padding.top + theme.sizes.s16,
-                    right: theme.sizes.s16,
-                    child: LabCrossButton(
-                      onTap: () => Navigator.of(context).pop(),
-                      size: LabCrossButtonSize.s32,
-                      isLight: false,
-                    ),
+                ),
+                // Close button
+                Positioned(
+                  top: MediaQuery.of(context).padding.top + theme.sizes.s16,
+                  right: theme.sizes.s16,
+                  child: LabCrossButton(
+                    onTap: () => Navigator.of(context).pop(),
+                    size: LabCrossButtonSize.s32,
+                    isLight: false,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },

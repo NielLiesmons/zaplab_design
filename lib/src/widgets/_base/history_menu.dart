@@ -109,14 +109,56 @@ class LabHistoryMenu extends StatelessWidget {
                     child: SizedBox(
                       height: _buttonHeight,
                       width: containerWidth - (_buttonWidthDelta * 4),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topLeft: theme.radius.rad16,
-                          topRight: theme.radius.rad16,
+                      child: LabContainer(
+                        decoration: BoxDecoration(
+                          color: theme.colors.white8,
+                          borderRadius: BorderRadius.only(
+                            topLeft: theme.radius.rad16,
+                            topRight: theme.radius.rad16,
+                          ),
+                          border: Border(
+                            top: BorderSide(
+                              color: LabColorsData.dark().white16,
+                              width: LabLineThicknessData.normal().thin,
+                            ),
+                          ),
                         ),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                          child: LabContainer(
+                        padding: const LabEdgeInsets.symmetric(
+                          horizontal: LabGapSize.s16,
+                        ),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              LabText.reg12(
+                                'More History...',
+                                color: theme.colors.white66,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+
+                // History items
+                ...List.generate(
+                  history.length,
+                  (index) => Transform.translate(
+                    offset: Offset(
+                      0,
+                      -_buttonHeight * (1 - progress) * (index + 2),
+                    ),
+                    child: SizedBox(
+                      height: _buttonHeight,
+                      width: containerWidth - (_buttonWidthDelta * (3 - index)),
+                      child: TapBuilder(
+                        onTap: () {
+                          history[index].onTap?.call();
+                        },
+                        builder: (context, state, hasFocus) {
+                          return LabContainer(
                             decoration: BoxDecoration(
                               color: theme.colors.white8,
                               borderRadius: BorderRadius.only(
@@ -138,83 +180,23 @@ class LabHistoryMenu extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   LabText.reg12(
-                                    'More History...',
+                                    history[index].modelType,
                                     color: theme.colors.white66,
+                                  ),
+                                  const LabGap.s8(),
+                                  Expanded(
+                                    child: LabText.reg12(
+                                      history[index].displayText,
+                                      color: theme.colors.white,
+                                      maxLines: 1,
+                                      textOverflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-
-                // History items
-                ...List.generate(
-                  history.length,
-                  (index) => Transform.translate(
-                    offset: Offset(
-                      0,
-                      -_buttonHeight * (1 - progress) * (index + 2),
-                    ),
-                    child: SizedBox(
-                      height: _buttonHeight,
-                      width: containerWidth - (_buttonWidthDelta * (3 - index)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topLeft: theme.radius.rad16,
-                          topRight: theme.radius.rad16,
-                        ),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                          child: TapBuilder(
-                            onTap: () {
-                              history[index].onTap?.call();
-                            },
-                            builder: (context, state, hasFocus) {
-                              return LabContainer(
-                                decoration: BoxDecoration(
-                                  color: theme.colors.white8,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: theme.radius.rad16,
-                                    topRight: theme.radius.rad16,
-                                  ),
-                                  border: Border(
-                                    top: BorderSide(
-                                      color: LabColorsData.dark().white16,
-                                      width: LabLineThicknessData.normal().thin,
-                                    ),
-                                  ),
-                                ),
-                                padding: const LabEdgeInsets.symmetric(
-                                  horizontal: LabGapSize.s16,
-                                ),
-                                child: Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      LabText.reg12(
-                                        history[index].modelType,
-                                        color: theme.colors.white66,
-                                      ),
-                                      const LabGap.s8(),
-                                      Expanded(
-                                        child: LabText.reg12(
-                                          history[index].displayText,
-                                          color: theme.colors.white,
-                                          maxLines: 1,
-                                          textOverflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ),
                   ),

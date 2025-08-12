@@ -133,14 +133,110 @@ class LabShortTextRenderer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final parser = LabShortTextParser();
-    final elements = parser.parse(content);
-    final widgets = _buildElements(elements, context);
+    // Cache the parsed elements to avoid parsing on every build
+    final elements = _getCachedElements();
+    final widgets = _getCachedWidgets(context, elements);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: widgets,
     );
+  }
+
+  // Cache for parsed elements
+  static final Map<String, List<LabShortTextElement>> _elementsCache = {};
+
+  List<LabShortTextElement> _getCachedElements() {
+    final cacheKey = '${model.id}_$content';
+    if (_elementsCache.containsKey(cacheKey)) {
+      return _elementsCache[cacheKey]!;
+    }
+
+    final parser = LabShortTextParser();
+    final elements = parser.parse(content);
+    _elementsCache[cacheKey] = elements;
+    return elements;
+  }
+
+  // Cache for built widgets
+  static final Map<String, List<Widget>> _widgetsCache = {};
+
+  // Cache for async futures to prevent rebuilding
+  static final Map<String, Future<String>> _emojiFuturesCache = {};
+  static final Map<String, Future<({Model? model, VoidCallback? onTap})>>
+      _eventFuturesCache = {};
+  static final Map<String, Future<({Profile? profile, VoidCallback? onTap})>>
+      _profileFuturesCache = {};
+
+  List<Widget> _getCachedWidgets(
+      BuildContext context, List<LabShortTextElement> elements) {
+    final cacheKey = '${model.id}_${content}_${elements.length}';
+    if (_widgetsCache.containsKey(cacheKey)) {
+      return _widgetsCache[cacheKey]!;
+    }
+
+    final widgets = _buildElements(elements, context);
+    _widgetsCache[cacheKey] = widgets;
+    return widgets;
+  }
+
+  // Get cached emoji future
+  Future<String> _getCachedEmojiFuture(String emojiCode) {
+    final cacheKey = '${model.id}_emoji_$emojiCode';
+    if (_emojiFuturesCache.containsKey(cacheKey)) {
+      return _emojiFuturesCache[cacheKey]!;
+    }
+
+    final future = onResolveEmoji(emojiCode, model);
+    _emojiFuturesCache[cacheKey] = future;
+    return future;
+  }
+
+  // Get cached event future
+  Future<({Model? model, VoidCallback? onTap})> _getCachedEventFuture(
+      String eventId) {
+    final cacheKey = '${model.id}_event_$eventId';
+    if (_eventFuturesCache.containsKey(cacheKey)) {
+      return _eventFuturesCache[cacheKey]!;
+    }
+
+    final future = onResolveEvent(eventId);
+    _eventFuturesCache[cacheKey] = future;
+    return future;
+  }
+
+  // Get cached profile future
+  Future<({Profile? profile, VoidCallback? onTap})> _getCachedProfileFuture(
+      String profileId) {
+    final cacheKey = '${model.id}_profile_$profileId';
+    if (_profileFuturesCache.containsKey(cacheKey)) {
+      return _profileFuturesCache[cacheKey]!;
+    }
+
+    final future = onResolveProfile(profileId);
+    _profileFuturesCache[cacheKey] = future;
+    return future;
+  }
+
+  // Clear all caches (call this when you need to refresh)
+  static void clearAllCaches() {
+    _elementsCache.clear();
+    _widgetsCache.clear();
+    _emojiFuturesCache.clear();
+    _eventFuturesCache.clear();
+    _profileFuturesCache.clear();
+  }
+
+  // Clear cache for a specific model
+  static void clearCacheForModel(String modelId) {
+    _elementsCache.removeWhere((key, value) => key.startsWith('${modelId}_'));
+    _widgetsCache.removeWhere((key, value) => key.startsWith('${modelId}_'));
+    _emojiFuturesCache
+        .removeWhere((key, value) => key.startsWith('${modelId}_'));
+    _eventFuturesCache
+        .removeWhere((key, value) => key.startsWith('${modelId}_'));
+    _profileFuturesCache
+        .removeWhere((key, value) => key.startsWith('${modelId}_'));
   }
 
   List<Widget> _buildElements(
@@ -207,7 +303,7 @@ class LabShortTextRenderer extends StatelessWidget {
 
       case LabShortTextElementType.emoji:
         return FutureBuilder<String>(
-          future: onResolveEmoji(element.content, model),
+          future: _getCachedEmojiFuture(element.content),
           builder: (context, snapshot) {
             return LabContainer(
               padding: const LabEdgeInsets.symmetric(horizontal: LabGapSize.s2),
@@ -362,7 +458,7 @@ class LabShortTextRenderer extends StatelessWidget {
                         LabShortTextElementType.emoji)
                       FutureBuilder<String>(
                         future:
-                            onResolveEmoji(element.children![i].content, model),
+                            _getCachedEmojiFuture(element.children![i].content),
                         builder: (context, snapshot) {
                           return LabEmojiImage(
                             emojiUrl: snapshot.data ?? '',
@@ -415,7 +511,7 @@ class LabShortTextRenderer extends StatelessWidget {
                   : const LabGap.s8());
               paragraphPieces.add(
                 FutureBuilder<({Model? model, VoidCallback? onTap})>(
-                  future: onResolveEvent(child.content),
+                  future: _getCachedEventFuture(child.content),
                   builder: (context, snapshot) {
                     return ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 320),
@@ -533,7 +629,7 @@ class LabShortTextRenderer extends StatelessWidget {
                 paragraphPieces.add(const LabGap.s2());
                 paragraphPieces.add(
                   FutureBuilder<String>(
-                    future: onResolveEmoji(child.content, model),
+                    future: _getCachedEmojiFuture(child.content),
                     builder: (context, snapshot) {
                       return LabContainer(
                         padding: const LabEdgeInsets.symmetric(
@@ -565,7 +661,7 @@ class LabShortTextRenderer extends StatelessWidget {
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
                       child: FutureBuilder<String>(
-                        future: onResolveEmoji(child.content, model),
+                        future: _getCachedEmojiFuture(child.content),
                         builder: (context, snapshot) {
                           return LabContainer(
                             padding: const LabEdgeInsets.symmetric(
@@ -601,7 +697,7 @@ class LabShortTextRenderer extends StatelessWidget {
                       alignment: PlaceholderAlignment.middle,
                       child: FutureBuilder<
                           ({Profile? profile, VoidCallback? onTap})>(
-                        future: onResolveProfile(child.content),
+                        future: _getCachedProfileFuture(child.content),
                         builder: (context, snapshot) {
                           return LabProfileInline(
                             profile: snapshot.data?.profile,
@@ -893,7 +989,7 @@ class LabShortTextRenderer extends StatelessWidget {
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
               child: FutureBuilder<({Profile? profile, VoidCallback? onTap})>(
-                future: onResolveProfile(child.content),
+                future: _getCachedProfileFuture(child.content),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return LabText.reg12(
@@ -926,7 +1022,7 @@ class LabShortTextRenderer extends StatelessWidget {
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
               child: FutureBuilder<String>(
-                future: onResolveEmoji(child.content, model),
+                future: _getCachedEmojiFuture(child.content),
                 builder: (context, snapshot) {
                   return LabContainer(
                     padding: const LabEdgeInsets.symmetric(
@@ -1081,7 +1177,7 @@ class LabShortTextRenderer extends StatelessWidget {
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
               child: FutureBuilder<({Profile? profile, VoidCallback? onTap})>(
-                future: onResolveProfile(element.content),
+                future: _getCachedProfileFuture(element.content),
                 builder: (context, snapshot) {
                   return LabProfileInline(
                     profile: snapshot.data!.profile,
@@ -1110,7 +1206,7 @@ class LabShortTextRenderer extends StatelessWidget {
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
               child: FutureBuilder<String>(
-                future: onResolveEmoji(element.content, model),
+                future: _getCachedEmojiFuture(element.content),
                 builder: (context, snapshot) {
                   return LabContainer(
                     padding: const LabEdgeInsets.symmetric(

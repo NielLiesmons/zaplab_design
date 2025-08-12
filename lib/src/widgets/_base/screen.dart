@@ -56,12 +56,9 @@ class LabScreen extends StatefulWidget {
           final theme = LabTheme.of(context);
           return Stack(
             children: [
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                child: LabContainer(
-                  decoration: BoxDecoration(
-                    color: theme.colors.gray33,
-                  ),
+              LabContainer(
+                decoration: BoxDecoration(
+                  color: theme.colors.gray33,
                 ),
               ),
               SlideTransition(
@@ -540,154 +537,138 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      ClipRRect(
-                                        child: BackdropFilter(
-                                          filter: _showTopBarContent
-                                              ? ImageFilter.blur(
-                                                  sigmaX: 24,
-                                                  sigmaY: 24,
+                                      LabContainer(
+                                        decoration: BoxDecoration(
+                                          gradient: _showTopBarContent
+                                              ? LinearGradient(
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                  colors: [
+                                                    theme.colors.black,
+                                                    theme.colors.black
+                                                        .withValues(
+                                                            alpha: 0.33),
+                                                  ],
                                                 )
-                                              : ImageFilter.blur(
-                                                  sigmaX: 0, sigmaY: 0),
-                                          child: LabContainer(
-                                            decoration: BoxDecoration(
-                                              gradient: _showTopBarContent
-                                                  ? LinearGradient(
-                                                      begin:
-                                                          Alignment.topCenter,
-                                                      end: Alignment
-                                                          .bottomCenter,
-                                                      colors: [
-                                                        theme.colors.black,
-                                                        theme.colors.black
-                                                            .withValues(
-                                                                alpha: 0.33),
-                                                      ],
-                                                    )
-                                                  : null,
-                                              color: _showTopBarContent
-                                                  ? null
-                                                  : const Color(0x00000000),
-                                            ),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                const LabGap.s8(),
-                                                const LabDragHandle(),
-                                                if (widget.topBarContent !=
-                                                        null &&
-                                                    _showTopBarContent) ...[
-                                                  AnimatedContainer(
-                                                    duration: const Duration(
-                                                        milliseconds: 100),
-                                                    height: widget
-                                                            .alwaysShowTopBar
-                                                        ? null
-                                                        : !(widget.scrollController ??
+                                              : null,
+                                          color: _showTopBarContent
+                                              ? null
+                                              : const Color(0x00000000),
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const LabGap.s8(),
+                                            const LabDragHandle(),
+                                            if (widget.topBarContent != null &&
+                                                _showTopBarContent) ...[
+                                              AnimatedContainer(
+                                                duration: const Duration(
+                                                    milliseconds: 100),
+                                                height: widget.alwaysShowTopBar
+                                                    ? null
+                                                    : !(widget.scrollController ??
+                                                                    _scrollController)
+                                                                .hasClients ||
+                                                            (widget.scrollController ??
                                                                         _scrollController)
-                                                                    .hasClients ||
-                                                                (widget.scrollController ??
-                                                                            _scrollController)
-                                                                        .offset <
-                                                                    2
-                                                            ? 0.0
-                                                            : (widget.scrollController ??
-                                                                            _scrollController)
-                                                                        .offset >
-                                                                    68
-                                                                ? null
-                                                                : ((widget.scrollController ??
-                                                                                _scrollController)
-                                                                            .offset -
-                                                                        2) /
-                                                                    66 *
-                                                                    68,
-                                                    child: widget
-                                                                .alwaysShowTopBar ||
-                                                            (!(widget.scrollController ??
+                                                                    .offset <
+                                                                2
+                                                        ? 0.0
+                                                        : (widget.scrollController ??
                                                                         _scrollController)
-                                                                    .hasClients ||
-                                                                (widget.scrollController ??
+                                                                    .offset >
+                                                                68
+                                                            ? null
+                                                            : ((widget.scrollController ??
                                                                             _scrollController)
-                                                                        .offset >=
-                                                                    68)
-                                                        ? AbsorbPointer(
-                                                            absorbing:
-                                                                _currentDrag >
-                                                                    0,
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap: () {
-                                                                final controller =
-                                                                    widget.scrollController ??
-                                                                        _scrollController;
-                                                                if (controller
-                                                                    .hasClients) {
-                                                                  controller
-                                                                      .animateTo(
-                                                                    0,
-                                                                    duration: const Duration(
+                                                                        .offset -
+                                                                    2) /
+                                                                66 *
+                                                                68,
+                                                child: widget
+                                                            .alwaysShowTopBar ||
+                                                        (!(widget.scrollController ??
+                                                                    _scrollController)
+                                                                .hasClients ||
+                                                            (widget.scrollController ??
+                                                                        _scrollController)
+                                                                    .offset >=
+                                                                68)
+                                                    ? AbsorbPointer(
+                                                        absorbing:
+                                                            _currentDrag > 0,
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            final controller = widget
+                                                                    .scrollController ??
+                                                                _scrollController;
+                                                            if (controller
+                                                                .hasClients) {
+                                                              controller
+                                                                  .animateTo(
+                                                                0,
+                                                                duration:
+                                                                    const Duration(
                                                                         milliseconds:
                                                                             300),
-                                                                    curve: Curves
-                                                                        .easeOut,
-                                                                  );
-                                                                }
-                                                              },
-                                                              child:
-                                                                  MouseRegion(
-                                                                cursor: LabPlatformUtils
-                                                                        .isDesktop
-                                                                    ? SystemMouseCursors
-                                                                        .click
-                                                                    : MouseCursor
-                                                                        .defer,
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  children: [
-                                                                    widget
-                                                                            .customTopBar
-                                                                        ? widget
-                                                                            .topBarContent!
-                                                                        : Column(
-                                                                            mainAxisSize:
-                                                                                MainAxisSize.min,
-                                                                            children: [
-                                                                              LabContainer(
-                                                                                padding: LabEdgeInsets.only(
-                                                                                  left: LabGapSize.s12,
-                                                                                  right: LabGapSize.s12,
-                                                                                  bottom: LabPlatformUtils.isMobile ? LabGapSize.s12 : LabGapSize.s10,
-                                                                                ),
-                                                                                child: widget.topBarContent!,
-                                                                              ),
-                                                                              const LabDivider(),
-                                                                            ],
+                                                                curve: Curves
+                                                                    .easeOut,
+                                                              );
+                                                            }
+                                                          },
+                                                          child: MouseRegion(
+                                                            cursor: LabPlatformUtils
+                                                                    .isDesktop
+                                                                ? SystemMouseCursors
+                                                                    .click
+                                                                : MouseCursor
+                                                                    .defer,
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                widget
+                                                                        .customTopBar
+                                                                    ? widget
+                                                                        .topBarContent!
+                                                                    : Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.min,
+                                                                        children: [
+                                                                          LabContainer(
+                                                                            padding:
+                                                                                LabEdgeInsets.only(
+                                                                              left: LabGapSize.s12,
+                                                                              right: LabGapSize.s12,
+                                                                              bottom: LabPlatformUtils.isMobile ? LabGapSize.s12 : LabGapSize.s10,
+                                                                            ),
+                                                                            child:
+                                                                                widget.topBarContent!,
                                                                           ),
-                                                                  ],
-                                                                ),
-                                                              ),
+                                                                          const LabDivider(),
+                                                                        ],
+                                                                      ),
+                                                              ],
                                                             ),
-                                                          )
-                                                        : const Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            children: [
-                                                              SizedBox(
-                                                                  width: double
-                                                                      .infinity),
-                                                              Spacer(),
-                                                              LabDivider(),
-                                                            ],
                                                           ),
-                                                  ),
-                                                ],
-                                              ],
-                                            ),
-                                          ),
+                                                        ),
+                                                      )
+                                                    : const Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          SizedBox(
+                                                              width: double
+                                                                  .infinity),
+                                                          Spacer(),
+                                                          LabDivider(),
+                                                        ],
+                                                      ),
+                                              ),
+                                            ],
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -711,16 +692,11 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
           right: 0,
           child: widget.bottomBarContent != null
               ? widget.bottomBarContent!
-              : ClipRect(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                    child: LabContainer(
-                      decoration: BoxDecoration(
-                        color: theme.colors.black33,
-                      ),
-                      child: const LabBottomSafeArea(),
-                    ),
+              : LabContainer(
+                  decoration: BoxDecoration(
+                    color: theme.colors.black33,
                   ),
+                  child: const LabBottomSafeArea(),
                 ),
         ),
 

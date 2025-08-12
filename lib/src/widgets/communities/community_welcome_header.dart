@@ -120,7 +120,7 @@ class _LabCommunityWelcomeHeaderState extends State<LabCommunityWelcomeHeader>
             children: [
               // Blurred background
               ImageFiltered(
-                imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                 child: LabContainer(
                   decoration: BoxDecoration(
                     color: theme.colors.black,
@@ -149,36 +149,30 @@ class _LabCommunityWelcomeHeaderState extends State<LabCommunityWelcomeHeader>
           ),
           const LabGap.s4(),
           // Community description
-          ClipRRect(
-            borderRadius: theme.radius.asBorderRadius().rad24,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-              child: LabContainer(
-                padding: const LabEdgeInsets.only(
-                  left: LabGapSize.s12,
-                  right: LabGapSize.s14,
-                  top: LabGapSize.s6,
-                  bottom: LabGapSize.s6,
+          LabContainer(
+            padding: const LabEdgeInsets.only(
+              left: LabGapSize.s12,
+              right: LabGapSize.s14,
+              top: LabGapSize.s6,
+              bottom: LabGapSize.s6,
+            ),
+            decoration: BoxDecoration(
+              color: theme.colors.white8,
+              borderRadius: theme.radius.asBorderRadius().rad24,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const LabEmojiContentType(
+                  contentType: 'community',
+                  size: 16,
                 ),
-                decoration: BoxDecoration(
-                  color: theme.colors.white8,
-                  borderRadius: theme.radius.asBorderRadius().rad24,
+                const LabGap.s6(),
+                LabText.reg12(
+                  'Community',
+                  color: theme.colors.white66,
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const LabEmojiContentType(
-                      contentType: 'community',
-                      size: 16,
-                    ),
-                    const LabGap.s6(),
-                    LabText.reg12(
-                      'Community',
-                      color: theme.colors.white66,
-                    ),
-                  ],
-                ),
-              ),
+              ],
             ),
           ),
         ],

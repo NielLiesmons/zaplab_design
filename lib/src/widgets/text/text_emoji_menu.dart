@@ -103,7 +103,7 @@ class _LabTextEmojiMenuState extends State<LabTextEmojiMenu> {
       child: ClipRRect(
         borderRadius: theme.radius.asBorderRadius().rad8,
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+          filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
           child: LabContainer(
             height: menuHeight,
             constraints: BoxConstraints(

@@ -40,139 +40,135 @@ class LabProfilePicContent extends StatelessWidget {
     final icons = theme.icons;
     final fallbackIconSize = size * 0.6;
 
-    return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-      child: _effectiveUrl != null && _effectiveUrl!.isNotEmpty
-          ? (_effectiveUrl!.startsWith('assets/')
-              ? Image.asset(
-                  _effectiveUrl!,
-                  fit: BoxFit.cover,
-                  width: size,
-                  height: size,
-                )
-              : CachedNetworkImage(
-                  imageUrl: _effectiveUrl!,
-                  width: size,
-                  height: size,
-                  fit: BoxFit.cover,
-                  progressIndicatorBuilder: (context, url, downloadProgress) {
-                    return const LabSkeletonLoader();
-                  },
-                  errorWidget: (context, url, error) {
-                    if (profile != null || (pubkey != null)) {
-                      return Container(
-                        color:
-                            Color(_getProfileColor()).withValues(alpha: 0.24),
-                        child: Center(
-                          child: profile?.name?.isNotEmpty == true ||
-                                  name?.isNotEmpty == true
-                              ? Stack(
-                                  children: [
-                                    Text(
-                                      profile?.name?.isNotEmpty == true
-                                          ? profile!.name![0].toUpperCase()
-                                          : name![0].toUpperCase(),
-                                      style: TextStyle(
-                                        color: Color(_getProfileColor()),
-                                        fontSize: size * 0.56,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      profile?.name?.isNotEmpty == true
-                                          ? profile!.name![0].toUpperCase()
-                                          : name![0].toUpperCase(),
-                                      style: TextStyle(
-                                        color: theme.colors.white16,
-                                        fontSize: size * 0.56,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Center(
-                                  child: Text(
-                                    icons.characters.profile,
+    return _effectiveUrl != null && _effectiveUrl!.isNotEmpty
+        ? (_effectiveUrl!.startsWith('assets/')
+            ? Image.asset(
+                _effectiveUrl!,
+                fit: BoxFit.cover,
+                width: size,
+                height: size,
+              )
+            : CachedNetworkImage(
+                imageUrl: _effectiveUrl!,
+                width: size,
+                height: size,
+                fit: BoxFit.cover,
+                progressIndicatorBuilder: (context, url, downloadProgress) {
+                  return const LabSkeletonLoader();
+                },
+                errorWidget: (context, url, error) {
+                  if (profile != null || (pubkey != null)) {
+                    return Container(
+                      color: Color(_getProfileColor()).withValues(alpha: 0.24),
+                      child: Center(
+                        child: profile?.name?.isNotEmpty == true ||
+                                name?.isNotEmpty == true
+                            ? Stack(
+                                children: [
+                                  Text(
+                                    profile?.name?.isNotEmpty == true
+                                        ? profile!.name![0].toUpperCase()
+                                        : name![0].toUpperCase(),
                                     style: TextStyle(
-                                      fontFamily: icons.fontFamily,
-                                      package: icons.fontPackage,
-                                      fontSize: fallbackIconSize,
                                       color: Color(_getProfileColor()),
+                                      fontSize: size * 0.56,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
+                                  Text(
+                                    profile?.name?.isNotEmpty == true
+                                        ? profile!.name![0].toUpperCase()
+                                        : name![0].toUpperCase(),
+                                    style: TextStyle(
+                                      color: theme.colors.white16,
+                                      fontSize: size * 0.56,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Center(
+                                child: Text(
+                                  icons.characters.profile,
+                                  style: TextStyle(
+                                    fontFamily: icons.fontFamily,
+                                    package: icons.fontPackage,
+                                    fontSize: fallbackIconSize,
+                                    color: Color(_getProfileColor()),
+                                  ),
                                 ),
-                        ),
-                      );
-                    }
-
-                    return Center(
-                      child: Text(
-                        icons.characters.profile,
-                        style: TextStyle(
-                          fontFamily: icons.fontFamily,
-                          package: icons.fontPackage,
-                          fontSize: fallbackIconSize,
-                          color: theme.colors.white33,
-                        ),
+                              ),
                       ),
                     );
-                  },
-                ))
-          : profile != null || pubkey != null
-              ? Container(
-                  color: Color(_getProfileColor()).withValues(alpha: 0.24),
-                  child: (profile?.name?.isNotEmpty == true ||
-                          name?.isNotEmpty == true)
-                      ? Center(
-                          child: Stack(
-                            children: [
-                              Text(
-                                (profile?.name?.isNotEmpty == true
-                                    ? profile!.name![0].toUpperCase()
-                                    : name![0].toUpperCase()),
-                                style: TextStyle(
-                                  color: Color(_getProfileColor()),
-                                  fontSize: size * 0.56,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                  }
+
+                  return Center(
+                    child: Text(
+                      icons.characters.profile,
+                      style: TextStyle(
+                        fontFamily: icons.fontFamily,
+                        package: icons.fontPackage,
+                        fontSize: fallbackIconSize,
+                        color: theme.colors.white33,
+                      ),
+                    ),
+                  );
+                },
+              ))
+        : profile != null || pubkey != null
+            ? Container(
+                color: Color(_getProfileColor()).withValues(alpha: 0.24),
+                child: (profile?.name?.isNotEmpty == true ||
+                        name?.isNotEmpty == true)
+                    ? Center(
+                        child: Stack(
+                          children: [
+                            Text(
+                              (profile?.name?.isNotEmpty == true
+                                  ? profile!.name![0].toUpperCase()
+                                  : name![0].toUpperCase()),
+                              style: TextStyle(
+                                color: Color(_getProfileColor()),
+                                fontSize: size * 0.56,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Text(
-                                (profile?.name?.isNotEmpty == true
-                                    ? profile!.name![0].toUpperCase()
-                                    : name![0].toUpperCase()),
-                                style: TextStyle(
-                                  color: theme.colors.white16,
-                                  fontSize: size * 0.56,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Center(
-                          child: Text(
-                            icons.characters.profile,
-                            style: TextStyle(
-                              fontFamily: icons.fontFamily,
-                              package: icons.fontPackage,
-                              fontSize: fallbackIconSize,
-                              color: Color(_getProfileColor()),
                             ),
+                            Text(
+                              (profile?.name?.isNotEmpty == true
+                                  ? profile!.name![0].toUpperCase()
+                                  : name![0].toUpperCase()),
+                              style: TextStyle(
+                                color: theme.colors.white16,
+                                fontSize: size * 0.56,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Center(
+                        child: Text(
+                          icons.characters.profile,
+                          style: TextStyle(
+                            fontFamily: icons.fontFamily,
+                            package: icons.fontPackage,
+                            fontSize: fallbackIconSize,
+                            color: Color(_getProfileColor()),
                           ),
                         ),
-                )
-              : Center(
-                  child: Text(
-                    icons.characters.profile,
-                    style: TextStyle(
-                      fontFamily: icons.fontFamily,
-                      package: icons.fontPackage,
-                      fontSize: fallbackIconSize,
-                      color: theme.colors.white33,
-                    ),
+                      ),
+              )
+            : Center(
+                child: Text(
+                  icons.characters.profile,
+                  style: TextStyle(
+                    fontFamily: icons.fontFamily,
+                    package: icons.fontPackage,
+                    fontSize: fallbackIconSize,
+                    color: theme.colors.white33,
                   ),
                 ),
-    );
+              );
   }
 }
 
