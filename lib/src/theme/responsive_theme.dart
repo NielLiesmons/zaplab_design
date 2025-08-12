@@ -86,6 +86,13 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
   LabTextScale? _textScale;
   LabSystemScale? _systemScale;
 
+  // Cache theme data to avoid recreating on every build
+  LabThemeData? _cachedThemeData;
+  LabThemeColorMode? _lastColorMode;
+  LabTextScale? _lastTextScale;
+  LabSystemScale? _lastSystemScale;
+  LabColorsOverride? _lastColorsOverride;
+
   LabThemeColorMode get colorMode =>
       _colorMode ?? widget.colorMode ?? LabResponsiveTheme.colorModeOf(context);
 
@@ -98,30 +105,51 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
   }
 
   void setColorMode(LabThemeColorMode? mode) {
-    setState(() => _colorMode = mode);
+    if (_colorMode != mode) {
+      setState(() => _colorMode = mode);
+    }
   }
 
   void setTextScale(LabTextScale scale) {
-    setState(() => _textScale = scale);
+    if (_textScale != scale) {
+      setState(() => _textScale = scale);
+    }
   }
 
   void setSystemScale(LabSystemScale scale) {
-    setState(() => _systemScale = scale);
+    if (_systemScale != scale) {
+      setState(() => _systemScale = scale);
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
+  // Efficient theme data creation with caching
+  LabThemeData _createThemeData() {
+    final currentColorMode = colorMode;
+    final currentTextScale = textScale;
+    final currentSystemScale = systemScale;
+    final currentColorsOverride = widget.colorsOverride;
+
+    // Check if we can reuse cached theme data
+    if (_cachedThemeData != null &&
+        _lastColorMode == currentColorMode &&
+        _lastTextScale == currentTextScale &&
+        _lastSystemScale == currentSystemScale &&
+        _lastColorsOverride == currentColorsOverride) {
+      return _cachedThemeData!;
+    }
+
+    // Create new theme data
     var theme = LabThemeData.normal();
 
     // Get system scale based on selection
-    final systemData = switch (systemScale) {
+    final systemData = switch (currentSystemScale) {
       LabSystemScale.small => LabSystemData.small(),
       LabSystemScale.large => LabSystemData.large(),
       LabSystemScale.normal => LabSystemData.normal(),
     };
 
     // Apply typography based on text scale
-    switch (textScale) {
+    switch (currentTextScale) {
       case LabTextScale.small:
         theme = theme.withTypography(LabTypographyData.small());
         break;
@@ -135,22 +163,35 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
     // Apply system scale to UI elements
     theme = theme.withScale(systemData.scale);
 
-    final colorMode = this.colorMode;
-    theme = switch (colorMode) {
+    // Apply colors
+    theme = switch (currentColorMode) {
       LabThemeColorMode.dark =>
-        theme.withColors(LabColorsData.dark(widget.colorsOverride)),
+        theme.withColors(LabColorsData.dark(currentColorsOverride)),
       LabThemeColorMode.gray =>
-        theme.withColors(LabColorsData.gray(widget.colorsOverride)),
+        theme.withColors(LabColorsData.gray(currentColorsOverride)),
       LabThemeColorMode.light =>
-        theme.withColors(LabColorsData.light(widget.colorsOverride)),
+        theme.withColors(LabColorsData.light(currentColorsOverride)),
     };
 
-    var formFactor =
+    // Cache the theme data and current values
+    _cachedThemeData = theme;
+    _lastColorMode = currentColorMode;
+    _lastTextScale = currentTextScale;
+    _lastSystemScale = currentSystemScale;
+    _lastColorsOverride = currentColorsOverride;
+
+    return theme;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = _createThemeData();
+    final formFactor =
         widget.formFactor ?? LabResponsiveTheme.formFactorOf(context);
-    theme = theme.withFormFactor(formFactor);
+    final finalTheme = theme.withFormFactor(formFactor);
 
     return LabTheme(
-      data: theme,
+      data: finalTheme,
       child: widget.child,
     );
   }

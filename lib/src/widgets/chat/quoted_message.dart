@@ -28,12 +28,17 @@ class LabQuotedMessage extends StatelessWidget {
     // Trim quoted message URI from content if it exists
     if (model is ChatMessage && model.quotedMessage.value != null) {
       try {
-        final quotedUri = 'nostr:nevent1${model.quotedMessage.value!.id}';
-        if (content.startsWith(quotedUri)) {
-          content = content.substring(quotedUri.length).trim();
-          // Remove leading newline if present
-          if (content.startsWith('\n')) {
-            content = content.substring(1);
+        // Look for nostr:nevent1 URI in the content using the same pattern as message bubble
+        final nostrUriMatch =
+            RegExp(r'nostr:nevent1[a-zA-Z0-9]+').firstMatch(content);
+
+        if (nostrUriMatch != null) {
+          final quotedUri = nostrUriMatch.group(0)!;
+          if (content.startsWith(quotedUri)) {
+            // Remove the URI and any following whitespace/newlines
+            content = content.substring(quotedUri.length).trim();
+            // Remove leading newline/line break if present
+            content = content.replaceFirst(RegExp(r'^[\r\n]+'), '');
           }
         }
       } catch (e) {

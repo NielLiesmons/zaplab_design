@@ -138,7 +138,61 @@ class LabFeedThread extends StatelessWidget {
                             onLinkTap: onLinkTap,
                             onProfileTap: onProfileTap,
                           ),
-                          // TODO: Implement Zaps and Reactions once HasMany is available
+                          if ((thread != null &&
+                                  (thread!.reactions.isNotEmpty ||
+                                      thread!.zaps.isNotEmpty)) ||
+                              (reply != null &&
+                                  (reply!.reactions.isNotEmpty ||
+                                      reply!.zaps.isNotEmpty))) ...[
+                            const LabGap.s4(),
+                            LabContainer(
+                              height: 30,
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Positioned(
+                                    left: -62,
+                                    right: 0,
+                                    child: ShaderMask(
+                                      shaderCallback: (Rect bounds) {
+                                        return LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          stops: const [0.0, 0.5, 0.75, 1.0],
+                                          colors: [
+                                            const Color(0x00000000),
+                                            const Color(0x00000000),
+                                            theme.colors.white
+                                                .withValues(alpha: 0.5),
+                                            theme.colors.white,
+                                          ],
+                                        ).createShader(Rect.fromLTWH(
+                                            0, 0, 62, bounds.height));
+                                      },
+                                      blendMode: BlendMode.dstIn,
+                                      child: SingleChildScrollView(
+                                        clipBehavior: Clip.none,
+                                        scrollDirection: Axis.horizontal,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 62),
+                                          child: LabInteractionPills(
+                                            zaps: thread?.zaps.toList() ??
+                                                reply!.zaps.toList(),
+                                            reactions:
+                                                thread?.reactions.toList() ??
+                                                    reply!.reactions.toList(),
+                                            onReactionTap: onReactionTap,
+                                            onZapTap: onZapTap,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ),

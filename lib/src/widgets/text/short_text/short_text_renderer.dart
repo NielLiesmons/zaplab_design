@@ -124,7 +124,7 @@ class LabShortTextRenderer extends StatelessWidget {
               child.type == LabShortTextElementType.emoji ||
               child.type == LabShortTextElementType.utfEmoji)) {
         return ShortTextContentType.singleEmoji;
-      } else {}
+      }
     }
 
     // Mixed content

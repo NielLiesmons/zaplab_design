@@ -28,7 +28,7 @@ class LabInteractionPills extends StatelessWidget {
       ..sort((a, b) => b.amount.compareTo(a.amount));
 
     final sortedReactions = List.from(reactions)
-      ..sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
     final outgoingZaps =
         sortedZaps.where((zap) => zap.author.value?.pubkey == activePubkey);

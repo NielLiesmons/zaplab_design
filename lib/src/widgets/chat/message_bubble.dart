@@ -75,11 +75,31 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
     final theme = LabTheme.of(context);
     final isInsideModal = ModalScope.of(context);
 
-    // Analyze content type
-    final contentType = LabShortTextRenderer.analyzeContent(
-        widget.message != null
-            ? widget.message!.content
-            : widget.reply!.content);
+    // Analyze content type (with trimmed content for quoted messages)
+    String contentToAnalyze = widget.message != null
+        ? widget.message!.content
+        : widget.reply!.content;
+
+    // Trim quoted message URI if it exists
+    if (widget.message != null && widget.message!.quotedMessage.value != null) {
+      try {
+        final nostrUriMatch =
+            RegExp(r'nostr:nevent1[a-zA-Z0-9]+').firstMatch(contentToAnalyze);
+        if (nostrUriMatch != null) {
+          final quotedUri = nostrUriMatch.group(0)!;
+          if (contentToAnalyze.startsWith(quotedUri)) {
+            contentToAnalyze =
+                contentToAnalyze.substring(quotedUri.length).trim();
+            contentToAnalyze =
+                contentToAnalyze.replaceFirst(RegExp(r'^[\r\n]+'), '');
+          }
+        }
+      } catch (e) {
+        print('Failed to trim quoted message URI for content analysis: $e');
+      }
+    }
+
+    final contentType = LabShortTextRenderer.analyzeContent(contentToAnalyze);
 
     final isLight = theme.colors.white != const Color(0xFFFFFFFF);
 
@@ -410,15 +430,14 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                           final quotedUri =
                                               nostrUriMatch.group(0)!;
                                           if (content.startsWith(quotedUri)) {
+                                            // Remove the URI and any following whitespace/newlines
                                             contentToRender = content
                                                 .substring(quotedUri.length)
                                                 .trim();
-                                            // Remove leading newline if present
-                                            if (contentToRender
-                                                .startsWith('\n')) {
-                                              contentToRender =
-                                                  contentToRender.substring(1);
-                                            }
+                                            // Remove leading newline/line break if present
+                                            contentToRender =
+                                                contentToRender.replaceFirst(
+                                                    RegExp(r'^[\r\n]+'), '');
                                           }
                                         }
                                       }
