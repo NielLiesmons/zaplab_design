@@ -35,12 +35,31 @@ class LabContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (padding == null && margin == null) {
+      return Container(
+        width: width,
+        height: height,
+        decoration: decoration,
+        foregroundDecoration: foregroundDecoration,
+        alignment: alignment,
+        clipBehavior: clipBehavior,
+        constraints: constraints,
+        transform: transform,
+        transformAlignment: transformAlignment,
+        child: child,
+      );
+    }
+
     final theme = LabTheme.of(context);
+
+    final EdgeInsets? resolvedPadding = padding?.toEdgeInsets(theme);
+    final EdgeInsets? resolvedMargin = margin?.toEdgeInsets(theme);
+
     return Container(
       width: width,
       height: height,
-      padding: padding?.toEdgeInsets(theme),
-      margin: margin?.toEdgeInsets(theme),
+      padding: resolvedPadding,
+      margin: resolvedMargin,
       decoration: decoration,
       foregroundDecoration: foregroundDecoration,
       alignment: alignment,

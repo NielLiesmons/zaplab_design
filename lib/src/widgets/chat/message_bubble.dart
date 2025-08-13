@@ -77,6 +77,11 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
   bool? _lastIsFirstInStack;
   bool? _lastIsLastInStack;
 
+  // Cache theme-dependent values
+  LabThemeData? _cachedTheme;
+  BoxDecoration? _cachedContainerDecoration;
+  BorderRadius? _cachedBorderRadius;
+
   // Performance tracking
   int _buildCount = 0;
   DateTime? _lastBuildTime;

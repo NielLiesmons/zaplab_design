@@ -250,7 +250,6 @@ class LabShortTextRenderer extends StatelessWidget {
   Widget _buildElementWithSpacing(
       LabShortTextElement element, BuildContext context) {
     final (isInsideMessageBubble, _) = MessageBubbleScope.of(context);
-
     final contentType = ShortTextContent.of(context);
 
     final LabEdgeInsets spacing = switch (element.type) {
@@ -264,13 +263,12 @@ class LabShortTextRenderer extends StatelessWidget {
             ),
     };
 
-    // Determine if this element should be swipeable (paragraphs and certain other content)
     final bool isSwipeable = switch (element.type) {
       LabShortTextElementType.paragraph => true,
       _ => false,
     };
 
-    final Widget content = _buildElement(context, element);
+    final Widget content = _buildElement(context, element, contentType);
 
     if (!isSwipeable) {
       return LabContainer(
@@ -285,7 +283,8 @@ class LabShortTextRenderer extends StatelessWidget {
     );
   }
 
-  Widget _buildElement(BuildContext context, LabShortTextElement element) {
+  Widget _buildElement(BuildContext context, LabShortTextElement element,
+      ShortTextContentType contentType) {
     final theme = LabTheme.of(context);
     final (isInsideMessageBubble, _) = MessageBubbleScope.of(context);
 
@@ -310,10 +309,7 @@ class LabShortTextRenderer extends StatelessWidget {
               child: LabEmojiImage(
                 emojiUrl: snapshot.data ?? '',
                 emojiName: element.content,
-                size: ShortTextContent.of(context) ==
-                        ShortTextContentType.singleEmoji
-                    ? 80
-                    : 17,
+                size: contentType == ShortTextContentType.singleEmoji ? 80 : 17,
               ),
             );
           },
@@ -325,10 +321,7 @@ class LabShortTextRenderer extends StatelessWidget {
           style: theme.typography.reg14.copyWith(
             color: theme.colors.white,
             height: 1.0,
-            fontSize:
-                ShortTextContent.of(context) == ShortTextContentType.singleEmoji
-                    ? 64
-                    : 16,
+            fontSize: contentType == ShortTextContentType.singleEmoji ? 64 : 16,
           ),
         );
 
@@ -447,8 +440,7 @@ class LabShortTextRenderer extends StatelessWidget {
           final List<InlineSpan> currentSpans = [];
 
           // Check if this is a singleEmoji case
-          if (ShortTextContent.of(context) ==
-              ShortTextContentType.singleEmoji) {
+          if (contentType == ShortTextContentType.singleEmoji) {
             return LabContainer(
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -558,7 +550,6 @@ class LabShortTextRenderer extends StatelessWidget {
               );
               paragraphPieces.add(const LabGap.s2());
             } else if (child.type == LabShortTextElementType.utfEmoji) {
-              final contentType = ShortTextContent.of(context);
               if (contentType == ShortTextContentType.singleEmoji) {
                 // For singleEmoji, render as block
                 if (currentSpans.isNotEmpty) {
@@ -605,7 +596,6 @@ class LabShortTextRenderer extends StatelessWidget {
                 ));
               }
             } else if (child.type == LabShortTextElementType.emoji) {
-              final contentType = ShortTextContent.of(context);
               if (contentType == ShortTextContentType.singleEmoji) {
                 // For singleEmoji, render as block
                 if (currentSpans.isNotEmpty) {

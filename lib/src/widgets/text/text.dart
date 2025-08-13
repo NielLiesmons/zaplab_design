@@ -429,6 +429,24 @@ class LabText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ✅ REAL FIX: Only call LabTheme.of(context) when we actually need theme values
+    if (color != null && gradient == null && fontSize == null) {
+      // No theme dependencies - can be const!
+      return Text(
+        data,
+        style: TextStyle(
+          color: color,
+          fontSize: _getDefaultFontSize(level),
+          fontWeight: _getDefaultFontWeight(level),
+        ),
+        maxLines: maxLines,
+        overflow: textOverflow,
+        textAlign: textAlign,
+      );
+    }
+
+    // ✅ REAL FIX: Only call LabTheme.of(context) when we actually need it
+    // This creates a dependency that will rebuild when theme changes
     final theme = LabTheme.of(context);
     final defaultColor = theme.colors.white;
     final resolvedColor = gradient == null ? (color ?? defaultColor) : null;
@@ -459,6 +477,70 @@ class LabText extends StatelessWidget {
     }
 
     return text;
+  }
+
+  // Helper methods for const text without theme
+  double _getDefaultFontSize(LabTextLevel level) {
+    switch (level) {
+      case LabTextLevel.h1:
+      case LabTextLevel.longformh1:
+        return 32.0;
+      case LabTextLevel.h2:
+      case LabTextLevel.longformh2:
+        return 24.0;
+      case LabTextLevel.h3:
+      case LabTextLevel.longformh3:
+        return 20.0;
+      case LabTextLevel.bold16:
+      case LabTextLevel.med16:
+      case LabTextLevel.reg16:
+        return 16.0;
+      case LabTextLevel.bold14:
+      case LabTextLevel.med14:
+      case LabTextLevel.reg14:
+        return 14.0;
+      case LabTextLevel.bold12:
+      case LabTextLevel.med12:
+      case LabTextLevel.reg12:
+        return 12.0;
+      case LabTextLevel.bold10:
+      case LabTextLevel.med10:
+      case LabTextLevel.reg10:
+        return 10.0;
+      case LabTextLevel.bold8:
+      case LabTextLevel.med8:
+      case LabTextLevel.reg8:
+        return 8.0;
+      default:
+        return 16.0;
+    }
+  }
+
+  FontWeight _getDefaultFontWeight(LabTextLevel level) {
+    switch (level) {
+      case LabTextLevel.h1:
+      case LabTextLevel.h2:
+      case LabTextLevel.h3:
+      case LabTextLevel.bold16:
+      case LabTextLevel.bold14:
+      case LabTextLevel.bold12:
+      case LabTextLevel.bold10:
+      case LabTextLevel.bold8:
+      case LabTextLevel.longformh1:
+      case LabTextLevel.longformh2:
+      case LabTextLevel.longformh3:
+      case LabTextLevel.boldArticle:
+      case LabTextLevel.boldWiki:
+        return FontWeight.bold;
+      case LabTextLevel.med16:
+      case LabTextLevel.med14:
+      case LabTextLevel.med12:
+      case LabTextLevel.med10:
+      case LabTextLevel.med8:
+        return FontWeight.w500;
+      default:
+        return FontWeight.normal;
+    }
   }
 
   TextStyle _getTextStyle(LabThemeData theme, LabTextLevel level) {

@@ -31,6 +31,30 @@ class LabDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (color != null && thickness != null) {
+      return Center(
+        child: LabContainer(
+          height: orientation == LabDividerOrientation.horizontal ? 0 : null,
+          width: orientation == LabDividerOrientation.vertical ? 0 : null,
+          decoration: BoxDecoration(
+            border: orientation == LabDividerOrientation.horizontal
+                ? Border(
+                    bottom: BorderSide(
+                      color: color!,
+                      width: thickness!,
+                    ),
+                  )
+                : Border(
+                    right: BorderSide(
+                      color: color!,
+                      width: thickness!,
+                    ),
+                  ),
+          ),
+        ),
+      );
+    }
+
     final theme = LabTheme.of(context);
     return Center(
       child: LabContainer(

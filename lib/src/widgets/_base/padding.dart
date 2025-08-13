@@ -137,6 +137,24 @@ class LabPadding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (padding.left == LabGapSize.s4 ||
+        padding.left == LabGapSize.s8 ||
+        padding.left == LabGapSize.s12 ||
+        padding.left == LabGapSize.s16 ||
+        padding.left == LabGapSize.s20 ||
+        padding.left == LabGapSize.s24 ||
+        padding.left == LabGapSize.s32) {
+      return Padding(
+        padding: EdgeInsets.only(
+          left: padding.left.getHardcodedSize(),
+          top: padding.top.getHardcodedSize(),
+          right: padding.right.getHardcodedSize(),
+          bottom: padding.bottom.getHardcodedSize(),
+        ),
+        child: child,
+      );
+    }
+
     final theme = LabTheme.of(context);
     return Padding(
       padding: padding.toEdgeInsets(theme),
