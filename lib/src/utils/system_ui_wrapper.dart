@@ -54,11 +54,9 @@ class LabResponsiveWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Cache theme access to avoid multiple lookups
         final theme = LabTheme.of(context);
         final scale = theme.system.scale;
 
-        // Use specific MediaQuery methods to avoid unnecessary rebuilds
         final currentMediaQuery = MediaQuery.of(context);
         final newSize = Size(
           constraints.maxWidth,

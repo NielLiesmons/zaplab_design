@@ -94,9 +94,11 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
   LabSystemScale? _lastSystemScale;
   LabColorsOverride? _lastColorsOverride;
 
-  // Cache form factor calculation to avoid MediaQuery calls on every build
+  // Cache MediaQuery values to avoid calls on every build (Material-style caching)
   LabFormFactor? _cachedFormFactor;
   double? _lastWidth;
+  ui.Brightness? _lastPlatformBrightness;
+  bool? _lastHighContrast;
 
   LabThemeColorMode get colorMode =>
       _colorMode ?? widget.colorMode ?? LabResponsiveTheme.colorModeOf(context);
@@ -127,7 +129,7 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
     }
   }
 
-  // Efficient theme data creation with caching
+  // Material-style theme data creation with aggressive caching
   LabThemeData _createThemeData() {
     final currentColorMode = colorMode;
     final currentTextScale = textScale;
@@ -190,9 +192,20 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
 
   @override
   Widget build(BuildContext context) {
+    final currentPlatformBrightness = MediaQuery.platformBrightnessOf(context);
+    final currentHighContrast = MediaQuery.highContrastOf(context);
+
+    // Check if we need to invalidate theme cache due to system changes
+    if (currentPlatformBrightness != _lastPlatformBrightness ||
+        currentHighContrast != _lastHighContrast) {
+      _lastPlatformBrightness = currentPlatformBrightness;
+      _lastHighContrast = currentHighContrast;
+      // Invalidate theme cache when system preferences change
+      _cachedThemeData = null;
+    }
+
     final theme = _createThemeData();
 
-    // Cache form factor calculation to avoid MediaQuery calls on every build
     if (widget.formFactor != null) {
       return LabTheme(
         data: theme.withFormFactor(widget.formFactor!),
@@ -200,7 +213,6 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
       );
     }
 
-    // Only calculate form factor if not provided and cache it
     final width = MediaQuery.sizeOf(context).width;
     if (_cachedFormFactor == null ||
         (_lastWidth != null && (width - _lastWidth!).abs() > 50)) {

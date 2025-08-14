@@ -429,9 +429,7 @@ class LabText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ✅ REAL FIX: Only call LabTheme.of(context) when we actually need theme values
     if (color != null && gradient == null && fontSize == null) {
-      // No theme dependencies - can be const!
       return Text(
         data,
         style: TextStyle(
@@ -445,8 +443,6 @@ class LabText extends StatelessWidget {
       );
     }
 
-    // ✅ REAL FIX: Only call LabTheme.of(context) when we actually need it
-    // This creates a dependency that will rebuild when theme changes
     final theme = LabTheme.of(context);
     final defaultColor = theme.colors.white;
     final resolvedColor = gradient == null ? (color ?? defaultColor) : null;

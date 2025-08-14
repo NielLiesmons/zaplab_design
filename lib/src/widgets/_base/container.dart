@@ -35,6 +35,7 @@ class LabContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Early return for no-padding/no-margin case (most common)
     if (padding == null && margin == null) {
       return Container(
         width: width,
@@ -50,8 +51,10 @@ class LabContainer extends StatelessWidget {
       );
     }
 
+    // Cache theme lookup to avoid repeated calls
     final theme = LabTheme.of(context);
 
+    // Pre-resolve padding and margin once
     final EdgeInsets? resolvedPadding = padding?.toEdgeInsets(theme);
     final EdgeInsets? resolvedMargin = margin?.toEdgeInsets(theme);
 

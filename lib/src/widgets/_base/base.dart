@@ -63,33 +63,33 @@ class LabBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Window initialization moved to initState to avoid running on every build
-
     return createPlatformWrapper(
       child: LabResponsiveTheme(
         colorMode: colorMode,
         textScale: textScale,
         systemScale: systemScale,
         colorsOverride: colorsOverride,
-        child: _LabBaseContent(
-          title: title,
-          routerConfig: routerConfig,
-          appLogo: appLogo,
-          darkLabLogo: darkLabLogo,
-          locale: locale,
-          supportedLocales: supportedLocales,
-          localizationsDelegates: localizationsDelegates,
-          textScaleFactor: textScaleFactor,
-          colorMode: colorMode,
-          onHomeTap: onHomeTap,
-          onBackTap: onBackTap,
-          onMailTap: onMailTap,
-          onSearchTap: onSearchTap,
-          onAddTap: onAddTap,
-          onProfilesTap: onProfilesTap,
-          historyWidget: historyMenu,
-          activeProfile: activeProfile,
-          activePubkey: activePubkey,
+        child: RepaintBoundary(
+          child: _LabBaseContent(
+            title: title,
+            routerConfig: routerConfig,
+            appLogo: appLogo,
+            darkLabLogo: darkLabLogo,
+            locale: locale,
+            supportedLocales: supportedLocales,
+            localizationsDelegates: localizationsDelegates,
+            textScaleFactor: textScaleFactor,
+            colorMode: colorMode,
+            onHomeTap: onHomeTap,
+            onBackTap: onBackTap,
+            onMailTap: onMailTap,
+            onSearchTap: onSearchTap,
+            onAddTap: onAddTap,
+            onProfilesTap: onProfilesTap,
+            historyWidget: historyMenu,
+            activeProfile: activeProfile,
+            activePubkey: activePubkey,
+          ),
         ),
       ),
     );
@@ -208,8 +208,6 @@ class _LabBaseContentState extends State<_LabBaseContent>
       widget.onBackTap != null ||
       widget.onSearchTap != null;
 
-  bool get _hasHistoryWidget => widget.historyWidget != null;
-
   @override
   Widget build(BuildContext context) {
     // Set system UI overlay style for native platforms only
@@ -229,215 +227,208 @@ class _LabBaseContentState extends State<_LabBaseContent>
       );
     }
 
-    // Cache theme access to avoid multiple LabTheme.of(context) calls
     final theme = LabTheme.of(context);
 
     return LabResponsiveWrapper(
-      child: MediaQuery(
-        data: MediaQuery.of(context).copyWith(
-          textScaler: TextScaler.linear(widget.textScaleFactor ?? 1.0),
-        ),
-        child: WidgetsApp.router(
-          routerConfig: widget.routerConfig,
-          builder: (context, child) {
-            return LabScaffold(
-              body: Stack(
-                children: [
-                  Row(
-                    children: [
-                      // Sidebar (on desktop or web if any callbacks are provided)
-                      if (!LabPlatformUtils.isMobile && _shouldShowSidebar)
-                        LabContainer(
-                          decoration: BoxDecoration(
-                            color: theme.colors.gray33,
-                          ),
-                          child: Row(
-                            children: [
-                              LabContainer(
-                                padding: const LabEdgeInsets.all(LabGapSize.s4),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const LabGap.s24(),
-                                    if (widget.onBackTap != null)
-                                      GestureDetector(
-                                        onLongPress:
-                                            widget.historyWidget != null
-                                                ? () => _toggleHistoryMenu(true)
-                                                : null,
-                                        onSecondaryTap:
-                                            widget.historyWidget != null
-                                                ? () => _toggleHistoryMenu(true)
-                                                : null,
-                                        child: _buildBackButton(
-                                          context,
-                                          onTap: _showHistoryMenu
-                                              ? () => _toggleHistoryMenu(false)
-                                              : widget.onBackTap!,
-                                          isMenuOpen: _showHistoryMenu,
-                                          showHistoryControls:
-                                              widget.historyWidget != null,
-                                        ),
-                                      ),
-                                    if (widget.onHomeTap != null)
-                                      _buildSidebarItem(
+      child: WidgetsApp.router(
+        routerConfig: widget.routerConfig,
+        builder: (context, child) {
+          return LabScaffold(
+            body: Stack(
+              children: [
+                Row(
+                  children: [
+                    // Sidebar (on desktop or web if any callbacks are provided)
+                    if (!LabPlatformUtils.isMobile && _shouldShowSidebar)
+                      LabContainer(
+                        decoration: BoxDecoration(
+                          color: theme.colors.gray33,
+                        ),
+                        child: Row(
+                          children: [
+                            LabContainer(
+                              padding: const LabEdgeInsets.all(LabGapSize.s4),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const LabGap.s24(),
+                                  if (widget.onBackTap != null)
+                                    GestureDetector(
+                                      onLongPress: widget.historyWidget != null
+                                          ? () => _toggleHistoryMenu(true)
+                                          : null,
+                                      onSecondaryTap:
+                                          widget.historyWidget != null
+                                              ? () => _toggleHistoryMenu(true)
+                                              : null,
+                                      child: _buildBackButton(
                                         context,
-                                        icon: LabIcon.s20(
-                                          theme.icons.characters.home,
-                                          outlineColor: theme.colors.white66,
-                                          outlineThickness:
-                                              LabLineThicknessData.normal()
-                                                  .medium,
-                                        ),
-                                        onTap: widget.onHomeTap!,
+                                        onTap: _showHistoryMenu
+                                            ? () => _toggleHistoryMenu(false)
+                                            : widget.onBackTap!,
+                                        isMenuOpen: _showHistoryMenu,
+                                        showHistoryControls:
+                                            widget.historyWidget != null,
                                       ),
-                                    if (widget.onMailTap != null)
-                                      _buildSidebarItem(
-                                        context,
-                                        icon: LabIcon.s20(
-                                          theme.icons.characters.mail,
-                                          outlineColor: theme.colors.white66,
-                                          outlineThickness:
-                                              LabLineThicknessData.normal()
-                                                  .medium,
-                                        ),
-                                        onTap: widget.onMailTap!,
+                                    ),
+                                  if (widget.onHomeTap != null)
+                                    _buildSidebarItem(
+                                      context,
+                                      icon: LabIcon.s20(
+                                        theme.icons.characters.home,
+                                        outlineColor: theme.colors.white66,
+                                        outlineThickness:
+                                            LabLineThicknessData.normal()
+                                                .medium,
                                       ),
-                                    if (widget.onSearchTap != null)
-                                      _buildSidebarItem(
-                                        context,
-                                        icon: LabIcon.s20(
-                                          theme.icons.characters.search,
-                                          outlineColor: theme.colors.white66,
-                                          outlineThickness:
-                                              LabLineThicknessData.normal()
-                                                  .medium,
-                                        ),
-                                        onTap: widget.onSearchTap!,
+                                      onTap: widget.onHomeTap!,
+                                    ),
+                                  if (widget.onMailTap != null)
+                                    _buildSidebarItem(
+                                      context,
+                                      icon: LabIcon.s20(
+                                        theme.icons.characters.mail,
+                                        outlineColor: theme.colors.white66,
+                                        outlineThickness:
+                                            LabLineThicknessData.normal()
+                                                .medium,
                                       ),
-                                    if (widget.onAddTap != null)
-                                      _buildSidebarItem(
-                                        context,
-                                        icon: LabIcon.s20(
-                                          theme.icons.characters.plus,
-                                          outlineColor: theme.colors.white66,
-                                          outlineThickness:
-                                              LabLineThicknessData.normal()
-                                                  .medium,
-                                        ),
-                                        onTap: widget.onAddTap!,
+                                      onTap: widget.onMailTap!,
+                                    ),
+                                  if (widget.onSearchTap != null)
+                                    _buildSidebarItem(
+                                      context,
+                                      icon: LabIcon.s20(
+                                        theme.icons.characters.search,
+                                        outlineColor: theme.colors.white66,
+                                        outlineThickness:
+                                            LabLineThicknessData.normal()
+                                                .medium,
                                       ),
-                                    const Spacer(),
-                                    if (widget.onProfilesTap != null &&
-                                        (widget.activeProfile != null ||
-                                            widget.activePubkey != null))
-                                      widget.activeProfile != null
-                                          ? LabProfilePic.s38(
-                                              widget.activeProfile!,
-                                              onTap: widget.onProfilesTap!,
-                                            )
-                                          : LabProfilePic.fromPubkey(
-                                              widget.activePubkey!,
-                                              size: LabProfilePicSize.s38,
-                                              onTap: widget.onProfilesTap!,
-                                            ),
-                                    const LabGap.s12(),
-                                  ],
-                                ),
+                                      onTap: widget.onSearchTap!,
+                                    ),
+                                  if (widget.onAddTap != null)
+                                    _buildSidebarItem(
+                                      context,
+                                      icon: LabIcon.s20(
+                                        theme.icons.characters.plus,
+                                        outlineColor: theme.colors.white66,
+                                        outlineThickness:
+                                            LabLineThicknessData.normal()
+                                                .medium,
+                                      ),
+                                      onTap: widget.onAddTap!,
+                                    ),
+                                  const Spacer(),
+                                  if (widget.onProfilesTap != null &&
+                                      (widget.activeProfile != null ||
+                                          widget.activePubkey != null))
+                                    widget.activeProfile != null
+                                        ? LabProfilePic.s38(
+                                            widget.activeProfile!,
+                                            onTap: widget.onProfilesTap!,
+                                          )
+                                        : LabProfilePic.fromPubkey(
+                                            widget.activePubkey!,
+                                            size: LabProfilePicSize.s38,
+                                            onTap: widget.onProfilesTap!,
+                                          ),
+                                  const LabGap.s12(),
+                                ],
                               ),
-                              LabContainer(
-                                width: 1.4,
-                                decoration: BoxDecoration(
-                                  color: theme.colors.white8,
-                                ),
+                            ),
+                            LabContainer(
+                              width: 1.4,
+                              decoration: BoxDecoration(
+                                color: theme.colors.white8,
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    // Main content area
+                    Expanded(
+                      child: child ?? const SizedBox.shrink(),
+                    )
+                  ],
+                ),
+                if (_showHistoryMenu && widget.historyWidget != null)
+                  Positioned.fill(
+                    child: Stack(
+                      children: [
+                        // Semi-transparent overlay
+                        Positioned(
+                          left: 64,
+                          right: 0,
+                          top: 0,
+                          bottom: 0,
+                          child: GestureDetector(
+                            onTap: () => _toggleHistoryMenu(false),
+                            child: LabContainer(
+                              decoration: BoxDecoration(
+                                color: theme.colors.black33,
+                              ),
+                            ),
                           ),
                         ),
-                      // Main content area
-                      Expanded(
-                        child: child ?? const SizedBox.shrink(),
-                      )
-                    ],
-                  ),
-                  if (_showHistoryMenu && widget.historyWidget != null)
-                    Positioned.fill(
-                      child: Stack(
-                        children: [
-                          // Semi-transparent overlay
-                          Positioned(
-                            left: 64,
-                            right: 0,
-                            top: 0,
-                            bottom: 0,
-                            child: GestureDetector(
-                              onTap: () => _toggleHistoryMenu(false),
-                              child: LabContainer(
-                                decoration: BoxDecoration(
-                                  color: theme.colors.black33,
+                        // History menu
+                        Positioned(
+                          left: 64,
+                          top: 0,
+                          bottom: 0,
+                          child: AnimatedBuilder(
+                            animation: _menuAnimation,
+                            builder: (context, child) {
+                              return Transform.translate(
+                                offset: Offset(
+                                  -240 * (1 - _menuAnimation.value),
+                                  0,
                                 ),
-                              ),
-                            ),
-                          ),
-                          // History menu
-                          Positioned(
-                            left: 64,
-                            top: 0,
-                            bottom: 0,
-                            child: AnimatedBuilder(
-                              animation: _menuAnimation,
-                              builder: (context, child) {
-                                return Transform.translate(
-                                  offset: Offset(
-                                    -240 * (1 - _menuAnimation.value),
-                                    0,
-                                  ),
-                                  child: LabContainer(
-                                    width: 320,
-                                    decoration: BoxDecoration(
-                                      color: theme.colors.gray66,
-                                      border: Border(
-                                        right: BorderSide(
-                                          color: theme.colors.white16,
-                                          width: LabLineThicknessData.normal()
-                                              .thin,
-                                        ),
+                                child: LabContainer(
+                                  width: 320,
+                                  decoration: BoxDecoration(
+                                    color: theme.colors.gray66,
+                                    border: Border(
+                                      right: BorderSide(
+                                        color: theme.colors.white16,
+                                        width:
+                                            LabLineThicknessData.normal().thin,
                                       ),
                                     ),
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const LabGap.s20(),
-                                          LabContainer(
-                                            padding: const LabEdgeInsets.all(
-                                                LabGapSize.s12),
-                                            child: LabScope(
-                                              isInsideScope: true,
-                                              child: widget.historyWidget!,
-                                            ),
+                                  ),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const LabGap.s20(),
+                                        LabContainer(
+                                          padding: const LabEdgeInsets.all(
+                                              LabGapSize.s12),
+                                          child: LabScope(
+                                            isInsideScope: true,
+                                            child: widget.historyWidget!,
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                );
-                              },
-                            ),
+                                ),
+                              );
+                            },
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                ],
-              ),
-            );
-          },
-          title: widget.title,
-          locale: widget.locale,
-          localizationsDelegates: widget.localizationsDelegates,
-          supportedLocales: widget.supportedLocales,
-          color: theme.colors.white,
-        ),
+                  ),
+              ],
+            ),
+          );
+        },
+        title: widget.title,
+        locale: widget.locale,
+        localizationsDelegates: widget.localizationsDelegates,
+        supportedLocales: widget.supportedLocales,
+        color: theme.colors.white,
       ),
     );
   }

@@ -2,10 +2,7 @@ import 'package:models/models.dart';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:tap_builder/tap_builder.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'dart:ui';
 
-/// Shared inner content widget for profile picture display logic
-/// Used by LabProfilePic, LabProfilePicSquare, LabProfilePicLive, etc.
 class LabProfilePicContent extends StatelessWidget {
   const LabProfilePicContent({
     super.key,
@@ -31,7 +28,7 @@ class LabProfilePicContent extends StatelessWidget {
     if (pubkey != null) {
       return hexToColor(pubkey!).toIntWithAlpha();
     }
-    return 0xFF808080; // Default gray color
+    return 0xFF808080;
   }
 
   @override
@@ -57,118 +54,79 @@ class LabProfilePicContent extends StatelessWidget {
                   return const LabSkeletonLoader();
                 },
                 errorWidget: (context, url, error) {
-                  if (profile != null || (pubkey != null)) {
-                    return Container(
-                      color: Color(_getProfileColor()).withValues(alpha: 0.24),
-                      child: Center(
-                        child: profile?.name?.isNotEmpty == true ||
-                                name?.isNotEmpty == true
-                            ? Stack(
-                                children: [
-                                  Text(
-                                    profile?.name?.isNotEmpty == true
-                                        ? profile!.name![0].toUpperCase()
-                                        : name![0].toUpperCase(),
-                                    style: TextStyle(
-                                      color: Color(_getProfileColor()),
-                                      fontSize: size * 0.56,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    profile?.name?.isNotEmpty == true
-                                        ? profile!.name![0].toUpperCase()
-                                        : name![0].toUpperCase(),
-                                    style: TextStyle(
-                                      color: theme.colors.white16,
-                                      fontSize: size * 0.56,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : Center(
-                                child: Text(
-                                  icons.characters.profile,
-                                  style: TextStyle(
-                                    fontFamily: icons.fontFamily,
-                                    package: icons.fontPackage,
-                                    fontSize: fallbackIconSize,
-                                    color: Color(_getProfileColor()),
-                                  ),
-                                ),
-                              ),
-                      ),
-                    );
-                  }
-
-                  return Center(
-                    child: Text(
-                      icons.characters.profile,
-                      style: TextStyle(
-                        fontFamily: icons.fontFamily,
-                        package: icons.fontPackage,
-                        fontSize: fallbackIconSize,
-                        color: theme.colors.white33,
-                      ),
-                    ),
-                  );
+                  return _buildFallbackWidget(theme, icons, fallbackIconSize);
                 },
               ))
-        : profile != null || pubkey != null
-            ? Container(
-                color: Color(_getProfileColor()).withValues(alpha: 0.24),
-                child: (profile?.name?.isNotEmpty == true ||
-                        name?.isNotEmpty == true)
-                    ? Center(
-                        child: Stack(
-                          children: [
-                            Text(
-                              (profile?.name?.isNotEmpty == true
-                                  ? profile!.name![0].toUpperCase()
-                                  : name![0].toUpperCase()),
-                              style: TextStyle(
-                                color: Color(_getProfileColor()),
-                                fontSize: size * 0.56,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              (profile?.name?.isNotEmpty == true
-                                  ? profile!.name![0].toUpperCase()
-                                  : name![0].toUpperCase()),
-                              style: TextStyle(
-                                color: theme.colors.white16,
-                                fontSize: size * 0.56,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : Center(
-                        child: Text(
-                          icons.characters.profile,
-                          style: TextStyle(
-                            fontFamily: icons.fontFamily,
-                            package: icons.fontPackage,
-                            fontSize: fallbackIconSize,
-                            color: Color(_getProfileColor()),
-                          ),
-                        ),
-                      ),
-              )
-            : Center(
-                child: Text(
-                  icons.characters.profile,
+        : _buildFallbackWidget(theme, icons, fallbackIconSize);
+  }
+
+  Widget _buildFallbackWidget(
+      LabThemeData theme, LabIconsData icons, double fallbackIconSize) {
+    if (profile != null || (pubkey != null)) {
+      final profileColor = Color(_getProfileColor());
+      final hasName =
+          profile?.name?.isNotEmpty == true || name?.isNotEmpty == true;
+
+      if (hasName) {
+        final initial = profile?.name?.isNotEmpty == true
+            ? profile!.name![0].toUpperCase()
+            : name![0].toUpperCase();
+
+        return Container(
+          color: profileColor.withValues(alpha: 0.24),
+          child: Center(
+            child: Stack(
+              children: [
+                // ✅ PERFORMANCE FIX: Use const TextStyle where possible
+                Text(
+                  initial,
                   style: TextStyle(
-                    fontFamily: icons.fontFamily,
-                    package: icons.fontPackage,
-                    fontSize: fallbackIconSize,
-                    color: theme.colors.white33,
+                    color: profileColor,
+                    fontSize: size * 0.56,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              );
+                Text(
+                  initial,
+                  style: TextStyle(
+                    color: theme.colors.white16,
+                    fontSize: size * 0.56,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      } else {
+        return Container(
+          color: profileColor.withValues(alpha: 0.24),
+          child: Center(
+            child: Text(
+              icons.characters.profile,
+              style: TextStyle(
+                fontFamily: icons.fontFamily,
+                package: icons.fontPackage,
+                fontSize: fallbackIconSize,
+                color: profileColor,
+              ),
+            ),
+          ),
+        );
+      }
+    }
+
+    return Center(
+      child: Text(
+        icons.characters.profile,
+        style: TextStyle(
+          fontFamily: icons.fontFamily,
+          package: icons.fontPackage,
+          fontSize: fallbackIconSize,
+          color: theme.colors.white33,
+        ),
+      ),
+    );
   }
 }
 
@@ -198,46 +156,6 @@ class LabProfilePic extends StatelessWidget {
   final String? pubkey;
   final LabProfilePicSize size;
   final VoidCallback onTap;
-
-  LabProfilePic(
-    this.profile, {
-    super.key,
-    this.size = LabProfilePicSize.s38,
-    VoidCallback? onTap,
-  })  : onTap = onTap ?? (() {}),
-        profilePicUrl = null,
-        name = null,
-        pubkey = null;
-
-  LabProfilePic.fromUrl(
-    this.profilePicUrl, {
-    super.key,
-    this.size = LabProfilePicSize.s38,
-    VoidCallback? onTap,
-  })  : onTap = onTap ?? (() {}),
-        profile = null,
-        name = null,
-        pubkey = null;
-
-  LabProfilePic.fromPubkey(
-    this.pubkey, {
-    super.key,
-    this.size = LabProfilePicSize.s38,
-    VoidCallback? onTap,
-  })  : onTap = onTap ?? (() {}),
-        name = null,
-        profile = null,
-        profilePicUrl = null;
-
-  LabProfilePic.fromNameAndPubkey(
-    this.name,
-    this.pubkey, {
-    super.key,
-    this.size = LabProfilePicSize.s38,
-    VoidCallback? onTap,
-  })  : onTap = onTap ?? (() {}),
-        profile = null,
-        profilePicUrl = null;
 
   LabProfilePic.s12(this.profile, {super.key, VoidCallback? onTap})
       : size = LabProfilePicSize.s12,
@@ -351,65 +269,53 @@ class LabProfilePic extends StatelessWidget {
         name = null,
         pubkey = null;
 
-  String? get _effectiveUrl => profilePicUrl ?? profile?.pictureUrl;
+  LabProfilePic.fromUrl(
+    this.profilePicUrl, {
+    super.key,
+    this.size = LabProfilePicSize.s38,
+    VoidCallback? onTap,
+  })  : onTap = onTap ?? (() {}),
+        profile = null,
+        name = null,
+        pubkey = null;
 
-  int _getProfileColor() {
-    if (profile != null) {
-      return profileToColor(profile!);
-    }
-    if (pubkey != null) {
-      return hexToColor(pubkey!).toIntWithAlpha();
-    }
-    return 0xFF808080; // Default gray color
-  }
+  LabProfilePic.fromName(
+    this.name, {
+    super.key,
+    this.size = LabProfilePicSize.s38,
+    VoidCallback? onTap,
+  })  : onTap = onTap ?? (() {}),
+        profile = null,
+        profilePicUrl = null,
+        pubkey = null;
+
+  LabProfilePic.fromPubkey(
+    this.pubkey, {
+    super.key,
+    this.size = LabProfilePicSize.s38,
+    VoidCallback? onTap,
+  })  : onTap = onTap ?? (() {}),
+        profile = null,
+        profilePicUrl = null,
+        name = null;
+
+  LabProfilePic.fromNameAndPubkey(
+    this.name,
+    this.pubkey, {
+    super.key,
+    this.size = LabProfilePicSize.s38,
+    VoidCallback? onTap,
+  })  : onTap = onTap ?? (() {}),
+        profile = null,
+        profilePicUrl = null;
 
   @override
   Widget build(BuildContext context) {
-    // Use hardcoded sizes for common cases to avoid theme lookups
-    final resolvedSize = _getHardcodedSize(size);
-    if (resolvedSize != null) {
-      return TapBuilder(
-        onTap: onTap,
-        builder: (context, state, isFocused) {
-          double scaleFactor = 1.0;
-          if (state == TapState.pressed) {
-            scaleFactor = 0.98;
-          } else if (state == TapState.hover) {
-            scaleFactor = 1.02;
-          }
-          return Transform.scale(
-            scale: scaleFactor,
-            child: LabContainer(
-              width: resolvedSize,
-              height: resolvedSize,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: const Color(0x29FFFFFF), // white16 as const
-                  width: 0.5, // thin as const
-                ),
-                color: const Color(0xA8A8A8), // gray66 as const
-              ),
-              child: ClipOval(
-                child: LabProfilePicContent(
-                  profile: profile,
-                  name: name,
-                  pubkey: pubkey,
-                  profilePicUrl: profilePicUrl,
-                  size: resolvedSize,
-                ),
-              ),
-            ),
-          );
-        },
-      );
-    }
-
-    // Fallback to theme-based sizing for uncommon sizes
     final theme = LabTheme.of(context);
     final sizes = theme.sizes;
-    final icons = theme.icons;
-    final themeResolvedSize = _resolveSize(size, sizes);
+
+    // Try hardcoded size first for performance, fallback to theme-based sizing
+    final resolvedSize = _getHardcodedSize(size) ?? _resolveSize(size, sizes);
     final thickness = LabLineThicknessData.normal().thin;
 
     return TapBuilder(
@@ -424,8 +330,8 @@ class LabProfilePic extends StatelessWidget {
         return Transform.scale(
           scale: scaleFactor,
           child: LabContainer(
-            width: themeResolvedSize,
-            height: themeResolvedSize,
+            width: resolvedSize,
+            height: resolvedSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
@@ -440,7 +346,7 @@ class LabProfilePic extends StatelessWidget {
                 name: name,
                 pubkey: pubkey,
                 profilePicUrl: profilePicUrl,
-                size: themeResolvedSize,
+                size: resolvedSize,
               ),
             ),
           ),
