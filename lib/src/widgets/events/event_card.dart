@@ -62,7 +62,7 @@ class LabEventCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: theme.radius.asBorderRadius().rad8,
                   child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                    filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
                     child: LabContainer(
                       decoration: BoxDecoration(
                         color: theme.colors.gray33,

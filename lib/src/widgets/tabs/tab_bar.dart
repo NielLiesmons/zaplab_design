@@ -392,7 +392,7 @@ class LabTabBarState extends State<LabTabBar> with TickerProviderStateMixin {
                                     child: ClipOval(
                                       child: BackdropFilter(
                                         filter: ui.ImageFilter.blur(
-                                            sigmaX: 24, sigmaY: 24),
+                                            sigmaX: 8, sigmaY: 8),
                                         child: LabSmallButton(
                                           rounded: true,
                                           square: true,
@@ -492,7 +492,7 @@ class LabTabBarState extends State<LabTabBar> with TickerProviderStateMixin {
                                     child: ClipOval(
                                       child: BackdropFilter(
                                         filter: ui.ImageFilter.blur(
-                                            sigmaX: 24, sigmaY: 24),
+                                            sigmaX: 8, sigmaY: 8),
                                         child: LabSmallButton(
                                           rounded: true,
                                           square: true,

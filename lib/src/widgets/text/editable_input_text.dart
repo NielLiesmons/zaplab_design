@@ -239,7 +239,7 @@ class _LabEditableInputTextState extends State<LabEditableInputText>
                             menuItems: widget.contextMenuItems,
                           );
                         },
-                  autofocus: true,
+                  autofocus: false,
                 ),
               ),
             ),

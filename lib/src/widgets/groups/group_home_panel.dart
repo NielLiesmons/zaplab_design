@@ -83,7 +83,7 @@ class LabGroupHomePanel extends StatelessWidget {
                           bottom: -4,
                           child: ClipOval(
                             child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                              filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                               child: LabContainer(
                                 width: theme.sizes.s20,
                                 height: theme.sizes.s20,

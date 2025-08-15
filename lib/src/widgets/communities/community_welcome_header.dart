@@ -120,7 +120,7 @@ class _LabCommunityWelcomeHeaderState extends State<LabCommunityWelcomeHeader>
             children: [
               // Blurred background
               ImageFiltered(
-                imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                 child: LabContainer(
                   decoration: BoxDecoration(
                     color: theme.colors.black,
@@ -152,7 +152,7 @@ class _LabCommunityWelcomeHeaderState extends State<LabCommunityWelcomeHeader>
           ClipRRect(
             borderRadius: theme.radius.asBorderRadius().rad24,
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+              filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
               child: LabContainer(
                 padding: const LabEdgeInsets.only(
                   left: LabGapSize.s12,

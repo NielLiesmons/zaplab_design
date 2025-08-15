@@ -67,6 +67,37 @@ extension LabGapSizeExtension on LabGapSize {
         return theme.sizes.s80;
     }
   }
+
+  double getHardcodedSize() {
+    switch (this) {
+      case LabGapSize.none:
+        return 0;
+      case LabGapSize.s2:
+        return 2;
+      case LabGapSize.s4:
+        return 4;
+      case LabGapSize.s6:
+        return 6;
+      case LabGapSize.s8:
+        return 8;
+      case LabGapSize.s10:
+        return 10;
+      case LabGapSize.s12:
+        return 12;
+      case LabGapSize.s14:
+        return 14;
+      case LabGapSize.s16:
+        return 16;
+      case LabGapSize.s20:
+        return 20;
+      case LabGapSize.s24:
+        return 24;
+      case LabGapSize.s32:
+        return 32;
+      default:
+        return 16;
+    }
+  }
 }
 
 class LabGap extends StatelessWidget {
@@ -151,6 +182,20 @@ class LabGap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (size == LabGapSize.s2 ||
+        size == LabGapSize.s4 ||
+        size == LabGapSize.s6 ||
+        size == LabGapSize.s8 ||
+        size == LabGapSize.s10 ||
+        size == LabGapSize.s12 ||
+        size == LabGapSize.s14 ||
+        size == LabGapSize.s16 ||
+        size == LabGapSize.s20 ||
+        size == LabGapSize.s24 ||
+        size == LabGapSize.s32) {
+      return Gap(size.getHardcodedSize());
+    }
+
     final theme = LabTheme.of(context);
     return Gap(size.getSizes(theme));
   }

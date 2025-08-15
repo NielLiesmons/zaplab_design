@@ -65,7 +65,7 @@ class LabModal extends StatelessWidget {
       PageRouteBuilder(
         opaque: false,
         barrierDismissible: true,
-        barrierColor: const Color(0x00000000),
+        barrierColor: theme.colors.black66,
         transitionDuration: theme.durations.normal,
         reverseTransitionDuration: theme.durations.normal,
         pageBuilder: (_, __, ___) => LabModal(
@@ -214,60 +214,33 @@ class LabModal extends StatelessWidget {
       builder: (context, needsCompactMode, child) {
         return ModalScope(
           isInsideModal: true,
-          child: Stack(
-            children: [
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                child: LabContainer(
-                  decoration: BoxDecoration(color: theme.colors.black16),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Stack(
-                  children: [
-                    if (handleNavigation)
-                      GestureDetector(
-                        onTap: () {
-                          if (Navigator.of(context).canPop()) {
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        onVerticalDragStart: (details) {
-                          if (details.localPosition.dy > 0 &&
-                              Navigator.of(context).canPop()) {
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        child: const LabContainer(
-                          decoration: BoxDecoration(color: Color(0x00000000)),
-                        ),
-                      ),
-                    if (needsCompactMode)
-                      _buildScrollableModal(
-                        context,
-                        theme,
-                        screenHeight,
-                        topBarVisible,
-                        modalOffset,
-                        resolvedTopBar,
-                        allChildren,
-                        initialChildSize: initialChildSize,
-                      )
-                    else
-                      _buildCompactModal(
-                        context,
-                        theme,
-                        resolvedTopBar,
-                        allChildren,
-                      ),
-                    if (needsCompactMode &&
-                        (bottomBar != null || LabPlatformUtils.isMobile))
-                      _buildBottomBarOverlay(context, theme),
-                  ],
-                ),
-              ),
-            ],
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Stack(
+              children: [
+                if (needsCompactMode)
+                  _buildScrollableModal(
+                    context,
+                    theme,
+                    screenHeight,
+                    topBarVisible,
+                    modalOffset,
+                    resolvedTopBar,
+                    allChildren,
+                    initialChildSize: initialChildSize,
+                  )
+                else
+                  _buildCompactModal(
+                    context,
+                    theme,
+                    resolvedTopBar,
+                    allChildren,
+                  ),
+                if (needsCompactMode &&
+                    (bottomBar != null || LabPlatformUtils.isMobile))
+                  _buildBottomBarOverlay(context, theme),
+              ],
+            ),
           ),
         );
       },

@@ -259,8 +259,52 @@ class LabIcon extends StatelessWidget {
   final Color? outlineColor;
   final double outlineThickness;
 
+  double _getHardcodedSize(LabIconSize size) {
+    switch (size) {
+      case LabIconSize.s4:
+        return 4;
+      case LabIconSize.s8:
+        return 8;
+      case LabIconSize.s10:
+        return 10;
+      case LabIconSize.s12:
+        return 12;
+      case LabIconSize.s14:
+        return 14;
+      case LabIconSize.s16:
+        return 16;
+      case LabIconSize.s18:
+        return 18;
+      case LabIconSize.s20:
+        return 20;
+      case LabIconSize.s24:
+        return 24;
+      case LabIconSize.s28:
+        return 28;
+      case LabIconSize.s32:
+        return 32;
+      default:
+        return 16;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (outlineColor == null &&
+        outlineThickness == 0 &&
+        gradient == null &&
+        color == null) {
+      final hardcodedSize = _getHardcodedSize(size);
+      return Text(
+        data,
+        style: TextStyle(
+          fontSize: hardcodedSize,
+          decoration: TextDecoration.none,
+          color: const Color(0x00000000),
+        ),
+      );
+    }
+
     final theme = LabTheme.of(context);
     final resolvedSize = theme.icons.sizes.resolve(size);
 

@@ -26,17 +26,22 @@ class LabThemeData extends Equatable {
     TargetPlatform? platform,
   }) : _platform = platform;
 
-  factory LabThemeData.normal() => LabThemeData(
-        borders: LabBorderData.fromThickness(LabLineThicknessData.normal()),
-        colors: LabColorsData.light(),
-        durations: LabDurationsData.normal(),
-        formFactor: LabFormFactor.small,
-        icons: LabIconsData.normal(),
-        radius: const LabRadiusData.normal(),
-        sizes: LabSizesData.normal(),
-        typography: LabTypographyData.normal(),
-        system: LabSystemData.normal(),
-      );
+  // Pre-built static instance - created once, never recreated
+  static LabThemeData? _cachedNormal;
+
+  factory LabThemeData.normal() {
+    return _cachedNormal ??= LabThemeData(
+      borders: LabBorderData.fromThickness(LabLineThicknessData.normal()),
+      colors: LabColorsData.light(),
+      durations: LabDurationsData.normal(),
+      formFactor: LabFormFactor.small,
+      icons: LabIconsData.normal(),
+      radius: const LabRadiusData.normal(),
+      sizes: LabSizesData.normal(),
+      typography: LabTypographyData.normal(),
+      system: LabSystemData.normal(),
+    );
+  }
 
   final LabBorderData borders;
   final LabColorsData colors;

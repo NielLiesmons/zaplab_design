@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'image_viewer_utils.dart';
 
 class LabImageStack extends StatefulWidget {
   final List<String> images;
@@ -20,7 +21,13 @@ class LabImageStack extends StatefulWidget {
   });
 
   static void _showFullScreen(BuildContext context, List<String> images) {
-    LabOpenedImages.show(context, images);
+    if (images.length == 1) {
+      // For single images, go directly to full screen view
+      ImageViewerUtils.showFullScreenImage(context, images[0]);
+    } else {
+      // For multiple images, use the existing LabOpenedImages.show
+      LabOpenedImages.show(context, images);
+    }
   }
 
   @override
@@ -277,8 +284,7 @@ class _LabImageStackState extends State<LabImageStack> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(13),
                               child: BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                                filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                                 child: LabContainer(
                                   height: theme.sizes.s28,
                                   padding: const LabEdgeInsets.symmetric(

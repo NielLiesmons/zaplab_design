@@ -39,7 +39,7 @@ class LabBottomBar extends StatelessWidget {
               ? BorderRadius.vertical(top: const LabRadiusData.normal().rad32)
               : BorderRadius.zero,
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+            filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
             child: LabContainer(
               padding: LabEdgeInsets.only(
                 left: LabGapSize.s16,

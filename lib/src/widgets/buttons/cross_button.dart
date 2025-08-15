@@ -97,7 +97,7 @@ class LabCrossButtonLayout extends StatelessWidget {
 
     return ClipOval(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+        filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
         child: LabContainer(
           width: buttonSize,
           height: buttonSize,

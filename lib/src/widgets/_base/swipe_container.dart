@@ -277,6 +277,7 @@ class _LabSwipeContainerState extends State<LabSwipeContainer>
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
+    final white16Color = theme.colors.white16;
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -294,7 +295,6 @@ class _LabSwipeContainerState extends State<LabSwipeContainer>
           clipBehavior: widget.isTransparent ? Clip.none : Clip.hardEdge,
           child: Stack(
             children: [
-              // Main content
               AnimatedBuilder(
                 animation: _slideAnimation,
                 builder: (context, child) => Transform.translate(
@@ -309,7 +309,6 @@ class _LabSwipeContainerState extends State<LabSwipeContainer>
                   ),
                 ),
               ),
-              // Left action overlay
               if (widget.leftContent != null)
                 Positioned(
                   left: 0,
@@ -323,7 +322,7 @@ class _LabSwipeContainerState extends State<LabSwipeContainer>
                         decoration: widget.isTransparent
                             ? null
                             : BoxDecoration(
-                                color: theme.colors.white16,
+                                color: white16Color,
                               ),
                         child: Center(
                           child: ScaleTransition(
@@ -342,7 +341,6 @@ class _LabSwipeContainerState extends State<LabSwipeContainer>
                     ),
                   ),
                 ),
-              // Right action overlay
               if (widget.rightContent != null)
                 Positioned(
                   right: 0,
@@ -356,7 +354,7 @@ class _LabSwipeContainerState extends State<LabSwipeContainer>
                         decoration: widget.isTransparent
                             ? null
                             : BoxDecoration(
-                                color: theme.colors.white16,
+                                color: white16Color,
                               ),
                         child: Center(
                           child: ScaleTransition(

@@ -70,8 +70,44 @@ class LabMessageBubble extends StatefulWidget {
 }
 
 class _LabMessageBubbleState extends State<LabMessageBubble> {
+  // Cache expensive operations
+  ShortTextContentType? _cachedContentType;
+  String? _lastContent;
+  bool? _lastIsOutgoing;
+  bool? _lastIsFirstInStack;
+  bool? _lastIsLastInStack;
+
+  // Cache theme-dependent values
+  LabThemeData? _cachedTheme;
+  BoxDecoration? _cachedContainerDecoration;
+  BorderRadius? _cachedBorderRadius;
+
+  // Performance tracking
+  int _buildCount = 0;
+  DateTime? _lastBuildTime;
+
+  // Performance debug flags - set to true only when debugging
+  static const bool _debugRebuilds = false;
+  static const bool _debugCacheMisses = false;
+
+  // Performance thresholds - only log when performance is actually bad
+  static const int _rebuildThresholdMs = 50; // Log rebuilds faster than 50ms
+
   @override
   Widget build(BuildContext context) {
+    // Performance debugging
+    _buildCount++;
+    final now = DateTime.now();
+    if (_debugRebuilds && _lastBuildTime != null) {
+      final timeSinceLastBuild = now.difference(_lastBuildTime!);
+      if (timeSinceLastBuild.inMilliseconds < _rebuildThresholdMs) {
+        print(
+            '🚨 FAST REBUILD: Message ${widget.message?.id ?? widget.reply?.id} rebuilt in ${timeSinceLastBuild.inMilliseconds}ms (build #$_buildCount)');
+      }
+    }
+    _lastBuildTime = now;
+
+    // Cache theme access
     final theme = LabTheme.of(context);
     final isInsideModal = ModalScope.of(context);
 
@@ -99,8 +135,28 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
       }
     }
 
-    final contentType = LabShortTextRenderer.analyzeContent(contentToAnalyze);
+    // Cache content analysis - only recalculate if content or outgoing status changes
+    if (_cachedContentType == null ||
+        _lastContent != contentToAnalyze ||
+        _lastIsOutgoing != widget.isOutgoing ||
+        _lastIsFirstInStack != widget.isFirstInStack ||
+        _lastIsLastInStack != widget.isLastInStack) {
+      _cachedContentType =
+          LabShortTextRenderer.analyzeContent(contentToAnalyze);
+      _lastContent = contentToAnalyze;
+      _lastIsOutgoing = widget.isOutgoing;
+      _lastIsFirstInStack = widget.isFirstInStack;
+      _lastIsLastInStack = widget.isLastInStack;
 
+      if (_debugCacheMisses) {
+        print(
+            '🔄 Content analysis cache miss for message ${widget.message?.id ?? widget.reply?.id}');
+      }
+    }
+
+    final contentType = _cachedContentType!;
+
+    // Cache expensive calculations
     final isLight = theme.colors.white != const Color(0xFFFFFFFF);
 
     return LabContainer(
@@ -130,10 +186,7 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
             const LabGap.s4(),
           ] else if (widget.isOutgoing) ...[
             if (widget.isOutgoing &&
-                LabShortTextRenderer.analyzeContent(widget.message != null
-                        ? widget.message!.content
-                        : widget.reply!.content) !=
-                    ShortTextContentType.singleImageStack)
+                contentType != ShortTextContentType.singleImageStack)
               const LabGap.s64(),
             const LabGap.s4(),
           ],
@@ -544,10 +597,7 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
             ),
           ),
           if (!widget.isOutgoing &&
-              LabShortTextRenderer.analyzeContent(widget.message != null
-                      ? widget.message!.content
-                      : widget.reply!.content) !=
-                  ShortTextContentType.singleImageStack)
+              contentType != ShortTextContentType.singleImageStack)
             const LabGap.s32(),
         ],
       ),

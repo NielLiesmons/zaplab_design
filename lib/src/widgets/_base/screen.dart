@@ -54,27 +54,15 @@ class LabScreen extends StatefulWidget {
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           final theme = LabTheme.of(context);
-          return Stack(
-            children: [
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                child: LabContainer(
-                  decoration: BoxDecoration(
-                    color: theme.colors.gray33,
-                  ),
-                ),
-              ),
-              SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0, 1),
-                  end: Offset.zero,
-                ).animate(CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeOut,
-                )),
-                child: child,
-              ),
-            ],
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 1),
+              end: Offset.zero,
+            ).animate(CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOut,
+            )),
+            child: child,
           );
         },
       ),
@@ -253,8 +241,8 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
     setState(() {
       // Check for empty history pop condition first
       if (_shouldTreatAsEmpty && _currentDrag + delta > 0) {
-        _currentDrag = (_currentDrag + delta).clamp(0, 40.0).toDouble();
-        if (_currentDrag >= 40.0 && Navigator.canPop(context)) {
+        _currentDrag = (_currentDrag + delta).clamp(0, 80.0).toDouble();
+        if (_currentDrag >= 80.0 && Navigator.canPop(context)) {
           // Only pop if we're not already in the process of popping
           if (!_isPopping) {
             _isPopping = true;
@@ -544,8 +532,8 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
                                         child: BackdropFilter(
                                           filter: _showTopBarContent
                                               ? ImageFilter.blur(
-                                                  sigmaX: 24,
-                                                  sigmaY: 24,
+                                                  sigmaX: 14,
+                                                  sigmaY: 14,
                                                 )
                                               : ImageFilter.blur(
                                                   sigmaX: 0, sigmaY: 0),
@@ -713,7 +701,7 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
               ? widget.bottomBarContent!
               : ClipRect(
                   child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                    filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
                     child: LabContainer(
                       decoration: BoxDecoration(
                         color: theme.colors.black33,

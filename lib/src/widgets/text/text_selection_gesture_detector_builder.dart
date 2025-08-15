@@ -123,9 +123,13 @@ class TextSelectionGestureDetectorBuilder {
             cause: SelectionChangedCause.tap,
           );
         } else {
-          // If there's no selection, handle the tap normally
-          _handleMouseSelection(details.position, SelectionChangedCause.tap);
+          // If there's no selection, ensure focus without interfering with normal behavior
+          if (!editableTextState.widget.focusNode!.hasFocus) {
+            editableTextState.widget.focusNode!.requestFocus();
+          }
         }
+        // Always request the keyboard on tap to re-open it even if focus is already true
+        editableTextState.requestKeyboard();
       },
       child: GestureDetector(
         key: key,

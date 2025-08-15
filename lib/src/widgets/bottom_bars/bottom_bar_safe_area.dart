@@ -14,15 +14,10 @@ class LabBottomBarSafeArea extends StatelessWidget {
     return Column(
       children: [
         const LabDivider(),
-        ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-            child: LabContainer(
-              height: bottomPadding,
-              decoration: BoxDecoration(
-                color: theme.colors.black66,
-              ),
-            ),
+        LabContainer(
+          height: bottomPadding,
+          decoration: BoxDecoration(
+            color: theme.colors.black66,
           ),
         ),
       ],

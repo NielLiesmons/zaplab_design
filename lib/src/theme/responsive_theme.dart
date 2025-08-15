@@ -93,6 +93,12 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
   LabSystemScale? _lastSystemScale;
   LabColorsOverride? _lastColorsOverride;
 
+  // Cache MediaQuery values to avoid calls on every build (Material-style caching)
+  LabFormFactor? _cachedFormFactor;
+  double? _lastWidth;
+  ui.Brightness? _lastPlatformBrightness;
+  bool? _lastHighContrast;
+
   LabThemeColorMode get colorMode =>
       _colorMode ?? widget.colorMode ?? LabResponsiveTheme.colorModeOf(context);
 
@@ -185,10 +191,41 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
 
   @override
   Widget build(BuildContext context) {
+    final currentPlatformBrightness = MediaQuery.platformBrightnessOf(context);
+    final currentHighContrast = MediaQuery.highContrastOf(context);
+
+    // Check if we need to invalidate theme cache due to system changes
+    if (currentPlatformBrightness != _lastPlatformBrightness ||
+        currentHighContrast != _lastHighContrast) {
+      _lastPlatformBrightness = currentPlatformBrightness;
+      _lastHighContrast = currentHighContrast;
+      // Invalidate theme cache when system preferences change
+      _cachedThemeData = null;
+    }
+
     final theme = _createThemeData();
-    final formFactor =
-        widget.formFactor ?? LabResponsiveTheme.formFactorOf(context);
-    final finalTheme = theme.withFormFactor(formFactor);
+
+    if (widget.formFactor != null) {
+      return LabTheme(
+        data: theme.withFormFactor(widget.formFactor!),
+        child: widget.child,
+      );
+    }
+
+    final width = MediaQuery.sizeOf(context).width;
+    if (_cachedFormFactor == null ||
+        (_lastWidth != null && (width - _lastWidth!).abs() > 50)) {
+      if (width < 440) {
+        _cachedFormFactor = LabFormFactor.small;
+      } else if (width >= 440 && width < 880) {
+        _cachedFormFactor = LabFormFactor.medium;
+      } else {
+        _cachedFormFactor = LabFormFactor.big;
+      }
+      _lastWidth = width;
+    }
+
+    final finalTheme = theme.withFormFactor(_cachedFormFactor!);
 
     return LabTheme(
       data: finalTheme,

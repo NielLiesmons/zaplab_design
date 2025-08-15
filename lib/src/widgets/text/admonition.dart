@@ -39,7 +39,7 @@ class LabAdmonition extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: theme.radius.asBorderRadius().rad8,
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                  filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                   child: LabContainer(
                     padding: const LabEdgeInsets.symmetric(
                       horizontal: LabGapSize.s8,

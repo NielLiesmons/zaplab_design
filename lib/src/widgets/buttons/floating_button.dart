@@ -19,7 +19,7 @@ class LabFloatingButton extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(theme.sizes.s16),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+        filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
         child: LabButton(
           onTap: onTap,
           color: theme.colors.white16,

@@ -77,7 +77,6 @@ class LabInputTextField extends StatefulWidget {
 
 class _LabInputTextFieldState extends State<LabInputTextField> {
   late FocusNode _focusNode;
-  bool _hasHandledInitialFocus = false;
 
   @override
   void initState() {
@@ -96,10 +95,10 @@ class _LabInputTextFieldState extends State<LabInputTextField> {
   }
 
   void _handleFocusChange() {
-    if (_focusNode.hasFocus && !_hasHandledInitialFocus) {
-      _hasHandledInitialFocus = true;
+    if (_focusNode.hasFocus) {
+      // Always handle focus changes, not just initial focus
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted && widget.controller != null) {
+        if (mounted && widget.controller != null && _focusNode.hasFocus) {
           widget.controller!.selection = TextSelection.collapsed(
             offset: widget.controller!.text.length,
           );
@@ -116,8 +115,6 @@ class _LabInputTextFieldState extends State<LabInputTextField> {
       _focusNode = widget.focusNode ?? FocusNode();
       _focusNode.addListener(_handleFocusChange);
     }
-    // Reset the focus handling flag when the widget is updated
-    _hasHandledInitialFocus = false;
   }
 
   double get _minHeight {

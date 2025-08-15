@@ -4,11 +4,12 @@ import 'package:zaplab_design/zaplab_design.dart';
 class LabPopInModal extends CustomTransitionPage {
   LabPopInModal({
     required super.child,
+    required BuildContext context,
     super.key,
   }) : super(
           opaque: false,
           barrierDismissible: true,
-          barrierColor: const Color(0x00000000),
+          barrierColor: LabTheme.of(context).colors.black66,
           transitionDuration: Duration.zero,
           reverseTransitionDuration: Duration.zero,
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
