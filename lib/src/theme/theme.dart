@@ -13,7 +13,6 @@ export 'data/icons.dart';
 export 'data/line_thickness.dart';
 export 'data/radius.dart';
 export 'data/sizes.dart';
-export 'data/system_data.dart';
 export 'data/typography.dart';
 
 class LabTheme extends InheritedWidget {

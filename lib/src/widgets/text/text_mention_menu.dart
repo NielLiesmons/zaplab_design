@@ -32,8 +32,7 @@ class _LabTextMentionMenuState extends State<LabTextMentionMenu> {
   final ScrollController _scrollController = ScrollController();
 
   double _calculateWidth(BuildContext context) {
-    final theme = LabTheme.of(context);
-    final screenWidth = MediaQuery.of(context).size.width / theme.system.scale;
+    final screenWidth = MediaQuery.of(context).size.width;
     final selectionX = widget.position.dx;
 
     // Use the same logic as text selection controls
@@ -51,8 +50,7 @@ class _LabTextMentionMenuState extends State<LabTextMentionMenu> {
 
   Offset _calculatePosition(
       BuildContext context, double menuWidth, double menuHeight) {
-    final theme = LabTheme.of(context);
-    final screenWidth = MediaQuery.of(context).size.width / theme.system.scale;
+    final screenWidth = MediaQuery.of(context).size.width;
     final selectionX = widget.position.dx;
 
     // Use the same logic as text selection controls

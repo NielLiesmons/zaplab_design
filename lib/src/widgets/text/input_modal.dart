@@ -50,8 +50,7 @@ class LabInputModal extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
     final modalOffset = ValueNotifier<double>(0.0);
-    final keyboardHeight =
-        (MediaQuery.viewInsetsOf(context).bottom / theme.system.scale);
+    final keyboardHeight = (MediaQuery.viewInsetsOf(context).bottom);
     final bottomPadding =
         LabPlatformUtils.isMobile ? LabGapSize.s4 : LabGapSize.s16;
 

@@ -47,8 +47,7 @@ class _LabTextSelectionMenuState extends State<LabTextSelectionMenu>
   late final Animation<double> _scaleAnimation;
 
   double _calculateWidth(BuildContext context) {
-    final theme = LabTheme.of(context);
-    final screenWidth = MediaQuery.of(context).size.width / theme.system.scale;
+    final screenWidth = MediaQuery.of(context).size.width;
     final selectionX = widget.position.dx;
     final thirdOfScreen = screenWidth / 3;
 

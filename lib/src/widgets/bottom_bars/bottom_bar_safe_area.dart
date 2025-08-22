@@ -1,5 +1,4 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'dart:ui';
 
 class LabBottomBarSafeArea extends StatelessWidget {
   const LabBottomBarSafeArea({
@@ -9,7 +8,7 @@ class LabBottomBarSafeArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
-    final bottomPadding = MediaQuery.of(context).padding.bottom;
+    final bottomPadding = MediaQuery.viewPaddingOf(context).bottom;
 
     return Column(
       children: [

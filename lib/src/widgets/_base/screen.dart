@@ -139,7 +139,7 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
   }
 
   double get _menuHeight {
-    final topPadding = MediaQuery.of(context).padding.top;
+    final topPadding = MediaQuery.viewPaddingOf(context).top;
     final baseHeight = 94.0 + (LabPlatformUtils.isMobile ? topPadding : 38.0);
     final historyHeight =
         widget.history.length * LabTheme.of(context).sizes.s38;
@@ -308,7 +308,7 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
               opacity: _showTopZone ? 1.0 : 0.0,
               child: LabContainer(
                 height: LabPlatformUtils.isMobile
-                    ? MediaQuery.of(context).padding.top + 2
+                    ? MediaQuery.viewPaddingOf(context).top + 2
                     : 22,
                 decoration: BoxDecoration(
                   color: theme.colors.black,
@@ -378,14 +378,6 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
                                 : LabLineThicknessData.normal().medium,
                           ),
                         ),
-                      ),
-                      constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height *
-                                theme.system.scale -
-                            (_topBarHeight +
-                                (LabPlatformUtils.isMobile
-                                    ? MediaQuery.of(context).padding.top
-                                    : 20)),
                       ),
                       child: LabScaffold(
                         body: Stack(
@@ -718,7 +710,7 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
             right: theme.sizes.s16,
             bottom: theme.sizes.s16 +
                 (widget.bottomBarContent != null ? 70.0 : 0.0) +
-                MediaQuery.of(context).padding.bottom,
+                MediaQuery.viewPaddingOf(context).bottom,
             child: LabFloatingButton(
               icon: LabIcon.s12(
                 widget.startAtBottom

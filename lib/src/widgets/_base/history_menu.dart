@@ -115,7 +115,7 @@ class LabHistoryMenu extends StatelessWidget {
                           topRight: theme.radius.rad16,
                         ),
                         child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                          filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
                           child: LabContainer(
                             decoration: BoxDecoration(
                               color: theme.colors.white8,
@@ -168,7 +168,7 @@ class LabHistoryMenu extends StatelessWidget {
                           topRight: theme.radius.rad16,
                         ),
                         child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                          filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
                           child: TapBuilder(
                             onTap: () {
                               history[index].onTap?.call();

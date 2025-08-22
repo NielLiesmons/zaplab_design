@@ -170,8 +170,7 @@ class LabModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
-    final screenHeight =
-        MediaQuery.of(context).size.height / theme.system.scale;
+    final screenHeight = MediaQuery.of(context).size.height;
     final topBarVisible = ValueNotifier<bool>(false);
     final modalOffset = ValueNotifier<double>(0.0);
 
@@ -323,7 +322,7 @@ class LabModal extends StatelessWidget {
                     top: const LabRadiusData.normal().rad32,
                   ),
                   child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                    filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
                     child: LabContainer(
                       width: double.infinity,
                       decoration: BoxDecoration(color: theme.colors.gray66),
@@ -464,7 +463,7 @@ class LabModal extends StatelessWidget {
                             top: const LabRadiusData.normal().rad32,
                           ),
                           child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                            filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
                             child: LabContainer(
                               width: double.infinity,
                               decoration:
@@ -545,7 +544,7 @@ class LabModal extends StatelessWidget {
                               ),
                               child: BackdropFilter(
                                 filter:
-                                    ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                                    ImageFilter.blur(sigmaX: 14, sigmaY: 14),
                                 child: LabContainer(
                                   decoration: BoxDecoration(
                                     color: theme.colors.gray66,
@@ -595,7 +594,7 @@ class LabModal extends StatelessWidget {
       child: LabContainer(
         child: ClipRRect(
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+            filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
             child: LabContainer(
               padding: bottomBar != null
                   ? LabEdgeInsets.only(

@@ -149,65 +149,59 @@ class _LabTabViewState extends State<LabTabView> with TickerProviderStateMixin {
         // Main content that slides right
         SlideTransition(
           position: _slideAnimation,
-          child: SizedBox(
-            height: widget.scrollableContent
-                ? MediaQuery.of(context).size.height /
-                    LabTheme.of(context).system.scale
-                : null,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                LabTabBar(
-                  key: _tabBarKey,
-                  tabs: widget.tabs,
-                  selectedIndex: _selectedIndex,
-                  onTabSelected: (index) {
-                    widget.controller.animateTo(index);
-                  },
-                  onTabLongPress: (index) {
-                    _showOptionssModal(context, widget.tabs[index]);
-                  },
-                  onExpansionChanged: (expanded) async {
-                    setState(() => _isExpanded = expanded);
-                    if (expanded) {
-                      await Future.delayed(const Duration(milliseconds: 123));
-                      _slideController.forward();
-                    } else {
-                      _slideController.reverse();
-                    }
-                  },
-                ),
-                if (widget.scrollableContent)
-                  Expanded(
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
-                      child: Column(
-                        children: [
-                          if (widget.scrollOffsetHeight != null)
-                            SizedBox(
-                              height: widget.scrollOffsetHeight! *
-                                  (_scrollController.hasClients
-                                          ? _scrollController.position.pixels /
-                                              widget.scrollOffsetHeight!
-                                          : 0)
-                                      .clamp(0, 1),
-                            ),
-                          widget.tabs[_selectedIndex].content,
-                        ],
-                      ),
-                    ),
-                  )
-                else
-                  Flexible(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        minHeight: 0,
-                      ),
-                      child: widget.tabs[_selectedIndex].content,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              LabTabBar(
+                key: _tabBarKey,
+                tabs: widget.tabs,
+                selectedIndex: _selectedIndex,
+                onTabSelected: (index) {
+                  widget.controller.animateTo(index);
+                },
+                onTabLongPress: (index) {
+                  _showOptionssModal(context, widget.tabs[index]);
+                },
+                onExpansionChanged: (expanded) async {
+                  setState(() => _isExpanded = expanded);
+                  if (expanded) {
+                    await Future.delayed(const Duration(milliseconds: 123));
+                    _slideController.forward();
+                  } else {
+                    _slideController.reverse();
+                  }
+                },
+              ),
+              if (widget.scrollableContent)
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Column(
+                      children: [
+                        if (widget.scrollOffsetHeight != null)
+                          SizedBox(
+                            height: widget.scrollOffsetHeight! *
+                                (_scrollController.hasClients
+                                        ? _scrollController.position.pixels /
+                                            widget.scrollOffsetHeight!
+                                        : 0)
+                                    .clamp(0, 1),
+                          ),
+                        widget.tabs[_selectedIndex].content,
+                      ],
                     ),
                   ),
-              ],
-            ),
+                )
+              else
+                Flexible(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      minHeight: 0,
+                    ),
+                    child: widget.tabs[_selectedIndex].content,
+                  ),
+                ),
+            ],
           ),
         ),
 

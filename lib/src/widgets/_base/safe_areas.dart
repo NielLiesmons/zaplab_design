@@ -8,8 +8,9 @@ class LabTopSafeArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height:
-          LabPlatformUtils.isMobile ? MediaQuery.of(context).padding.top : 20.0,
+      height: LabPlatformUtils.isMobile
+          ? MediaQuery.viewPaddingOf(context).top
+          : 20.0,
     );
   }
 }
@@ -21,7 +22,7 @@ class LabBottomSafeArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).padding.bottom,
+      height: MediaQuery.viewPaddingOf(context).bottom,
     );
   }
 }

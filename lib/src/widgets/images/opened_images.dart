@@ -4,8 +4,7 @@ class LabOpenedImages {
   static void show(BuildContext context, List<String> images,
       {String? scrollToImage, String? ctaText, VoidCallback? onCtaTap}) {
     final theme = LabTheme.of(context);
-    final screenHeight =
-        MediaQuery.of(context).size.height / theme.system.scale;
+    final screenHeight = MediaQuery.of(context).size.height;
     final scrollController = ScrollController();
     final imageKeys = <String, GlobalKey>{};
 

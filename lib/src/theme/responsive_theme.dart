@@ -63,18 +63,6 @@ class LabResponsiveTheme extends StatefulWidget {
     return LabThemeColorMode.light;
   }
 
-  static LabFormFactor formFactorOf(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-
-    if (mediaQuery.size.width < 440) {
-      return LabFormFactor.small;
-    } else if (mediaQuery.size.width >= 440 && mediaQuery.size.width < 880) {
-      return LabFormFactor.medium;
-    } else {
-      return LabFormFactor.big;
-    }
-  }
-
   static LabTextScale textScaleOf(BuildContext context) => LabTextScale.normal;
 
   @override
@@ -94,8 +82,6 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
   LabColorsOverride? _lastColorsOverride;
 
   // Cache MediaQuery values to avoid calls on every build (Material-style caching)
-  LabFormFactor? _cachedFormFactor;
-  double? _lastWidth;
   ui.Brightness? _lastPlatformBrightness;
   bool? _lastHighContrast;
 
@@ -147,13 +133,6 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
     // Create new theme data
     var theme = LabThemeData.normal();
 
-    // Get system scale based on selection
-    final systemData = switch (currentSystemScale) {
-      LabSystemScale.small => LabSystemData.small(),
-      LabSystemScale.large => LabSystemData.large(),
-      LabSystemScale.normal => LabSystemData.normal(),
-    };
-
     // Apply typography based on text scale
     switch (currentTextScale) {
       case LabTextScale.small:
@@ -165,9 +144,6 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
       default:
         theme = theme.withTypography(LabTypographyData.normal());
     }
-
-    // Apply system scale to UI elements
-    theme = theme.withScale(systemData.scale);
 
     // Apply colors
     theme = switch (currentColorMode) {
@@ -212,20 +188,8 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
       );
     }
 
-    final width = MediaQuery.sizeOf(context).width;
-    if (_cachedFormFactor == null ||
-        (_lastWidth != null && (width - _lastWidth!).abs() > 50)) {
-      if (width < 440) {
-        _cachedFormFactor = LabFormFactor.small;
-      } else if (width >= 440 && width < 880) {
-        _cachedFormFactor = LabFormFactor.medium;
-      } else {
-        _cachedFormFactor = LabFormFactor.big;
-      }
-      _lastWidth = width;
-    }
-
-    final finalTheme = theme.withFormFactor(_cachedFormFactor!);
+    // Use default form factor instead of trying to calculate from MediaQuery
+    final finalTheme = theme.withFormFactor(LabFormFactor.medium);
 
     return LabTheme(
       data: finalTheme,

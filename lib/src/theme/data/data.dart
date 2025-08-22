@@ -10,7 +10,6 @@ import 'line_thickness.dart';
 import 'radius.dart';
 import 'sizes.dart';
 import 'typography.dart';
-import 'system_data.dart';
 
 class LabThemeData extends Equatable {
   const LabThemeData({
@@ -22,7 +21,6 @@ class LabThemeData extends Equatable {
     required this.radius,
     required this.sizes,
     required this.typography,
-    required this.system,
     TargetPlatform? platform,
   }) : _platform = platform;
 
@@ -39,7 +37,6 @@ class LabThemeData extends Equatable {
       radius: const LabRadiusData.normal(),
       sizes: LabSizesData.normal(),
       typography: LabTypographyData.normal(),
-      system: LabSystemData.normal(),
     );
   }
 
@@ -51,7 +48,6 @@ class LabThemeData extends Equatable {
   final LabRadiusData radius;
   final LabSizesData sizes;
   final LabTypographyData typography;
-  final LabSystemData system;
   final TargetPlatform? _platform;
   TargetPlatform get platform => _platform ?? defaultTargetPlatform;
 
@@ -78,7 +74,6 @@ class LabThemeData extends Equatable {
       radius: radius,
       sizes: sizes,
       typography: typography,
-      system: system,
       platform: platform,
     );
   }
@@ -93,7 +88,6 @@ class LabThemeData extends Equatable {
       radius: radius,
       sizes: sizes,
       typography: typography,
-      system: system,
       platform: platform,
     );
   }
@@ -112,7 +106,6 @@ class LabThemeData extends Equatable {
       radius: radius,
       sizes: sizes,
       typography: typography ?? this.typography,
-      system: system,
       platform: platform,
     );
   }
@@ -127,7 +120,6 @@ class LabThemeData extends Equatable {
       radius: radius,
       sizes: sizes,
       typography: typography,
-      system: LabSystemData(scale: scale),
       platform: platform,
     );
   }
@@ -142,7 +134,6 @@ class LabThemeData extends Equatable {
       radius: radius,
       sizes: sizes,
       typography: typography,
-      system: system,
       platform: platform,
     );
   }
