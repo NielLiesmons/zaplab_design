@@ -1,94 +1,93 @@
 import 'package:zaplab_design/zaplab_design.dart';
-import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:tap_builder/tap_builder.dart';
 
 class ImageViewerUtils {
-  static void showFullScreenImage(
-    BuildContext context,
-    String imageUrl, {
-    TransformationController? transformationController,
-  }) {
-    final theme = LabTheme.of(context);
-    final controller = transformationController ?? TransformationController();
+  static const List<String> _videoExtensions = [
+    'mp4',
+    'webm',
+    'avi',
+    'mov',
+    'mkv',
+    'flv',
+    'wmv',
+    'm4v'
+  ];
 
+  static bool isVideoUrl(String url) {
+    final lowercaseUrl = url.toLowerCase();
+    return _videoExtensions.any((ext) => lowercaseUrl.endsWith('.$ext'));
+  }
+
+  static void showFullScreenImage(BuildContext context, String url) {
+    if (isVideoUrl(url)) {
+      // For videos, push the full screen video player
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              LabFullScreenVideoPlayer(videoUrl: url),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        ),
+      );
+    } else {
+      // For images, use the custom image viewer
+      _showCustomImageViewer(context, url);
+    }
+  }
+
+  static void _showCustomImageViewer(BuildContext context, String url) {
     Navigator.of(context).push(
       PageRouteBuilder(
-        opaque: false,
-        barrierDismissible: true,
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
-            child: LabContainer(
-              decoration: BoxDecoration(
-                color: theme.colors.black66,
-              ),
-              child: Stack(
-                children: [
-                  // Background tap area (next to image)
-                  Positioned.fill(
-                    child: TapBuilder(
-                      onTap: () => Navigator.of(context).pop(),
-                      builder: (context, state, hasFocus) {
-                        return Container(
-                          color: theme.colors.black33,
-                        );
-                      },
-                    ),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            _CustomImageViewer(imageUrl: url),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
+    );
+  }
+}
+
+class _CustomImageViewer extends StatelessWidget {
+  final String imageUrl;
+
+  const _CustomImageViewer({required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = LabTheme.of(context);
+
+    return LabScaffold(
+      backgroundColor: theme.colors.black,
+      body: Stack(
+        children: [
+          // Full screen image
+          Center(
+            child: InteractiveViewer(
+              minScale: 0.5,
+              maxScale: 4.0,
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                fit: BoxFit.contain,
+                errorWidget: (context, url, error) => Center(
+                  child: LabText(
+                    "Image not found",
+                    color: theme.colors.white33,
                   ),
-                  // Full screen zoomable image with swipe detection
-                  Center(
-                    child: InteractiveViewer(
-                      minScale: 0.5,
-                      maxScale: 4.0,
-                      transformationController: controller,
-                      onInteractionEnd: (details) {
-                        // Only exit on swipe down when at minimum scale (full width)
-                        final matrix = controller.value;
-                        final scale = matrix.getMaxScaleOnAxis();
-                        if (scale <= 0.5 &&
-                            details.velocity.pixelsPerSecond.dy > 300) {
-                          Navigator.of(context).pop();
-                        }
-                      },
-                      child: CachedNetworkImage(
-                        imageUrl: imageUrl,
-                        fit: BoxFit.contain,
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) =>
-                                const Center(child: LabLoadingDots()),
-                        errorWidget: (context, url, error) => Center(
-                          child: LabText(
-                            "Image not found",
-                            color: LabTheme.of(context).colors.white33,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Close button
-                  Positioned(
-                    top: MediaQuery.of(context).padding.top + theme.sizes.s16,
-                    right: theme.sizes.s16,
-                    child: LabCrossButton(
-                      onTap: () => Navigator.of(context).pop(),
-                      size: LabCrossButtonSize.s32,
-                      isLight: false,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
-          );
-        },
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
+          ),
+          // Close button
+          Positioned(
+            top: MediaQuery.viewPaddingOf(context).top + 16,
+            right: 16,
+            child: LabCrossButton.s32(
+              onTap: () => Navigator.of(context).pop(),
+            ),
+          ),
+        ],
       ),
     );
   }

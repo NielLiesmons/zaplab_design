@@ -379,6 +379,14 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
+                      constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height *
+                                theme.system.scale -
+                            (_topBarHeight +
+                                (LabPlatformUtils.isMobile
+                                    ? MediaQuery.viewPaddingOf(context).top
+                                    : 20)),
+                      ),
                       child: LabScaffold(
                         body: Stack(
                           children: [

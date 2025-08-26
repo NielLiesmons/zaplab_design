@@ -392,7 +392,7 @@ class LabModal extends StatelessWidget {
     double initialChildSize = 0.80,
   }) {
     final bottomBarHeight = bottomBar != null ? theme.sizes.s64 : 0.0;
-    final bottomSafeArea = MediaQuery.of(context).padding.bottom;
+    final bottomSafeArea = MediaQuery.viewPaddingOf(context).bottom;
     final totalBottomPadding =
         bottomBar != null ? bottomBarHeight + bottomSafeArea : 0.0;
 

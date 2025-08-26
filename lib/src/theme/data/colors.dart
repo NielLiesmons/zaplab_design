@@ -388,13 +388,13 @@ class LabColorsData extends Equatable {
   /// Light mode
   factory LabColorsData.light([LabColorsOverride? override]) => LabColorsData(
         /// Colors (full or 66% / 33% transparent)
-        white: override?.white ?? const Color(0xFF332300),
+        white: override?.white ?? const Color.fromARGB(255, 26, 18, 1),
         white66: override?.white66 ??
-            const Color(0xFF332300).withValues(alpha: 0.60),
+            const Color.fromARGB(255, 26, 18, 1).withValues(alpha: 0.66),
         white33: override?.white33 ??
-            const Color(0xFF332300).withValues(alpha: 0.31),
+            const Color.fromARGB(255, 26, 18, 1).withValues(alpha: 0.33),
         white16: override?.white16 ??
-            const Color(0xFF332300).withValues(alpha: 0.18),
+            const Color.fromARGB(255, 26, 18, 1).withValues(alpha: 0.18),
         white8:
             override?.white8 ?? const Color(0xFF332300).withValues(alpha: 0.10),
         whiteEnforced: override?.whiteEnforced ?? const Color(0xFFEDE4D7),

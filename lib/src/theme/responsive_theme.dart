@@ -63,6 +63,18 @@ class LabResponsiveTheme extends StatefulWidget {
     return LabThemeColorMode.light;
   }
 
+  static LabFormFactor formFactorOf(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+
+    if (mediaQuery.size.width < 440) {
+      return LabFormFactor.small;
+    } else if (mediaQuery.size.width >= 440 && mediaQuery.size.width < 880) {
+      return LabFormFactor.medium;
+    } else {
+      return LabFormFactor.big;
+    }
+  }
+
   static LabTextScale textScaleOf(BuildContext context) => LabTextScale.normal;
 
   @override
@@ -82,6 +94,8 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
   LabColorsOverride? _lastColorsOverride;
 
   // Cache MediaQuery values to avoid calls on every build (Material-style caching)
+  LabFormFactor? _cachedFormFactor;
+  double? _lastWidth;
   ui.Brightness? _lastPlatformBrightness;
   bool? _lastHighContrast;
 
@@ -96,21 +110,23 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
     return scale;
   }
 
-  void setColorMode(LabThemeColorMode? mode) {
-    if (_colorMode != mode) {
-      setState(() => _colorMode = mode);
-    }
-  }
-
   void setTextScale(LabTextScale scale) {
     if (_textScale != scale) {
-      setState(() => _textScale = scale);
+      setState(() {
+        _textScale = scale;
+        // Invalidate cache when text scale changes
+        _cachedThemeData = null;
+      });
     }
   }
 
-  void setSystemScale(LabSystemScale scale) {
-    if (_systemScale != scale) {
-      setState(() => _systemScale = scale);
+  void setColorMode(LabThemeColorMode? mode) {
+    if (_colorMode != mode) {
+      setState(() {
+        _colorMode = mode;
+        // Invalidate cache when color mode changes
+        _cachedThemeData = null;
+      });
     }
   }
 
@@ -130,20 +146,31 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
       return _cachedThemeData!;
     }
 
-    // Create new theme data
-    var theme = LabThemeData.normal();
+    // Create new theme data with proper typography
+    LabThemeData theme;
 
     // Apply typography based on text scale
     switch (currentTextScale) {
       case LabTextScale.small:
-        theme = theme.withTypography(LabTypographyData.small());
+        theme = LabThemeData.normal().withTypography(LabTypographyData.small());
         break;
       case LabTextScale.large:
-        theme = theme.withTypography(LabTypographyData.large());
+        theme = LabThemeData.normal().withTypography(LabTypographyData.large());
         break;
       default:
-        theme = theme.withTypography(LabTypographyData.normal());
+        theme =
+            LabThemeData.normal().withTypography(LabTypographyData.normal());
     }
+
+    // Get system scale based on selection
+    final systemData = switch (currentSystemScale) {
+      LabSystemScale.small => LabSystemData.small(),
+      LabSystemScale.large => LabSystemData.large(),
+      LabSystemScale.normal => LabSystemData.normal(),
+    };
+
+    // Apply system scale to UI elements
+    theme = theme.withScale(systemData.scale);
 
     // Apply colors
     theme = switch (currentColorMode) {
@@ -188,8 +215,20 @@ class LabResponsiveThemeState extends State<LabResponsiveTheme> {
       );
     }
 
-    // Use default form factor instead of trying to calculate from MediaQuery
-    final finalTheme = theme.withFormFactor(LabFormFactor.medium);
+    final width = MediaQuery.sizeOf(context).width;
+    if (_cachedFormFactor == null ||
+        (_lastWidth != null && (width - _lastWidth!).abs() > 50)) {
+      if (width < 440) {
+        _cachedFormFactor = LabFormFactor.small;
+      } else if (width >= 440 && width < 880) {
+        _cachedFormFactor = LabFormFactor.medium;
+      } else {
+        _cachedFormFactor = LabFormFactor.big;
+      }
+      _lastWidth = width;
+    }
+
+    final finalTheme = theme.withFormFactor(_cachedFormFactor!);
 
     return LabTheme(
       data: finalTheme,

@@ -1,5 +1,6 @@
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:models/models.dart';
+import 'package:zaplab_design/src/widgets/images/image_viewer_utils.dart';
 
 class LabCompactTextRenderer extends StatelessWidget {
   final Model model;
@@ -73,6 +74,13 @@ class LabCompactTextRenderer extends StatelessWidget {
             .where((line) => line.startsWith('http'))
             .toList();
         if (urls.isNotEmpty) {
+          // Determine if all are videos
+          final allVideos = urls.every((u) => ImageViewerUtils.isVideoUrl(u));
+          final isPlural = urls.length > 1;
+          final label = allVideos
+              ? (isPlural ? 'Videos' : 'Video')
+              : (isPlural ? 'Images' : 'Image');
+
           // Add a space before the image to ensure proper spacing
           spans.add(TextSpan(
             text: '',
@@ -85,6 +93,7 @@ class LabCompactTextRenderer extends StatelessWidget {
             alignment: PlaceholderAlignment.middle,
             child: Row(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 isMedium
                     ? LabIcon.s16(
@@ -98,11 +107,11 @@ class LabCompactTextRenderer extends StatelessWidget {
                 isMedium ? const LabGap.s8() : const LabGap.s6(),
                 isMedium
                     ? LabText.reg14(
-                        urls.length > 1 ? '${urls.length} Images  ' : 'Image  ',
+                        isPlural ? '${urls.length} $label  ' : '$label  ',
                         color: derivedTextColor.withValues(alpha: 0.44),
                       )
                     : LabText.reg12(
-                        urls.length > 1 ? '${urls.length} Images  ' : 'Image  ',
+                        isPlural ? '${urls.length} $label  ' : '$label  ',
                         color: derivedTextColor.withValues(alpha: 0.44),
                       ),
               ],
@@ -162,58 +171,49 @@ class LabCompactTextRenderer extends StatelessWidget {
                     builder: (context, snapshot) {
                       return Row(
                         mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          LabEmojiContentType(
-                            contentType: snapshot.data?.model == null
-                                ? 'unknown'
-                                : getModelContentType(snapshot.data?.model),
-                            size: emojiSize,
-                            opacity: 0.66,
-                          ),
-                          isMedium ? const LabGap.s8() : const LabGap.s6(),
-                          isMedium
-                              ? LabText.reg14(
-                                  snapshot.data?.model == null
-                                      ? 'Nostr Publication  '
-                                      : getModelContentType(
-                                                  snapshot.data?.model) ==
-                                              'nostr'
-                                          ? 'Nostr Publication  '
-                                          : getModelContentType(
-                                                      snapshot.data?.model) ==
-                                                  'chat'
-                                              ? 'Message  '
-                                              : getModelContentType(snapshot
-                                                          .data?.model)[0]
-                                                      .toUpperCase() +
-                                                  getModelContentType(
-                                                          snapshot.data?.model)
-                                                      .substring(1) +
-                                                  ("  "),
-                                  color:
-                                      derivedTextColor.withValues(alpha: 0.44),
-                                )
-                              : LabText.reg12(
-                                  snapshot.data?.model == null
-                                      ? 'Nostr Publication  '
-                                      : getModelContentType(
-                                                  snapshot.data?.model) ==
-                                              'nostr'
-                                          ? 'Nostr Publication  '
-                                          : getModelContentType(
-                                                      snapshot.data?.model) ==
-                                                  'chat'
-                                              ? 'Message  '
-                                              : getModelContentType(snapshot
-                                                          .data?.model)[0]
-                                                      .toUpperCase() +
-                                                  getModelContentType(
-                                                          snapshot.data?.model)
-                                                      .substring(1) +
-                                                  ("  "),
-                                  color:
-                                      derivedTextColor.withValues(alpha: 0.44),
-                                ),
+                          // Don't show anything for ChatMessage or Comment (Reply) models
+                          if (snapshot.data?.model != null &&
+                              snapshot.data?.model is! ChatMessage &&
+                              snapshot.data?.model is! Comment) ...[
+                            LabEmojiContentType(
+                              contentType:
+                                  getModelContentType(snapshot.data?.model),
+                              size: emojiSize,
+                              opacity: 0.66,
+                            ),
+                            isMedium ? const LabGap.s8() : const LabGap.s6(),
+                            isMedium
+                                ? LabText.reg14(
+                                    getModelContentType(snapshot.data?.model) ==
+                                            'nostr'
+                                        ? 'Nostr Publication  '
+                                        : getModelContentType(
+                                                    snapshot.data?.model)[0]
+                                                .toUpperCase() +
+                                            getModelContentType(
+                                                    snapshot.data?.model)
+                                                .substring(1) +
+                                            ("  "),
+                                    color: derivedTextColor.withValues(
+                                        alpha: 0.44),
+                                  )
+                                : LabText.reg12(
+                                    getModelContentType(snapshot.data?.model) ==
+                                            'nostr'
+                                        ? 'Nostr Publication  '
+                                        : getModelContentType(
+                                                    snapshot.data?.model)[0]
+                                                .toUpperCase() +
+                                            getModelContentType(
+                                                    snapshot.data?.model)
+                                                .substring(1) +
+                                            ("  "),
+                                    color: derivedTextColor.withValues(
+                                        alpha: 0.44),
+                                  ),
+                          ],
                         ],
                       );
                     },

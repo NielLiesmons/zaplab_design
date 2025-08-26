@@ -105,7 +105,7 @@ class _LabTextMentionMenuState extends State<LabTextMentionMenu> {
     // Platform-specific positioning adjustments
     final isMobile = LabPlatformUtils.isMobile;
     final xOffset = isMobile ? -8.0 : -76.0;
-    final yOffset = isMobile ? -menuHeight - 6.0 : -menuHeight + 19.0;
+    final yOffset = isMobile ? -menuHeight + 12.0 : -menuHeight + 19.0;
 
     return Transform.translate(
       offset: Offset(xOffset, yOffset),

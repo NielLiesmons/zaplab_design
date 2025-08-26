@@ -33,7 +33,8 @@ class _LabTextEmojiMenuState extends State<LabTextEmojiMenu> {
   final ScrollController _scrollController = ScrollController();
 
   double _calculateWidth(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final theme = LabTheme.of(context);
+    final screenWidth = MediaQuery.of(context).size.width / theme.system.scale;
     final selectionX = widget.position.dx;
 
     // Use the same logic as text selection controls
@@ -95,7 +96,7 @@ class _LabTextEmojiMenuState extends State<LabTextEmojiMenu> {
     // Platform-specific positioning adjustments
     final isMobile = LabPlatformUtils.isMobile;
     final xOffset = isMobile ? -8.0 : -76.0;
-    final yOffset = isMobile ? -menuHeight - 6.0 : -menuHeight + 19.0;
+    final yOffset = isMobile ? -menuHeight + 12.0 : -menuHeight + 19.0;
 
     return Transform.translate(
       offset: Offset(xOffset, yOffset),

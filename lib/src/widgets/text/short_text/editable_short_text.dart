@@ -1092,7 +1092,8 @@ class LabEditableShortTextState extends State<LabEditableShortText>
     final Offset globalOffset = renderBox.localToGlobal(offset);
 
     // Use the same positioning logic as text selection controls
-    final screenWidth = MediaQuery.of(context).size.width;
+    final theme = LabTheme.of(context);
+    final screenWidth = MediaQuery.of(context).size.width / theme.system.scale;
 
     // Calculate x offset based on which third of the screen we're in
     final double xOffset = globalOffset.dx <= screenWidth / 3

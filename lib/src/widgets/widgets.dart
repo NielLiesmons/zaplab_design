@@ -102,6 +102,9 @@ export 'images/image_stack.dart';
 export 'images/image_upload_card.dart';
 export 'images/opened_images.dart';
 
+// Videos
+export 'videos/full_screen_video_player.dart';
+
 // Interactions
 export 'interactions/interaction_pills.dart';
 export 'interactions/interaction_bar.dart';

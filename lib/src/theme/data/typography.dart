@@ -1191,7 +1191,7 @@ class LabTypographyData extends Equatable {
         reg14.named('reg14'),
         bold12.named('bold12'),
         med12.named('med12'),
-        reg12.named('reg26'),
+        reg12.named('reg12'),
         bold10.named('bold10'),
         med10.named('med10'),
         reg10.named('reg10'),
@@ -1210,8 +1210,10 @@ class LabTypographyData extends Equatable {
         regArticle.named('regArticle'),
         regArticleSmall.named('regArticleSmall'),
         linkArticle.named('linkArticle'),
-        boldWiki.named('boldArticle'),
+        boldWiki.named('boldWiki'),
         regWiki.named('regWiki'),
         linkWiki.named('linkWiki'),
+        code.named('code'),
+        caption.named('caption'),
       ];
 }

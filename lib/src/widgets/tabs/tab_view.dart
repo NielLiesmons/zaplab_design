@@ -138,7 +138,7 @@ class _LabTabViewState extends State<LabTabView> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
-    final bottomPadding = MediaQuery.of(context).padding.bottom;
+    final bottomPadding = MediaQuery.viewPaddingOf(context).bottom;
     final currentTab = widget.tabs[_selectedIndex];
     final floatingButtonBottom = currentTab.bottomBar != null
         ? (currentTab.bottomBar is LabBottomBarSafeArea ? 16 : 84)
@@ -219,8 +219,8 @@ class _LabTabViewState extends State<LabTabView> with TickerProviderStateMixin {
                 ConstrainedBox(
                   constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(context).size.height * 0.66 -
-                        MediaQuery.of(context).padding.top -
-                        MediaQuery.of(context).padding.bottom,
+                        MediaQuery.viewPaddingOf(context).top -
+                        MediaQuery.viewPaddingOf(context).bottom,
                   ),
                   child: SingleChildScrollView(
                     child: LabContainer(

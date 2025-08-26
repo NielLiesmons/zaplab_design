@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:zaplab_design/zaplab_design.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'image_viewer_utils.dart';
+import 'video_preview_cache.dart';
+import 'package:video_player/video_player.dart';
 
 class LabImageStack extends StatefulWidget {
   final List<String> images;
@@ -22,7 +24,7 @@ class LabImageStack extends StatefulWidget {
 
   static void _showFullScreen(BuildContext context, List<String> images) {
     if (images.length == 1) {
-      // For single images, go directly to full screen view
+      // For single images/videos, go directly to full screen view
       ImageViewerUtils.showFullScreenImage(context, images[0]);
     } else {
       // For multiple images, use the existing LabOpenedImages.show
@@ -40,19 +42,58 @@ class _LabImageStackState extends State<LabImageStack> {
   bool _isHovered = false;
   ImageStreamListener? _imageStreamListener;
   ImageStream? _imageStream;
+  Map<String, VideoPlayerController?> _videoControllers = {};
 
   @override
   void initState() {
     super.initState();
     _resolveImage();
+    _initializeVideoControllers();
+  }
+
+  @override
+  void didUpdateWidget(covariant LabImageStack oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Release old video controllers
+    for (final url in oldWidget.images) {
+      if (_isVideo(url) && !widget.images.contains(url)) {
+        VideoPreviewCache.release(url);
+        _videoControllers.remove(url);
+      }
+    }
+
+    // Initialize new video controllers
+    if (oldWidget.images != widget.images) {
+      _initializeVideoControllers();
+    }
   }
 
   @override
   void dispose() {
+    // Release all video controllers
+    for (final url in _videoControllers.keys) {
+      VideoPreviewCache.release(url);
+    }
+    _videoControllers.clear();
+
     if (_imageStreamListener != null && _imageStream != null) {
       _imageStream!.removeListener(_imageStreamListener!);
     }
     super.dispose();
+  }
+
+  void _initializeVideoControllers() {
+    for (final url in widget.images) {
+      if (_isVideo(url) && !_videoControllers.containsKey(url)) {
+        VideoPreviewCache.acquire(url).then((controller) {
+          if (!mounted) return;
+          setState(() {
+            _videoControllers[url] = controller;
+          });
+        });
+      }
+    }
   }
 
   void _resolveImage() {
@@ -68,6 +109,79 @@ class _LabImageStackState extends State<LabImageStack> {
       });
     });
     _imageStream!.addListener(_imageStreamListener!);
+  }
+
+  bool _isVideo(String url) {
+    return ImageViewerUtils.isVideoUrl(url);
+  }
+
+  Widget _buildPlayIcon() {
+    final theme = LabTheme.of(context);
+    return Center(
+      child: LabIcon(
+        theme.icons.characters.play,
+        size: LabIconSize.s32,
+        color: theme.colors.white,
+      ),
+    );
+  }
+
+  Widget _buildImageOrVideo(String url, double width, double height,
+      {double opacity = 1.0}) {
+    final theme = LabTheme.of(context);
+
+    if (_isVideo(url)) {
+      final controller = _videoControllers[url];
+      if (controller != null && controller.value.isInitialized) {
+        return ClipRRect(
+          borderRadius: theme.radius.asBorderRadius().rad16,
+          child: Opacity(
+            opacity: opacity,
+            child: Center(
+              child: AspectRatio(
+                aspectRatio: controller.value.aspectRatio,
+                child: SizedBox(
+                  width: width,
+                  height: height,
+                  child: VideoPlayer(controller),
+                ),
+              ),
+            ),
+          ),
+        );
+      } else {
+        return Opacity(
+          opacity: opacity,
+          child: LabContainer(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              color: theme.colors.black,
+              borderRadius: theme.radius.asBorderRadius().rad16,
+            ),
+            child: const Center(child: LabSkeletonLoader()),
+          ),
+        );
+      }
+    } else {
+      return Opacity(
+        opacity: opacity,
+        child: CachedNetworkImage(
+          imageUrl: url,
+          fit: BoxFit.cover,
+          width: width,
+          height: height,
+          progressIndicatorBuilder: (context, url, downloadProgress) =>
+              const LabSkeletonLoader(),
+          errorWidget: (context, url, error) => Center(
+            child: LabText(
+              "Image not found",
+              color: theme.colors.white33,
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   Size _calculateContainerSize() {
@@ -157,23 +271,11 @@ class _LabImageStackState extends State<LabImageStack> {
                             width: LabLineThicknessData.normal().thin,
                           ),
                         ),
-                        child: Opacity(
+                        child: _buildImageOrVideo(
+                          widget.images[2],
+                          containerSize.width - 80,
+                          containerSize.height - 80,
                           opacity: 0.6,
-                          child: CachedNetworkImage(
-                            imageUrl: widget.images[2],
-                            fit: BoxFit.cover,
-                            width: containerSize.width - 80,
-                            height: containerSize.height - 80,
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                    const LabSkeletonLoader(),
-                            errorWidget: (context, url, error) => Center(
-                              child: LabText(
-                                "Image not found",
-                                color: theme.colors.white33,
-                              ),
-                            ),
-                          ),
                         ),
                       ),
                     ),
@@ -212,23 +314,11 @@ class _LabImageStackState extends State<LabImageStack> {
                             ),
                           ],
                         ),
-                        child: Opacity(
+                        child: _buildImageOrVideo(
+                          widget.images[1],
+                          containerSize.width - 40,
+                          containerSize.height - 40,
                           opacity: 0.8,
-                          child: CachedNetworkImage(
-                            imageUrl: widget.images[1],
-                            fit: BoxFit.cover,
-                            width: containerSize.width - 40,
-                            height: containerSize.height - 40,
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                    const LabSkeletonLoader(),
-                            errorWidget: (context, url, error) => Center(
-                              child: LabText(
-                                "Image not found",
-                                color: theme.colors.white33,
-                              ),
-                            ),
-                          ),
                         ),
                       ),
                     ),
@@ -260,21 +350,13 @@ class _LabImageStackState extends State<LabImageStack> {
                     ),
                     child: Stack(
                       children: [
-                        CachedNetworkImage(
-                          imageUrl: widget.images[0],
-                          fit: BoxFit.cover,
-                          width: containerSize.width,
-                          height: containerSize.height,
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) =>
-                                  const LabSkeletonLoader(),
-                          errorWidget: (context, url, error) => Center(
-                            child: LabText(
-                              "Image not found",
-                              color: theme.colors.white33,
-                            ),
-                          ),
+                        _buildImageOrVideo(
+                          widget.images[0],
+                          containerSize.width,
+                          containerSize.height,
                         ),
+                        // Play icon for videos
+                        if (_isVideo(widget.images[0])) _buildPlayIcon(),
                         // Counter for additional images
                         if (widget.images.length > 1)
                           Positioned(

@@ -20,6 +20,8 @@ dependencies:
   just_audio: ^0.9.36
   just_waveform: ^0.0.6
   models: ^0.3.3
+  video_player: ^2.8.3
+
   crypto: ^3.0.3
   hex: ^0.2.0
   bip39: ^1.0.6

@@ -9,6 +9,7 @@ import 'icons.dart';
 import 'line_thickness.dart';
 import 'radius.dart';
 import 'sizes.dart';
+import 'system_data.dart';
 import 'typography.dart';
 
 class LabThemeData extends Equatable {
@@ -20,6 +21,7 @@ class LabThemeData extends Equatable {
     required this.icons,
     required this.radius,
     required this.sizes,
+    required this.system,
     required this.typography,
     TargetPlatform? platform,
   }) : _platform = platform;
@@ -36,6 +38,7 @@ class LabThemeData extends Equatable {
       icons: LabIconsData.normal(),
       radius: const LabRadiusData.normal(),
       sizes: LabSizesData.normal(),
+      system: LabSystemData.normal(),
       typography: LabTypographyData.normal(),
     );
   }
@@ -47,6 +50,7 @@ class LabThemeData extends Equatable {
   final LabIconsData icons;
   final LabRadiusData radius;
   final LabSizesData sizes;
+  final LabSystemData system;
   final LabTypographyData typography;
   final TargetPlatform? _platform;
   TargetPlatform get platform => _platform ?? defaultTargetPlatform;
@@ -60,6 +64,7 @@ class LabThemeData extends Equatable {
         icons,
         radius,
         sizes,
+        system,
         typography,
         platform,
       ];
@@ -73,6 +78,7 @@ class LabThemeData extends Equatable {
       icons: icons,
       radius: radius,
       sizes: sizes,
+      system: system,
       typography: typography,
       platform: platform,
     );
@@ -87,6 +93,7 @@ class LabThemeData extends Equatable {
       icons: icons,
       radius: radius,
       sizes: sizes,
+      system: system,
       typography: typography,
       platform: platform,
     );
@@ -105,6 +112,7 @@ class LabThemeData extends Equatable {
       icons: icons,
       radius: radius,
       sizes: sizes,
+      system: system,
       typography: typography ?? this.typography,
       platform: platform,
     );
@@ -119,6 +127,7 @@ class LabThemeData extends Equatable {
       icons: icons,
       radius: radius,
       sizes: sizes,
+      system: LabSystemData(scale: scale),
       typography: typography,
       platform: platform,
     );
@@ -133,6 +142,7 @@ class LabThemeData extends Equatable {
       icons: icons,
       radius: radius,
       sizes: sizes,
+      system: system,
       typography: typography,
       platform: platform,
     );

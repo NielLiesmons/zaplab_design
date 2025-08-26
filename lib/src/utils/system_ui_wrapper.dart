@@ -52,9 +52,42 @@ class LabResponsiveWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollConfiguration(
-      behavior: const LabScrollBehavior(),
-      child: child,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final theme = LabTheme.of(context);
+        final scale = theme.system.scale;
+
+        final currentMediaQuery = MediaQuery.of(context);
+        final newSize = Size(
+          constraints.maxWidth,
+          constraints.maxHeight,
+        );
+
+        return ScrollConfiguration(
+          behavior: const LabScrollBehavior(),
+          child: MediaQuery(
+            data: currentMediaQuery.copyWith(
+              size: newSize,
+            ),
+            child: Center(
+              child: ClipRect(
+                child: OverflowBox(
+                  alignment: Alignment.topCenter,
+                  maxWidth: constraints.maxWidth / scale,
+                  minWidth: constraints.maxWidth / scale,
+                  maxHeight: constraints.maxHeight / scale,
+                  minHeight: constraints.maxHeight / scale,
+                  child: Transform.scale(
+                    scale: scale,
+                    alignment: Alignment.topCenter,
+                    child: child,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

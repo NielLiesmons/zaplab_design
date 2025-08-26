@@ -385,7 +385,7 @@ class LabShortTextParser {
         unicode: true);
     final RegExp hashtagPattern = RegExp(r'(?<=^|\s)#([a-zA-Z0-9_]+)');
     final RegExp imageUrlPattern = RegExp(
-        r'https?:\/\/[^\s<>"]+?\/[^\s<>"]*\.(png|jpe?g|gif|webp|avif)(\?[^"\s<>]*)?',
+        r'https?:\/\/[^\s<>"]+?\/[^\s<>"]*\.(png|jpe?g|gif|webp|avif|mp4|webm|avi|mov|mkv|flv|wmv|m4v)(\?[^"\s<>]*)?',
         caseSensitive: false);
     final RegExp audioUrlPattern = RegExp(
         r'https?:\/\/[^\s<>"]+?\/[^\s<>"]+?\.(mp3|wav|ogg|m4a)(\?[^"\s<>]*)?',
@@ -485,6 +485,7 @@ class LabShortTextParser {
       // Find the first match (lowest start)
       Match firstMatch = matches.reduce((a, b) {
         if (a!.start == b!.start) {
+          // Prioritize media types over general URLs
           if (a == imageUrlMatch) return a;
           if (b == imageUrlMatch) return b;
           if (a == audioUrlMatch) return a;
@@ -633,7 +634,6 @@ class LabShortTextParser {
           content: firstMatch[0]!.trim(),
         ));
 
-        // Skip any whitespace after the match before continuing
         int nextPosition = matchEnd;
         while (nextPosition < text.length && text[nextPosition] == ' ') {
           nextPosition++;

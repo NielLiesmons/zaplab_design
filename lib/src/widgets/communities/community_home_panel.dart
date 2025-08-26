@@ -204,7 +204,7 @@ class LabCommunityHomePanel extends StatelessWidget {
                                                               color: colors
                                                                   .white66,
                                                             ),
-                                                            const LabGap.s4(),
+                                                            const LabGap.s8(),
                                                             if (lastModel !=
                                                                 null)
                                                               Flexible(

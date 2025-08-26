@@ -241,22 +241,23 @@ class LabSettingsScreenState extends State<LabSettingsScreen>
                     onSelect: () {
                       print(
                           '[DEBUG] LabOtherProfileCard onSelect: pubkey=${entry['pubkey']}');
+
                       setState(() {
                         _visuallyActiveProfile = entry['profile'];
                         _isLoading = true;
                       });
-                      _animateProfileChange(() {
-                        if (entry['profile'] != null) {
-                          // Complete profile
-                          if (widget.onSelect != null) {
-                            widget.onSelect!(entry['profile']);
-                          }
-                        } else {
-                          // Incomplete profile - we have pubkey but no profile data
-                          if (widget.onSelectIncomplete != null) {
-                            widget.onSelectIncomplete!(entry['pubkey']);
-                          }
+
+                      if (entry['profile'] != null) {
+                        if (widget.onSelect != null) {
+                          widget.onSelect!(entry['profile']);
                         }
+                      } else {
+                        if (widget.onSelectIncomplete != null) {
+                          widget.onSelectIncomplete!(entry['pubkey']);
+                        }
+                      }
+
+                      _animateProfileChange(() {
                         setState(() {
                           _isLoading = false;
                         });

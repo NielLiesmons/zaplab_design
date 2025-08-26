@@ -3,8 +3,9 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:tap_builder/tap_builder.dart';
 import 'image_viewer_utils.dart';
+import 'video_preview_cache.dart';
+import 'package:video_player/video_player.dart';
 
 class LabFullWidthImage extends StatefulWidget {
   final String url;
@@ -24,11 +25,23 @@ class _LabFullWidthImageState extends State<LabFullWidthImage> {
   late Future<Size> _imageSizeFuture;
   final TransformationController _transformationController =
       TransformationController();
+  VideoPlayerController? _videoController;
+  bool _isVideo = false;
+  Duration? _videoDuration;
 
   @override
   void initState() {
     super.initState();
     _imageSizeFuture = _getImageSize();
+    _checkIfVideo();
+  }
+
+  @override
+  void dispose() {
+    if (_isVideo && _videoController != null) {
+      VideoPreviewCache.release(widget.url);
+    }
+    super.dispose();
   }
 
   Future<Size> _getImageSize() async {
@@ -49,11 +62,72 @@ class _LabFullWidthImageState extends State<LabFullWidthImage> {
     return completer.future;
   }
 
+  void _checkIfVideo() {
+    _isVideo = ImageViewerUtils.isVideoUrl(widget.url);
+    if (_isVideo) {
+      _initializeVideoController();
+    }
+  }
+
+  void _initializeVideoController() {
+    VideoPreviewCache.acquire(widget.url).then((controller) {
+      if (!mounted) return;
+      setState(() {
+        _videoController = controller;
+        _videoDuration = controller?.value.duration;
+      });
+    });
+  }
+
+  Widget _buildPlayIcon() {
+    final theme = LabTheme.of(context);
+    return Center(
+      child: LabIcon(
+        theme.icons.characters.play,
+        size: LabIconSize.s32,
+        color: theme.colors.white,
+      ),
+    );
+  }
+
+  Widget _buildDurationBadge() {
+    final theme = LabTheme.of(context);
+    if (_videoDuration == null) return const SizedBox.shrink();
+
+    final minutes = _videoDuration!.inMinutes;
+    final seconds = _videoDuration!.inSeconds % 60;
+    final durationText = '$minutes:${seconds.toString().padLeft(2, '0')}';
+
+    return Positioned(
+      bottom: 12,
+      right: 12,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+          child: LabContainer(
+            padding: const LabEdgeInsets.symmetric(
+              horizontal: LabGapSize.s8,
+              vertical: LabGapSize.s4,
+            ),
+            decoration: BoxDecoration(
+              color: theme.colors.black66,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: LabText.med12(
+              durationText,
+              color: theme.colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   void _showFullScreenImage(BuildContext context) {
     ImageViewerUtils.showFullScreenImage(
       context,
       widget.url,
-      transformationController: _transformationController,
     );
   }
 
@@ -111,22 +185,52 @@ class _LabFullWidthImageState extends State<LabFullWidthImage> {
                           width: LabLineThicknessData.normal().thin,
                         ),
                       ),
-                      child: Center(
-                        child: CachedNetworkImage(
-                          imageUrl: widget.url,
-                          fit: useMaxHeight ? BoxFit.contain : BoxFit.cover,
-                          width: constraints.maxWidth,
-                          height: useMaxHeight ? maxHeight : height,
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) =>
-                                  const LabSkeletonLoader(),
-                          errorWidget: (context, url, error) => Center(
-                            child: LabText(
-                              "Image not found",
-                              color: theme.colors.white33,
+                      child: Stack(
+                        children: [
+                          if (_isVideo)
+                            (_videoController != null &&
+                                    _videoController!.value.isInitialized)
+                                ? ClipRect(
+                                    child: FittedBox(
+                                      fit: useMaxHeight
+                                          ? BoxFit.contain
+                                          : BoxFit.cover,
+                                      child: SizedBox(
+                                        width:
+                                            _videoController!.value.size.width,
+                                        height:
+                                            _videoController!.value.size.height,
+                                        child: VideoPlayer(_videoController!),
+                                      ),
+                                    ),
+                                  )
+                                : const Center(child: LabSkeletonLoader())
+                          else
+                            Center(
+                              child: CachedNetworkImage(
+                                imageUrl: widget.url,
+                                fit: useMaxHeight
+                                    ? BoxFit.contain
+                                    : BoxFit.cover,
+                                width: constraints.maxWidth,
+                                height: useMaxHeight ? maxHeight : height,
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) =>
+                                        const LabSkeletonLoader(),
+                                errorWidget: (context, url, error) => Center(
+                                  child: LabText(
+                                    _isVideo
+                                        ? "Video not found"
+                                        : "Image not found",
+                                    color: theme.colors.white33,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          if (_isVideo) _buildPlayIcon(),
+                          if (_isVideo && _videoDuration != null)
+                            _buildDurationBadge(),
+                        ],
                       ),
                     ),
                   );

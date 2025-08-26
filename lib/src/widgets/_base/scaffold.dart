@@ -23,7 +23,7 @@ class LabScaffold extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(
           bottom: resizeToAvoidBottomInset
-              ? MediaQuery.viewInsetsOf(context).bottom
+              ? MediaQuery.viewInsetsOf(context).bottom / theme.system.scale
               : 0,
         ),
         child: body,
