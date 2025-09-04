@@ -123,10 +123,11 @@ export 'labels/label.dart';
 export 'labels/small_label.dart';
 
 // Loading
-export 'loading/loading_bar.dart';
-export 'loading/loading_dots.dart';
-export 'loading/loading_feed.dart';
-export 'loading/progress_bar.dart';
+export 'loading & confirming/confirmation_slider.dart';
+export 'loading & confirming/loading_bar.dart';
+export 'loading & confirming/loading_dots.dart';
+export 'loading & confirming/loading_feed.dart';
+export 'loading & confirming/progress_bar.dart';
 
 // Groups
 export 'groups/group_home_panel.dart';

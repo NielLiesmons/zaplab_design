@@ -38,6 +38,9 @@ String getModelName(Model? model) {
 
 String getModelNameFromContentType(String contenType) {
   if (contenType == 'nostr') return 'Nostr Publication';
+  if (contenType == 'chat') return 'Message';
+  if (contenType == 'forum') return 'Forum Post';
+
   return contenType[0].toUpperCase() + contenType.substring(1);
 }
 
@@ -714,13 +717,68 @@ class PartialProduct extends ParameterizableReplaceablePartialModel<Product> {
 // Task
 
 class Task extends ParameterizableReplaceableModel<Task> {
-  Task.fromMap(super.map, super.ref) : super.fromMap();
+  Task.fromMap(super.map, super.ref) : super.fromMap() {
+    // Initialize relationships after construction
+    statuses = HasMany(
+      ref,
+      RequestFilter<StatusEvent>(
+        authors: permittedStatusAuthors,
+        tags: {
+          '#a': {addressableId},
+        },
+        limit: 50,
+      ).toRequest(),
+    );
+  }
   String? get title => event.getFirstTagValue('title');
   String get content => event.content;
   String? get status => event.getFirstTagValue('status');
   String get slug => event.getFirstTagValue('d')!;
   DateTime? get publishedAt =>
       event.getFirstTagValue('published_at')?.toInt()?.toDate();
+
+  // Relationships for status events
+  late final HasMany<StatusEvent> statuses;
+
+  // Convenience getter for latest status (by createdAt)
+  StatusEvent? get latestStatusModel {
+    final list = statuses.toList();
+    if (list.isEmpty) return null;
+    list.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return list.first;
+  }
+
+  // Compute allowed pubkeys that can set status; fallback to author
+  Set<String> get permittedStatusAuthors {
+    final allowed = <String>{event.pubkey};
+    // Roles encoded as ["role", roleName, pubkey]
+    for (final tag in event.getTagSet('role')) {
+      if (tag.length >= 3) {
+        final roleName = tag[1];
+        final rolePubkey = tag[2];
+        switch (roleName) {
+          case 'status':
+          case 'assignee':
+          case 'manager':
+          case 'owner':
+          case 'moderator':
+            allowed.add(rolePubkey);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+    // Explicit allow-list tag: ["status_pubkey", <pubkey>]
+    for (final tag in event.getTagSet('status_pubkey')) {
+      if (tag.length >= 2) allowed.add(tag[1]);
+    }
+    return allowed;
+  }
+
+  // Addressable ID for this task: kind:pubkey:identifier
+  String get addressableId =>
+      '${event.kind}:${event.pubkey}:${event.identifier}';
 
   PartialTask copyWith({
     String? title,
@@ -753,6 +811,92 @@ class PartialTask extends ParameterizableReplaceablePartialModel<Task> {
       value); // This data should actually come from a separate event, not as part of the kind 35000
   set publishedAt(DateTime? value) =>
       event.addTagValue('published_at', value?.toSeconds().toString());
+}
+
+// Status Event (kind 1983) - for tracking status changes
+class StatusEvent extends RegularModel<StatusEvent> {
+  StatusEvent.fromMap(super.map, super.ref) : super.fromMap();
+
+  /// The event ID being updated (from 'e' tag)
+  String? get targetEventId => event.getFirstTagValue('e');
+
+  /// The addressable event being updated (from 'a' tag) - format: "kind:pubkey:d-identifier"
+  String? get targetAddressableEvent => event.getFirstTagValue('a');
+
+  /// The status value (from 'status' tag)
+  String? get status => event.getFirstTagValue('status');
+
+  /// The content describing the status change
+  String get content => event.content;
+
+  /// Get the target event kind if using addressable event format
+  int? get targetKind {
+    final addressable = targetAddressableEvent;
+    if (addressable != null && addressable.contains(':')) {
+      final parts = addressable.split(':');
+      if (parts.length >= 3) {
+        return int.tryParse(parts[0]);
+      }
+    }
+    return null;
+  }
+
+  /// Get the target pubkey if using addressable event format
+  String? get targetPubkey {
+    final addressable = targetAddressableEvent;
+    if (addressable != null && addressable.contains(':')) {
+      final parts = addressable.split(':');
+      if (parts.length >= 3) {
+        return parts[1];
+      }
+    }
+    return null;
+  }
+
+  /// Get the target identifier if using addressable event format
+  String? get targetIdentifier {
+    final addressable = targetAddressableEvent;
+    if (addressable != null && addressable.contains(':')) {
+      final parts = addressable.split(':');
+      if (parts.length >= 3) {
+        return parts[2];
+      }
+    }
+    return null;
+  }
+}
+
+class PartialStatusEvent extends RegularPartialModel<StatusEvent> {
+  PartialStatusEvent({
+    required String content,
+    String? targetEventId,
+    String? targetAddressableEvent,
+    required String status,
+  }) {
+    event.content = content;
+    if (targetEventId != null) {
+      event.addTagValue('e', targetEventId);
+    }
+    if (targetAddressableEvent != null) {
+      event.addTagValue('a', targetAddressableEvent);
+    }
+    event.addTagValue('status', status);
+  }
+
+  set content(String value) => event.content = value;
+  set targetEventId(String? value) {
+    if (value != null) {
+      event.addTagValue('e', value);
+    }
+  }
+
+  set targetAddressableEvent(String? value) {
+    if (value != null) {
+      event.addTagValue('a', value);
+    }
+  }
+
+  set status(String value) => event.addTagValue('status', value);
 }
 
 // Calendar Event

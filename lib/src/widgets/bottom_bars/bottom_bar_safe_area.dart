@@ -1,4 +1,5 @@
 import 'package:zaplab_design/zaplab_design.dart';
+import 'dart:ui';
 
 class LabBottomBarSafeArea extends StatelessWidget {
   const LabBottomBarSafeArea({
@@ -13,10 +14,18 @@ class LabBottomBarSafeArea extends StatelessWidget {
     return Column(
       children: [
         const LabDivider(),
-        LabContainer(
-          height: bottomPadding,
-          decoration: BoxDecoration(
-            color: theme.colors.black66,
+        ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 14,
+              sigmaY: 14,
+            ),
+            child: LabContainer(
+              height: bottomPadding,
+              decoration: BoxDecoration(
+                color: theme.colors.black66,
+              ),
+            ),
           ),
         ),
       ],

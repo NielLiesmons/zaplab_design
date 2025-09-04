@@ -31,6 +31,20 @@ class _LabFullScreenVideoPlayerState extends State<LabFullScreenVideoPlayer> {
 
   @override
   void dispose() {
+    // Pause the video when closing
+    if (_videoController != null && _videoController!.value.isInitialized) {
+      try {
+        _videoController!.pause();
+      } catch (e) {
+        // Ignore errors when disposing
+      }
+    }
+    // Remove listener to prevent assertion errors
+    try {
+      _videoController?.removeListener(_videoListener);
+    } catch (e) {
+      // Ignore errors when disposing
+    }
     // Don't release the controller here since it's shared
     super.dispose();
   }
@@ -46,44 +60,50 @@ class _LabFullScreenVideoPlayerState extends State<LabFullScreenVideoPlayer> {
     });
 
     // Set up listeners
-    controller?.addListener(_videoListener);
+    if (controller != null) {
+      controller.addListener(_videoListener);
+    }
 
     // Start playing automatically
-    await controller?.play();
-    setState(() {
-      _isPlaying = true;
-    });
+    try {
+      await controller?.play();
+      setState(() {
+        _isPlaying = true;
+      });
+    } catch (e) {
+      // Ignore play errors
+    }
   }
 
   void _videoListener() {
-    if (!mounted) return;
-    setState(() {
-      _position = _videoController?.value.position ?? Duration.zero;
-      _duration = _videoController?.value.duration ?? Duration.zero;
-    });
+    if (!mounted || _videoController == null) return;
+    try {
+      setState(() {
+        _position = _videoController?.value.position ?? Duration.zero;
+        _duration = _videoController?.value.duration ?? Duration.zero;
+      });
+    } catch (e) {
+      // Ignore listener errors
+    }
   }
 
   void _togglePlayPause() async {
-    if (_videoController == null) return;
+    if (_videoController == null || !_videoController!.value.isInitialized)
+      return;
 
-    if (_isPlaying) {
-      await _videoController!.pause();
-    } else {
-      await _videoController!.play();
+    try {
+      if (_isPlaying) {
+        await _videoController!.pause();
+      } else {
+        await _videoController!.play();
+      }
+
+      setState(() {
+        _isPlaying = !_isPlaying;
+      });
+    } catch (e) {
+      // Ignore play/pause errors
     }
-
-    setState(() {
-      _isPlaying = !_isPlaying;
-    });
-  }
-
-  void _toggleMute() async {
-    if (_videoController == null) return;
-
-    await _videoController!.setVolume(_isMuted ? 1.0 : 0.0);
-    setState(() {
-      _isMuted = !_isMuted;
-    });
   }
 
   void _toggleControls() {
@@ -96,6 +116,21 @@ class _LabFullScreenVideoPlayerState extends State<LabFullScreenVideoPlayer> {
     final minutes = duration.inMinutes;
     final seconds = duration.inSeconds % 60;
     return '$minutes:${seconds.toString().padLeft(2, '0')}';
+  }
+
+  void _seekToPosition(double progress) {
+    if (_videoController == null || _duration.inMilliseconds <= 0) return;
+
+    try {
+      final newPosition =
+          Duration(milliseconds: (progress * _duration.inMilliseconds).round());
+      _videoController?.seekTo(newPosition);
+      setState(() {
+        _position = newPosition;
+      });
+    } catch (e) {
+      // Ignore seek errors
+    }
   }
 
   @override
@@ -155,24 +190,10 @@ class _LabFullScreenVideoPlayerState extends State<LabFullScreenVideoPlayer> {
               right: 16,
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 LabCrossButton.s32(
                   onTap: () => Navigator.of(context).pop(),
-                ),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: _toggleMute,
-                      child: LabIcon(
-                        _isMuted
-                            ? theme.icons.characters.bell
-                            : theme.icons.characters.mic,
-                        size: LabIconSize.s24,
-                        color: theme.colors.white,
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
@@ -207,80 +228,90 @@ class _LabFullScreenVideoPlayerState extends State<LabFullScreenVideoPlayer> {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                // Progress bar
-                GestureDetector(
-                  onTapDown: (details) {
-                    if (_duration.inMilliseconds > 0) {
-                      final RenderBox renderBox =
-                          context.findRenderObject() as RenderBox;
-                      final localPosition =
-                          renderBox.globalToLocal(details.globalPosition);
-                      final progressWidth =
-                          MediaQuery.of(context).size.width - 32;
-                      final tapPosition = localPosition.dx;
-                      final progress =
-                          (tapPosition / progressWidth).clamp(0.0, 1.0);
-                      final newPosition = Duration(
-                          milliseconds:
-                              (progress * _duration.inMilliseconds).round());
-                      _videoController?.seekTo(newPosition);
-                      setState(() {
-                        _position = newPosition;
-                      });
-                    }
-                  },
-                  onPanUpdate: (details) {
-                    if (_duration.inMilliseconds > 0) {
-                      final RenderBox renderBox =
-                          context.findRenderObject() as RenderBox;
-                      final localPosition =
-                          renderBox.globalToLocal(details.globalPosition);
-                      final progressWidth =
-                          MediaQuery.of(context).size.width - 32;
-                      final dragPosition = localPosition.dx;
-                      final progress =
-                          (dragPosition / progressWidth).clamp(0.0, 1.0);
-                      final newPosition = Duration(
-                          milliseconds:
-                              (progress * _duration.inMilliseconds).round());
-                      _videoController?.seekTo(newPosition);
-                      setState(() {
-                        _position = newPosition;
-                      });
-                    }
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 8, // 8px high as requested
-                    decoration: BoxDecoration(
-                      color: theme.colors.gray66,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Stack(
-                      children: [
-                        // Progress bar (blurple)
-                        FractionallySizedBox(
-                          widthFactor: _duration.inMilliseconds > 0
-                              ? _position.inMilliseconds /
-                                  _duration.inMilliseconds
-                              : 0.0,
+                // Progress bar with draggable handle
+                SizedBox(
+                  height: 24, // Height to accommodate the 8px bar + 24px handle
+                  child: Stack(
+                    children: [
+                      // Progress bar (8px high as requested)
+                      Positioned(
+                        top: 8, // Position the bar below the handle
+                        left: 0,
+                        right: 0,
+                        child: GestureDetector(
+                          onTapDown: (details) {
+                            final RenderBox renderBox =
+                                context.findRenderObject() as RenderBox;
+                            final localPosition =
+                                renderBox.globalToLocal(details.globalPosition);
+                            final progressWidth =
+                                MediaQuery.of(context).size.width - 32;
+                            final tapPosition = localPosition.dx;
+                            final progress =
+                                (tapPosition / progressWidth).clamp(0.0, 1.0);
+                            _seekToPosition(progress);
+                          },
+                          onPanUpdate: (details) {
+                            final RenderBox renderBox =
+                                context.findRenderObject() as RenderBox;
+                            final localPosition =
+                                renderBox.globalToLocal(details.globalPosition);
+                            final progressWidth =
+                                MediaQuery.of(context).size.width - 32;
+                            final dragPosition = localPosition.dx;
+                            final progress =
+                                (dragPosition / progressWidth).clamp(0.0, 1.0);
+                            _seekToPosition(progress);
+                          },
                           child: Container(
+                            width: double.infinity,
+                            height: 8, // 8px high as requested
                             decoration: BoxDecoration(
-                              color: theme.colors.blurpleColor,
+                              color: theme.colors.gray66,
                               borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Align(
+                              alignment: Alignment
+                                  .centerLeft, // Fill from left to right
+                              child: FractionallySizedBox(
+                                widthFactor: _duration.inMilliseconds > 0
+                                    ? _position.inMilliseconds /
+                                        _duration.inMilliseconds
+                                    : 0.0,
+                                child: Container(
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    color: theme.colors.blurpleColor,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                        // Drag handle (24px, white, on top, not clipped)
-                        Positioned(
-                          left: _duration.inMilliseconds > 0
-                              ? (_position.inMilliseconds /
-                                          _duration.inMilliseconds) *
-                                      (MediaQuery.of(context).size.width - 32) -
-                                  12
-                              : -12,
-                          top:
-                              -8, // Positioned above the bar so it doesn't get clipped
+                      ),
+                      // Draggable handle (24px, white, on top of the bar)
+                      Positioned(
+                        left: _duration.inMilliseconds > 0
+                            ? (_position.inMilliseconds /
+                                        _duration.inMilliseconds) *
+                                    (MediaQuery.of(context).size.width - 32) -
+                                12
+                            : -12,
+                        top: 0, // Positioned at the top of the Stack
+                        child: GestureDetector(
+                          onPanUpdate: (details) {
+                            final RenderBox renderBox =
+                                context.findRenderObject() as RenderBox;
+                            final localPosition =
+                                renderBox.globalToLocal(details.globalPosition);
+                            final progressWidth =
+                                MediaQuery.of(context).size.width - 32;
+                            final dragPosition = localPosition.dx;
+                            final progress =
+                                (dragPosition / progressWidth).clamp(0.0, 1.0);
+                            _seekToPosition(progress);
+                          },
                           child: Container(
                             width: 24,
                             height: 24,
@@ -297,12 +328,12 @@ class _LabFullScreenVideoPlayerState extends State<LabFullScreenVideoPlayer> {
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
 
-                const SizedBox(height: 8),
+                const LabGap.s8(),
 
                 // Time and duration
                 Row(
@@ -318,6 +349,8 @@ class _LabFullScreenVideoPlayerState extends State<LabFullScreenVideoPlayer> {
                     ),
                   ],
                 ),
+
+                const LabGap.s16(),
               ],
             ),
           ),

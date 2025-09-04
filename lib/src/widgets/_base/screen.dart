@@ -303,18 +303,17 @@ class _LabScreenState extends State<LabScreen> with TickerProviderStateMixin {
       children: [
         Column(
           children: [
-            // Top zone (Safe Area))
-            Opacity(
-              opacity: _showTopZone ? 1.0 : 0.0,
-              child: LabContainer(
-                height: LabPlatformUtils.isMobile
-                    ? MediaQuery.viewPaddingOf(context).top + 2
-                    : 22,
-                decoration: BoxDecoration(
-                  color: theme.colors.black,
+            // Top zone (Safe Area) - only show on mobile platforms
+            if (LabPlatformUtils.isMobile)
+              Opacity(
+                opacity: _showTopZone ? 1.0 : 0.0,
+                child: LabContainer(
+                  height: MediaQuery.viewPaddingOf(context).top + 2,
+                  decoration: BoxDecoration(
+                    color: theme.colors.black,
+                  ),
                 ),
               ),
-            ),
 
             // Main zone
             Expanded(

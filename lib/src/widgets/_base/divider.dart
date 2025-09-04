@@ -64,13 +64,13 @@ class LabDivider extends StatelessWidget {
           border: orientation == LabDividerOrientation.horizontal
               ? Border(
                   bottom: BorderSide(
-                    color: color ?? theme.colors.white16,
+                    color: color ?? theme.colors.white.withValues(alpha: 0.12),
                     width: thickness ?? LabLineThicknessData.normal().medium,
                   ),
                 )
               : Border(
                   right: BorderSide(
-                    color: color ?? theme.colors.white16,
+                    color: color ?? theme.colors.white.withValues(alpha: 0.12),
                     width: thickness ?? LabLineThicknessData.normal().medium,
                   ),
                 ),

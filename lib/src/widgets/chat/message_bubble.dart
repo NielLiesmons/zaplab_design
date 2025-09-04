@@ -545,24 +545,19 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                               ),
                             ] else if (widget.onSendAgain != null) ...[
                               LabContainer(
-                                padding: const LabEdgeInsets.symmetric(
-                                  horizontal: LabGapSize.s4,
-                                  vertical: LabGapSize.s8,
+                                padding: const LabEdgeInsets.only(
+                                  left: LabGapSize.s4,
+                                  right: LabGapSize.s4,
+                                  top: LabGapSize.none,
+                                  bottom: LabGapSize.s8,
                                 ),
                                 child: Row(
                                   children: [
-                                    LabIcon.s20(
-                                      theme.icons.characters.info,
-                                      outlineColor: theme.colors.white33,
-                                      outlineThickness:
-                                          LabLineThicknessData.normal().medium,
-                                    ),
-                                    const LabGap.s8(),
                                     LabText.reg12(
                                       'Sending Failed',
                                       color: theme.colors.white66,
                                     ),
-                                    const LabGap.s4(),
+                                    const LabGap.s10(),
                                     const Spacer(),
                                     LabSmallButton(
                                       onTap: () => widget.onSendAgain!(
@@ -578,7 +573,7 @@ class _LabMessageBubbleState extends State<LabMessageBubble> {
                                         ),
                                         const LabGap.s8(),
                                         LabText.reg12(
-                                          'Send Again',
+                                          'Retry',
                                           color: theme.colors.white66,
                                         ),
                                       ],

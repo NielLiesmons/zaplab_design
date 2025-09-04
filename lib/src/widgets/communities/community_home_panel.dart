@@ -16,6 +16,7 @@ class LabCommunityHomePanel extends StatelessWidget {
   final Function(Community)? onCreateNewPublication;
   final Function(Community)? onActions;
   final bool isPinned;
+  final String? activePubkey;
 
   const LabCommunityHomePanel({
     super.key,
@@ -32,6 +33,7 @@ class LabCommunityHomePanel extends StatelessWidget {
     this.onCreateNewPublication,
     this.onActions,
     this.isPinned = false,
+    this.activePubkey,
   });
 
   // Cache expensive shaders to avoid recreation on every build
@@ -55,6 +57,14 @@ class LabCommunityHomePanel extends StatelessWidget {
     if (count > 99) return ('99+', 40);
     if (count > 9) return (count.toString(), 32);
     return (count.toString(), 26);
+  }
+
+  String _getAuthorDisplayName() {
+    if (lastModel?.author.value?.pubkey == activePubkey) {
+      return 'You';
+    }
+    return lastModel?.author.value?.name ??
+        formatNpub(lastModel?.author.value?.npub ?? '');
   }
 
   @override
@@ -192,15 +202,7 @@ class LabCommunityHomePanel extends StatelessWidget {
                                                         child: Row(
                                                           children: [
                                                             LabText.bold12(
-                                                              lastModel
-                                                                      ?.author
-                                                                      .value
-                                                                      ?.name ??
-                                                                  formatNpub(lastModel
-                                                                          ?.author
-                                                                          .value
-                                                                          ?.npub ??
-                                                                      ''),
+                                                              _getAuthorDisplayName(),
                                                               color: colors
                                                                   .white66,
                                                             ),

@@ -18,7 +18,11 @@ class LabLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
-    final isInsideModal = ModalScope.of(context);
+    // Compute base color once from the label text
+    final baseColor = () {
+      final rgb = stringToColor(text);
+      return Color(rgb.toIntWithAlpha());
+    }();
 
     return TapBuilder(
       onTap: onTap,
@@ -43,11 +47,9 @@ class LabLabel extends StatelessWidget {
                   left: LabGapSize.s12,
                 ),
                 decoration: BoxDecoration(
-                  color: isSelected || isEmphasized
-                      ? theme.colors.blurpleColor33
-                      : isInsideModal
-                          ? theme.colors.white16
-                          : theme.colors.white8,
+                  color: (isSelected || isEmphasized)
+                      ? baseColor.withValues(alpha: 0.40)
+                      : baseColor.withValues(alpha: 0.16),
                   borderRadius: BorderRadius.only(
                     topLeft: theme.radius.rad12,
                     bottomLeft: theme.radius.rad12,
@@ -61,7 +63,7 @@ class LabLabel extends StatelessWidget {
                         padding: const EdgeInsets.only(right: 8),
                         child: LabIcon.s10(
                           theme.icons.characters.check,
-                          outlineColor: theme.colors.white,
+                          outlineColor: baseColor,
                           outlineThickness: LabLineThicknessData.normal().thick,
                         ),
                       ),
@@ -81,11 +83,9 @@ class LabLabel extends StatelessWidget {
               CustomPaint(
                 size: const Size(24, 32),
                 painter: HouseShapePainter(
-                  color: isSelected || isEmphasized
-                      ? theme.colors.blurpleColor33
-                      : isInsideModal
-                          ? theme.colors.white16
-                          : theme.colors.white8,
+                  color: (isSelected || isEmphasized)
+                      ? baseColor.withValues(alpha: 0.40)
+                      : baseColor.withValues(alpha: 0.16),
                 ),
               ),
             ],

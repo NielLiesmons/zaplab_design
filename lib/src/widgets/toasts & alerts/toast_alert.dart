@@ -33,30 +33,37 @@ class LabToastAlert extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        LabContainer(
-          width: theme.sizes.s38,
-          height: theme.sizes.s38,
-          decoration: BoxDecoration(
-            color: theme.colors.white16,
-            borderRadius: BorderRadius.all(theme.radius.rad16),
+    return Expanded(
+      child: Column(
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              LabContainer(
+                width: theme.sizes.s38,
+                height: theme.sizes.s38,
+                decoration: BoxDecoration(
+                  color: theme.colors.white16,
+                  borderRadius: BorderRadius.all(theme.radius.rad16),
+                ),
+                alignment: Alignment.center,
+                child: LabIcon.s18(
+                  theme.icons.characters.alert,
+                  outlineColor: theme.colors.white66,
+                  outlineThickness: LabLineThicknessData.normal().medium,
+                ),
+              ),
+              const LabGap.s12(),
+              Expanded(
+                child: LabText.reg14(
+                  message,
+                ),
+              ),
+            ],
           ),
-          alignment: Alignment.center,
-          child: LabIcon.s18(
-            theme.icons.characters.alert,
-            outlineColor: theme.colors.white66,
-            outlineThickness: LabLineThicknessData.normal().medium,
-          ),
-        ),
-        const LabGap.s12(),
-        Expanded(
-          child: LabText.reg14(
-            message,
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

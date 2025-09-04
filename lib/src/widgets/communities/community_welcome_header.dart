@@ -7,14 +7,12 @@ class LabCommunityWelcomeHeader extends StatefulWidget {
   final Community community;
   final VoidCallback? onProfileTap;
   final List<Profile>? profiles;
-  final List<String>? emojiImageUrls;
 
   const LabCommunityWelcomeHeader({
     super.key,
     required this.community,
     this.onProfileTap,
     this.profiles,
-    this.emojiImageUrls,
   });
 
   @override
@@ -97,8 +95,8 @@ class _LabCommunityWelcomeHeaderState extends State<LabCommunityWelcomeHeader>
                                 diameter: diameter,
                                 circleIndex: index,
                                 profiles: widget.profiles,
-                                emojiImageUrls: widget.emojiImageUrls,
                                 rotationAngle: rotationAngle,
+                                community: widget.community,
                               ),
                             );
                           },
@@ -191,34 +189,56 @@ class _CircleItems extends StatelessWidget {
   final double diameter;
   final int circleIndex;
   final List<Profile>? profiles;
-  final List<String>? emojiImageUrls;
   final double rotationAngle;
+  final Community community;
 
   const _CircleItems({
     required this.diameter,
     required this.circleIndex,
     this.profiles,
-    this.emojiImageUrls,
     required this.rotationAngle,
+    required this.community,
   });
 
   @override
   Widget build(BuildContext context) {
     final radius = diameter / 2;
     final _profiles = profiles ?? [];
-    final emojiUrls = emojiImageUrls ?? [];
+
+    // Get content type names from community content sections, converted to proper content type names
+    final contentTypes = community.contentSections
+        .map((section) =>
+            getContentTyepFromCommunitySectionName(section.content))
+        .toList();
+
+    // Fallback content types if no content sections available
+    final fallbackContentTypes = [
+      'default',
+      'chat',
+      'article',
+      'poll',
+      'wiki',
+      'app'
+    ];
 
     // Calculate item sizes based on circle index
     final emojiSize =
-        16.0 - circleIndex; // Start at 16px and decrease by 1px each circle
+        16.0 - circleIndex; // Keep as double for LabEmojiContentType
 
     // Calculate positions for items
     final items = <Widget>[];
     final angleStep = (2 * math.pi) / 3; // 3 items per circle
 
-    // Add emoji
-    if (emojiUrls.isNotEmpty) {
-      final emojiIndex = circleIndex % emojiUrls.length;
+    // Add content type emoji
+    if (contentTypes.isNotEmpty || fallbackContentTypes.isNotEmpty) {
+      final contentTypeIndex = circleIndex %
+          (contentTypes.isNotEmpty
+              ? contentTypes.length
+              : fallbackContentTypes.length);
+      final contentType = contentTypes.isNotEmpty
+          ? contentTypes[contentTypeIndex]
+          : fallbackContentTypes[contentTypeIndex];
+
       final angle = 0.0; // Start at top
       final x = radius + (radius * math.cos(angle));
       final y = radius + (radius * math.sin(angle));
@@ -232,9 +252,8 @@ class _CircleItems extends StatelessWidget {
               opacity: 0.9 -
                   (circleIndex *
                       0.15), // Start at 90%, decrease by 15% each circle
-              child: LabEmojiImage(
-                emojiUrl: emojiUrls[emojiIndex],
-                emojiName: '',
+              child: LabEmojiContentType(
+                contentType: contentType,
                 size: emojiSize,
               ),
             ),

@@ -54,6 +54,10 @@ class _CustomImageViewer extends StatelessWidget {
 
   const _CustomImageViewer({required this.imageUrl});
 
+  static bool _isLocalAsset(String url) {
+    return url.startsWith('assets/') || url.startsWith('../assets/');
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
@@ -67,16 +71,27 @@ class _CustomImageViewer extends StatelessWidget {
             child: InteractiveViewer(
               minScale: 0.5,
               maxScale: 4.0,
-              child: CachedNetworkImage(
-                imageUrl: imageUrl,
-                fit: BoxFit.contain,
-                errorWidget: (context, url, error) => Center(
-                  child: LabText(
-                    "Image not found",
-                    color: theme.colors.white33,
-                  ),
-                ),
-              ),
+              child: _isLocalAsset(imageUrl)
+                  ? Image.asset(
+                      imageUrl,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) => Center(
+                        child: LabText(
+                          "Image not found",
+                          color: theme.colors.white33,
+                        ),
+                      ),
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      fit: BoxFit.contain,
+                      errorWidget: (context, url, error) => Center(
+                        child: LabText(
+                          "Image not found",
+                          color: theme.colors.white33,
+                        ),
+                      ),
+                    ),
             ),
           ),
           // Close button

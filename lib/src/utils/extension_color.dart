@@ -1,23 +1,28 @@
 import './npub_color.dart';
 
-RGBColor extensionToColor(String extension) {
-  // Convert extension to uppercase and remove dot if present
-  final cleanExtension = extension.toUpperCase().replaceAll('.', '');
+RGBColor stringToColor(String value) {
+  // Normalize any input string consistently
+  final normalized = value.trim().toUpperCase();
 
-  // Convert string to BigInt using character codes
-  BigInt number = BigInt.zero;
-  for (int i = 0; i < cleanExtension.length; i++) {
-    number = number +
-        BigInt.from(cleanExtension.codeUnitAt(i)) * BigInt.from(256).pow(i);
+  // Handle empty string deterministically
+  if (normalized.isEmpty) {
+    return const RGBColor(128, 128, 128);
   }
 
-  // Get hue value between 0 and 355
+  // Convert string to BigInt using character codes (stable hashing)
+  BigInt number = BigInt.zero;
+  for (int i = 0; i < normalized.length; i++) {
+    number = number +
+        BigInt.from(normalized.codeUnitAt(i)) * BigInt.from(256).pow(i);
+  }
+
+  // Get hue value between 0 and 359
   final hue = (number % BigInt.from(360)).toInt();
 
   // Convert HSV to RGB
   final h = hue / 60;
 
-  // Adjustements to make the color readable at all times
+  // Adjustments to make the color readable at all times
   final s = 0.70;
   final v = (hue >= 32 && hue <= 204)
       ? 0.70
@@ -64,21 +69,26 @@ RGBColor extensionToColor(String extension) {
   return RGBColor(red, green, blue);
 }
 
-String extensionToHexColor(String extension) {
-  return extensionToColor(extension).toHex();
+String stringToHexColor(String value) {
+  return stringToColor(value).toHex();
 }
 
-int extensionToColorInt(String extension) {
-  return extensionToColor(extension).toIntWithAlpha();
+int stringToColorInt(String value) {
+  return stringToColor(value).toIntWithAlpha();
 }
 
-// Convenience method for common file extensions
+// Backwards compatibility wrappers (extensions-specific naming)
+RGBColor extensionToColor(String extension) => stringToColor(extension);
+String extensionToHexColor(String extension) => stringToHexColor(extension);
+int extensionToColorInt(String extension) => stringToColorInt(extension);
+
+// Convenience methods for filenames (kept for compatibility)
 String getFileExtensionColor(String filename) {
   final extension = filename.split('.').last;
-  return extensionToHexColor(extension);
+  return stringToHexColor(extension);
 }
 
 int getFileExtensionColorInt(String filename) {
   final extension = filename.split('.').last;
-  return extensionToColorInt(extension);
+  return stringToColorInt(extension);
 }

@@ -131,34 +131,41 @@ class LabModelCard extends StatelessWidget {
                 onTap: () => onProfileTap(model!.author.value as Profile)),
             const LabGap.s12(),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      LabEmojiContentType(
-                        contentType: getModelContentType(model),
-                        size: 16,
-                      ),
-                      const LabGap.s10(),
-                      Expanded(
-                        child: LabCompactTextRenderer(
-                          model: model!,
-                          content: getModelDisplayText(model),
-                          onResolveEvent: onResolveEvent!,
-                          onResolveProfile: onResolveProfile!,
-                          onResolveEmoji: onResolveEmoji!,
+              child: LabContainer(
+                height: 44,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        LabEmojiContentType(
+                          contentType: getModelContentType(model),
+                          size: 16,
                         ),
-                      ),
-                    ],
-                  ),
-                  const LabGap.s2(),
-                  LabText.reg12(
-                    model!.author.value?.name ??
-                        formatNpub(model!.author.value?.npub ?? ''),
-                    color: theme.colors.white66,
-                  ),
-                ],
+                        const LabGap.s10(),
+                        Expanded(
+                          child: LabCompactTextRenderer(
+                            model: model!,
+                            isWhite: true,
+                            isMedium: true,
+                            content: getModelDisplayText(model),
+                            onResolveEvent: onResolveEvent!,
+                            onResolveProfile: onResolveProfile!,
+                            onResolveEmoji: onResolveEmoji!,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const LabGap.s2(),
+                    LabText.reg12(
+                      model!.author.value?.name ??
+                          formatNpub(model!.author.value?.npub ?? ''),
+                      color: theme.colors.white66,
+                      maxLines: 1,
+                      textOverflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

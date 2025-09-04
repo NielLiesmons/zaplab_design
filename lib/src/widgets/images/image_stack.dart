@@ -9,6 +9,8 @@ import 'package:video_player/video_player.dart';
 class LabImageStack extends StatefulWidget {
   final List<String> images;
   final VoidCallback? onTap;
+  final double? width;
+  final double? height;
   static const double _maxWidth = 220.0;
   static const double _maxHeight = 280.0;
   static const double _stackVerticalOffset = 10.0;
@@ -20,6 +22,8 @@ class LabImageStack extends StatefulWidget {
     super.key,
     required this.images,
     this.onTap,
+    this.width,
+    this.height,
   });
 
   static void _showFullScreen(BuildContext context, List<String> images) {
@@ -90,14 +94,40 @@ class _LabImageStackState extends State<LabImageStack> {
           if (!mounted) return;
           setState(() {
             _videoControllers[url] = controller;
+            // Update aspect ratio when video controller is ready
+            if (url == widget.images[0] &&
+                controller != null &&
+                controller.value.isInitialized) {
+              _aspectRatio = controller.value.aspectRatio;
+            }
           });
+        }).catchError((error) {
+          // Handle error silently
         });
       }
     }
   }
 
   void _resolveImage() {
-    final ImageProvider imageProvider = NetworkImage(widget.images[0]);
+    if (widget.images.isEmpty) return;
+
+    final firstUrl = widget.images[0];
+    if (_isVideo(firstUrl)) {
+      // For videos, aspect ratio will be resolved when video controller is ready
+      // Don't try to resolve as image for videos
+      return;
+    }
+
+    // For images, resolve normally
+    final ImageProvider imageProvider;
+    if (_isLocalAsset(firstUrl)) {
+      // Local asset
+      imageProvider = AssetImage(firstUrl);
+    } else {
+      // Network image
+      imageProvider = NetworkImage(firstUrl);
+    }
+
     _imageStream = imageProvider.resolve(const ImageConfiguration());
     _imageStreamListener = ImageStreamListener((ImageInfo info, bool _) {
       if (!mounted) return;
@@ -113,6 +143,10 @@ class _LabImageStackState extends State<LabImageStack> {
 
   bool _isVideo(String url) {
     return ImageViewerUtils.isVideoUrl(url);
+  }
+
+  bool _isLocalAsset(String url) {
+    return url.startsWith('assets/') || url.startsWith('../assets/');
   }
 
   Widget _buildPlayIcon() {
@@ -164,22 +198,36 @@ class _LabImageStackState extends State<LabImageStack> {
         );
       }
     } else {
+      // This is an image (not a video)
       return Opacity(
         opacity: opacity,
-        child: CachedNetworkImage(
-          imageUrl: url,
-          fit: BoxFit.cover,
-          width: width,
-          height: height,
-          progressIndicatorBuilder: (context, url, downloadProgress) =>
-              const LabSkeletonLoader(),
-          errorWidget: (context, url, error) => Center(
-            child: LabText(
-              "Image not found",
-              color: theme.colors.white33,
-            ),
-          ),
-        ),
+        child: _isLocalAsset(url)
+            ? Image.asset(
+                url,
+                fit: BoxFit.cover,
+                width: width,
+                height: height,
+                errorBuilder: (context, error, stackTrace) => Center(
+                  child: LabText(
+                    "Image not found",
+                    color: theme.colors.white33,
+                  ),
+                ),
+              )
+            : CachedNetworkImage(
+                imageUrl: url,
+                fit: BoxFit.cover,
+                width: width,
+                height: height,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    const LabSkeletonLoader(),
+                errorWidget: (context, url, error) => Center(
+                  child: LabText(
+                    "Image not found",
+                    color: theme.colors.white33,
+                  ),
+                ),
+              ),
       );
     }
   }
@@ -187,11 +235,31 @@ class _LabImageStackState extends State<LabImageStack> {
   Size _calculateContainerSize() {
     final theme = LabTheme.of(context);
 
+    // If custom dimensions are provided, use them directly
+    if (widget.width != null && widget.height != null) {
+      return Size(widget.width!, widget.height!);
+    }
+
     if (_aspectRatio == null) {
       return const Size(LabImageStack._maxWidth, LabImageStack._maxWidth);
     }
 
     final double aspectRatio = _aspectRatio!;
+
+    // For single images/videos, respect aspect ratio while respecting both max dimensions
+    if (widget.images.length == 1) {
+      if (aspectRatio > 1.0) {
+        // Wide image/video - constrain by max width
+        const width = LabImageStack._maxWidth;
+        final height = width / aspectRatio;
+        return Size(width, height);
+      } else {
+        // Tall image/video - constrain by max height
+        const height = LabImageStack._maxHeight;
+        final width = height * aspectRatio;
+        return Size(width, height);
+      }
+    }
 
     // If aspect ratio is more extreme than golden ratio, constrain to golden ratio
     if (aspectRatio > theme.sizes.phi) {

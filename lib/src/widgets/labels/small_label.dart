@@ -18,6 +18,11 @@ class LabSmallLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
+    // Compute base color once from the label text
+    final baseColor = () {
+      final rgb = stringToColor(text);
+      return Color(rgb.toIntWithAlpha());
+    }();
 
     return TapBuilder(
       onTap: onTap,
@@ -42,9 +47,9 @@ class LabSmallLabel extends StatelessWidget {
                   left: LabGapSize.s8,
                 ),
                 decoration: BoxDecoration(
-                  color: isSelected || isEmphasized
-                      ? theme.colors.blurpleColor33
-                      : theme.colors.white8,
+                  color: (isSelected || isEmphasized)
+                      ? baseColor.withValues(alpha: 0.40)
+                      : baseColor.withValues(alpha: 0.16),
                   borderRadius: BorderRadius.only(
                     topLeft: theme.radius.rad8,
                     bottomLeft: theme.radius.rad8,
@@ -58,7 +63,7 @@ class LabSmallLabel extends StatelessWidget {
                         padding: const EdgeInsets.only(right: 8),
                         child: LabIcon.s10(
                           theme.icons.characters.check,
-                          outlineColor: theme.colors.white,
+                          outlineColor: baseColor,
                           outlineThickness: LabLineThicknessData.normal().thick,
                         ),
                       ),
@@ -78,9 +83,9 @@ class LabSmallLabel extends StatelessWidget {
               CustomPaint(
                 size: const Size(20, 24),
                 painter: HouseShapePainter2(
-                  color: isSelected || isEmphasized
-                      ? theme.colors.blurpleColor33
-                      : theme.colors.white8,
+                  color: (isSelected || isEmphasized)
+                      ? baseColor.withValues(alpha: 0.40)
+                      : baseColor.withValues(alpha: 0.16),
                 ),
               ),
             ],
