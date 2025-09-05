@@ -570,7 +570,8 @@ class LabLongTextRenderer extends StatelessWidget {
               paragraphPieces.add(const SizedBox(height: 8));
               paragraphPieces.add(
                 LabContainer(
-                  child: FutureBuilder<({Model? model, VoidCallback? onTap})>(
+                  child: FutureBuilder<
+                      ({Model? model, void Function(dynamic)? onTap})>(
                     future: onResolveEvent(child.content),
                     builder: (context, snapshot) {
                       return ConstrainedBox(
@@ -579,7 +580,7 @@ class LabLongTextRenderer extends StatelessWidget {
                           model: snapshot.data?.model,
                           onTap: snapshot.data?.onTap == null
                               ? null
-                              : (model) => snapshot.data!.onTap!(),
+                              : (model) => snapshot.data!.onTap!(context),
                           onProfileTap: (profile) => onProfileTap(profile),
                         ),
                       );

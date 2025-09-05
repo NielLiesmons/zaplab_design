@@ -5,9 +5,9 @@ class LabFeedTask extends StatelessWidget {
   final Task task;
   final Function(Model) onTap;
   final bool isUnread;
-  final List<Model>? taggedModels;
-  final Function(Model)? onTaggedModelTap;
-  final List<Task>? subTasks;
+
+  final Function(Model)? onTargetedModelTap;
+
   final Function(Model) onSwipeLeft;
   final Function(Model) onSwipeRight;
 
@@ -16,9 +16,7 @@ class LabFeedTask extends StatelessWidget {
     required this.task,
     required this.onTap,
     this.isUnread = false,
-    this.taggedModels,
-    this.onTaggedModelTap,
-    this.subTasks,
+    this.onTargetedModelTap,
     required this.onSwipeLeft,
     required this.onSwipeRight,
   });
@@ -75,7 +73,7 @@ class LabFeedTask extends StatelessWidget {
                       padding: const LabEdgeInsets.only(
                         left: LabGapSize.s12,
                       ),
-                      child: (subTasks != null || taggedModels != null)
+                      child: (task.targetedModels.toList().isNotEmpty)
                           ? CustomPaint(
                               painter: LabLShapePainter(
                                 color: theme.colors.white33,
@@ -110,7 +108,7 @@ class LabFeedTask extends StatelessWidget {
                               child: LabText.bold16(
                                 task.title ?? '',
                                 textOverflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+                                maxLines: 1,
                               ),
                             ),
                           ),
@@ -126,43 +124,23 @@ class LabFeedTask extends StatelessWidget {
                             ),
                         ],
                       ),
-                      if (taggedModels != null || subTasks != null)
+                      if (task.targetedModels.toList().isNotEmpty)
                         const LabGap.s8(),
-                      if (taggedModels != null || subTasks != null)
+                      if (task.targetedModels.toList().isNotEmpty)
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
-                              for (final model in taggedModels ?? [])
+                              for (final model in task.targetedModels.toList())
                                 Row(
                                   children: [
                                     LabModelButton(
                                       model: model,
-                                      onTap: () => onTaggedModelTap!(model),
+                                      onTap: () => onTargetedModelTap!(model),
                                     ),
                                     const LabGap.s8(),
                                   ],
                                 ),
-                              // Row(
-                              //   children: [
-                              //     LabContainer(
-                              //       padding: const LabEdgeInsets.symmetric(
-                              //         horizontal: LabGapSize.s8,
-                              //         vertical: LabGapSize.s6,
-                              //       ),
-                              //       decoration: BoxDecoration(
-                              //         color: theme.colors.gray33,
-                              //         borderRadius:
-                              //             theme.radius.asBorderRadius().rad8,
-                              //       ),
-                              //       child: LabText.reg12(
-                              //         '${subTasks?.length} Subtasks',
-                              //         color: theme.colors.white33,
-                              //       ),
-                              //     ),
-                              //     const LabGap.s8(),
-                              //   ],
-                              // ),
                             ],
                           ),
                         ),

@@ -194,6 +194,7 @@ export 'tabs/tab_view.dart';
 // Tasks
 export 'tasks/feed_task.dart';
 export 'tasks/task_box.dart';
+export 'tasks/task_header.dart';
 
 // Text
 export 'text/long_text/long_text_bar.dart';

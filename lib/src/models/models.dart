@@ -3,8 +3,9 @@ import 'package:models/models.dart';
 import 'dart:convert';
 
 // Model
-typedef NostrEventResolver = Future<({Model? model, VoidCallback? onTap})>
-    Function(String nevent);
+typedef NostrEventResolver
+    = Future<({Model? model, void Function(dynamic)? onTap})> Function(
+        String nevent);
 
 String getModelContentType(Model? model) {
   return switch (model) {
@@ -42,6 +43,22 @@ String getModelNameFromContentType(String contenType) {
   if (contenType == 'forum') return 'Forum Post';
 
   return contenType[0].toUpperCase() + contenType.substring(1);
+}
+
+String getModelNameFromContentTypePlural(String contenType) {
+  if (contenType == 'nostr') return 'Nostr Publications';
+  if (contenType == 'chat') return 'Messages';
+  if (contenType == 'forum') return 'Forum Posts';
+  if (contenType == 'reply') return 'Replies';
+  if (contenType == 'community') return 'Communities';
+
+  // Handle y -> ie conversion for plurals
+  if (contenType.endsWith('y')) {
+    final base = contenType.substring(0, contenType.length - 1);
+    return '${base[0].toUpperCase()}${base.substring(1)}ies';
+  }
+
+  return '${contenType[0].toUpperCase()}${contenType.substring(1)}s';
 }
 
 getCommunitySectionNameFromContentType(String contentType) {
@@ -726,7 +743,24 @@ class Task extends ParameterizableReplaceableModel<Task> {
         tags: {
           '#a': {addressableId},
         },
-        limit: 50,
+        limit: 12,
+      ).toRequest(),
+    );
+    targetedModels = HasMany(
+      ref,
+      targetedIds.isEmpty
+          ? null // No query when no targeted IDs
+          : RequestFilter<Model>(
+              ids: targetedIds.toSet(),
+              limit: 12,
+            ).toRequest(),
+    );
+    comments = HasMany(
+      ref,
+      RequestFilter<Comment>(
+        tags: {
+          '#a': {addressableId},
+        },
       ).toRequest(),
     );
   }
@@ -736,9 +770,28 @@ class Task extends ParameterizableReplaceableModel<Task> {
   String get slug => event.getFirstTagValue('d')!;
   DateTime? get publishedAt =>
       event.getFirstTagValue('published_at')?.toInt()?.toDate();
+  Set<String> get labels => event.tags
+      .where((tag) => tag.length > 1 && tag[0] == 't')
+      .map((tag) => tag[1])
+      .toSet();
 
   // Relationships for status events
   late final HasMany<StatusEvent> statuses;
+
+  // Get targeted models from 'a' and 'e' tags
+  List<String> get targetedAddressableIds =>
+      event.getTagSetValues('a').toList();
+  List<String> get targetedEventIds => event.getTagSetValues('e').toList();
+
+  // Combined list of all targeted identifiers
+  List<String> get targetedIds => [
+        ...targetedAddressableIds,
+        ...targetedEventIds,
+      ];
+
+  // Relationships for targeted models
+  late final HasMany<Model> targetedModels;
+  late final HasMany<Comment> comments;
 
   // Convenience getter for latest status (by createdAt)
   StatusEvent? get latestStatusModel {

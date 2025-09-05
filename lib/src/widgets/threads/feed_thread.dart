@@ -5,8 +5,9 @@ class LabFeedThread extends StatelessWidget {
   final Note? thread;
   final Comment? reply;
   final Function(Model) onTap;
-  final List<Profile> topThreeReplyProfiles;
-  final int totalReplyProfiles;
+  final List<Comment>? replies;
+  final List<Profile>? topThreeReplyProfiles;
+  final int? totalReplyProfiles;
   final Function(Model) onActions;
   final Function(Model) onReply;
   final Function(Reaction)? onReactionTap;
@@ -24,8 +25,9 @@ class LabFeedThread extends StatelessWidget {
     this.thread,
     this.reply,
     required this.onTap,
-    this.topThreeReplyProfiles = const [],
-    this.totalReplyProfiles = 0,
+    this.topThreeReplyProfiles,
+    this.totalReplyProfiles,
+    this.replies,
     required this.onReply,
     required this.onActions,
     required this.onReactionTap,
@@ -42,6 +44,10 @@ class LabFeedThread extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = LabTheme.of(context);
+
+    // Calculate reply profiles if not provided
+    final replyProfiles = topThreeReplyProfiles ?? _getReplyProfiles();
+    final totalReplies = totalReplyProfiles ?? _getTotalReplies();
 
     return Column(
       children: [
@@ -72,7 +78,7 @@ class LabFeedThread extends StatelessWidget {
                         LabProfilePic.s38(
                           thread?.author.value ?? reply?.author.value,
                         ),
-                        if (topThreeReplyProfiles.isNotEmpty)
+                        if (replyProfiles.isNotEmpty)
                           Expanded(
                             child: LabDivider.vertical(
                               color: theme.colors.white33,
@@ -87,7 +93,6 @@ class LabFeedThread extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               LabText.bold14(
@@ -106,6 +111,7 @@ class LabFeedThread extends StatelessWidget {
                                           : 'Profile Name...',
                                   maxLines: 1,
                                   textOverflow: TextOverflow.ellipsis),
+                              const Spacer(),
                               LabText.reg12(
                                 TimestampFormatter.format(
                                     thread != null
@@ -114,7 +120,8 @@ class LabFeedThread extends StatelessWidget {
                                     format: TimestampFormat.relative),
                                 color: theme.colors.white33,
                               ),
-                              if (isUnread)
+                              if (isUnread) ...[
+                                const LabGap.s12(),
                                 LabContainer(
                                   height: theme.sizes.s8,
                                   width: theme.sizes.s8,
@@ -123,6 +130,7 @@ class LabFeedThread extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(100),
                                   ),
                                 ),
+                              ],
                             ],
                           ),
                           const LabGap.s4(),
@@ -199,7 +207,7 @@ class LabFeedThread extends StatelessWidget {
                   ],
                 ),
               ),
-              if (topThreeReplyProfiles.isNotEmpty) ...[
+              if (replyProfiles.isNotEmpty) ...[
                 Row(
                   children: [
                     SizedBox(
@@ -207,16 +215,16 @@ class LabFeedThread extends StatelessWidget {
                       height: 38,
                       child: Column(
                         children: [
-                          LabProfilePic.s20(topThreeReplyProfiles[0]),
+                          LabProfilePic.s20(replyProfiles[0]),
                           const LabGap.s2(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              if (topThreeReplyProfiles.length > 1)
-                                LabProfilePic.s16(topThreeReplyProfiles[1]),
+                              if (replyProfiles.length > 1)
+                                LabProfilePic.s16(replyProfiles[1]),
                               const Spacer(),
-                              if (topThreeReplyProfiles.length > 2)
-                                LabProfilePic.s12(topThreeReplyProfiles[2]),
+                              if (replyProfiles.length > 2)
+                                LabProfilePic.s12(replyProfiles[2]),
                               const LabGap.s2()
                             ],
                           ),
@@ -226,7 +234,7 @@ class LabFeedThread extends StatelessWidget {
                     const LabGap.s12(),
                     Expanded(
                       child: LabText.med14(
-                        '${topThreeReplyProfiles[0].name ?? formatNpub(topThreeReplyProfiles[0].author.value?.npub ?? '')} & ${totalReplyProfiles - 1} others replied',
+                        '${replyProfiles[0].name ?? formatNpub(replyProfiles[0].author.value?.npub ?? '')} & ${totalReplies - 1} others replied',
                         color: theme.colors.white33,
                       ),
                     ),
@@ -239,5 +247,27 @@ class LabFeedThread extends StatelessWidget {
         const LabDivider(),
       ],
     );
+  }
+
+  List<Profile> _getReplyProfiles() {
+    // Use manual replies if provided, otherwise fall back to model relationships
+    final replyList =
+        replies ?? thread?.replies.toList() ?? reply?.replies.toList() ?? [];
+    final uniqueProfiles = replyList
+        .map((reply) => (reply as Comment).author.value)
+        .where((profile) => profile != null)
+        .toSet()
+        .take(3)
+        .cast<Profile>()
+        .toList();
+    return uniqueProfiles;
+  }
+
+  int _getTotalReplies() {
+    // Use manual replies if provided, otherwise fall back to model relationships
+    return replies?.length ??
+        thread?.replies.length ??
+        reply?.replies.length ??
+        0;
   }
 }

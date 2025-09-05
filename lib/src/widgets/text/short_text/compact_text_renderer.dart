@@ -163,7 +163,8 @@ class LabCompactTextRenderer extends StatelessWidget {
                 ),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
-                  child: FutureBuilder<({Model? model, VoidCallback? onTap})>(
+                  child: FutureBuilder<
+                      ({Model? model, void Function(dynamic)? onTap})>(
                     future: onResolveEvent(child.content).catchError((error) {
                       print('Failed to resolve event $child.content: $error');
                       return (model: null, onTap: null);

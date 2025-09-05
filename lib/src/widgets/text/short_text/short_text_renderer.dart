@@ -163,7 +163,8 @@ class LabShortTextRenderer extends StatelessWidget {
 
   // Cache for async futures to prevent rebuilding
   static final Map<String, Future<String>> _emojiFuturesCache = {};
-  static final Map<String, Future<({Model? model, VoidCallback? onTap})>>
+  static final Map<String,
+          Future<({Model? model, void Function(dynamic)? onTap})>>
       _eventFuturesCache = {};
   static final Map<String, Future<({Profile? profile, VoidCallback? onTap})>>
       _profileFuturesCache = {};
@@ -193,7 +194,7 @@ class LabShortTextRenderer extends StatelessWidget {
   }
 
   // Get cached event future
-  Future<({Model? model, VoidCallback? onTap})> _getCachedEventFuture(
+  Future<({Model? model, void Function(dynamic)? onTap})> _getCachedEventFuture(
       String eventId) {
     final cacheKey = '${model.id}_event_$eventId';
     if (_eventFuturesCache.containsKey(cacheKey)) {
@@ -502,7 +503,7 @@ class LabShortTextRenderer extends StatelessWidget {
                   ? const LabGap.s2()
                   : const LabGap.s8());
               paragraphPieces.add(
-                FutureBuilder<({Model? model, VoidCallback? onTap})>(
+                FutureBuilder<({Model? model, void Function(dynamic)? onTap})>(
                   future: _getCachedEventFuture(child.content),
                   builder: (context, snapshot) {
                     return ConstrainedBox(
@@ -511,7 +512,7 @@ class LabShortTextRenderer extends StatelessWidget {
                         model: snapshot.data?.model,
                         onTap: snapshot.data?.onTap == null
                             ? null
-                            : (model) => snapshot.data!.onTap!(),
+                            : (model) => snapshot.data!.onTap!(context),
                         onProfileTap: (profile) => onProfileTap(profile),
                         onResolveEvent: onResolveEvent,
                         onResolveProfile: onResolveProfile,
